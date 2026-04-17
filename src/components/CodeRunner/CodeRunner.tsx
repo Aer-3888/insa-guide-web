@@ -154,7 +154,16 @@ function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
           )}
 
           {result?.error && (
-            <pre className={styles.errorOutput}>{result.error}</pre>
+            <>
+              <pre className={styles.errorOutput}>{result.error}</pre>
+              {/not found|is not defined|undefined variable|n'existe pas/.test(result.error) && (
+                <p className={styles.fragmentHint}>
+                  Ce bloc est un extrait de code qui depend de variables definies
+                  dans le TP complet. Consultez le fichier source R/Python pour
+                  l'execution complete.
+                </p>
+              )}
+            </>
           )}
 
           {result?.images?.map((src, i) => (

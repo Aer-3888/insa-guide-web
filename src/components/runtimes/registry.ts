@@ -1,7 +1,11 @@
 import type { RuntimeInfo } from './types';
 import type { BaseRuntime } from './BaseRuntime';
+import { CRuntime } from './CRuntime';
 import { JavaScriptRuntime } from './JavaScriptRuntime';
 import { PythonRuntime } from './PythonRuntime';
+import { PrologRuntime } from './PrologRuntime';
+import { OCamlRuntime } from './OCamlRuntime';
+import { RRuntime } from './RRuntime';
 import { SQLRuntime } from './SQLRuntime';
 
 export interface RuntimeRegistryEntry extends RuntimeInfo {
@@ -33,14 +37,48 @@ export const RUNTIME_REGISTRY: Record<string, RuntimeRegistryEntry> = {
     extensions: ['.sql'],
     factory: () => new SQLRuntime(),
   },
-  // Phase 2: r, java, c
-  // Phase 3: ocaml, prolog, arm
+  c: {
+    language: 'c',
+    displayName: 'C (JSCPP)',
+    bundleSize: '~200 KB',
+    tier: 'medium',
+    extensions: ['.c', '.h'],
+    factory: () => new CRuntime(),
+  },
+  prolog: {
+    language: 'prolog',
+    displayName: 'Prolog (Tau Prolog)',
+    bundleSize: '~200 KB',
+    tier: 'light',
+    extensions: ['.pl', '.pro'],
+    factory: () => new PrologRuntime(),
+  },
+  r: {
+    language: 'r',
+    displayName: 'R (WebR)',
+    bundleSize: '~20 MB',
+    tier: 'heavy',
+    extensions: ['.r', '.R'],
+    factory: () => new RRuntime(),
+  },
+  ocaml: {
+    language: 'ocaml',
+    displayName: 'OCaml',
+    bundleSize: '~5 MB',
+    tier: 'medium',
+    extensions: ['.ml', '.mli'],
+    factory: () => new OCamlRuntime(),
+  },
+  // Phase 2: java
+  // Phase 3: arm
 };
 
 const LANGUAGE_ALIASES: Record<string, string> = {
   js: 'javascript',
   py: 'python',
   python3: 'python',
+  cpp: 'c',
+  'c++': 'c',
 };
 
 export function resolveLanguage(language: string): string {

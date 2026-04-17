@@ -6,6 +6,10 @@
 // does not include worker globals by default, so we declare what
 // we need locally.
 
+// Force TypeScript to treat this file as a module so that its
+// declarations don't collide with other worker files.
+export {};
+
 /* eslint-disable no-restricted-globals */
 
 const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/';

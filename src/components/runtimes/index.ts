@@ -6,8 +6,12 @@ export type {
 } from './types';
 
 export { BaseRuntime } from './BaseRuntime';
+export { CRuntime } from './CRuntime';
 export { JavaScriptRuntime } from './JavaScriptRuntime';
+export { OCamlRuntime } from './OCamlRuntime';
+export { PrologRuntime } from './PrologRuntime';
 export { PythonRuntime } from './PythonRuntime';
+export { RRuntime } from './RRuntime';
 export { SQLRuntime } from './SQLRuntime';
 
 export {

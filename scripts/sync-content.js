@@ -465,19 +465,58 @@ function main() {
         courseManifest.sections["tp"] = tpFiles;
       }
 
+      // --- Generate index.md for section dirs that lack readme.md ---
+      const sectionLabels = {
+        guide: "Guide",
+        exercises: "Exercices",
+        "exam-prep": "Preparation Examen",
+        tp: "TP (Enonces)",
+      };
+      const allSectionDirs = [...CONTENT_SECTIONS, "tp"];
+      for (const section of allSectionDirs) {
+        const sectionDestDir = path.join(DOCS_DIR, semester, course, section);
+        if (!fs.existsSync(sectionDestDir)) continue;
+        const hasReadme = fs.existsSync(path.join(sectionDestDir, "readme.md"));
+        const hasIndex = fs.existsSync(path.join(sectionDestDir, "index.md"));
+        if (hasReadme || hasIndex) continue;
+
+        const label = sectionLabels[section] || section;
+        const sectionFiles = listMarkdownFiles(sectionDestDir);
+        const fileLinks = sectionFiles
+          .map((f) => {
+            const slug = f.replace(/\.md$/, "");
+            const name = slug.replace(/^\d+-/, "").replace(/-/g, " ");
+            return `- [${name}](${slug})`;
+          })
+          .join("\n");
+        const sectionIndex = [
+          "---",
+          `title: "${label}"`,
+          "sidebar_position: 0",
+          "---",
+          "",
+          `# ${label}`,
+          "",
+          fileLinks,
+          "",
+        ].join("\n");
+        fs.writeFileSync(path.join(sectionDestDir, "index.md"), sectionIndex, "utf-8");
+        courseFileCount++;
+      }
+
       // --- Generate course index.md landing page ---
       if (courseFileCount > 0) {
         const courseDestDir = path.join(DOCS_DIR, semester, course);
         const indexPath = path.join(courseDestDir, "index.md");
         const sections = [];
         if (courseManifest.sections["guide"]) {
-          sections.push("- [Guide](guide/readme)");
+          sections.push("- [Guide](guide/)");
         }
         if (courseManifest.sections["exercises"]) {
-          sections.push("- [Exercices](exercises/readme)");
+          sections.push("- [Exercices](exercises/)");
         }
         if (courseManifest.sections["exam-prep"]) {
-          sections.push("- [Preparation Examen](exam-prep/readme)");
+          sections.push("- [Preparation Examen](exam-prep/)");
         }
         if (courseManifest.sections["tp"]) {
           sections.push("- [TP (Enonces)](tp/)");

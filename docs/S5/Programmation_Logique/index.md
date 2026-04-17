@@ -5,7 +5,7 @@ sidebar_position: 0
 
 # Programmation Logique (Prolog) -- Guide de Cours
 
-- [Guide](guide/readme)
-- [Exercices](exercises/readme)
-- [Preparation Examen](exam-prep/readme)
+- [Guide](guide/)
+- [Exercices](exercises/)
+- [Preparation Examen](exam-prep/)
 - [TP (Enonces)](tp/)

@@ -5,7 +5,7 @@ sidebar_position: 0
 
 # CLP -- Conception Logique des Processeurs (Processor Logic Design)
 
-- [Guide](guide/readme)
-- [Exercices](exercises/readme)
-- [Preparation Examen](exam-prep/readme)
+- [Guide](guide/)
+- [Exercices](exercises/)
+- [Preparation Examen](exam-prep/)
 - [TP (Enonces)](tp/)

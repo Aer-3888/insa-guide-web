@@ -5,7 +5,7 @@ sidebar_position: 0
 
 # Ingenierie Web -- Guide de cours S6 INSA Rennes
 
-- [Guide](guide/readme)
-- [Exercices](exercises/readme)
-- [Preparation Examen](exam-prep/readme)
+- [Guide](guide/)
+- [Exercices](exercises/)
+- [Preparation Examen](exam-prep/)
 - [TP (Enonces)](tp/)

@@ -1,171 +1,160 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import type { ReactNode, ComponentType } from 'react';
+import {useState, useCallback} from 'react';
+import type {ReactNode} from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
-import { useRuntime } from '../runtimes/RuntimeContext';
-import type { ExecutionResult } from '../runtimes/types';
+import CodeBlock from '@theme-original/CodeBlock';
+import {useRuntime} from '../runtimes/RuntimeContext';
+import type {ExecutionResult} from '../runtimes/types';
 import styles from './CodeRunner.module.css';
 
 interface CodeRunnerProps {
   readonly code: string;
   readonly language: string;
-  readonly stdin?: string;
-  readonly editable?: boolean;
 }
 
-/** Lazily loaded child component bundle. */
-interface ChildModules {
-  readonly Editor: ComponentType<any>;
-  readonly OutputPanel: ComponentType<any>;
-  readonly RunButton: ComponentType<any>;
-  readonly StdInPanel: ComponentType<any>;
+function RunIcon(): ReactNode {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <polygon points="5,3 19,12 5,21" />
+    </svg>
+  );
 }
 
-function CodeRunnerInner({
-  code: initialCode,
-  language,
-  stdin: initialStdin = '',
-  editable = true,
-}: CodeRunnerProps): ReactNode {
-  const [editedCode, setEditedCode] = useState(initialCode);
+function StopIcon(): ReactNode {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+    </svg>
+  );
+}
+
+function SpinnerIcon(): ReactNode {
+  return (
+    <svg
+      className={styles.spinnerIcon}
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <circle cx="12" cy="12" r="10" opacity="0.25" />
+      <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function formatTime(ms: number): string {
+  if (ms < 1000) return `${Math.round(ms)}ms`;
+  return `${(ms / 1000).toFixed(2)}s`;
+}
+
+function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
   const [result, setResult] = useState<ExecutionResult | null>(null);
-  const [stdinVisible, setStdinVisible] = useState(initialStdin.length > 0);
-  const [stdinValue, setStdinValue] = useState(initialStdin);
-  const [children, setChildren] = useState<ChildModules | null>(null);
+  const {status, info, execute, interrupt} = useRuntime(language);
 
-  // Use the real runtime hook from RuntimeContext
-  const { status, info, execute, interrupt } = useRuntime(language);
-
-  // Load child components once on mount.
-  useEffect(() => {
-    let cancelled = false;
-
-    Promise.all([
-      import('./Editor'),
-      import('./OutputPanel'),
-      import('./RunButton'),
-      import('./StdInPanel'),
-    ]).then(([edMod, outMod, runMod, stdinMod]) => {
-      if (cancelled) return;
-      setChildren({
-        Editor: edMod.default,
-        OutputPanel: outMod.default,
-        RunButton: runMod.default,
-        StdInPanel: stdinMod.default,
-      });
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const isExecuting = status === 'executing';
+  const isLoading = status === 'loading';
+  const isActive = isLoading || isExecuting;
 
   const handleRun = useCallback(async () => {
-    const execResult = await execute(editedCode, { stdin: stdinValue });
+    setResult(null);
+    const execResult = await execute(code, {});
     setResult(execResult);
-  }, [execute, editedCode, stdinValue]);
+  }, [execute, code]);
 
   const handleStop = useCallback(() => {
     interrupt();
   }, [interrupt]);
 
-  const handleReset = useCallback(() => {
-    setEditedCode(initialCode);
-    setResult(null);
-  }, [initialCode]);
+  const buttonLabel = (() => {
+    if (isLoading) {
+      const name = info?.displayName || language;
+      return `Chargement ${name}...`;
+    }
+    if (isExecuting) return 'Arreter';
+    return 'Executer';
+  })();
 
-  const handleClearOutput = useCallback(() => {
-    setResult(null);
-  }, []);
-
-  const handleStdinSubmit = useCallback((input: string) => {
-    setStdinValue(input);
-  }, []);
-
-  const languageLabel = language.charAt(0).toUpperCase() + language.slice(1);
+  const buttonIcon = (() => {
+    if (isLoading) return <SpinnerIcon />;
+    if (isExecuting) return <StopIcon />;
+    return <RunIcon />;
+  })();
 
   return (
     <div className={styles.container}>
-      {/* Editor area */}
-      <div className={styles.editorWrapper}>
-        {children ? (
-          <children.Editor
-            code={editedCode}
-            language={language}
-            onChange={setEditedCode}
-            readOnly={!editable}
-          />
-        ) : (
-          <pre className={styles.editorFallback}>{editedCode}</pre>
+      <CodeBlock language={language}>{code}</CodeBlock>
+
+      <div className={styles.toolbar}>
+        <button
+          type="button"
+          className={[
+            styles.runButton,
+            isExecuting ? styles.runButtonStop : '',
+            isLoading ? styles.runButtonLoading : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          onClick={isExecuting ? handleStop : handleRun}
+          disabled={isLoading}
+          aria-label={buttonLabel}
+        >
+          {buttonIcon}
+          <span>{buttonLabel}</span>
+        </button>
+
+        {result && (
+          <span className={styles.timeBadge}>
+            {formatTime(result.executionTime)}
+          </span>
         )}
       </div>
 
-      {/* Controls bar */}
-      <div className={styles.controls}>
-        <div className={styles.controlsLeft}>
-          {children && (
-            <children.RunButton
-              onClick={handleRun}
-              onStop={handleStop}
-              status={status}
-              runtimeInfo={info}
+      {(isActive || result) && (
+        <div className={styles.output} role="region" aria-label="Execution output">
+          {isActive && (
+            <div className={styles.loadingRow}>
+              <SpinnerIcon />
+              <span>
+                {isLoading ? 'Chargement du runtime...' : 'Execution en cours...'}
+              </span>
+            </div>
+          )}
+
+          {result?.stdout && (
+            <pre className={styles.stdout}>{result.stdout}</pre>
+          )}
+
+          {result?.stderr && (
+            <pre className={styles.stderr}>{result.stderr}</pre>
+          )}
+
+          {result?.error && (
+            <pre className={styles.errorOutput}>{result.error}</pre>
+          )}
+
+          {result?.images?.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt={`Output ${i + 1}`}
+              className={styles.outputImage}
             />
-          )}
-          <span className={styles.languageBadge}>{languageLabel}</span>
+          ))}
         </div>
-        <div className={styles.controlsRight}>
-          <button
-            type="button"
-            className={styles.stdinToggle}
-            onClick={() => setStdinVisible((v) => !v)}
-            title="Toggle stdin panel"
-            aria-label="Toggle standard input"
-          >
-            stdin
-          </button>
-          {editable && editedCode !== initialCode && (
-            <button
-              type="button"
-              className={styles.resetBtn}
-              onClick={handleReset}
-              title="Reset to original code"
-              aria-label="Reset code"
-            >
-              Reset
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Stdin panel */}
-      {children && (
-        <children.StdInPanel
-          visible={stdinVisible}
-          onSubmit={handleStdinSubmit}
-          defaultValue={initialStdin}
-        />
-      )}
-
-      {/* Output area */}
-      {children && (
-        <children.OutputPanel
-          result={result}
-          status={status}
-          onClear={handleClearOutput}
-        />
       )}
     </div>
   );
 }
 
-/**
- * Main CodeRunner export.
- *
- * Wrapped in <BrowserOnly> so that CodeMirror (which requires DOM APIs)
- * is never evaluated during Docusaurus SSR / static build.
- */
 export default function CodeRunner(props: CodeRunnerProps): ReactNode {
   return (
-    <BrowserOnly fallback={<pre className={styles.editorFallback}>{props.code}</pre>}>
+    <BrowserOnly
+      fallback={
+        <CodeBlock language={props.language}>{props.code}</CodeBlock>
+      }
+    >
       {() => <CodeRunnerInner {...props} />}
     </BrowserOnly>
   );

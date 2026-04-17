@@ -104,16 +104,41 @@ async function initWebR(): Promise<void> {
     progress: 'Initializing R interpreter...',
   });
 
-  // Create WebR instance. Let WebR automatically pick the best
-  // communication channel (SharedArrayBuffer if COOP/COEP headers
-  // are present, ServiceWorker fallback otherwise).
   webR = new WebRModule.WebR();
   await webR.init();
 
-  // Create a shelter for memory-managed R evaluation.
   shelter = await new webR.Shelter();
 
+  // Set UTF-8 locale so French accented characters in comments/strings
+  // don't cause parse errors.
+  try {
+    await shelter.captureR('Sys.setlocale("LC_ALL", "C.UTF-8")', {});
+    await shelter.purge();
+  } catch {
+    // Ignore if locale not available — non-fatal
+  }
+
   postResponse({ type: 'ready' });
+}
+
+// Strip lines that require a local filesystem or network and cannot
+// work inside the WebR WASM sandbox.
+const UNSUPPORTED_CALLS = /^\s*(setwd|source|install\.packages)\s*\(/;
+
+function sanitizeRCode(code: string): { sanitized: string; warnings: string[] } {
+  const lines = code.split('\n');
+  const kept: string[] = [];
+  const warnings: string[] = [];
+
+  for (const line of lines) {
+    if (UNSUPPORTED_CALLS.test(line)) {
+      warnings.push(`# Skipped (not available in browser): ${line.trim()}`);
+    } else {
+      kept.push(line);
+    }
+  }
+
+  return { sanitized: kept.join('\n'), warnings };
 }
 
 async function executeCode(code: string, id: number): Promise<void> {
@@ -127,12 +152,25 @@ async function executeCode(code: string, id: number): Promise<void> {
   }
 
   try {
-    // Execute R code with autoprint enabled (mimics interactive R
-    // behavior where expression results are printed automatically).
-    const result = await shelter.captureR(code, { withAutoprint: true });
+    const { sanitized, warnings } = sanitizeRCode(code);
 
-    // Separate stdout and stderr from captured output.
-    const stdout = result.output
+    if (sanitized.trim().length === 0) {
+      postResponse({
+        type: 'result',
+        id,
+        stdout: warnings.length > 0
+          ? warnings.join('\n') + '\n\n(No executable R code remaining after filtering browser-incompatible calls.)'
+          : '(Empty code block)',
+        stderr: '',
+        images: [],
+      });
+      return;
+    }
+
+    const result = await shelter.captureR(sanitized, { withAutoprint: true });
+
+    const prefix = warnings.length > 0 ? warnings.join('\n') + '\n\n' : '';
+    const stdout = prefix + result.output
       .filter((o) => o.type === 'stdout')
       .map((o) => o.data)
       .join('\n');

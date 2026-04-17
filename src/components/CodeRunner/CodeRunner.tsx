@@ -50,49 +50,48 @@ function formatTime(ms: number): string {
   return `${(ms / 1000).toFixed(2)}s`;
 }
 
+type LocalStatus = 'idle' | 'setup' | 'running' | 'done';
+
 function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
   const [result, setResult] = useState<ExecutionResult | null>(null);
-  const [setupInfo, setSetupInfo] = useState<string | null>(null);
-  const {status, info, execute, interrupt} = useRuntime(language);
+  const [localStatus, setLocalStatus] = useState<LocalStatus>('idle');
+  const [setupCount, setSetupCount] = useState(0);
+  const {execute, interrupt} = useRuntime(language);
   const {getPrecedingBlocks} = usePageCode(language, code);
-
-  const isExecuting = status === 'executing';
-  const isLoading = status === 'loading';
-  const isActive = isLoading || isExecuting;
 
   const handleRun = useCallback(async () => {
     setResult(null);
-    setSetupInfo(null);
 
     const preceding = getPrecedingBlocks();
     if (preceding.length > 0) {
-      setSetupInfo(`Execution des ${preceding.length} bloc(s) precedent(s)...`);
+      setLocalStatus('setup');
+      setSetupCount(preceding.length);
       for (const block of preceding) {
         await execute(block, {});
       }
-      setSetupInfo(null);
     }
 
+    setLocalStatus('running');
     const execResult = await execute(code, {});
     setResult(execResult);
+    setLocalStatus('done');
   }, [execute, code, getPrecedingBlocks]);
 
   const handleStop = useCallback(() => {
     interrupt();
+    setLocalStatus('idle');
   }, [interrupt]);
 
+  const isActive = localStatus === 'setup' || localStatus === 'running';
+
   const buttonLabel = (() => {
-    if (isLoading) {
-      const name = info?.displayName || language;
-      return `Chargement ${name}...`;
-    }
-    if (isExecuting) return 'Arreter';
+    if (localStatus === 'setup') return `Preparation (${setupCount} blocs)...`;
+    if (localStatus === 'running') return 'Execution...';
     return 'Executer';
   })();
 
   const buttonIcon = (() => {
-    if (isLoading) return <SpinnerIcon />;
-    if (isExecuting) return <StopIcon />;
+    if (isActive) return <SpinnerIcon />;
     return <RunIcon />;
   })();
 
@@ -101,22 +100,27 @@ function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
       <CodeBlock language={language}>{code}</CodeBlock>
 
       <div className={styles.toolbar}>
-        <button
-          type="button"
-          className={[
-            styles.runButton,
-            isExecuting ? styles.runButtonStop : '',
-            isLoading ? styles.runButtonLoading : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
-          onClick={isExecuting ? handleStop : handleRun}
-          disabled={isLoading}
-          aria-label={buttonLabel}
-        >
-          {buttonIcon}
-          <span>{buttonLabel}</span>
-        </button>
+        {isActive ? (
+          <button
+            type="button"
+            className={`${styles.runButton} ${styles.runButtonStop}`}
+            onClick={handleStop}
+            aria-label="Arreter"
+          >
+            <StopIcon />
+            <span>{buttonLabel}</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={styles.runButton}
+            onClick={handleRun}
+            aria-label="Executer"
+          >
+            {buttonIcon}
+            <span>{buttonLabel}</span>
+          </button>
+        )}
 
         {result && (
           <span className={styles.timeBadge}>
@@ -125,21 +129,19 @@ function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
         )}
       </div>
 
-      {(isActive || setupInfo || result) && (
+      {(isActive || result) && (
         <div className={styles.output} role="region" aria-label="Execution output">
-          {setupInfo && (
+          {localStatus === 'setup' && (
             <div className={styles.loadingRow}>
               <SpinnerIcon />
-              <span>{setupInfo}</span>
+              <span>Execution des {setupCount} bloc(s) precedent(s)...</span>
             </div>
           )}
 
-          {isActive && !setupInfo && (
+          {localStatus === 'running' && (
             <div className={styles.loadingRow}>
               <SpinnerIcon />
-              <span>
-                {isLoading ? 'Chargement du runtime...' : 'Execution en cours...'}
-              </span>
+              <span>Execution en cours...</span>
             </div>
           )}
 

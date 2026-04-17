@@ -1,4 +1,4 @@
-import {createContext, useContext, useRef, useCallback, useEffect} from 'react';
+import {createContext, useContext, useRef, useCallback} from 'react';
 import type {ReactNode} from 'react';
 
 interface PageCodeEntry {
@@ -42,13 +42,13 @@ export function PageCodeProvider({children}: {children: ReactNode}): ReactNode {
 
 export function usePageCode(language: string, code: string) {
   const ctx = useContext(PageCodeContext);
-  const idRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (ctx && idRef.current === null) {
-      idRef.current = ctx.register(language, code);
-    }
-  }, [ctx, language, code]);
+  // Register synchronously during first render so IDs reflect
+  // document order (React renders children top-to-bottom).
+  const idRef = useRef<number | null>(null);
+  if (ctx && idRef.current === null) {
+    idRef.current = ctx.register(language, code);
+  }
 
   const getPrecedingBlocks = useCallback((): string[] => {
     if (!ctx || idRef.current === null) return [];

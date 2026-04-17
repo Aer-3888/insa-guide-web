@@ -28,7 +28,10 @@ export default function CodeBlockWrapper(props: Props): React.ReactNode {
     (props.language ?? propsRecord.className) as string | undefined,
   );
 
-  if (isExecutableLanguage(language)) {
+  const metastring = (props.metastring ?? propsRecord.metastring ?? '') as string;
+  const noExec = metastring.includes('noexec');
+
+  if (!noExec && isExecutableLanguage(language)) {
     const code = extractCode(props.children);
     return <CodeRunner language={resolveLanguage(language)} code={code} />;
   }

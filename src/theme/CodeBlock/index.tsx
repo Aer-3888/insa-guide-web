@@ -22,13 +22,28 @@ function extractCode(children: React.ReactNode): string {
   return String(children ?? '');
 }
 
+function extractMetastring(props: Props): string {
+  const record = props as unknown as Record<string, unknown>;
+  if (typeof record.metastring === 'string') return record.metastring;
+  if (typeof props.metastring === 'string') return props.metastring;
+
+  // Docusaurus puts metastring on the inner <code> element, not <pre>.
+  // Check children for a React element with metastring prop.
+  if (React.isValidElement(props.children)) {
+    const childProps = (props.children as React.ReactElement).props as Record<string, unknown>;
+    if (typeof childProps.metastring === 'string') return childProps.metastring;
+  }
+
+  return '';
+}
+
 export default function CodeBlockWrapper(props: Props): React.ReactNode {
   const propsRecord = props as unknown as Record<string, unknown>;
   const language = normalizeLanguage(
     (props.language ?? propsRecord.className) as string | undefined,
   );
 
-  const metastring = (props.metastring ?? propsRecord.metastring ?? '') as string;
+  const metastring = extractMetastring(props);
   const noExec = metastring.includes('noexec');
 
   if (!noExec && isExecutableLanguage(language)) {

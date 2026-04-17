@@ -189,19 +189,8 @@ async function executeCode(code: string, id: number): Promise<void> {
       }
     }
 
-    // Release R objects created during this evaluation to prevent
-    // memory leaks across executions.
-    await shelter.purge();
-
     postResponse({ type: 'result', id, stdout, stderr, images });
   } catch (err) {
-    // Purge shelter on error to avoid leaking R objects.
-    try {
-      await shelter.purge();
-    } catch {
-      // Ignore cleanup errors
-    }
-
     const message = err instanceof Error ? err.message : String(err);
     postResponse({ type: 'error', id, error: message });
   }

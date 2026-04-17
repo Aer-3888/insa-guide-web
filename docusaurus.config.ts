@@ -61,6 +61,7 @@ const config: Config = {
         numberPrefixParser: false,
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
+        editUrl: 'https://github.com/Aer-3888/insa-guide-web/tree/main/',
       },
     ],
     [
@@ -74,6 +75,7 @@ const config: Config = {
         numberPrefixParser: false,
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
+        editUrl: 'https://github.com/Aer-3888/insa-guide-web/tree/main/',
       },
     ],
   ],

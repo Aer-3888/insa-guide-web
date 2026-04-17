@@ -3,7 +3,7 @@ import type {WrapperProps} from '@docusaurus/types';
 import CodeBlockOriginal from '@theme-original/CodeBlock';
 import type CodeBlockType from '@theme/CodeBlock';
 import CodeRunner from '@site/src/components/CodeRunner/CodeRunner';
-import {isExecutableLanguage} from '@site/src/components/runtimes/registry';
+import {isExecutableLanguage, resolveLanguage} from '@site/src/components/runtimes/registry';
 
 type Props = WrapperProps<typeof CodeBlockType>;
 
@@ -30,7 +30,7 @@ export default function CodeBlockWrapper(props: Props): React.ReactNode {
 
   if (isExecutableLanguage(language)) {
     const code = extractCode(props.children);
-    return <CodeRunner language={language} code={code} />;
+    return <CodeRunner language={resolveLanguage(language)} code={code} />;
   }
 
   return <CodeBlockOriginal {...props} />;

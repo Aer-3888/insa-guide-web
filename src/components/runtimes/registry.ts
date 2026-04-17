@@ -37,21 +37,32 @@ export const RUNTIME_REGISTRY: Record<string, RuntimeRegistryEntry> = {
   // Phase 3: ocaml, prolog, arm
 };
 
+const LANGUAGE_ALIASES: Record<string, string> = {
+  js: 'javascript',
+  py: 'python',
+  python3: 'python',
+};
+
+export function resolveLanguage(language: string): string {
+  return LANGUAGE_ALIASES[language] ?? language;
+}
+
 export const EXECUTABLE_LANGUAGES = Object.keys(RUNTIME_REGISTRY);
 
 export function isExecutableLanguage(language: string): boolean {
-  return language in RUNTIME_REGISTRY;
+  return resolveLanguage(language) in RUNTIME_REGISTRY;
 }
 
 export function getRuntimeInfo(language: string): RuntimeInfo | undefined {
-  return RUNTIME_REGISTRY[language];
+  return RUNTIME_REGISTRY[resolveLanguage(language)];
 }
 
 export function createRuntime(language: string): BaseRuntime {
-  const entry = RUNTIME_REGISTRY[language];
+  const resolved = resolveLanguage(language);
+  const entry = RUNTIME_REGISTRY[resolved];
   if (!entry) {
     throw new Error(
-      `No runtime registered for language "${language}". ` +
+      `No runtime registered for language "${resolved}". ` +
       `Available: ${EXECUTABLE_LANGUAGES.join(', ')}`,
     );
   }

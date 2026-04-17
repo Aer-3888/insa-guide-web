@@ -17,7 +17,7 @@ This chapter is based on the `pandas_intro.ipynb` notebook provided in the cours
 
 A 2D tabular data structure with labeled rows (index) and columns.
 
-```python
+```python noexec
 import pandas as pd
 import numpy as np
 
@@ -33,13 +33,13 @@ df = pd.DataFrame({
 
 A 1D labeled array (equivalent to a single column of a DataFrame).
 
-```python
+```python noexec
 s = pd.Series([1, 2, 3], index=['a', 'b', 'c'])
 ```
 
 ### Key Attributes
 
-```python
+```python noexec
 df.index        # Row labels
 df.columns      # Column names
 df.shape        # (n_rows, n_columns)
@@ -51,7 +51,7 @@ len(df)         # Number of rows
 
 ### From CSV (the most common case in the course)
 
-```python
+```python noexec
 # Basic load
 df = pd.read_csv("flickrRennes.csv")
 
@@ -64,7 +64,7 @@ df = pd.read_csv("data.csv", sep=";")
 
 ### Exploration
 
-```python
+```python noexec
 df.head()           # First 5 rows
 df.head(10)         # First 10 rows
 df.tail()           # Last 5 rows
@@ -77,7 +77,7 @@ df.shape            # (rows, columns)
 
 ### Column Selection (Projection)
 
-```python
+```python noexec
 # Single column --> returns Series
 df["Region"]
 df.Region          # Alternative syntax (only for simple column names)
@@ -88,7 +88,7 @@ df[["Moons", "Diameter"]]
 
 ### Row Selection (Filtering)
 
-```python
+```python noexec
 # Boolean mask
 mask = df["Region"] == "outer rim"
 df_outer = df[mask]
@@ -109,7 +109,7 @@ df_filtered = df[mask]
 
 ### Selecting by Position
 
-```python
+```python noexec
 df.iloc[0]          # First row (by position)
 df.iloc[0:3]        # First 3 rows
 df.iloc[0, 1]       # Row 0, Column 1
@@ -120,7 +120,7 @@ df.loc["Coruscant"] # By label
 
 ### Adding/Modifying Columns
 
-```python
+```python noexec
 # Add new column
 df["Random"] = np.random.randn(len(df))
 
@@ -133,7 +133,7 @@ df["Log_Diameter"] = np.log1p(df["Diameter"])
 
 ### Handling Missing Values
 
-```python
+```python noexec
 # Detect
 df.isnull()                    # Boolean mask
 df.isnull().sum()              # Count per column
@@ -151,7 +151,7 @@ df["tags"].fillna("")          # Replace NaN in specific column
 
 ### Removing Duplicates
 
-```python
+```python noexec
 # Remove exact duplicate rows
 df = df.drop_duplicates()
 
@@ -166,7 +166,7 @@ df = df.drop_duplicates(subset=['user_id', 'date'], keep='first')
 
 ### Unique Values and Counts
 
-```python
+```python noexec
 # Number of unique values per column
 df.nunique()
 
@@ -181,7 +181,7 @@ df["Region"].value_counts()
 
 The SQL-equivalent GROUP BY operation: split data into groups, apply a function, combine results.
 
-```python
+```python noexec
 groups = df.groupby("Region")
 
 # Aggregation functions
@@ -204,7 +204,7 @@ photos.groupby(
 
 ## 6. Iteration
 
-```python
+```python noexec
 # Iterate over column names
 for col_name in df:
     print(col_name)
@@ -221,7 +221,7 @@ df.apply(lambda row: row["Moons"] * 2, axis=1)
 
 ### Checking Types
 
-```python
+```python noexec
 df.dtypes                          # Type of each column
 df.select_dtypes(include=["object"])   # Only object (string) columns
 df.select_dtypes(exclude=["object"])   # Only numeric columns
@@ -230,14 +230,14 @@ df.select_dtypes(exclude=["object"])   # Only numeric columns
 
 ### Type Conversion
 
-```python
+```python noexec
 df["Moons"] = df["Moons"].astype(float)
 df["date"] = pd.to_datetime(df["date_taken"])
 ```
 
 ## 8. Visualization with Pandas
 
-```python
+```python noexec
 # Histogram
 df["Diameter"].hist(bins=30)
 
@@ -255,7 +255,7 @@ df["Region"].value_counts().plot.bar()
 
 ### Pattern 1: Missing Value Analysis Table
 
-```python
+```python noexec
 table_na = pd.DataFrame({
     'nb_na': df.isnull().sum(),
     'pct_na': (df.isnull().sum() / len(df)) * 100
@@ -266,7 +266,7 @@ table_na.head(10)
 
 ### Pattern 2: Select Numeric Columns for PCA
 
-```python
+```python noexec
 cols_numeric = ["LotArea", "MasVnrArea", "BsmtFinSF1", "TotalBsmtSF",
                 "1stFlrSF", "GrLivArea", "GarageArea", "SalePrice"]
 df_num = df[cols_numeric].copy()
@@ -274,7 +274,7 @@ df_num = df[cols_numeric].copy()
 
 ### Pattern 3: Photo Album Effect Removal
 
-```python
+```python noexec
 # Group by user + time, keep first photo per group
 photos = photos.groupby(
     ['id_photographer', 'date_taken_year', 'date_taken_month',
@@ -285,7 +285,7 @@ photos = photos.groupby(
 
 ### Pattern 4: Add Cluster Labels to DataFrame
 
-```python
+```python noexec
 from sklearn.cluster import DBSCAN
 
 dbscan = DBSCAN(eps=0.00030, min_samples=7)
@@ -294,7 +294,7 @@ photos["cluster"] = dbscan.fit_predict(photos[["lat", "long"]])
 
 ### Pattern 5: Analyze Clusters
 
-```python
+```python noexec
 for cluster_id in sorted(photos["cluster"].unique()):
     if cluster_id == -1:
         continue
@@ -317,7 +317,7 @@ for cluster_id in sorted(photos["cluster"].unique()):
 
 ### Loading and Exploring
 
-```python
+```python noexec
 df = pd.read_csv("file.csv")          # Load
 df.head()                               # First rows
 df.info()                               # Structure
@@ -327,7 +327,7 @@ df.shape                                # (rows, cols)
 
 ### Selecting
 
-```python
+```python noexec
 df["col"]                    # Single column (Series)
 df[["col1", "col2"]]        # Multiple columns (DataFrame)
 df[df["col"] > 5]           # Filter rows
@@ -337,7 +337,7 @@ df.iloc[0]                   # By row position
 
 ### Cleaning
 
-```python
+```python noexec
 df.isnull().sum()            # Count NaN
 df.dropna()                  # Drop NaN rows
 df.fillna(value)             # Fill NaN
@@ -347,7 +347,7 @@ df.drop(columns=["col"])     # Drop column
 
 ### Aggregating
 
-```python
+```python noexec
 df.groupby("col").mean()     # Group and aggregate
 df["col"].value_counts()     # Count values
 df["col"].nunique()          # Count unique
@@ -356,7 +356,7 @@ df["col"].unique()           # List unique values
 
 ### Transforming
 
-```python
+```python noexec
 df["new"] = df["old"] * 2               # New column
 df["col"] = df["col"].astype(float)     # Type conversion
 df["col"] = np.log1p(df["col"])         # Log transform

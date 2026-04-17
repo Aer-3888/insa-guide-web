@@ -184,7 +184,7 @@ Examined feature correlations on 5% sample:
 - `music_genre.csv`: Alternative dataset (Hugo's work)
 
 ## Running the Code
-```bash
+```bash noexec
 # Install dependencies
 pip install scikit-learn pandas numpy matplotlib seaborn
 

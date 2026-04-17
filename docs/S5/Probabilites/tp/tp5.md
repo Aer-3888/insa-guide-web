@@ -38,7 +38,7 @@ Extension of binomial to k > 2 categories:
 
 ### R Functions
 
-```r
+```r noexec
 # Matrix operations
 apply(matrix, 1, fun)         # Apply to rows
 apply(matrix, 2, fun)         # Apply to columns

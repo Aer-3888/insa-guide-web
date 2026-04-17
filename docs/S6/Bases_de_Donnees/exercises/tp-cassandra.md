@@ -20,7 +20,7 @@ Contexte: une boite de production de courts-metrages veut creer un systeme de ge
 ### Creer un KEYSPACE, s'y positionner. Comprendre les options de replication.
 
 **Answer:**
-```sql
+```sql noexec
 CREATE KEYSPACE IF NOT EXISTS xyz
 WITH replication = {
     'class': 'SimpleStrategy',
@@ -46,7 +46,7 @@ Keyspace cree et selectionne.
 ### Creer un type de donnees artiste et la table des courts-metrages cm.
 
 **Answer:**
-```sql
+```sql noexec
 CREATE TYPE artiste (nom text, prenom text, date int);
 
 CREATE TABLE cm (
@@ -60,7 +60,7 @@ CREATE TABLE cm (
 
 Insertions:
 
-```sql
+```sql noexec
 INSERT INTO cm (id_cm, titre, real, acteurs) VALUES
 (1, 'Syndrome', {nom: 'Rouge', prenom: 'Zulma', date: 1990},
 {{nom: 'Suco', prenom: 'Sarah', date: 1981},
@@ -89,7 +89,7 @@ Table cm creee avec 2 courts-metrages.
 ### Quelques requetes simples
 
 **Answer:**
-```sql
+```sql noexec
 -- Afficher tous les courts-metrages
 SELECT * FROM cm;
 
@@ -138,7 +138,7 @@ EXPAND ON affiche chaque ligne verticalement pour une meilleure lisibilite. L'op
 ### Executer SELECT * FROM cm WHERE id_cm = 3, puis re-inserer avec un titre different, puis regarder le contenu. Une insertion a-t-elle vraiment eu lieu ? Detruire l'enregistrement.
 
 **Answer:**
-```sql
+```sql noexec
 SELECT * FROM cm WHERE id_cm = 3;
 -- Resultat: id_cm=3, titre='titre en attente', real=null, acteurs=null
 
@@ -165,7 +165,7 @@ En Cassandra, INSERT est un **upsert**: si la cle primaire existe deja, les vale
 ### Audrey Slama a aussi tourne dans Syndrome. L'ajouter a la table cm. Verifier.
 
 **Answer:**
-```sql
+```sql noexec
 UPDATE cm SET acteurs = acteurs + {{nom: 'Slama', prenom: 'Audrey', date: -1}}
 WHERE id_cm = 1;
 
@@ -193,7 +193,7 @@ L'operateur `+` sur un set ajoute l'element s'il n'existe pas deja. Les elements
 ### Affichez le nom et le prenom du realisateur des courts connus
 
 **Answer:**
-```sql
+```sql noexec
 SELECT titre, real.nom, real.prenom FROM cm;
 ```
 
@@ -215,7 +215,7 @@ On accede aux champs d'un type imbrique (frozen) via la dot notation: `real.nom`
 ### Executer SELECT * FROM cm WHERE titre='Syndrome'. Cette requete ne fonctionne pas. Lire le message d'erreur. Comprendre et resoudre.
 
 **Answer:**
-```sql
+```sql noexec
 -- Ceci echoue:
 SELECT * FROM cm WHERE titre = 'Syndrome';
 -- ERREUR: Cannot execute this query as it might involve data filtering
@@ -242,7 +242,7 @@ Avec cette modelisation, Cassandra ne permet pas de savoir quels sont tous les a
 ### Creer une table mes_artistes qui contient les noms et prenoms de tous les artistes connus, et une liste des courts auxquels ils ont participe (possiblement zero). La cle primaire est (nom, prenom). Inserer les donnees a partir de la table cm.
 
 **Answer:**
-```sql
+```sql noexec
 CREATE TABLE mes_artistes (
     nom text,
     prenom text,
@@ -278,7 +278,7 @@ Table mes_artistes creee avec 8 artistes.
 ### Affichez tous les artistes de la table, en basculant le mode de EXPAND de ON a OFF. Conservez celui que vous preferez.
 
 **Answer:**
-```sql
+```sql noexec
 EXPAND OFF;
 SELECT * FROM mes_artistes;
 ```
@@ -307,7 +307,7 @@ EXPAND ON affiche une ligne par attribut (vertical), EXPAND OFF affiche en mode 
 ### Ecrivez la requete qui permet de compter le nombre d'artistes employes.
 
 **Answer:**
-```sql
+```sql noexec
 SELECT COUNT(*) FROM mes_artistes;
 ```
 
@@ -328,7 +328,7 @@ COUNT(*) retourne le nombre total de lignes dans la table. En Cassandra, cette o
 ### Le titre du court Syndrome change et devient Le syndrome. Faites les mises a jour.
 
 **Answer:**
-```sql
+```sql noexec
 -- Mise a jour dans la table cm
 UPDATE cm SET titre = 'Le syndrome' WHERE id_cm = 1;
 
@@ -353,7 +353,7 @@ L'absence de jointures et la redondance des donnees rendent les mises a jour lab
 ### Ecrivez la requete permettant de savoir quels sont les courts auxquels a participe l'artiste dont le nom est Slama (en utilisant que son nom), une autre pour l'artiste dont le prenom est Joffrey, et une troisieme pour l'artiste connu par James Gaspar. Pourquoi seul le nom suffit ? Pourquoi le prenom ne convient pas ?
 
 **Answer:**
-```sql
+```sql noexec
 -- Par nom (partition key) : fonctionne directement
 SELECT * FROM mes_artistes WHERE nom = 'Slama';
 ```
@@ -364,7 +364,7 @@ SELECT * FROM mes_artistes WHERE nom = 'Slama';
  Slama | Audrey | ['Le syndrome', 'Maman']
 ```
 
-```sql
+```sql noexec
 -- Par prenom seul (clustering key) : REFUSE sans ALLOW FILTERING
 SELECT * FROM mes_artistes WHERE prenom = 'Joffrey';
 -- ERREUR: Cannot execute this query without ALLOW FILTERING
@@ -378,7 +378,7 @@ SELECT * FROM mes_artistes WHERE prenom = 'Joffrey' ALLOW FILTERING;
  Platel | Joffrey | ['Le syndrome']
 ```
 
-```sql
+```sql noexec
 -- Par nom ET prenom (partition + clustering key) : fonctionne directement
 SELECT * FROM mes_artistes WHERE nom = 'Gaspar' AND prenom = 'James';
 ```
@@ -404,7 +404,7 @@ Seul le nom suffit car c'est la partition key. Le prenom seul necessite ALLOW FI
 ### Modifiez la table mes_artistes pour ajouter une colonne genre de type texte.
 
 **Answer:**
-```sql
+```sql noexec
 ALTER TABLE mes_artistes ADD genre text;
 ```
 
@@ -421,7 +421,7 @@ ALTER TABLE ADD permet d'ajouter une colonne a une table existante. Ref: https:/
 ### Visualisez tout ce que contient cette table puis remplissez la colonne genre pour les artistes de votre choix.
 
 **Answer:**
-```sql
+```sql noexec
 SELECT * FROM mes_artistes;
 
 UPDATE mes_artistes SET genre = 'drame' WHERE nom = 'Rouge' AND prenom = 'Zulma';
@@ -450,7 +450,7 @@ Les artistes non mis a jour ont null pour genre. En Cassandra, les colonnes non-
 ### Modeliser les avis sur les courts-metrages. Les avis sont ecrits par des juges identifies par leur pseudo. Un juge donne au plus un avis par court. La boite veut savoir efficacement (sans ALLOW FILTERING) : (1) les avis d'un court specifique par id_cm, (2) les avis d'un juge par pseudo. Creer les tables et inserer les donnees du tableau fourni.
 
 **Answer:**
-```sql
+```sql noexec
 -- Table 1: avis par court (partition key = id_cm)
 CREATE TABLE avis_par_court (
     id_cm int,
@@ -506,7 +506,7 @@ C'est le principe fondamental de la modelisation Cassandra: **une table par patt
 ### Affichez tous les avis pour le court 1. Remarquez les couleurs sur les noms des attributs.
 
 **Answer:**
-```sql
+```sql noexec
 SELECT * FROM avis_par_court WHERE id_cm = 1;
 ```
 
@@ -535,7 +535,7 @@ Couleurs dans la console CQL:
 ### Affichez tous les avis ecrits par 'p-ABCD' ou 'p-QRST'
 
 **Answer:**
-```sql
+```sql noexec
 SELECT * FROM avis_par_juge WHERE pseudo IN ('p-ABCD', 'p-QRST');
 ```
 
@@ -558,7 +558,7 @@ On utilise `avis_par_juge` (pas `avis_par_court`) car la partition key est `pseu
 ### Comptez le nombre d'avis ecrits pour chaque court puis le nombre d'avis ecrits par chaque juge.
 
 **Answer:**
-```sql
+```sql noexec
 -- Nombre d'avis par court
 SELECT id_cm, COUNT(*) AS nb_avis FROM avis_par_court GROUP BY id_cm;
 ```
@@ -570,7 +570,7 @@ SELECT id_cm, COUNT(*) AS nb_avis FROM avis_par_court GROUP BY id_cm;
      2 |       3
 ```
 
-```sql
+```sql noexec
 -- Nombre d'avis par juge
 SELECT pseudo, COUNT(*) AS nb_avis FROM avis_par_juge GROUP BY pseudo;
 ```

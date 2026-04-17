@@ -249,7 +249,7 @@ Donc b_n croit exponentiellement en 4^n.
 
 ### a) Trois boucles independantes
 
-```python
+```python noexec
 for i in range(n):          # n iterations
     for j in range(n):      # n iterations
         for k in range(n):  # n iterations
@@ -260,7 +260,7 @@ Total : n^3. **Complexite : O(n^3)**
 
 ### b) Boucle interne dependante
 
-```python
+```python noexec
 for i in range(n):       # i va de 0 a n-1
     for j in range(i):   # i iterations
         x = x + 1
@@ -274,7 +274,7 @@ Total = 0 + 1 + 2 + ... + (n-1) = n(n-1)/2
 
 ### c) Boucle avec division (logarithmique)
 
-```python
+```python noexec
 for i in range(n):         # n iterations
     j = n
     while j > 1:           # log_2(n) iterations
@@ -286,7 +286,7 @@ Total = n * log_2(n). **Complexite : O(n log n)**
 
 ### d) Boucle avec pas variable -- piege classique
 
-```python
+```python noexec
 for i in range(1, n+1):
     j = 1
     while j < n:
@@ -306,7 +306,7 @@ Piege : on pourrait croire O(n^2) en voyant deux boucles imbriquees.
 
 ### e) Boucle dependante avec somme de carres
 
-```python
+```python noexec
 for i in range(1, n+1):           # i de 1 a n
     for j in range(1, i*i + 1):   # i^2 iterations
         x = x + 1
@@ -324,7 +324,7 @@ Total = sum_{i=1}^{n} i^2 = n(n+1)(2n+1)/6
 
 ### a) Le probleme valmax (du cours) -- O(2^n)
 
-```c
+```c noexec
 int valmax(int i) {
     if (i == 0) return T[0];
     if (T[i] > valmax(i-1))

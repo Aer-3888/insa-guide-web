@@ -39,7 +39,7 @@ This lab explores SQL query performance, indexing strategies, and query optimiza
 - Cartesian products and joins
 
 **Database Schema**:
-```sql
+```sql noexec
 etudiant(etudId, nom, prenom)              -- Students
 professeur(profId, nom, prenom)            -- Professors
 enseignement(ensId, sujet)                 -- Courses
@@ -112,7 +112,7 @@ After:  SEARCH TABLE demo USING INDEX      (O(log n) - binary search)
 4. Even without index, this approach is optimal
 
 **Optimization Strategy**:
-```sql
+```sql noexec
 CREATE INDEX IamSpeeed ON facture(customerId, amount);
 ```
 - Composite index supports both JOIN (customerId) and filtering (amount)
@@ -214,7 +214,7 @@ EXPLAIN QUERY PLAN SELECT ... ;
 
 ## PRAGMA Commands
 
-```sql
+```sql noexec
 PRAGMA page_size;              -- Show page/block size (default: 4096 bytes)
 PRAGMA automatic_index = 0;    -- Disable automatic index creation
 PRAGMA journal_mode = OFF;     -- Disable journaling (faster, less safe)
@@ -224,7 +224,7 @@ PRAGMA synchronous = OFF;      -- Disable synchronous writes (faster, less safe)
 ## Performance Tips
 
 1. **Always use transactions for bulk inserts**
-   ```sql
+   ```sql noexec
    BEGIN TRANSACTION;
    -- Multiple INSERT statements
    COMMIT;

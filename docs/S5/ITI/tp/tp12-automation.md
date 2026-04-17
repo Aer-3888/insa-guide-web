@@ -20,7 +20,7 @@ Automate tasks with Python scripts:
 
 ### 1. Running System Commands
 
-```python
+```python noexec
 import subprocess
 
 # Run command and capture output
@@ -40,7 +40,7 @@ except subprocess.CalledProcessError as e:
 
 ### 2. File and Directory Operations
 
-```python
+```python noexec
 import os
 import shutil
 from pathlib import Path
@@ -75,7 +75,7 @@ for file in Path('.').glob('*.txt'):
 
 ### 3. Reading and Writing Files
 
-```python
+```python noexec
 # Reading
 with open('file.txt', 'r') as f:
     content = f.read()              # Entire file
@@ -100,7 +100,7 @@ with open('image.jpg', 'rb') as f:
 ### 4. Parsing Structured Data
 
 **CSV Files**:
-```python
+```python noexec
 import csv
 
 # Reading CSV
@@ -118,7 +118,7 @@ with open('output.csv', 'w', newline='') as f:
 ```
 
 **JSON Files**:
-```python
+```python noexec
 import json
 
 # Reading JSON
@@ -132,7 +132,7 @@ with open('output.json', 'w') as f:
 
 ### 5. Command-Line Arguments
 
-```python
+```python noexec
 import sys
 import argparse
 
@@ -243,7 +243,7 @@ See `src/` directory and original files:
 ## Common Patterns
 
 ### File Processing Template
-```python
+```python noexec
 import sys
 from pathlib import Path
 
@@ -282,7 +282,7 @@ if __name__ == '__main__':
 ```
 
 ### Batch Processing
-```python
+```python noexec
 from pathlib import Path
 
 def process_directory(input_dir, output_dir):
@@ -298,7 +298,7 @@ def process_directory(input_dir, output_dir):
 ```
 
 ### Progress Reporting
-```python
+```python noexec
 def process_with_progress(items):
     total = len(items)
     for i, item in enumerate(items, 1):
@@ -326,7 +326,7 @@ def process_with_progress(items):
 
 ## Script Organization
 
-```python
+```python noexec
 #!/usr/bin/env python3
 """
 Script description and usage

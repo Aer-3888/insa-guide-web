@@ -109,7 +109,7 @@ Processus 0        Processus 1        Processus 2
 4. Processus k reçoit la ligne fantôme du processus k+1
 
 **Code** :
-```c
+```c noexec
 // Envoi de ma première ligne au processus précédent
 if (rank > 0) {
     MPI_Isend(fragment + M+2, M+2, MPI_DOUBLE, 
@@ -143,7 +143,7 @@ if (rank+1 < nbP) {
 
 ### Structure du programme
 
-```c
+```c noexec
 #include <mpi.h>
 #include <assert.h>
 
@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
 
 ### Initialisation (processus 0)
 
-```c
+```c noexec
 if (rank == 0) {
     // Allouer la matrice complète
     T = calloc((N+2)*(M+2), sizeof(double));
@@ -220,7 +220,7 @@ if (rank == 0) {
 
 ### Boucle de calcul principale
 
-```c
+```c noexec
 do {
     for (int k = 0; k < K; k++) {
         // Calcul local (sans les lignes fantômes)
@@ -275,7 +275,7 @@ do {
 
 ### Collecte finale (processus 0)
 
-```c
+```c noexec
 if (rank == 0) {
     // Recevoir les fragments de tous les autres processus
     for (int i = 1; i < nbP; i++) {
@@ -302,7 +302,7 @@ MPI_Finalize();
 
 ### 1. MPI_Isend (envoi non-bloquant)
 
-```c
+```c noexec
 int MPI_Isend(void *buf, int count, MPI_Datatype datatype,
               int dest, int tag, MPI_Comm comm,
               MPI_Request *request);
@@ -319,7 +319,7 @@ int MPI_Isend(void *buf, int count, MPI_Datatype datatype,
 
 ### 2. MPI_Allreduce
 
-```c
+```c noexec
 int MPI_Allreduce(void *sendbuf, void *recvbuf, int count,
                   MPI_Datatype datatype, MPI_Op op,
                   MPI_Comm comm);
@@ -335,7 +335,7 @@ int MPI_Allreduce(void *sendbuf, void *recvbuf, int count,
 
 ### 3. MPI_Send / MPI_Recv (point-à-point bloquant)
 
-```c
+```c noexec
 int MPI_Send(void *buf, int count, MPI_Datatype datatype,
              int dest, int tag, MPI_Comm comm);
 
@@ -378,7 +378,7 @@ Tous les processus participent à un calcul collectif et reçoivent le résultat
 ### Problème du deadlock
 
 Si tous les processus font :
-```c
+```c noexec
 MPI_Send(..., rank+1, ...);  // Envoyer au suivant
 MPI_Recv(..., rank-1, ...);  // Recevoir du précédent
 ```
@@ -388,7 +388,7 @@ MPI_Recv(..., rank-1, ...);  // Recevoir du précédent
 ### Solutions
 
 1. **Ordre alterné** :
-   ```c
+   ```c noexec
    if (rank % 2 == 0) {
        MPI_Send(...);
        MPI_Recv(...);
@@ -399,13 +399,13 @@ MPI_Recv(..., rank-1, ...);  // Recevoir du précédent
    ```
 
 2. **Communications non-bloquantes** (utilisée ici) :
-   ```c
+   ```c noexec
    MPI_Isend(..., &request);  // Non-bloquant
    MPI_Recv(...);             // Bloquant, mais le Isend est déjà lancé
    ```
 
 3. **MPI_Sendrecv** (atomique) :
-   ```c
+   ```c noexec
    MPI_Sendrecv(sendbuf, ..., dest, sendtag,
                 recvbuf, ..., source, recvtag, ...);
    ```

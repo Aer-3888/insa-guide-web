@@ -36,7 +36,7 @@ sin(x) = x - x³/3! + x⁵/5! - x⁷/7! + ...
 2. **Version optimisée** (`sinus2()`): calcule chaque terme à partir du précédent
 
 **Optimisation:**
-```c
+```c noexec
 // Au lieu de recalculer x^(2n+1) / (2n+1)! à chaque fois
 terme_suivant = terme_precedent × x² / (n × (n-1))
 ```

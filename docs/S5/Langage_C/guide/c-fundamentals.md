@@ -20,7 +20,7 @@ sidebar_position: 3
 
 ### Limites des types (limits.h)
 
-```c
+```c noexec
 #include <limits.h>
 
 INT_MAX    /* 2147483647 - maximum d'un int */
@@ -30,7 +30,7 @@ CHAR_MIN   /* -128 */
 ```
 
 **Piege classique (TP2 - Factorielle) :**
-```c
+```c noexec
 /* La factorielle depasse INT_MAX a partir de n=13 */
 int myfact(int n) {
     if (n < 0) return -1;
@@ -53,7 +53,7 @@ int rang() {
 
 ## 1.2 Variables et declarations
 
-```c
+```c noexec
 int a = 5;          /* Declaration + initialisation */
 int b;              /* Declaration seule (valeur indeterminee !) */
 const int MAX = 100; /* Constante (non modifiable) */
@@ -65,7 +65,7 @@ printf("%d", x);  /* DANGER : valeur aleatoire ! */
 
 ### Portee des variables
 
-```c
+```c noexec
 int globale = 42;  /* Accessible partout dans le fichier */
 
 void fonction() {
@@ -76,7 +76,7 @@ void fonction() {
 ```
 
 **Les variables `static` sont essentielles dans le TP6 (automates) :**
-```c
+```c noexec
 /* La variable statique conserve l'etat de l'automate entre les appels */
 int rechercheNomSabotiers(char* str) {
     static EtatAutomate etatA = {EINIT, ""};
@@ -89,7 +89,7 @@ int rechercheNomSabotiers(char* str) {
 
 ### Operateurs arithmetiques et d'affectation
 
-```c
+```c noexec
 int a = 10, b = 3;
 a + b    /* 13 */
 a - b    /* 7  */
@@ -111,7 +111,7 @@ double carre(double* a) {
 
 ### Operateurs de comparaison et logiques
 
-```c
+```c noexec
 a == b   /* Egalite (ATTENTION : pas = !) */
 a != b   /* Difference */
 a < b    /* Inferieur strict */
@@ -130,7 +130,7 @@ if (a == 5) { ... } /* COMPARAISON : correct */
 
 ### Operateurs d'incrementation
 
-```c
+```c noexec
 i++   /* Post-incrementation : utilise i, puis incremente */
 ++i   /* Pre-incrementation : incremente, puis utilise i */
 i--   /* Post-decrementation */
@@ -141,7 +141,7 @@ i--   /* Post-decrementation */
 
 ### Conditions
 
-```c
+```c noexec
 /* if / else if / else */
 if (n < 0) {
     printf("Negatif\n");
@@ -167,7 +167,7 @@ switch (etatA.etat) {
 
 ### Boucles
 
-```c
+```c noexec
 /* for - quand on connait le nombre d'iterations */
 for (int i = 0; i < n; i++) {
     printf("%d ", i);
@@ -202,7 +202,7 @@ while (i <= n) {
 
 ### Declaration et definition
 
-```c
+```c noexec
 /* Prototype (declaration) - en haut du fichier ou dans un .h */
 double norme(double x, double y);
 
@@ -214,7 +214,7 @@ double norme(double x, double y) {
 
 ### Passage par valeur vs passage par reference
 
-```c
+```c noexec
 /* PASSAGE PAR VALEUR : la fonction recoit une COPIE */
 int fonct(int a, int b) {
     a = 2 * a;   /* Modifie la copie locale, pas l'original */
@@ -229,7 +229,7 @@ int main() {
 }
 ```
 
-```c
+```c noexec
 /* PASSAGE PAR REFERENCE : la fonction recoit l'ADRESSE */
 int fonct(int *a, int *b) {
     *a = 2 * (*a);  /* Modifie la variable originale via le pointeur */
@@ -268,7 +268,7 @@ Avant fonct(&x, &y) :        Dans fonct(a, b) :         Apres fonct() :
 
 ### Fonctions recursives (TP2)
 
-```c
+```c noexec
 /* Suite recurrente u_0 = e-1, u_n = e - n*u_(n-1) */
 /* VERSION INSTABLE (erreurs amplifiees) */
 double suite(int n, int verbose) {
@@ -292,7 +292,7 @@ double suiteDecroissante() {
 
 ## 1.6 Entrees/Sorties standard
 
-```c
+```c noexec
 #include <stdio.h>
 
 /* Ecriture */
@@ -319,7 +319,7 @@ fgets(ligne, 256, stdin);
 
 ## 1.7 Constantes mathematiques (math.h)
 
-```c
+```c noexec
 #define _USE_MATH_DEFINES  /* Necessaire sur Windows AVANT #include */
 #include <math.h>
 

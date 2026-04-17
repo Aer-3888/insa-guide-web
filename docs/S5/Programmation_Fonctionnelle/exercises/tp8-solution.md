@@ -184,7 +184,7 @@ let rec reussite l =
 ## Graphics Display (Optional)
 
 Requires the Graphics library:
-```ocaml
+```ocaml noexec
 #use "topfind";;
 #require "graphics";;
 open Graphics;;

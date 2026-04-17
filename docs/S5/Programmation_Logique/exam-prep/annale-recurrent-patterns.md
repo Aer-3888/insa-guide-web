@@ -22,7 +22,7 @@ Apparait dans **presque chaque annale**. On donne une base de faits thematique e
 
 ### Technique de resolution
 
-```prolog
+```prolog noexec
 % Schema general pour une requete type "selection"
 resultat(Args) :-
     fait1(X, Y, ...),          % selectionner depuis une table
@@ -61,7 +61,7 @@ Apparait dans **2 annales sur 3** au minimum.
 
 ### Solutions de reference
 
-```prolog
+```prolog noexec
 % Filtrer les elements satisfaisant une condition
 filtrer(_, [], []).
 filtrer(Cond, [H|T], [H|R]) :- call(Cond, H), filtrer(Cond, T, R).
@@ -158,7 +158,7 @@ Apparait dans **la moitie des annales**.
 
 ### Solutions de reference
 
-```prolog
+```prolog noexec
 % Negation manuelle (cut-fail)
 not_member(X, L) :- member(X, L), !, fail.
 not_member(_, _).
@@ -183,7 +183,7 @@ classify(_, negative).
 
 Apparait dans les TPs et parfois aux examens.
 
-```prolog
+```prolog noexec
 % Fermeture transitive (ancetre, composition)
 rel_transitive(X, Y) :- rel_directe(X, Y).
 rel_transitive(X, Y) :- rel_directe(X, Z), rel_transitive(Z, Y).
@@ -200,7 +200,7 @@ rel_quantifiee(X, Y, Q) :-
 
 ## Pattern 7 : findall + agregation
 
-```prolog
+```prolog noexec
 % Compter
 nombre_solutions(Goal, N) :-
     findall(_, Goal, L), length(L, N).

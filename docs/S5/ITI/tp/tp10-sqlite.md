@@ -26,7 +26,7 @@ Database integration with Python and Qt:
 - SQL standard support
 - Perfect for desktop applications
 
-```python
+```python noexec
 import sqlite3
 
 # Connect to database (creates if doesn't exist)
@@ -59,29 +59,29 @@ CREATE TABLE students (
 ```
 
 **INSERT**:
-```sql
+```sql noexec
 INSERT INTO students (name, age, grade) VALUES ('Alice', 20, 15.5);
 ```
 
 **SELECT**:
-```sql
+```sql noexec
 SELECT * FROM students;
 SELECT name, grade FROM students WHERE age > 18;
 SELECT * FROM students ORDER BY grade DESC;
 ```
 
 **UPDATE**:
-```sql
+```sql noexec
 UPDATE students SET grade = 16.0 WHERE id = 1;
 ```
 
 **DELETE**:
-```sql
+```sql noexec
 DELETE FROM students WHERE id = 1;
 ```
 
 **JOIN**:
-```sql
+```sql noexec
 SELECT students.name, courses.title
 FROM students
 JOIN enrollments ON students.id = enrollments.student_id
@@ -90,7 +90,7 @@ JOIN courses ON enrollments.course_id = courses.id;
 
 ### 3. Python SQLite Module
 
-```python
+```python noexec
 import sqlite3
 
 class Database:
@@ -125,7 +125,7 @@ class Database:
 
 ### 4. Qt Database Integration
 
-```python
+```python noexec
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 
 # Connect to database
@@ -155,7 +155,7 @@ table_view.setModel(model)
 **View**: Displays data (QTableView, QListView)
 **Controller**: Handles user input
 
-```python
+```python noexec
 # Create model
 model = QSqlTableModel()
 model.setTable('students')
@@ -177,7 +177,7 @@ view.hideColumn(0)  # Hide ID column
 
 **Always use parameterized queries** to prevent SQL injection:
 
-```python
+```python noexec
 # WRONG (SQL injection vulnerable)
 cursor.execute(f"SELECT * FROM users WHERE name = '{user_input}'")
 
@@ -236,7 +236,7 @@ See `src/` directory and original files:
 ## Common Patterns
 
 ### Context Manager Pattern
-```python
+```python noexec
 import sqlite3
 
 class Database:
@@ -259,7 +259,7 @@ with Database('db.sqlite') as cursor:
 ```
 
 ### Repository Pattern
-```python
+```python noexec
 class StudentRepository:
     def __init__(self, db_connection):
         self.conn = db_connection

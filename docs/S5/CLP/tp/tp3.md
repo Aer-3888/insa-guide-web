@@ -29,7 +29,7 @@ Entry point detection - determines if a given vertex is an entry point (has no i
 
 The graph is represented as a C-like structure:
 
-```c
+```c noexec
 struct Graph {
     int nbSommets;          // Number of vertices
     char *nom;              // Array of vertex names (characters)

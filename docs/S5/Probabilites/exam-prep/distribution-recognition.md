@@ -73,7 +73,7 @@ Student --> Normal:
 4. $\mu \in [\bar{x} \pm t_{n-1}(1-\alpha/2) \cdot s'/\sqrt{n}]$
 
 **R code**:
-```r
+```r noexec
 xbar <- mean(data)
 s_prime <- sd(data)
 n <- length(data)

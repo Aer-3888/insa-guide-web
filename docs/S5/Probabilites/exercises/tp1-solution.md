@@ -145,7 +145,7 @@ R's `:` operator generates inclusive sequences: `0:10` produces 11 elements (0 t
 ### Create a data frame with named columns, access data, and export
 
 **Answer:**
-```r
+```r noexec
 v1 <- c(175, 182, 165, 187, 158)  # Heights
 v2 <- c(19, 18, 21, 22, 20)       # Ages
 v3 <- c("Louis", "Paule", "Pierre", "Remi", "Claude")  # Names

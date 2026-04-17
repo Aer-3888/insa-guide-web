@@ -27,7 +27,7 @@ sidebar_position: 3
 
 ### 2.1 Tri par insertion
 
-```python
+```python noexec
 def tri_insertion(T):
     for i in range(1, len(T)):
         cle = T[i]
@@ -46,7 +46,7 @@ def tri_insertion(T):
 
 ### 2.2 Tri par fusion (Merge Sort)
 
-```python
+```python noexec
 def tri_fusion(T, debut, fin):
     if debut < fin:
         mid = (debut + fin) // 2
@@ -61,7 +61,7 @@ Complexite O(n log n) dans **tous** les cas. Stable mais pas en place (necessite
 
 ### 2.3 Tri rapide (Quicksort)
 
-```python
+```python noexec
 def tri_rapide(T, inf, sup):
     if inf < sup:
         pivot = partitionner(T, inf, sup)    # O(n)

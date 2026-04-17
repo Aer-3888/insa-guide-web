@@ -41,7 +41,7 @@ Le pattern **double buffering** (T en lecture, T1 en ecriture, puis swap des poi
 
 ### Version sequentielle
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -99,7 +99,7 @@ int main(void)
 
 La seule modification est l'ajout d'une directive `#pragma omp parallel for reduction(+:delta)` sur la boucle externe (sur les lignes `k`).
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -229,7 +229,7 @@ Le speedup plafonne car ce probleme est **memory-bound** : chaque point du stenc
 
 ### Version sequentielle
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -286,7 +286,7 @@ void affiche(unsigned long int *a, long int size)
 
 On ajoute `#pragma omp parallel for` sur la boucle d'elimination. Il n'y a pas besoin de `reduction` ni de `private` supplementaire (les variables `i` et `j` sont implicitement privees).
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -407,7 +407,7 @@ Trois facteurs expliquent ce comportement :
 
 ### Version sequentielle
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -482,7 +482,7 @@ int main(void)
 
 La boucle sur `i` est le candidat a la parallelisation. Chaque composante `x_new[i]` ne depend que de `x_old` (lecture seule) et de la ligne `i` de A.
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

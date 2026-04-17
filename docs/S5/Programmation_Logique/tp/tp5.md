@@ -59,7 +59,7 @@ Utilise une table `add_bit(Cin, B1, B2, Sum, Cout)` pour l'addition bit a bit.
 
 ## Execution
 
-```prolog
+```prolog noexec
 [eclipse 1]: ["arithmetic"].
 [eclipse 2]: tests.
 

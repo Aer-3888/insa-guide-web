@@ -85,7 +85,7 @@ let rec eval fm v = match fm with
 ```
 
 ### Tautology Checking
-```ocaml
+```ocaml noexec
 let tautology fm =
   let rec check decided atoms_left = match atoms_left with
     | [] -> eval fm decided
@@ -112,7 +112,7 @@ let rec nnf fm = match fm with
 ## Knights and Knaves Puzzles
 
 Example: "If I am a knight there is gold on the island"
-```ocaml
+```ocaml noexec
 (* k: "I" is a knight, g: there is gold *)
 let _ = find_truth print_valuation
   (string_to_formula "k <=> (k => g)")

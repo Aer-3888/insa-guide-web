@@ -39,7 +39,7 @@ MEMOIRE D'UN PROGRAMME C (adresses basses en haut)
 
 ## 3.2 malloc - Allocation basique
 
-```c
+```c noexec
 #include <stdlib.h>
 
 /* Syntaxe : void* malloc(size_t taille_en_octets) */
@@ -66,14 +66,14 @@ tab = NULL;  /* Bonne pratique : evite les pointeurs dangling */
 ```
 
 **ATTENTION : malloc n'initialise PAS la memoire !**
-```c
+```c noexec
 int *tab = (int *)malloc(5 * sizeof(int));
 /* tab[0], tab[1], ... contiennent des valeurs ALEATOIRES */
 ```
 
 ## 3.3 calloc - Allocation avec initialisation a zero
 
-```c
+```c noexec
 /* Syntaxe : void* calloc(size_t nombre, size_t taille_element) */
 
 /* Allouer et initialiser a zero */
@@ -86,7 +86,7 @@ Element *elem = (Element *)calloc(1, sizeof(Element));
 ```
 
 **Difference malloc vs calloc :**
-```c
+```c noexec
 /* Ces deux lignes sont QUASI-equivalentes : */
 int *a = (int *)malloc(n * sizeof(int));    /* Non initialise */
 int *b = (int *)calloc(n, sizeof(int));     /* Initialise a 0 */
@@ -96,7 +96,7 @@ int *b = (int *)calloc(n, sizeof(int));     /* Initialise a 0 */
 
 ## 3.4 realloc - Redimensionnement
 
-```c
+```c noexec
 /* Syntaxe : void* realloc(void *ptr, size_t nouvelle_taille) */
 
 int *tab = (int *)malloc(10 * sizeof(int));
@@ -111,7 +111,7 @@ realloc(ptr, 0);          /* Equivalent a free(ptr) */
 ```
 
 **PIEGE avec realloc :**
-```c
+```c noexec
 /* MAUVAIS : si realloc echoue, on perd le pointeur original ! */
 tab = realloc(tab, nouvelle_taille);
 if (tab == NULL) {
@@ -130,7 +130,7 @@ tab = tmp;
 
 ## 3.5 free - Liberation de memoire
 
-```c
+```c noexec
 /* Syntaxe : void free(void *ptr) */
 
 int *tab = (int *)malloc(10 * sizeof(int));
@@ -149,7 +149,7 @@ tab = NULL;  /* BONNE PRATIQUE : empeche le "dangling pointer" */
 
 Quand on ne connait pas la taille a l'avance, on lit d'abord le nombre d'elements :
 
-```c
+```c noexec
 Tache *lireTachesFichierDyn(char *nomFichier, int *nbtaches) {
     FILE *fichier = fopen(nomFichier, "r");
     if (fichier == NULL) {
@@ -183,7 +183,7 @@ Tache *lireTachesFichierDyn(char *nomFichier, int *nbtaches) {
 
 ### Qu'est-ce qu'une fuite memoire ?
 
-```c
+```c noexec
 void fuite() {
     int *tab = (int *)malloc(100 * sizeof(int));
     /* ... utilisation ... */
@@ -194,7 +194,7 @@ void fuite() {
 
 ### Cas courants de fuites
 
-```c
+```c noexec
 /* 1. Oubli de free */
 int *p = malloc(100);
 /* ... pas de free(p) ... */
@@ -217,7 +217,7 @@ free(p);
 
 ### Liberation d'une liste chainee (TP5)
 
-```c
+```c noexec
 void libererListe(Liste *l) {
     while (*l != NULL) {
         Element *temp = *l;     /* Sauvegarde le noeud courant */
@@ -275,7 +275,7 @@ Le TP7 implemente un allocateur memoire personnalise. Voici le principe :
 
 ### Structure du tas
 
-```c
+```c noexec
 /* Le tas est un grand tableau de char */
 static char mon_tas[MAX_MEMORY];  /* 1 000 000 octets */
 
@@ -321,7 +321,7 @@ typedef struct descript {
 
 ### Macros de redirection
 
-```c
+```c noexec
 /* Le trick de TP7 : remplacer malloc/free par nos fonctions */
 #ifdef ALLOC_PERSO
 #define malloc(size)       Mon_malloc(size)

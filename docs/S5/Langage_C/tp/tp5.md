@@ -15,7 +15,7 @@ sidebar_position: 5
 ## Concepts Clés
 
 ### Allocation Dynamique
-```c
+```c noexec
 /* Allocation avec malloc() */
 int *ptr = (int*)malloc(10 * sizeof(int));
 
@@ -44,7 +44,7 @@ Une liste chaînée est une structure de données où chaque élément pointe ve
 ### Pointeurs de Fonctions
 Permettent de passer des fonctions en paramètre:
 
-```c
+```c noexec
 int (*comparateur)(Tache, Tache);
 comparateur = &compareID;  /* ou simplement compareID */
 int resultat = comparateur(t1, t2);
@@ -52,7 +52,7 @@ int resultat = comparateur(t1, t2);
 
 ## Structure de Données
 
-```c
+```c noexec
 typedef struct struct_element {
     Tache t;                        /* La tâche stockée */
     struct struct_element *suivant; /* Pointeur vers l'élément suivant */
@@ -90,7 +90,7 @@ make
 
 ## Exemple d'Utilisation
 
-```c
+```c noexec
 Liste l = NULL;  /* Liste vide */
 
 /* Ajout de tâches triées par ID */
@@ -118,7 +118,7 @@ La première ligne indique le nombre de tâches.
 ## Points Importants
 
 ### 1. Allocation Dynamique
-```c
+```c noexec
 /* malloc() - alloue sans initialiser */
 int *tab = (int*)malloc(n * sizeof(int));
 
@@ -137,7 +137,7 @@ tab = NULL;  /* Bonne pratique */
 ```
 
 ### 2. Insertion en Début de Liste
-```c
+```c noexec
 void ajoutdeb(Liste *l, Tache t) {
     Element *elem = (Element*)calloc(1, sizeof(Element));
     elem->t = t;
@@ -147,7 +147,7 @@ void ajoutdeb(Liste *l, Tache t) {
 ```
 
 ### 3. Parcours de Liste
-```c
+```c noexec
 Element *courant = liste;
 while (courant != NULL) {
     /* Traitement de courant->t */
@@ -156,7 +156,7 @@ while (courant != NULL) {
 ```
 
 ### 4. Pointeurs de Fonctions
-```c
+```c noexec
 /* Déclaration */
 int (*comparateur)(Tache, Tache);
 
@@ -170,7 +170,7 @@ if (comparateur(t1, t2) > 0) {
 ```
 
 ### 5. Passage de Pointeurs vers Pointeurs
-```c
+```c noexec
 void modifier(Liste *l) {
     *l = nouvel_element;  /* Modifie la liste originale */
 }
@@ -185,7 +185,7 @@ modifier(&ma_liste);  /* Passe l'adresse du pointeur */
 **ATTENTION:** Le code actuel ne libère pas la mémoire allouée!
 
 À implémenter:
-```c
+```c noexec
 void libererListe(Liste *l) {
     while (*l != NULL) {
         Element *temp = *l;

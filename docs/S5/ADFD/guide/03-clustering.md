@@ -57,7 +57,7 @@ A tree-like visualization of the merging process:
 2. A horizontal cut at any level produces a partition
 3. The "right" number of clusters is where there are significant jumps
 
-```python
+```python noexec
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
 
 # Compute linkage
@@ -89,7 +89,7 @@ This is the method taught in the course: combine PCA + CAH.
 
 A **paragon** is the individual closest to the center of gravity (barycentre) of its cluster -- the most representative member.
 
-```python
+```python noexec
 from scipy.spatial.distance import cdist
 
 for cluster_id in unique_clusters:
@@ -137,7 +137,7 @@ K-means partitions data into K clusters by minimizing within-cluster variance (i
 ### Choosing K
 
 **Elbow method (Methode du coude)**:
-```python
+```python noexec
 inertias = []
 for k in range(2, 11):
     kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
@@ -154,7 +154,7 @@ Look for the "elbow" where the rate of decrease slows.
 
 ### Implementation
 
-```python
+```python noexec
 from sklearn.cluster import KMeans
 
 kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
@@ -210,7 +210,7 @@ For each unvisited point p:
 2. Sort distances and plot
 3. Choose eps at the "elbow" of the curve
 
-```python
+```python noexec
 from sklearn.neighbors import NearestNeighbors
 
 neighbors = NearestNeighbors(n_neighbors=5)
@@ -228,7 +228,7 @@ plt.title('K-Distance Graph')
 
 ### Implementation
 
-```python
+```python noexec
 from sklearn.cluster import DBSCAN
 
 dbscan = DBSCAN(eps=0.00030, min_samples=7)
@@ -291,7 +291,7 @@ s(i) = (b(i) - a(i)) / max(a(i), b(i))
 | Average 0.25-0.5 | Moderate clustering |
 | Average < 0.25 | Poor clustering |
 
-```python
+```python noexec
 from sklearn.metrics import silhouette_score
 score = silhouette_score(X, labels)
 ```
@@ -307,7 +307,7 @@ DB = (1/K) * sum_i max_{j!=i} (sigma_i + sigma_j) / d(c_i, c_j)
 - **Lower is better** (minimum = 0)
 - Does not require ground truth
 
-```python
+```python noexec
 from sklearn.metrics import davies_bouldin_score
 score = davies_bouldin_score(X, labels)
 ```
@@ -323,7 +323,7 @@ WCSS = sum_k sum_{i in C_k} ||x_i - center_k||^2
 - **Lower is better** for a fixed K
 - Always decreases as K increases -- use elbow method
 
-```python
+```python noexec
 # For K-means
 inertia = kmeans.inertia_
 
@@ -344,7 +344,7 @@ DBSCAN uses Euclidean distance, but GPS coordinates are not in meters. There are
 **Approach 1 (used in the TP notebook)**: Apply DBSCAN directly on raw GPS coordinates with a very small eps (e.g., 0.00030 degrees). This is an approximation that works for small regions but is not metrically precise.
 
 **Approach 2 (used in the TP source code)**: Convert GPS to approximate Cartesian coordinates first:
-```python
+```python noexec
 # 1 degree latitude ~ 111 km
 # 1 degree longitude ~ 71 km (at 48 degrees N, cos(48) ~ 0.67)
 df['x'] = (df['longitude'] + 1.7) * 71000   # meters
@@ -352,7 +352,7 @@ df['y'] = (df['latitude'] - 48.0) * 111000   # meters
 ```
 
 **Proper method** (Lambert 93):
-```python
+```python noexec
 from pyproj import Transformer
 transformer = Transformer.from_crs("EPSG:4326", "EPSG:2154")
 x, y = transformer.transform(lat, lon)
@@ -362,7 +362,7 @@ x, y = transformer.transform(lat, lon)
 
 A single user taking many photos at the same location inflates density without indicating true interest. Solution:
 
-```python
+```python noexec
 # Keep only one photo per user per hour
 photos = photos.groupby(
     ['id_photographer', 'date_taken_year', 'date_taken_month',
@@ -399,7 +399,7 @@ Clusters of arbitrary shape?     --> DBSCAN
 ### Code Templates
 
 **CAH**:
-```python
+```python noexec
 from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
 Z = linkage(X, method='ward')
 labels = fcluster(Z, t=3, criterion='maxclust')
@@ -407,14 +407,14 @@ dendrogram(Z, labels=names)
 ```
 
 **K-means**:
-```python
+```python noexec
 from sklearn.cluster import KMeans
 km = KMeans(n_clusters=3, random_state=42, n_init=10)
 labels = km.fit_predict(X)
 ```
 
 **DBSCAN**:
-```python
+```python noexec
 from sklearn.cluster import DBSCAN
 db = DBSCAN(eps=100, min_samples=10)
 labels = db.fit_predict(coords)

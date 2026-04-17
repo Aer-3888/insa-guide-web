@@ -54,7 +54,7 @@ Fin de programme
 **Deux approches**:
 
 1. **Manuelle**: Calcul explicite des bornes de chaque thread
-   ```c
+   ```c noexec
    #pragma omp parallel
    {
        int num = omp_get_thread_num();
@@ -68,7 +68,7 @@ Fin de programme
    ```
 
 2. **Automatique**: Directive `#pragma omp parallel for`
-   ```c
+   ```c noexec
    #pragma omp parallel for
    for (int i = 0; i < N; i++) {
        // travail
@@ -106,7 +106,7 @@ Avec `xᵢ = (i-0.5) × pas` et `pas = 1/nb_pas`.
 **Solutions**:
 
 1. **Mauvaise approche**: Section critique
-   ```c
+   ```c noexec
    #pragma omp parallel for
    for (long i = 1; i <= nb_pas; i++) {
        x = (i-0.5) * pas;
@@ -117,7 +117,7 @@ Avec `xᵢ = (i-0.5) × pas` et `pas = 1/nb_pas`.
    → Sérialise les accès, très lent (pire que séquentiel).
 
 2. **Bonne approche**: Clause `reduction`
-   ```c
+   ```c noexec
    #pragma omp parallel for reduction(+:som) private(x)
    for (long i = 1; i <= nb_pas; i++) {
        x = (i-0.5) * pas;
@@ -127,7 +127,7 @@ Avec `xᵢ = (i-0.5) × pas` et `pas = 1/nb_pas`.
    → OpenMP crée une copie privée de `som` pour chaque thread, puis les combine automatiquement.
 
 **Mesure de performance**:
-```c
+```c noexec
 double debut = omp_get_wtime();
 // calcul parallèle
 double duree = omp_get_wtime() - debut;
@@ -193,7 +193,7 @@ Faire varier `OMP_NUM_THREADS` de 1 à 24 et tracer:
 ## Concepts OpenMP introduits
 
 ### 1. Région parallèle
-```c
+```c noexec
 #pragma omp parallel
 {
     // Code exécuté par tous les threads
@@ -201,7 +201,7 @@ Faire varier `OMP_NUM_THREADS` de 1 à 24 et tracer:
 ```
 
 ### 2. Boucle parallèle
-```c
+```c noexec
 #pragma omp parallel for
 for (int i = 0; i < N; i++) {
     // Itérations distribuées entre threads
@@ -212,12 +212,12 @@ for (int i = 0; i < N; i++) {
 
 - **Partagées** (par défaut): Toutes les variables déclarées avant la région parallèle
 - **Privées**: Chaque thread a sa propre copie
-  ```c
+  ```c noexec
   #pragma omp parallel for private(x)
   ```
 
 ### 4. Réduction
-```c
+```c noexec
 #pragma omp parallel for reduction(op:var)
 ```
 Opérateurs supportés: `+`, `*`, `min`, `max`, `&`, `|`, `^`, `&&`, `||`

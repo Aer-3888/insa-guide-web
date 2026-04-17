@@ -60,7 +60,7 @@ Some years have a single combined exam (ADFD).
 
 ## Python Libraries Used
 
-```python
+```python noexec
 # Data manipulation
 import pandas as pd
 import numpy as np

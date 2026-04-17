@@ -329,7 +329,7 @@ coef(mod)
 
 Avant de lire les fichiers de donnees, choisir le repertoire de travail avec `setwd()`.
 
-```r
+```r noexec
 setwd("Donnees_TP1")
 
 # Fichiers test
@@ -340,7 +340,7 @@ test3 <- read.csv2("test3.csv", dec = ".")
 
 ### Q2 : Lire les fichiers d'etat avec differents separateurs
 
-```r
+```r noexec
 etat1 <- read.csv2("etat1.csv")                              # sep = ";"
 etat2 <- read.csv("etat2.csv", dec = ".")                    # sep = ","
 etat3 <- read.table("etat3.csv", header = TRUE, sep = " ")   # sep = " "
@@ -358,7 +358,7 @@ etat3 <- read.table("etat3.csv", header = TRUE, sep = " ")   # sep = " "
 
 ### Q3 : Fusionner les trois data frames
 
-```r
+```r noexec
 etat <- merge(etat1, etat2, by = "etat")
 etat <- merge(etat, etat3, by = "region")
 print(head(etat))
@@ -459,7 +459,7 @@ Importer 3 fichiers, filtrer les ouragans, creer une classification, fusionner, 
 
 ### Q1 : Importation
 
-```r
+```r noexec
 intensite <- read.table("Intensite.txt", header = TRUE)
 dommages  <- read.table("Dommages.txt", header = TRUE, dec = ",")
 mortalite <- read.csv2("Mortalite.csv")
@@ -468,20 +468,20 @@ mortalite <- mortalite[order(mortalite$nom), ]   # Trier par nom
 
 ### Q2 : Filtrer les ouragans (noeuds >= 64)
 
-```r
+```r noexec
 intensite <- subset(intensite, noeuds >= 64)
 ```
 
 **Explication :** Un ouragan est defini comme un cyclone tropical dont la vitesse du vent depasse 64 noeuds. Les tempetes tropicales (noeuds < 64) sont exclues.
 
 **Methode alternative :**
-```r
+```r noexec
 intensite <- intensite[intensite$noeuds >= 64, ]
 ```
 
 ### Q3 : Supprimer les lignes contenant des NA
 
-```r
+```r noexec
 dommages <- dommages[apply(!is.na(dommages), 1, all), ]
 ```
 
@@ -494,7 +494,7 @@ dommages <- dommages[apply(!is.na(dommages), 1, all), ]
 
 Classification selon l'echelle de Saffir-Simpson basee sur la vitesse du vent (noeuds).
 
-```r
+```r noexec
 categorie <- rep("ouragan 5", nrow(intensite))
 categorie[intensite$noeuds <= 135] <- "ouragan 4"
 categorie[intensite$noeuds <= 113] <- "ouragan 3"
@@ -518,7 +518,7 @@ intensite <- cbind(intensite, categorie)
 
 ### Q5 : Fusionner les trois tables
 
-```r
+```r noexec
 Ouragan <- merge(intensite, dommages)
 Ouragan <- merge(Ouragan, mortalite)
 ```
@@ -527,13 +527,13 @@ Ouragan <- merge(Ouragan, mortalite)
 
 ### Q6 : Trier par annee
 
-```r
+```r noexec
 Ouragan <- Ouragan[order(Ouragan$annee), ]
 ```
 
 ### Q7 : Calculer le cout moyen par categorie
 
-```r
+```r noexec
 by(Ouragan$cout, Ouragan$categorie, mean)
 ```
 
@@ -554,7 +554,7 @@ Ouragan$categorie: ouragan 3
 
 ### Q8 : Visualisation
 
-```r
+```r noexec
 hist(Ouragan$annee,
      main = "Distribution des ouragans par annee",
      xlab = "Annee", ylab = "Frequence",

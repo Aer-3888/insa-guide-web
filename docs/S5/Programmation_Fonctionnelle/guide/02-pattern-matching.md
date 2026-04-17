@@ -11,7 +11,7 @@ Le pattern matching est l'outil central d'OCaml. Il permet de deconstructeur une
 
 ### Syntaxe de base
 
-```ocaml
+```ocaml noexec
 match expression with
 | motif1 -> resultat1
 | motif2 -> resultat2
@@ -79,7 +79,7 @@ let haut_of_int i = match i with
 
 ### Patterns sur les records
 
-```ocaml
+```ocaml noexec
 type carte = {h : haut; c : coul}
 
 (* Acces par champ *)
@@ -121,7 +121,7 @@ let rec longueur l = match l with
 
 On peut imbriquer les patterns pour decrire des structures complexes.
 
-```ocaml
+```ocaml noexec
 (* Tri bulle : comparer deux elements consecutifs *)
 let rec unebulle l = match l with
   | [] -> l

@@ -30,7 +30,7 @@ GEDCOM (GEnealogical Data COMmunication) est un format standard pour echanger de
 
 **Answer pour fichier.h :**
 
-```c
+```c noexec
 #ifndef FICHIER_H_INCLUDED
 #define FICHIER_H_INCLUDED
 
@@ -51,7 +51,7 @@ int traiterLignesFichier(FILE *f, int (*ptFonction)(char *));
 
 **Answer pour commun.h :**
 
-```c
+```c noexec
 #ifndef COMMUN_H_INCLUDED
 #define COMMUN_H_INCLUDED
 
@@ -62,7 +62,7 @@ int traiterLignesFichier(FILE *f, int (*ptFonction)(char *));
 
 **Answer pour fichier.c :**
 
-```c
+```c noexec
 #include "fichier.h"
 
 FILE *ouvrirFichier(char *nom, char *mode, TypeRetour t) {
@@ -124,7 +124,7 @@ int traiterLignesFichier(FILE *f, int (*ptFonction)(char *)) {
 
 **Answer pour traitement.h :**
 
-```c
+```c noexec
 #ifndef TRAITEMENT_H_INCLUDED
 #define TRAITEMENT_H_INCLUDED
 
@@ -136,7 +136,7 @@ int lireOccu(char * str);
 
 **Answer pour traitement.c :**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <string.h>
 #include "traitement.h"
@@ -218,7 +218,7 @@ int lireOccu(char * str) {
 
 **Answer pour traitementOpt.h :**
 
-```c
+```c noexec
 #ifndef TRAITEMENTOPT_H_INCLUDED
 #define TRAITEMENTOPT_H_INCLUDED
 
@@ -244,7 +244,7 @@ int compterNaissances(char* str);
 
 **Answer pour traitementOpt.c :**
 
-```c
+```c noexec
 #include "traitementOpt.h"
 #include "commun.h"
 #include <stdlib.h>
@@ -347,7 +347,7 @@ ENAME --[INDI]--> EINDI (nouvel individu)
 
 **Answer pour automaton.h :**
 
-```c
+```c noexec
 #ifndef AUTOMATON_H
 #define AUTOMATON_H
 
@@ -380,7 +380,7 @@ int rechercheNomSabotiers(char* str);
 
 **Answer pour automaton.c :**
 
-```c
+```c noexec
 #include "automaton.h"
 #include <stdio.h>
 #include <string.h>
@@ -457,7 +457,7 @@ int rechercheNomSabotiers(char* str) {
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <string.h>
 #include "fichier.h"
@@ -553,13 +553,13 @@ Nombre de lignes: 36
 ## Points importants
 
 1. **Variables statiques :**
-   ```c
+   ```c noexec
    static EtatAutomate etatA = {EINIT, ""};
    ```
    Une variable statique conserve sa valeur entre les appels de fonction. C'est essentiel pour l'automate qui doit memoriser son etat.
 
 2. **Pointeurs de fonctions dans `traiterLignesFichier()` :**
-   ```c
+   ```c noexec
    int traiterLignesFichier(FILE *f, int (*ptFonction)(char *));
    ```
    Permet d'appliquer differents traitements a chaque ligne du fichier sans modifier la boucle de lecture.
@@ -570,7 +570,7 @@ Nombre de lignes: 36
    - `%[ \r\n]` : lit uniquement des espaces et retours a la ligne
 
 4. **`strstr()` pour la recherche de sous-chaines :**
-   ```c
+   ```c noexec
    if (strstr(extract, "sabotier") != NULL) {
        /* La sous-chaine "sabotier" a ete trouvee */
    }

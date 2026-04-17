@@ -79,7 +79,7 @@ Analyser 4 jeux de données avec les mêmes statistiques mais des relations trè
 - Résidus non uniformes → structure parabolique
 
 **Solution:** Ajouter X² comme variable explicative
-```r
+```r noexec
 X2 <- X^2
 reg_poly <- lm(Y2 ~ X + X2)
 ```
@@ -89,7 +89,7 @@ reg_poly <- lm(Y2 ~ X + X2)
 - Point 16 s'écarte de plus de 2σ
 
 **Solution:** Identifier et supprimer l'outlier
-```r
+```r noexec
 data_clean <- data[-16, ]
 reg_clean <- lm(Y3 ~ X, data=data_clean)
 ```
@@ -99,7 +99,7 @@ reg_clean <- lm(Y3 ~ X, data=data_clean)
 - Transformation logarithmique + polynomiale nécessaire
 
 **Solution:**
-```r
+```r noexec
 reg_log <- lm(log(Y4) ~ X + X2)
 ```
 
@@ -191,12 +191,12 @@ Modéliser le gain journalier en protéines en fonction de l'ingestion.
 ## Prédiction
 
 ### Prédiction ponctuelle
-```r
+```r noexec
 predict(reg, data.frame(X=27.5))
 ```
 
 ### Intervalle de prédiction (95%)
-```r
+```r noexec
 predict(reg, data.frame(X=27.5), interval="prediction")
 ```
 
@@ -206,7 +206,7 @@ predict(reg, data.frame(X=27.5), interval="prediction")
 
 ## Commandes essentielles
 
-```r
+```r noexec
 # Régression
 reg <- lm(Y ~ X, data=df)
 summary(reg)                    # Statistiques complètes

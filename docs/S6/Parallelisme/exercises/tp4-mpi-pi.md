@@ -67,7 +67,7 @@ echo "localhost" >> ~/.machines
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <mpi.h>
 
@@ -136,7 +136,7 @@ Ce programme de test illustre les fonctions de base MPI : `MPI_Init`, `MPI_Comm_
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -211,7 +211,7 @@ Chaque processus calcule sa somme partielle, puis `MPI_Reduce` additionne toutes
 
 ### Code complet
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -294,7 +294,7 @@ P3:              [Bcast N] --> [calcul local sur [3/P, 1)]        --> [Reduce]
 ### Detail des fonctions MPI utilisees
 
 **MPI_Bcast :**
-```c
+```c noexec
 MPI_Bcast(&N, 1, MPI_LONG, 0, MPI_COMM_WORLD);
 /*         ^  ^  ^          ^  ^                */
 /*     buffer nb type     root communicateur    */
@@ -302,7 +302,7 @@ MPI_Bcast(&N, 1, MPI_LONG, 0, MPI_COMM_WORLD);
 P0 envoie N a tous. Tous les processus doivent appeler MPI_Bcast (c'est une collective).
 
 **MPI_Reduce :**
-```c
+```c noexec
 MPI_Reduce(&resultPartiel, &estimationPi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 /*          ^               ^              ^  ^           ^        ^  ^               */
 /*      buf envoi       buf recept.       nb  type       op      root comm           */

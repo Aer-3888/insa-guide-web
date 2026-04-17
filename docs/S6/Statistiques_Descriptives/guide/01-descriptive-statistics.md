@@ -142,7 +142,7 @@ graph LR
 - Les **moustaches** s'etendent jusqu'a la valeur la plus extreme qui est encore dans $Q1 - 1.5 \times \text{IQR}$ et $Q3 + 1.5 \times \text{IQR}$.
 - Les points au-dela sont marques individuellement : ce sont les **outliers**.
 
-```r
+```r noexec
 boxplot(notes,
         col  = "lightgreen",
         main = "Boxplot des notes",
@@ -160,7 +160,7 @@ boxplot(Calories ~ Type, data = hotdogs,
 
 Pour visualiser la relation entre deux variables quantitatives :
 
-```r
+```r noexec
 plot(heures, notes,
      pch  = 19,
      col  = "steelblue",
@@ -173,7 +173,7 @@ plot(heures, notes,
 
 Pour des donnees categorielles :
 
-```r
+```r noexec
 barplot(table(categorie),
         col  = "coral",
         main = "Effectifs par categorie",
@@ -214,7 +214,7 @@ $$r_{xy} = \frac{\text{Cov}(X, Y)}{s_X \cdot s_Y} = \frac{\sum_{i=1}^{n}(x_i - \
 | $r \approx -1$ | Forte correlation negative |
 | $r \approx 0$ | Pas de correlation lineaire |
 
-```r
+```r noexec
 # Matrice de correlation
 cor(data[, c("TV", "Radio", "Sales")])
 

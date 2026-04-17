@@ -99,7 +99,7 @@ Advanced network programming: IP multicast, multithreading, and real-time commun
 ```
 
 **Argument structure:**
-```c
+```c noexec
 typedef struct {
     bool help;
     bool version;
@@ -110,7 +110,7 @@ typedef struct {
 ```
 
 **Macro-based argument definition:**
-```c
+```c noexec
 #define ARGS_FLAGS \
     FLAG(help, h, "show this help message and exit") \
     FLAG(version, v, "show program's version number and exit")
@@ -125,7 +125,7 @@ This allows generic parsing and help generation.
 
 ### 2. Socket Setup
 
-```c
+```c noexec
 // Create UDP socket
 const int sock = socket(AF_INET, SOCK_DGRAM, 0);
 if (sock == -1) {
@@ -166,7 +166,7 @@ if (bind(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
 #### `IP_ADD_MEMBERSHIP`
 
 Joins a multicast group:
-```c
+```c noexec
 struct ip_mreq {
     struct in_addr imr_multiaddr;  // Multicast group address
     struct in_addr imr_interface;  // Local interface (INADDR_ANY = all)
@@ -176,7 +176,7 @@ struct ip_mreq {
 #### `SO_REUSEADDR`
 
 Allows multiple processes to bind to same port:
-```c
+```c noexec
 int opt = 1;
 setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 ```
@@ -185,7 +185,7 @@ Essential for multicast - all receivers need same port.
 
 #### Other Useful Options
 
-```c
+```c noexec
 // Set TTL (Time To Live) - how many router hops
 unsigned char ttl = 5;
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
@@ -204,7 +204,7 @@ setsockopt(sock, IPPROTO_IP, IP_MULTICAST_IF, &interface_addr, sizeof(interface_
 
 #### Input String (Shared State)
 
-```c
+```c noexec
 typedef struct {
     size_t capacity;          // Buffer size
     size_t size;              // Current length
@@ -214,7 +214,7 @@ typedef struct {
 ```
 
 **Operations:**
-```c
+```c noexec
 // Initialize
 InputString *input_string_init(void) {
     InputString *self = safe_malloc(sizeof(*self));
@@ -251,7 +251,7 @@ void input_string_draw(InputString *self) {
 
 #### Send Thread
 
-```c
+```c noexec
 typedef struct {
     int sock;
     int port;
@@ -336,7 +336,7 @@ static void *send_messages_thread(void *data) {
 
 #### Receive Thread
 
-```c
+```c noexec
 typedef struct {
     int sock;
     InputString *input_string;
@@ -364,7 +364,7 @@ static void *receive_messages_thread(void *data) {
 
 #### Message Display
 
-```c
+```c noexec
 static void print_message(char *message, const size_t message_length,
                           InputString *input_string) {
     if (message_length == 0) return;
@@ -405,7 +405,7 @@ Normal terminal is **line-buffered** - input not available until Enter pressed.
 
 **Raw mode** allows character-by-character input:
 
-```c
+```c noexec
 static void terminal_enable_raw_mode() {
     struct termios terminal;
     tcgetattr(STDIN_FILENO, &terminal);
@@ -431,7 +431,7 @@ static void terminal_disable_raw_mode() {
 
 ### 5. Thread Management
 
-```c
+```c noexec
 int main(const int argc, char *argv[]) {
     // ... parse args, setup socket ...
     
@@ -552,7 +552,7 @@ Charlie@I'm good!
 ```
 
 **Binary format:**
-```c
+```c noexec
 struct Message {
     uint32_t timestamp;
     uint8_t username_len;
@@ -650,7 +650,7 @@ Without synchronization: **race condition** → corruption/crashes.
 
 ### Solution: Mutex
 
-```c
+```c noexec
 pthread_mutex_t mutex;
 
 // Initialize
@@ -669,7 +669,7 @@ pthread_mutex_destroy(&mutex);
 
 Every `input_string` access is protected:
 
-```c
+```c noexec
 // Append character
 lock_mutex(&self->mutex);
 input_string_append(thread->input_string, input_char);
@@ -712,7 +712,7 @@ Implementation:
 ### 3. Message History
 
 Save messages to file:
-```c
+```c noexec
 FILE *log = fopen("chat.log", "a");
 fprintf(log, "[%s] %s: %s\n", timestamp, username, message);
 fclose(log);
@@ -721,7 +721,7 @@ fclose(log);
 ### 4. Encryption
 
 Encrypt messages with symmetric key:
-```c
+```c noexec
 // Pseudo-code
 encrypted = encrypt_aes(message, shared_key);
 sendto(sock, encrypted, len, ...);
@@ -767,7 +767,7 @@ nc -u 224.0.0.10 10000
 **Cause:** Multicast loopback disabled
 
 **Solution:** Enable loopback:
-```c
+```c noexec
 unsigned char loop = 1;
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP, &loop, sizeof(loop));
 ```
@@ -777,7 +777,7 @@ setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP, &loop, sizeof(loop));
 **Cause:** TTL = 0 (default)
 
 **Solution:** Increase TTL:
-```c
+```c noexec
 unsigned char ttl = 5;  // Up to 5 router hops
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
 ```
@@ -787,7 +787,7 @@ setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
 **Cause:** Raw mode not restored
 
 **Solution:** Ensure cleanup with `atexit()`:
-```c
+```c noexec
 atexit(terminal_disable_raw_mode);
 ```
 

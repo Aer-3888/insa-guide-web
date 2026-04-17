@@ -131,7 +131,7 @@ L_3 = {{Eggs, Kidney Beans, Onion}}
 
 ### Python Implementation
 
-```python
+```python noexec
 from mlxtend.frequent_patterns import apriori
 from mlxtend.preprocessing import TransactionEncoder
 
@@ -186,14 +186,14 @@ In TP3-4, tags from Flickr photos are preprocessed before mining. The pipeline:
 
 ### Step 1: Lowercase Conversion
 
-```python
+```python noexec
 def lowerCase(tags):
     return tags.lower()
 ```
 
 ### Step 2: Accent Removal (Suppression des Accents)
 
-```python
+```python noexec
 def supprimeAccent(tags):
     # Maps accented characters to their unaccented equivalents
     # e.g., 'e' with acute -> 'e', 'a' with grave -> 'a', etc.
@@ -213,7 +213,7 @@ def supprimeAccent(tags):
 ```
 
 More robust approach (recommended):
-```python
+```python noexec
 import unicodedata
 def remove_accents(text):
     nfkd = unicodedata.normalize('NFKD', text)
@@ -224,7 +224,7 @@ def remove_accents(text):
 
 Stopwords are common words that carry no semantic meaning (le, la, de, des, un, une, etc.).
 
-```python
+```python noexec
 from nltk.corpus import stopwords
 stopwordslist = stopwords.words("french")
 
@@ -237,7 +237,7 @@ def supprimeStopwords(tags):
 
 Tags like "IMG_7719" or "DSC_2692" are camera-generated and carry no meaning.
 
-```python
+```python noexec
 import re
 
 def supprimeIdentPhoto(tags):
@@ -252,7 +252,7 @@ def supprimeIdentPhoto(tags):
 
 Remove words containing special characters (URLs, emojis, punctuation).
 
-```python
+```python noexec
 def supprimeCarSpeciaux(tags):
     pattern = re.compile(r'^[\w-]+$')
     words = tags.split()
@@ -261,7 +261,7 @@ def supprimeCarSpeciaux(tags):
 
 ### Complete Pipeline
 
-```python
+```python noexec
 photos["tags"] = photos["tags"].fillna("")
 for idx, row in photos.iterrows():
     tags = row["tags"]
@@ -277,7 +277,7 @@ for idx, row in photos.iterrows():
 
 After clustering photos with DBSCAN, use Apriori on the tags of each cluster to find its most characteristic label:
 
-```python
+```python noexec
 def identify_cluster(cluster_nb, photos, cluster_labels):
     # Get photos in this cluster
     cluster_photos = photos[photos['cluster'] == cluster_nb]
@@ -379,7 +379,7 @@ Raw tags --> lowercase --> remove accents --> remove stopwords
 
 ### Python Quick Reference
 
-```python
+```python noexec
 # Apriori
 from mlxtend.frequent_patterns import apriori
 from mlxtend.preprocessing import TransactionEncoder

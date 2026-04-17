@@ -21,7 +21,7 @@ This practical introduces neural networks and convolutional neural networks (CNN
   - CNN: 3D tensor (32×32×3)
 
 ### Data Preprocessing
-```python
+```python noexec
 # Load data
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
@@ -52,7 +52,7 @@ Input (3072) → Dense(nbhidden, ReLU) → Dense(10, Softmax)
 - Optimizer: Adam
 
 **Python Implementation**:
-```python
+```python noexec
 def perceptron(nbhidden=1):
     entree = tf.keras.Input(shape=(3072,))
     hidden = tf.keras.layers.Dense(units=nbhidden, activation='relu')(entree)
@@ -66,7 +66,7 @@ def perceptron(nbhidden=1):
 ```
 
 **Training**:
-```python
+```python noexec
 clf = perceptron(100000)
 clf.fit(x_train, y_train, epochs=20, batch_size=51)
 ```
@@ -105,7 +105,7 @@ Input (32×32×3)
 - **Dense layers**: Classification head (10,000 → 10 neurons)
 
 **Python Implementation**:
-```python
+```python noexec
 def cnn():
     entree = tf.keras.Input(shape=(32,32,3))
     
@@ -142,7 +142,7 @@ def cnn():
 ```
 
 **Training**:
-```python
+```python noexec
 clf = cnn()
 clf.fit(x_train, y_train, epochs=20, batch_size=51)
 ```
@@ -198,7 +198,7 @@ MaxPooling(2×2): Reduces spatial dimensions by 2× (16×16)
 ## GPU Memory Management
 The code includes GPU memory growth configuration to prevent TensorFlow from reserving all GPU memory:
 
-```python
+```python noexec
 import tensorflow as tf
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -210,7 +210,7 @@ if gpus:
 ```
 
 ## Model Evaluation
-```python
+```python noexec
 # Predict on test set
 predictions = clf.predict(x_test).argmax(-1)
 
@@ -225,7 +225,7 @@ print('accuracy_score=', accuracy_score(y_test, predictions))
 
 ### Perceptron Variants
 Try different hidden layer sizes:
-```python
+```python noexec
 perceptron(100)       # Small: Fast but low accuracy
 perceptron(1000)      # Medium: Balance
 perceptron(100000)    # Large: Slow but better accuracy
@@ -239,14 +239,14 @@ Conv2D(128, 5×5) → MaxPool → Dropout → Dense(10000) → Dense(10)
 ```
 
 **Note**: There's a bug in the original code! Layer 2 and 3 incorrectly use `entree` instead of `layer`:
-```python
+```python noexec
 # BUG (line 30, 32):
 layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), 
                                activation='relu')(entree)  # Should be (layer)!
 ```
 
 **Corrected Architecture**:
-```python
+```python noexec
 # Layer 2 should take output from Layer 1
 layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), 
                                activation='relu')(layer)  # Fixed!
@@ -254,7 +254,7 @@ layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5),
 
 ### Commented Alternative
 The code includes a commented 4-layer variant:
-```python
+```python noexec
 # layer = tf.keras.layers.Conv2D(256, kernel_size=(3,3), 
 #                                activation='relu')(layer)
 # layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2), 
@@ -276,7 +276,7 @@ The code includes a commented 4-layer variant:
 - Dataset loaded automatically via `tf.keras.datasets.cifar10`
 
 ## Running the Code
-```bash
+```bash noexec
 # Install dependencies
 pip install tensorflow numpy scikit-learn
 
@@ -340,7 +340,7 @@ Experiment with:
 
 ### Exercise 4: Add Batch Normalization
 Insert batch norm after convolutions:
-```python
+```python noexec
 layer = tf.keras.layers.Conv2D(32, (5,5), activation='relu')(entree)
 layer = tf.keras.layers.BatchNormalization()(layer)
 layer = tf.keras.layers.MaxPooling2D((2,2))(layer)
@@ -350,7 +350,7 @@ layer = tf.keras.layers.MaxPooling2D((2,2))(layer)
 
 ### Exercise 5: Data Augmentation
 Add random transformations during training:
-```python
+```python noexec
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 datagen = ImageDataGenerator(

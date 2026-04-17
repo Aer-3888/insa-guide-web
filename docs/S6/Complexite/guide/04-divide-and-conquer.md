@@ -85,7 +85,7 @@ a = 2, b = 2, a = b => O(n log n)
 
 ### 3.2 Recherche dichotomique
 
-```python
+```python noexec
 def recherche_dicho(T, x, debut, fin):
     if debut > fin:
         return -1

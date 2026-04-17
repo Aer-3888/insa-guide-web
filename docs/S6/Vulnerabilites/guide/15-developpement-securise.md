@@ -66,7 +66,7 @@ Pire strategie
 
 ### Exemple concret
 
-```python
+```python noexec
 # MAUVAIS : blacklist
 def sanitize(input):
     return input.replace("'", "").replace(";", "")  # incomplet
@@ -119,7 +119,7 @@ Regle 6 : CSP comme filet de securite
 
 ### Ce qu'il ne faut PAS faire
 
-```python
+```python noexec
 # MAUVAIS : message d'erreur revelateur
 try:
     user = db.query("SELECT * FROM users WHERE id=" + user_id)
@@ -129,7 +129,7 @@ except Exception as e:
 
 ### Ce qu'il faut faire
 
-```python
+```python noexec
 # BON : message generique + log detaille
 import logging
 try:

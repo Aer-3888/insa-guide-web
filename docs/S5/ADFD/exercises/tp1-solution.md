@@ -16,7 +16,7 @@ sidebar_position: 1
 ### Afficher les premieres lignes du dataframe df. Calculer et afficher le nombre d'exemples.
 
 **Answer:**
-```python
+```python noexec
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -44,7 +44,7 @@ print(len(df))
 ### Q3 - Afficher les dimensions du jeu de donnees. Afficher les informations sur le jeu de donnees. Afficher la repartition des types de variables.
 
 **Answer:**
-```python
+```python noexec
 # 1. Dimensions du jeu de donnees
 print(df.shape)
 
@@ -79,7 +79,7 @@ dtypes: float64(3), int64(35), object(43)
 > Les variables de type Object ne sont pas des variables numeriques. Attention pour autant des variables int64 peuvent coder des variables categorielles.
 
 **Answer:**
-```python
+```python noexec
 nb_non_object = (df.dtypes != "object").sum()
 print("Nombre de variables non-object :", nb_non_object)
 ```
@@ -102,7 +102,7 @@ Nombre de variables non-object : 38
 > - pct_na : le pourcentage de valeurs manquantes pour chaque variable
 
 **Answer:**
-```python
+```python noexec
 # Tableau recapitulatif
 table_na = pd.DataFrame({
     'nb_na': df.isnull().sum(),
@@ -138,7 +138,7 @@ GarageType      81   5.547945
 ### Q7 - Representez sous forme de diagramme en barres le nombre de valeurs manquantes pour les 15 variables ayant le plus de valeurs manquantes.
 
 **Answer:**
-```python
+```python noexec
 top15 = table_na.head(15)
 plt.figure(figsize=(10, 6))
 plt.bar(top15.index, top15['nb_na'])
@@ -156,7 +156,7 @@ plt.show()
 ### Q8 - Faire le meme travail, mais uniquement pour les variables de type object
 
 **Answer:**
-```python
+```python noexec
 df_object = df.select_dtypes(include=["object"])
 
 table_na_obj = pd.DataFrame({
@@ -190,7 +190,7 @@ GarageFinish     81   5.547945
 ### Q9 - Faire le meme travail, mais uniquement pour les variables de type autre que object. Que remarquez-vous ?
 
 **Answer:**
-```python
+```python noexec
 df_non_object = df.select_dtypes(exclude=["object"])
 
 table_na_num = pd.DataFrame({
@@ -223,7 +223,7 @@ OpenPorchSF       0   0.000000
 
 The notebook provides the 14 surface/area variables for PCA:
 
-```python
+```python noexec
 cols_numeric = [
     "LotArea", "MasVnrArea", "BsmtFinSF1", "BsmtUnfSF",
     "TotalBsmtSF", "1stFlrSF", "2ndFlrSF",
@@ -258,7 +258,7 @@ print(df_num.info())
 ### Q10 - Afficher un histogramme de 1stFlrSF
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(8, 5))
 df_num["1stFlrSF"].hist(bins=50)
 plt.title("Distribution of 1st Floor Square Feet")
@@ -274,7 +274,7 @@ plt.show()
 ### Q11 - Afficher un histogramme de LotArea
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(8, 5))
 df_num["LotArea"].hist(bins=50)
 plt.title("Distribution of Lot Area")
@@ -290,7 +290,7 @@ plt.show()
 ### Q12 - Afficher le nuage de points GrLivArea vs SalePrice. Que remarquez-vous sur ce nuage de points ?
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(8, 6))
 plt.scatter(df_num["GrLivArea"], df_num["SalePrice"], alpha=0.5)
 plt.xlabel("GrLivArea (sq ft)")
@@ -312,7 +312,7 @@ plt.show()
 ### Q13 - Supprimer provisoirement les lignes contenant des valeurs manquantes, au vu du nombre de donnees supprimees comment peut on traiter les valeurs manquantes
 
 **Answer:**
-```python
+```python noexec
 df_dropped = df_num.dropna()
 print(f"Before: {len(df_num)}, After: {len(df_dropped)}")
 ```
@@ -329,7 +329,7 @@ Before: 1460, After: 1452
 ### Q14 - Imputer les valeurs manquantes par la mediane, afficher la distribution de la variable impactee avant et apres imputation
 
 **Answer:**
-```python
+```python noexec
 imputer = SimpleImputer(strategy="median")
 df_imp = pd.DataFrame(
     imputer.fit_transform(df_num),
@@ -361,7 +361,7 @@ plt.show()
 > Vous pourrez utiliser `mask = (df_imp <= q99).all(axis=1)`
 
 **Answer:**
-```python
+```python noexec
 q99 = df_imp.quantile(0.99)
 mask = (df_imp <= q99).all(axis=1)
 df_clean = df_imp[mask]
@@ -384,7 +384,7 @@ Apres : 1326
 ### Q16 - Appliquer une transformation log1p sur certaines variables. Affichage de WoodDeckSF avant et apres transformation.
 
 **Answer:**
-```python
+```python noexec
 cols_to_log = [
     "LotArea", "MasVnrArea", "TotalBsmtSF",
     "GrLivArea", "GarageArea", "WoodDeckSF",
@@ -413,7 +413,7 @@ plt.show()
 ### Q17 - Afficher le nombre d'exemples par valeur de la variable WoodDeckSF, pour verifier l'existence du pic en zero.
 
 **Answer:**
-```python
+```python noexec
 print(df_clean["WoodDeckSF"].value_counts().head(10))
 ```
 
@@ -441,7 +441,7 @@ Name: count, dtype: int64
 
 > Cette partie est donnee -- elle illustre l'utilite du nettoyage en predisant le prix des maisons.
 
-```python
+```python noexec
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
@@ -494,7 +494,7 @@ RMSE : 32392.59
 ### Q18 - Standardiser les donnees nettoyees
 
 **Answer:**
-```python
+```python noexec
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df_clean)
 ```
@@ -506,7 +506,7 @@ X_scaled = scaler.fit_transform(df_clean)
 ### Q19 - Calculer la PCA
 
 **Answer:**
-```python
+```python noexec
 pca = PCA()
 X_pca = pca.fit_transform(X_scaled)
 ```
@@ -516,7 +516,7 @@ X_pca = pca.fit_transform(X_scaled)
 ### Q20 - Recuperer et afficher la variance expliquee
 
 **Answer:**
-```python
+```python noexec
 for i, var in enumerate(pca.explained_variance_ratio_):
     print(f"PC{i+1}: {var*100:.2f}%")
 ```
@@ -548,7 +548,7 @@ PC14: 0.35%
 > On notera que pour l'instant cette projection n'apporte que peu d'information.
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(10, 7))
 plt.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.5, s=20)
 plt.xlabel(f"PC1 ({pca.explained_variance_ratio_[0]*100:.1f}%)")
@@ -568,7 +568,7 @@ plt.show()
 ### Q22 - Afficher pour chaque axe la valeur propre associee, la variance expliquee et la variance cumulee.
 
 **Answer:**
-```python
+```python noexec
 eigenvalue_table = pd.DataFrame({
     'Valeur propre': pca.explained_variance_,
     'Variance expliquee (%)': pca.explained_variance_ratio_ * 100,
@@ -591,7 +591,7 @@ PC2       1.801478               12.857996            38.705125
 The notebook provides a `correlation_circle_plotly` function. Use it:
 
 **Answer:**
-```python
+```python noexec
 correlation_circle_plotly(pca, df_clean.columns, min_contrib=0.15)
 ```
 
@@ -619,7 +619,7 @@ correlation_circle_plotly(pca, df_clean.columns, min_contrib=0.15)
 > On notera que les valeurs dans `pca.components_` contient les correlations entre les variables et les axes principaux.
 
 **Answer:**
-```python
+```python noexec
 loadings = pd.DataFrame(
     pca.components_.T,
     columns=[f'PC{i+1}' for i in range(pca.n_components_)],
@@ -633,7 +633,7 @@ print(loadings.head())
 ### Q25 - Classer les variables en fonction de leur contribution au premier axe (le carre de leurs correlations avec cet axe).
 
 **Answer:**
-```python
+```python noexec
 contributions = loadings ** 2
 print("=== Contributions to PC1 ===")
 print(contributions['PC1'].sort_values(ascending=False))
@@ -653,7 +653,7 @@ SalePrice        ~0.11
 ### Q26 - Classer les variables en fonction de leur contribution au deuxieme axe (le carre de leurs correlations avec cet axe).
 
 **Answer:**
-```python
+```python noexec
 print("=== Contributions to PC2 ===")
 print(contributions['PC2'].sort_values(ascending=False))
 ```
@@ -678,7 +678,7 @@ BsmtFinSF1       ~0.09
 > Pour verifier que la variable SalePrice est bien liee au deuxieme axe, on va colorer les points en fonction de cette valeur.
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(10, 7))
 scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1],
                       c=df_clean['SalePrice'], cmap='viridis', alpha=0.6, s=20)
@@ -702,7 +702,7 @@ plt.show()
 ### Q29 - Colorer les points en fonction de la valeur de BsmtFinSF1
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(10, 7))
 scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1],
                       c=df_clean['BsmtFinSF1'], cmap='viridis', alpha=0.6, s=20)
@@ -727,7 +727,7 @@ plt.show()
 
 The notebook provides a coloring by Neighborhood:
 
-```python
+```python noexec
 pca_df = pd.DataFrame(X_pca, columns=["PC1", "PC2"])
 pca_df["Neighborhood"] = df.loc[df_clean.index, "Neighborhood"].values
 plt.figure(figsize=(10, 7))
@@ -745,7 +745,7 @@ plt.show()
 ### Q31 - Faire le meme travail d'affichage en fonction de la variable OverallQual (note de qualite attribuee a la maison).
 
 **Answer:**
-```python
+```python noexec
 pca_df = pd.DataFrame(X_pca[:, :2], columns=["PC1", "PC2"])
 pca_df["OverallQual"] = df.loc[df_clean.index, "OverallQual"].values
 
@@ -764,7 +764,7 @@ plt.show()
 ### Q32 - Afficher uniquement les points ayant comme valeur 1, 2 ou 3. Que remarquez-vous ?
 
 **Answer:**
-```python
+```python noexec
 pca_df_low = pca_df[pca_df["OverallQual"].isin([1, 2, 3])]
 plt.figure(figsize=(10, 7))
 plt.scatter(pca_df_low["PC1"], pca_df_low["PC2"], s=40, alpha=0.7)
@@ -781,7 +781,7 @@ plt.show()
 ### Q33 - Afficher uniquement les points ayant comme valeur 8, 9 ou 10. Que remarquez-vous ?
 
 **Answer:**
-```python
+```python noexec
 pca_df_high = pca_df[pca_df["OverallQual"].isin([8, 9, 10])]
 plt.figure(figsize=(10, 7))
 plt.scatter(pca_df_high["PC1"], pca_df_high["PC2"], s=40, alpha=0.7, color='red')
@@ -798,7 +798,7 @@ plt.show()
 ### Q34 - Pour confirmer ceci affichez sur un meme graphique en bleu les valeurs 1,2,3 et en rouge les valeurs 8,9,10.
 
 **Answer:**
-```python
+```python noexec
 pca_df = pd.DataFrame(X_pca[:, :2], columns=["PC1", "PC2"])
 pca_df["OverallQual"] = df.loc[df_clean.index, "OverallQual"].values
 

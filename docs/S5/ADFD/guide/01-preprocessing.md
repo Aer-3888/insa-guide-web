@@ -39,7 +39,7 @@ The preprocessing stage includes:
 
 ### Detection
 
-```python
+```python noexec
 # Count missing values per column
 df.isnull().sum()
 
@@ -79,7 +79,7 @@ MasVnrArea      0.55%  --> Impute with median (only 8 values)
 
 **Decision rule**: If a column has >50% missing values, it carries little information -- dropping is usually best. For numerical columns with <20% missing, median imputation is the standard approach.
 
-```python
+```python noexec
 from sklearn.impute import SimpleImputer
 
 imputer = SimpleImputer(strategy="median")
@@ -95,14 +95,14 @@ df_imputed = pd.DataFrame(
 ### Detection Methods
 
 **1. Percentile-based (used in the course)**:
-```python
+```python noexec
 q99 = df.quantile(0.99)
 mask = (df <= q99).all(axis=1)
 df_clean = df[mask]
 ```
 
 **2. IQR (Interquartile Range)**:
-```python
+```python noexec
 Q1 = df.quantile(0.25)
 Q3 = df.quantile(0.75)
 IQR = Q3 - Q1
@@ -112,7 +112,7 @@ mask = ((df >= lower) & (df <= upper)).all(axis=1)
 ```
 
 **3. Z-score**: Points with |z| > 3 are considered outliers.
-```python
+```python noexec
 from scipy import stats
 z_scores = np.abs(stats.zscore(df))
 mask = (z_scores < 3).all(axis=1)
@@ -142,7 +142,7 @@ Impact on linear regression:
 
 Formula: `z = (x - mean) / std`
 
-```python
+```python noexec
 from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
@@ -155,7 +155,7 @@ X_scaled = scaler.fit_transform(X)
 
 Used for right-skewed distributions (many small values, few large values).
 
-```python
+```python noexec
 # log1p = log(1 + x), handles zeros
 df_log = np.log1p(df[cols_to_log])
 ```
@@ -240,7 +240,7 @@ PCA is covered in detail in [Chapter 2](/S5/ADFD/guide/02-pca).
 
 ### Preprocessing Pipeline
 
-```python
+```python noexec
 # 1. Load
 df = pd.read_csv("data.csv")
 

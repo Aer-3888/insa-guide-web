@@ -110,7 +110,7 @@ Les paragons de chaque classe sont les villes les plus représentatives du group
 
 ## Outils et bibliothèques Python
 
-```python
+```python noexec
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

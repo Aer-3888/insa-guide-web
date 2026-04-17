@@ -35,7 +35,7 @@ Learn JavaScript fundamentals through hands-on exercises covering variables, fun
 - DOM event handling
 
 **Key JavaScript Concepts**:
-```javascript
+```javascript noexec
 // Random array selection
 function randomValueFromArray(array) {
     const random = Math.floor(Math.random() * array.length);
@@ -75,7 +75,7 @@ let celsius = Math.round((fahrenheit - 32) * 5/9);
 - Dynamic DOM manipulation
 
 **Key JavaScript Concepts**:
-```javascript
+```javascript noexec
 // DOM traversal and manipulation
 const displayedImage = document.querySelector('.displayed-img');
 const thumbBar = document.querySelector('.thumb-bar');
@@ -112,7 +112,7 @@ thumbBar.addEventListener('click', (e) => {
 - Physics simulation (velocity, gravity)
 
 **Key JavaScript Concepts**:
-```javascript
+```javascript noexec
 // Constructor function / Class
 function Ball(x, y, velX, velY, color, size) {
     this.x = x;

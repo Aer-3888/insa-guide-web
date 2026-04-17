@@ -50,7 +50,7 @@ The naive classifier predicts the majority class for all instances.
 
 **Answer:**
 
-```bash
+```bash noexec
 # Navigate to the dataset directory
 cd adult/
 
@@ -102,7 +102,7 @@ yes=native-country United-States yes=sup50K no=infeq50K
 
 ### Procedure to build and evaluate your own tree
 
-```bash
+```bash noexec
 # 1. Create your rules file (e.g., mon_arbre.txt)
 #    Example: try using education or marital-status as root
 #    racine=marital-status Married-civ-spouse
@@ -133,7 +133,7 @@ perl ../rules2tree.pl adult mon_arbre.txt
 
 ### 3a: Depth-limited tree (d=2, 4 leaves)
 
-```bash
+```bash noexec
 # Build a depth-2 tree (4 leaves maximum)
 ../bonzaiboost -S adult -d 2
 
@@ -168,7 +168,7 @@ These features are chosen because they maximize information gain. The small trai
 
 MDLPC (Minimum Description Length Principle for Classification) automatically determines the optimal tree size based on information theory. It stops growing the tree when adding a new node is not justified by the information gain relative to the added complexity.
 
-```bash
+```bash noexec
 # Build tree with MDLPC
 ../bonzaiboost -S adult -mdlpc
 
@@ -195,7 +195,7 @@ MDLPC produces a deeper tree than d=2 but not as deep as Tmax. Performance is be
 
 ### 3c: Full tree (no stopping criterion)
 
-```bash
+```bash noexec
 # Build full tree (verbose mode, no stopping)
 ../bonzaiboost -S adult -v
 
@@ -235,7 +235,7 @@ The full tree achieves perfect training accuracy (100%) by memorizing every trai
 
 **Answer:**
 
-```bash
+```bash noexec
 # Train AdaBoost with 100 iterations of stumps
 ../bonzaiboost -S adult -boost adamh -n 100
 
@@ -261,7 +261,7 @@ AdaBoost (85-87% test) significantly outperforms:
 
 ### Question 6: Error rate analysis -- Analyze the training/test error curves
 
-```bash
+```bash noexec
 # Generate detailed HTML report with iteration-by-iteration results
 ../bonzaiboost -S adult -boost adamh -n 100 --info > adult.boost.log.html
 

@@ -165,7 +165,7 @@ Avant d'appliquer un test, il faut verifier ses conditions d'application :
 
 $$H_0 : \text{les donnees suivent une loi normale} \quad vs \quad H_1 : \text{non}$$
 
-```r
+```r noexec
 shapiro.test(donnees)
 # Si p > 0.05 : normalite OK
 # Si p < 0.05 : normalite rejetee
@@ -175,7 +175,7 @@ shapiro.test(donnees)
 
 Le graphique quantile-quantile compare les quantiles observes aux quantiles theoriques de la loi normale. Si les points sont alignes sur la diagonale, la normalite est plausible.
 
-```r
+```r noexec
 qqnorm(donnees)
 qqline(donnees, col = "red")
 ```
@@ -186,7 +186,7 @@ Pour comparer deux variances :
 
 $$H_0 : \sigma_1^2 = \sigma_2^2 \quad vs \quad H_1 : \sigma_1^2 \neq \sigma_2^2$$
 
-```r
+```r noexec
 # Test F (deux echantillons)
 var.test(x, y)
 

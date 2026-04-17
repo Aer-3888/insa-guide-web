@@ -49,7 +49,7 @@ Solitaire reduction with pattern matching on card tuples.
 ## Key Differences from TP3
 
 ### Type Definition
-```ocaml
+```ocaml noexec
 (* TP3 *)
 type carte = {h : haut; c : coul}
 
@@ -58,7 +58,7 @@ type carte = Carte of haut * coul
 ```
 
 ### Pattern Matching
-```ocaml
+```ocaml noexec
 (* TP3 *)
 let coul c = c.c
 

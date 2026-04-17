@@ -74,7 +74,7 @@ Le $R^2_{adj}$ penalise l'ajout de variables inutiles. Contrairement au $R^2$, i
 
 ## 4. Interpreter `summary(modele)`
 
-```r
+```r noexec
 modele <- lm(Sales ~ TV, data = pub)
 resume <- summary(modele)
 ```
@@ -94,7 +94,7 @@ resume <- summary(modele)
 
 ## 5. Diagnostics (hypotheses LINE)
 
-```r
+```r noexec
 par(mfrow = c(2, 2))
 plot(modele)
 par(mfrow = c(1, 1))
@@ -107,7 +107,7 @@ par(mfrow = c(1, 1))
 | Scale-Location | Homoscedasticite | Ligne rouge horizontale |
 | Residuals vs Leverage | Points influents | Aucun point au-dela des lignes de Cook |
 
-```r
+```r noexec
 # Test de normalite des residus
 shapiro.test(residuals(modele))
 ```
@@ -116,7 +116,7 @@ shapiro.test(residuals(modele))
 
 ## 6. Prediction
 
-```r
+```r noexec
 nouvelles <- data.frame(TV = c(100, 200, 300))
 
 # Intervalle de confiance (pour la MOYENNE de Y)
@@ -180,7 +180,7 @@ $$\hat{\sigma}^2 = \frac{SCR}{n - p - 1} = \frac{\sum(y_i - \hat{y}_i)^2}{n - p 
 
 ## 9. Calcul matriciel en R
 
-```r
+```r noexec
 # Construction manuelle
 Y <- donnees$Rendement
 X <- cbind(1, donnees$Densite, donnees$TxButy, donnees$TxProt)  # 1 pour l'intercept
@@ -224,7 +224,7 @@ ou $R_j^2$ est le $R^2$ de la regression de $X_j$ sur toutes les autres variable
 | $5 - 10$ | Multicolinearite moderee |
 | $> 10$ | Multicolinearite severe -- a traiter |
 
-```r
+```r noexec
 library(car)
 vif(modele_multiple)
 ```
@@ -265,7 +265,7 @@ extractAIC(modele_final)
 
 ## 12. Exemple du TP3 : Publicite et ventes
 
-```r
+```r noexec
 pub <- read.csv("Advertising.csv")
 
 # Modele complet
@@ -286,7 +286,7 @@ predict(reg2, newdata = data.frame(TV = 100, Radio = 20),
 
 ### Exemple du TP3 : Eucalyptus (calcul matriciel)
 
-```r
+```r noexec
 # Y = beta0 + beta1*circ + beta2*sqrt(circ) + epsilon
 Y <- eucal$ht
 X <- cbind(1, eucal$circ, sqrt(eucal$circ))

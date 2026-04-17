@@ -9,7 +9,7 @@ sidebar_position: 3
 
 ## Setup
 
-```r
+```r noexec
 # No special packages needed
 # Data file vitesse.csv required for Exercises 2-4
 # setwd("/path/to/data")
@@ -106,7 +106,7 @@ where $z_{\alpha/2} = \texttt{qnorm}(1 - \alpha/2)$.
 ### Step 1: Load and prepare data
 
 **Answer:**
-```r
+```r noexec
 data <- read.csv2("vitesse.csv")
 data$vecNum <- as.factor(data$vecNum)
 data$vecVitesses <- as.numeric(data$vecVitesses)
@@ -128,7 +128,7 @@ Measurements per week: 6
 ### Step 2: Compute weekly means
 
 **Answer:**
-```r
+```r noexec
 mu_true <- 120      # True mean
 sigma_true <- 10    # True SD (sigma^2 = 100)
 n_per_week <- 6     # Measurements per week
@@ -160,7 +160,7 @@ The SD of weekly means (~4.09) matches the CLT prediction: $\sigma/\sqrt{n} = 10
 ### Step 3: Construct confidence intervals and check coverage
 
 **Answer:**
-```r
+```r noexec
 z_crit <- qnorm(1 - alpha/2)  # qnorm(0.975) ~ 1.96
 se <- sigma_true / sqrt(n_per_week)
 
@@ -212,7 +212,7 @@ Each CI has the form $[\bar{X}_i - 8.00,\; \bar{X}_i + 8.00]$. Every interval ha
 ### Step 4: Visualization
 
 **Answer:**
-```r
+```r noexec
 n_plot <- 40
 plot(c(IC_lower[1:n_plot], IC_upper[1:n_plot]),
      c(1:n_plot, 1:n_plot),
@@ -254,7 +254,7 @@ $$\text{IC} = \left[\frac{(n-1)S'^2}{\chi^2_{n-1,\,1-\alpha/2}},\; \frac{(n-1)S'
 ### Step 1: Compute weekly variances
 
 **Answer:**
-```r
+```r noexec
 weekly_vars <- tapply(data$vecVitesses, data$vecNum, var)
 
 cat("First 10 weekly variances:\n")
@@ -281,7 +281,7 @@ R's `var()` computes the unbiased sample variance $S'^2 = \sum(x_i - \bar{x})^2 
 ### Step 2: Construct chi-squared confidence intervals
 
 **Answer:**
-```r
+```r noexec
 chi2_upper <- qchisq(1 - alpha/2, df = n_per_week - 1)
 chi2_lower <- qchisq(alpha/2, df = n_per_week - 1)
 
@@ -331,7 +331,7 @@ The CI is extremely wide ([45.00, 694.71] for a true value of 100) because with 
 ### Step 3: Visualization of variance intervals
 
 **Answer:**
-```r
+```r noexec
 IC_sd_lower <- sqrt(IC_var_lower)
 IC_sd_upper <- sqrt(IC_var_upper)
 
@@ -375,7 +375,7 @@ The $t$-distribution has heavier tails than the normal, reflecting additional un
 ### Step 1: Compute $t$ critical value and compare with $z$
 
 **Answer:**
-```r
+```r noexec
 t_crit <- qt(1 - alpha/2, df = n_per_week - 1)
 weekly_sds <- tapply(data$vecVitesses, data$vecNum, sd)
 
@@ -400,7 +400,7 @@ t intervals are 31.2 % wider
 ### Step 2: Construct $t$-intervals and compare with $z$-intervals
 
 **Answer:**
-```r
+```r noexec
 IC_t_lower <- weekly_means - t_crit * weekly_sds / sqrt(n_per_week)
 IC_t_upper <- weekly_means + t_crit * weekly_sds / sqrt(n_per_week)
 

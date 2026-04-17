@@ -38,7 +38,7 @@ Ce TP etend le TP4 (structure Tache) avec l'allocation dynamique et les listes c
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file Liste.h
  * \brief Structure et prototypes pour la liste chainee de taches
@@ -89,7 +89,7 @@ Liste l (pointeur vers le premier element)
 
 **Answer pour tache.h :**
 
-```c
+```c noexec
 /*!
  * \file tache.h
  * \brief Module de definition des taches
@@ -128,7 +128,7 @@ Tache * lireTachesFichierDyn(char * nomFichier, int * nbtaches);
 
 **Answer pour tache.c :**
 
-```c
+```c noexec
 #include "tache.h"
 #include <string.h>
 
@@ -263,7 +263,7 @@ int ecrireTachesFichier(char * nomFichier, Tache *tab_t, int nbTaches) {
 
 **Answer:**
 
-```c
+```c noexec
 #include <string.h>
 #include "Liste.h"
 
@@ -341,7 +341,7 @@ l --> [Tache3|*]-->[Tache1|*]-->[Tache2|NULL]
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \brief Insere un element trie par ID (version specialisee)
  *
@@ -388,7 +388,7 @@ void ajouttrield(Liste *l, Tache t) {
 
 Les pointeurs de fonctions permettent de passer des fonctions en parametre. Cela rend `ajouttrie()` generique : on peut trier par ID, duree ou nom sans changer le code d'insertion.
 
-```c
+```c noexec
 int (*comparateur)(Tache, Tache);  /* Declaration */
 comparateur = &compareID;          /* Assignation */
 int resultat = comparateur(t1, t2); /* Appel */
@@ -396,7 +396,7 @@ int resultat = comparateur(t1, t2); /* Appel */
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \brief Insere un element en maintenant l'ordre selon un comparateur
  *
@@ -463,7 +463,7 @@ int compareNom(Tache t, Tache c) {
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include "tache.h"
 #include "Liste.h"
@@ -553,7 +553,7 @@ Les predecesseurs sont : 1
 
 Le code actuel ne libere pas la memoire de la liste chainee. Voici comment corriger cela :
 
-```c
+```c noexec
 void libererListe(Liste *l) {
     while (*l != NULL) {
         Element *temp = *l;
@@ -578,7 +578,7 @@ void libererListe(Liste *l) {
 3. **Pointeurs de fonctions :** Permettent le tri generique sans dupliquer le code d'insertion
 
 4. **Passage de pointeurs vers pointeurs :**
-   ```c
+   ```c noexec
    void modifier(Liste *l) {
        *l = nouvel_element;  /* Modifie la liste originale */
    }

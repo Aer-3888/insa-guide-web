@@ -113,7 +113,7 @@ Dans scikit-learn, le parametre `C` est l'inverse de la force de regularisation 
 
 ## 7. Code Python complet
 
-```python
+```python noexec
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.datasets import load_breast_cancer
@@ -160,7 +160,7 @@ print(f"Proba pour le premier exemple : {y_proba[0]}")
 
 ### Classification multiclasse (Iris)
 
-```python
+```python noexec
 from sklearn.datasets import load_iris
 
 iris = load_iris()

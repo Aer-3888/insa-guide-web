@@ -36,7 +36,7 @@ Chaque tache a un numero d'identification, une duree (en heures), des predecesse
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file tache.h
  * \brief Module de gestion de taches pour la planification de projets
@@ -100,7 +100,7 @@ Total :             ~140 octets (+ padding eventuel)
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file tache.c
  * \brief Implementation des fonctions de gestion de taches
@@ -147,7 +147,7 @@ fscanf(f, " %[^\n]", t->titre) :
 
 **Answer:**
 
-```c
+```c noexec
 void afficheTache(Tache *t) {
     printf("=========================\n");
     printf("Tache n%d: %s\n", t->no, t->titre);
@@ -183,7 +183,7 @@ void afficheTabTaches(Tache *tab_t, int nbtaches) {
 
 **Answer:**
 
-```c
+```c noexec
 int lireTachesFichier(char *nomFichier, Tache *tab) {
     FILE *fichier;
 
@@ -223,7 +223,7 @@ int lireTachesFichier(char *nomFichier, Tache *tab) {
 
 **Answer:**
 
-```c
+```c noexec
 int sommeDureeTotale(Tache *tab_t, int nbtaches) {
     int res = 0;
     for (int i = 0; i < nbtaches; i++) {
@@ -242,7 +242,7 @@ int sommeDureeTotale(Tache *tab_t, int nbtaches) {
 
 **Answer:**
 
-```c
+```c noexec
 int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches) {
     FILE *fichier;
 
@@ -284,7 +284,7 @@ int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches) {
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file main.c
  * \brief Programme principal de gestion de taches

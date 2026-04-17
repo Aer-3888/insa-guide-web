@@ -20,7 +20,7 @@ This file covers the ARM assembly TD exercises: character-to-number conversion (
 **Answer:**
 
 **Struct layout:**
-```c
+```c noexec
 struct chain {
     int lg;        // offset 0: length of the string
     char tcar[];   // offset 4: character array (NOT null-terminated)

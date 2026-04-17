@@ -65,7 +65,7 @@ Web scraping is the automated extraction of data from web pages. The LDS course 
 
 ### Setup and Parsing
 
-```python
+```python noexec
 from bs4 import BeautifulSoup
 
 # Parse HTML string
@@ -81,7 +81,7 @@ with open('page.html', 'r', encoding='utf-8') as f:
 
 ### Finding Elements
 
-```python
+```python noexec
 # find() -- returns FIRST match (or None)
 h1 = soup.find('h1')
 div = soup.find('div', class_='content')
@@ -97,7 +97,7 @@ items = soup.find_all(['h1', 'h2', 'h3'])  # Multiple tags
 
 ### CSS Selectors
 
-```python
+```python noexec
 # select() returns list, select_one() returns first
 soup.select('div.item')             # <div class="item">
 soup.select('#main')                # <div id="main">
@@ -111,7 +111,7 @@ soup.select('div.a.b')             # <div class="a b">
 
 ### Extracting Data
 
-```python
+```python noexec
 # Text content
 text = elem.get_text()              # All text (including children)
 text = elem.get_text(strip=True)    # Stripped whitespace
@@ -133,7 +133,7 @@ prev_sib = elem.previous_sibling
 
 ### Table Parsing
 
-```python
+```python noexec
 def parse_table(soup):
     table = soup.find('table')
     rows = []
@@ -148,7 +148,7 @@ def parse_table(soup):
 
 ### Link Extraction
 
-```python
+```python noexec
 def extract_links(soup, base_url=""):
     links = []
     for a in soup.find_all('a', href=True):
@@ -166,7 +166,7 @@ def extract_links(soup, base_url=""):
 
 ### Using urllib
 
-```python
+```python noexec
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
@@ -183,7 +183,7 @@ except URLError as e:
 
 ### With Custom Headers
 
-```python
+```python noexec
 url = "https://example.com/page"
 req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
 response = urlopen(req)
@@ -192,7 +192,7 @@ html = response.read().decode('utf-8')
 
 ### Using requests (preferred for production)
 
-```python
+```python noexec
 import requests
 
 response = requests.get("https://example.com")
@@ -202,7 +202,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 
 ## Complete Scraping Example
 
-```python
+```python noexec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
@@ -281,7 +281,7 @@ def calculate_ean13_checksum(code_12):
 
 ### Saving Scraped Data
 
-```python
+```python noexec
 import json
 import csv
 
@@ -300,7 +300,7 @@ def save_csv(data, filename, headers):
 
 ### Integrating with SQLite
 
-```python
+```python noexec
 import sqlite3
 
 def save_to_database(dvd_data, db_file='dvds.db'):
@@ -332,7 +332,7 @@ def save_to_database(dvd_data, db_file='dvds.db'):
 
 ### Running System Commands
 
-```python
+```python noexec
 import subprocess
 
 # Run command and capture output
@@ -352,7 +352,7 @@ except subprocess.CalledProcessError as e:
 
 ### File Operations
 
-```python
+```python noexec
 import os
 import shutil
 from pathlib import Path
@@ -383,7 +383,7 @@ for file in Path('.').rglob('*.py'):  # Recursive
 
 ### Batch Processing
 
-```python
+```python noexec
 from pathlib import Path
 
 def process_directory(input_dir, output_dir):
@@ -413,7 +413,7 @@ def process_directory(input_dir, output_dir):
 ## CHEAT SHEET
 
 ### BeautifulSoup
-```python
+```python noexec
 soup = BeautifulSoup(html, 'html.parser')
 
 # Finding elements
@@ -434,14 +434,14 @@ elem.next_sibling, elem.previous_sibling
 ```
 
 ### Web Requests
-```python
+```python noexec
 from urllib.request import urlopen
 response = urlopen(url)
 html = response.read().decode('utf-8')
 ```
 
 ### Common Patterns
-```python
+```python noexec
 # Check for None before accessing
 elem = soup.find('div')
 if elem is not None:

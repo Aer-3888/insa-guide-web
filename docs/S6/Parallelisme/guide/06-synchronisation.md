@@ -11,7 +11,7 @@ Une **race condition** se produit quand deux threads accedent a la meme variable
 
 ### Exemple classique
 
-```c
+```c noexec
 /* compteur++ n'est PAS atomique */
 /* 1. lire compteur dans un registre    */
 /* 2. incrementer le registre            */
@@ -30,7 +30,7 @@ Une **race condition** se produit quand deux threads accedent a la meme variable
 
 Un seul thread peut detenir le verrou a la fois.
 
-```c
+```c noexec
 pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 
 pthread_mutex_lock(&m);     /* verrouiller */
@@ -48,7 +48,7 @@ pthread_mutex_unlock(&m);   /* deverrouiller */
 
 Equivalent du mutex pour OpenMP. Un seul thread a la fois.
 
-```c
+```c noexec
 #pragma omp critical
 {
     compteur++;
@@ -59,7 +59,7 @@ Equivalent du mutex pour OpenMP. Un seul thread a la fois.
 
 Pour une operation simple sur une seule variable. Plus rapide que `critical`.
 
-```c
+```c noexec
 #pragma omp atomic
 compteur++;
 ```
@@ -68,7 +68,7 @@ compteur++;
 
 Le mecanisme le plus performant pour les accumulateurs : chaque thread a sa copie locale, fusion a la fin.
 
-```c
+```c noexec
 #pragma omp parallel for reduction(+:somme)
 for (int i = 0; i < N; i++) somme += tab[i];
 ```
@@ -89,7 +89,7 @@ Tous les threads/processus attendent que tout le monde soit arrive.
 
 ### OpenMP
 
-```c
+```c noexec
 #pragma omp barrier   /* barriere explicite */
 ```
 
@@ -97,13 +97,13 @@ Barriere **implicite** a la fin de `parallel`, `for`, `sections`, `single`. Supp
 
 ### MPI
 
-```c
+```c noexec
 MPI_Barrier(MPI_COMM_WORLD);
 ```
 
 ### Pthreads
 
-```c
+```c noexec
 pthread_barrier_t b;
 pthread_barrier_init(&b, NULL, nb_threads);
 /* dans chaque thread : */
@@ -127,7 +127,7 @@ Deux threads/processus s'attendent mutuellement : chacun detient une ressource d
 
 ### Deadlocks en Pthreads
 
-```c
+```c noexec
 /* Thread 1 : lock A puis lock B */
 /* Thread 2 : lock B puis lock A */
 /* DEADLOCK si T1 a A et T2 a B */
@@ -137,7 +137,7 @@ Deux threads/processus s'attendent mutuellement : chacun detient une ressource d
 
 ### Deadlocks en MPI
 
-```c
+```c noexec
 /* Les deux envoient avant de recevoir */
 P0: MPI_Send(..., dest=1, ...)   /* attend que P1 recoive */
 P1: MPI_Send(..., dest=0, ...)   /* attend que P0 recoive */
@@ -155,7 +155,7 @@ P1: MPI_Send(..., dest=0, ...)   /* attend que P0 recoive */
 
 Permettent a un thread de dormir en attendant un evenement, sans attente active.
 
-```c
+```c noexec
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 
@@ -184,7 +184,7 @@ pthread_mutex_unlock(&m);
 
 Deux threads modifient des variables **differentes** mais sur la **meme ligne de cache** (typiquement 64 octets). Le processeur invalide la ligne a chaque ecriture, meme s'il n'y a pas de conflit logique.
 
-```c
+```c noexec
 /* MAUVAIS : compteurs[0] et compteurs[1] sur la meme ligne de cache */
 int compteurs[4] = {0};
 #pragma omp parallel

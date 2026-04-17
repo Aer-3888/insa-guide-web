@@ -116,7 +116,7 @@ sidebar_position: 10
 
 ### Utilisation en TP
 
-```bash
+```bash noexec
 gcc -Wall -g -pg -fprofile-arcs -ftest-coverage ngram.c -o ngram
 ./ngram -n 2 -shown 10 -file shakespeare.txt
 gprof ngram > report.txt          # profiling

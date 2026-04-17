@@ -66,7 +66,7 @@ mpiexec -n <nb_processus> -f ~/.machines ./programme
 
 ### Code minimal MPI
 
-```c
+```c noexec
 #include <stdio.h>
 #include <mpi.h>
 
@@ -131,7 +131,7 @@ Avec `h = (b-a)/n` et `xᵢ = i/n`.
 
 ### Code séquentiel
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -191,7 +191,7 @@ int main(void) {
 
 ### Code parallèle
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -284,7 +284,7 @@ Chaque processus calcule N/p trapèzes.
 
 ### 1. Initialisation et terminaison
 
-```c
+```c noexec
 int MPI_Init(int *argc, char ***argv);
 int MPI_Finalize(void);
 ```
@@ -296,7 +296,7 @@ int MPI_Finalize(void);
 
 ### 2. Informations sur les processus
 
-```c
+```c noexec
 int MPI_Comm_rank(MPI_Comm comm, int *rank);
 int MPI_Comm_size(MPI_Comm comm, int *size);
 ```
@@ -307,7 +307,7 @@ int MPI_Comm_size(MPI_Comm comm, int *size);
 
 ### 3. Broadcast
 
-```c
+```c noexec
 int MPI_Bcast(void *buffer, int count, MPI_Datatype datatype, 
               int root, MPI_Comm comm);
 ```
@@ -315,7 +315,7 @@ int MPI_Bcast(void *buffer, int count, MPI_Datatype datatype,
 **Effet** : Processus `root` envoie le contenu de `buffer` à tous les autres.
 
 **Exemple** :
-```c
+```c noexec
 int N = 1000;
 MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
 // Tous les processus ont maintenant N = 1000
@@ -323,7 +323,7 @@ MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
 ### 4. Reduce
 
-```c
+```c noexec
 int MPI_Reduce(void *sendbuf, void *recvbuf, int count, 
                MPI_Datatype datatype, MPI_Op op, 
                int root, MPI_Comm comm);
@@ -340,7 +340,7 @@ int MPI_Reduce(void *sendbuf, void *recvbuf, int count,
 - `MPI_LOR` : OU logique
 
 **Exemple** :
-```c
+```c noexec
 double local_sum = 10.0;
 double total_sum;
 MPI_Reduce(&local_sum, &total_sum, 1, MPI_DOUBLE, 
@@ -350,14 +350,14 @@ MPI_Reduce(&local_sum, &total_sum, 1, MPI_DOUBLE,
 
 ### 5. Mesure de temps
 
-```c
+```c noexec
 double MPI_Wtime(void);
 ```
 
 **Retourne** : Temps en secondes depuis un point de référence arbitraire.
 
 **Utilisation** :
-```c
+```c noexec
 double start = MPI_Wtime();
 // ... calcul ...
 double duration = MPI_Wtime() - start;

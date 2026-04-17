@@ -232,7 +232,7 @@ Ecrire `modus_ponens : prop * prop -> prop list` qui applique modus ponens.
 
 ### Solution
 
-```ocaml
+```ocaml noexec
 type prop = Atom of string | Not of prop | Imp of prop * prop
 
 let modus_ponens (p, p') =
@@ -252,7 +252,7 @@ Ecrire `saturation : prop list -> prop list` qui applique modus ponens jusqu'a s
 
 ### Solution
 
-```ocaml
+```ocaml noexec
 let rec saturation l =
   let pairs = all_pairs l in
   let new_props = List.concat_map modus_ponens pairs in

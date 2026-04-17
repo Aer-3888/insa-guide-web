@@ -115,7 +115,7 @@ $$\nabla J(\mathbf{w}) = -\frac{1}{n} \mathbf{X}^T (\mathbf{y} - \mathbf{X}\math
 
 ### Code : descente de gradient manuelle
 
-```python
+```python noexec
 import numpy as np
 
 def gradient_descent(X, y, lr=0.01, n_iter=1000):
@@ -154,7 +154,7 @@ Quand les features ont des echelles differentes (ex : age en annees vs salaire e
 - Permettre au gradient de converger uniformement.
 - Rendre les coefficients comparables.
 
-```python
+```python noexec
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
@@ -188,7 +188,7 @@ $$J_{\text{Ridge}}(\mathbf{w}) = \frac{1}{2n} ||\mathbf{y} - \mathbf{X}\mathbf{w
 - Solution analytique : $\mathbf{w}^* = (\mathbf{X}^T\mathbf{X} + \alpha \mathbf{I})^{-1} \mathbf{X}^T \mathbf{y}$
 - Toujours inversible (meme si $\mathbf{X}^T\mathbf{X}$ ne l'est pas).
 
-```python
+```python noexec
 from sklearn.linear_model import Ridge
 
 ridge = Ridge(alpha=1.0)
@@ -204,7 +204,7 @@ $$J_{\text{Lasso}}(\mathbf{w}) = \frac{1}{2n} ||\mathbf{y} - \mathbf{X}\mathbf{w
 - Utile quand beaucoup de features sont irrelevantes.
 - Pas de solution analytique (resolution par algorithme iteratif).
 
-```python
+```python noexec
 from sklearn.linear_model import Lasso
 
 lasso = Lasso(alpha=0.1)
@@ -229,7 +229,7 @@ Combine les avantages de Ridge (stabilite) et Lasso (selection de features).
 
 ### Tuning de alpha
 
-```python
+```python noexec
 from sklearn.linear_model import RidgeCV, LassoCV
 
 # Ridge avec validation croisee automatique
@@ -254,7 +254,7 @@ print(f"Meilleur alpha : {lasso_cv.alpha_:.4f}")
 | **MAE** | $\frac{1}{n}\sum|y_i - \hat{y}_i|$ | Moins sensible aux outliers |
 | **$R^2$** | $1 - \frac{SS_{\text{res}}}{SS_{\text{tot}}}$ | Proportion de variance expliquee |
 
-```python
+```python noexec
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, root_mean_squared_error
 
 y_pred = model.predict(X_test)
@@ -268,7 +268,7 @@ print(f"R^2  : {r2_score(y_test, y_pred):.3f}")
 
 ## 8. Exemple complet : regression lineaire sur les distances de freinage
 
-```python
+```python noexec
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression, Ridge, Lasso

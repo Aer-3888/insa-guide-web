@@ -33,7 +33,7 @@ Randomiser l'emplacement en memoire de la pile (stack), du tas (heap), des bibli
 
 ### Verification
 
-```bash
+```bash noexec
 # Linux : verifier l'ASLR
 cat /proc/sys/kernel/randomize_va_space
 # 0 = desactive, 1 = partiel, 2 = complet
@@ -96,7 +96,7 @@ Un buffer overflow lineaire (qui ecrase sequentiellement la pile) modifie le can
 
 ### Activation
 
-```bash
+```bash noexec
 # GCC : active par defaut, desactivable avec :
 gcc -fno-stack-protector  # desactive les canaries (NE PAS FAIRE en production)
 gcc -fstack-protector-all # active pour toutes les fonctions
@@ -119,7 +119,7 @@ Rendre les tables de relocation (GOT - Global Offset Table) en lecture seule apr
 
 ### Activation
 
-```bash
+```bash noexec
 gcc -Wl,-z,relro,-z,now  # Full RELRO
 ```
 
@@ -140,7 +140,7 @@ Compiler le programme pour qu'il puisse etre charge a n'importe quelle adresse. 
 
 ### Activation
 
-```bash
+```bash noexec
 gcc -pie -fPIE programme.c  # Compile en PIE
 ```
 

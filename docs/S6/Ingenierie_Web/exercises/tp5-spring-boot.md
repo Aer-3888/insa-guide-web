@@ -2436,7 +2436,7 @@ Ce fichier CSS definit les **styles visuels** de la page HTML. Il separe la pres
 **Answer:**
 
 Le fichier `script.js` fourni :
-```javascript
+```javascript noexec
 function getHelloWorld() {
   const apiURL = 'http://localhost:8080/api/v1/public/hello/helloworld';
   const xhr = new XMLHttpRequest();
@@ -2483,7 +2483,7 @@ La fonction est appelee immediatement (`getHelloWorld()`) au chargement du scrip
 
 Modifier `script.js` :
 
-```javascript
+```javascript noexec
 // Fichier : tp7/script.js (modifie)
 
 function getHelloWorld() {

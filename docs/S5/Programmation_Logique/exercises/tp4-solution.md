@@ -11,7 +11,7 @@ sidebar_position: 4
 
 ### Representation
 
-```prolog
+```prolog noexec
 % Arbre vide
 vide
 
@@ -289,7 +289,7 @@ B = arb_bin(8, arb_bin(4, arb_bin(2, vide, vide), arb_bin(6, vide, vide)),
 
 **Answer:**
 
-```prolog
+```prolog noexec
 insertion_arbre_ordonne1(X, B) :-
     free(B), !,
     B = arb_bin(X, _, _).

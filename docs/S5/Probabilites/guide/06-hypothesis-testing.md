@@ -154,7 +154,7 @@ $$\frac{1}{\nu} = \frac{1}{n_1-1}\left(\frac{s_1'^2/n_1}{\hat{\sigma}_D^2}\right
 
 ### R Functions
 
-```r
+```r noexec
 # One-sample t-test (conformity)
 t.test(x, mu=mu_0, conf.level=0.95)
 

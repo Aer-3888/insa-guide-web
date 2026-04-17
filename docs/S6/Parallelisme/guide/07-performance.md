@@ -60,7 +60,7 @@ Taille du probleme **croit proportionnellement** au nombre de processeurs (charg
 
 ### OpenMP
 
-```c
+```c noexec
 double t0 = omp_get_wtime();   /* temps mur (wall clock) */
 /* ... code parallele ... */
 double t1 = omp_get_wtime();
@@ -71,7 +71,7 @@ double temps = t1 - t0;
 
 ### MPI
 
-```c
+```c noexec
 double t0 = MPI_Wtime();
 /* ... calcul distribue ... */
 double t1 = MPI_Wtime();
@@ -81,7 +81,7 @@ Chaque processus a son propre chrono. Pour un timing global, placer la mesure su
 
 ### CUDA
 
-```c
+```c noexec
 cudaEvent_t debut, fin;
 cudaEventCreate(&debut);
 cudaEventCreate(&fin);

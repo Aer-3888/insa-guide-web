@@ -94,7 +94,7 @@ FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT
 
 ### Syntaxe de base
 
-```sql
+```sql noexec
 SELECT [DISTINCT] col1, AGG(col2)
 FROM t1
 [INNER|LEFT|RIGHT|CROSS] JOIN t2 ON condition
@@ -114,7 +114,7 @@ SUM(col) | AVG(col) | MIN(col) | MAX(col)
 
 ### Division (double NOT EXISTS)
 
-```sql
+```sql noexec
 SELECT x FROM T1
 WHERE NOT EXISTS (
     SELECT y FROM T2
@@ -129,7 +129,7 @@ Lecture : "Les x pour lesquels il n'existe pas de y sans correspondance."
 
 ### Pieges NULL
 
-```sql
+```sql noexec
 WHERE col IS NULL          -- pas WHERE col = NULL
 NOT IN + NULL = vide       -- ajouter WHERE col IS NOT NULL
 ```
@@ -245,7 +245,7 @@ CA : PostgreSQL         (pas distribue)
 
 ### Cassandra
 
-```sql
+```sql noexec
 CREATE TABLE t (pk TEXT, ck INT, val TEXT, PRIMARY KEY ((pk), ck));
 SELECT * FROM t WHERE pk = 'x' AND ck > 10;
 -- TOUJOURS filtrer par partition key
@@ -261,7 +261,7 @@ RETURN n.prop, COUNT(m)
 
 ### MongoDB
 
-```javascript
+```javascript noexec
 db.col.find({ champ: { $gt: val } })
 db.col.aggregate([
     { $match: { champ: val } },
@@ -281,7 +281,7 @@ BASE : Basically Available, Soft state, Eventually consistent  (NoSQL)
 
 ## 8. Index et performance
 
-```sql
+```sql noexec
 CREATE INDEX idx ON table(col);        -- B-tree (defaut)
 CREATE INDEX idx ON table(col1, col2); -- composite
 

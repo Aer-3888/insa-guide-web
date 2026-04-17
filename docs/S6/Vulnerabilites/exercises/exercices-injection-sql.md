@@ -15,7 +15,7 @@ sidebar_position: 3
 ### Le code suivant est-il vulnerable ? Si oui, montrez le payload et la requete resultante.
 
 **Code :**
-```php
+```php noexec
 $connection = mysql_connect(...);
 $request = "SELECT name, forename, role
              FROM musicians
@@ -65,7 +65,7 @@ Ici, la derniere apostrophe de la requete originale ferme naturellement la chain
 **Security explanation:**
 
 La vulnerabilite vient de la concatenation non securisee d'entrees utilisateur dans le SQL. L'attaquant "sort" de la chaine de caracteres pour injecter du code SQL arbitraire. La correction est d'utiliser des requetes preparees :
-```php
+```php noexec
 $stmt = $mysqli->prepare("SELECT name, forename, role FROM musicians WHERE band=?");
 $stmt->bind_param("s", $bandname);
 $stmt->execute();
@@ -78,7 +78,7 @@ $stmt->execute();
 ### Le code suivant est-il vulnerable ? Quelle est la particularite ?
 
 **Code :**
-```java
+```java noexec
 String query = "SELECT name FROM table WHERE id="
              + request.getParameter("user_id");
 ```
@@ -112,7 +112,7 @@ La protection par echappement des apostrophes ne protege PAS les champs numeriqu
 ## Exercice 3 : Contournement de login (sujet DS 2025, Q2)
 
 ### Requete d'authentification :
-```php
+```php noexec
 $req = "SELECT * FROM users WHERE name = '" + $name
      + "' AND password = '" + $pass + "'"
 ```
@@ -122,7 +122,7 @@ $req = "SELECT * FROM users WHERE name = '" + $name
 **Answer:**
 
 La requete devient :
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = ''' AND password = '...'
 ```
 
@@ -134,7 +134,7 @@ Erreur SQL : apostrophe non fermee. Cela revele la presence d'une injection SQL.
 
 **Payload :** `$name = admin'--`, `$pass = n'importe quoi`
 
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = 'admin'--' AND password = 'n'importe quoi'
                                ^^^^^^^
                                Le -- commente tout le reste
@@ -153,7 +153,7 @@ Trace d'execution :
 
 **Payload :** `$name = ' OR 1=1--`, `$pass = x`
 
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = '' OR 1=1--' AND password = 'x'
                                ^^^^^^^^^^
                        Chaine vide OU condition toujours vraie
@@ -167,7 +167,7 @@ Retourne TOUS les utilisateurs. L'application prend generalement le premier (sou
 
 **Payload :** `$name = ' OR 'a'='a`, `$pass = ' OR 'a'='a`
 
-```sql
+```sql noexec
 SELECT * FROM users WHERE name='' OR 'a'='a' AND password='' OR 'a'='a'
 ```
 
@@ -178,7 +178,7 @@ Chaque condition `'a'='a'` est toujours vraie. L'apostrophe fermante originale c
 **Answer:**
 
 Les mots de passe sont stockes en clair (pas de hachage) puisque la comparaison est directe dans la requete SQL : `password = '$pass'`. Un stockage securise utiliserait :
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = ? AND password_hash = SHA256(CONCAT(?, salt))
 ```
 
@@ -193,7 +193,7 @@ Le stockage en clair des mots de passe est une faute grave. Les mots de passe do
 ## Exercice 4 : UNION SELECT
 
 ### La requete affiche les musiciens d'un groupe :
-```php
+```php noexec
 $req = "SELECT name, forename, role FROM musicians WHERE band='" . $band . "'";
 ```
 
@@ -225,7 +225,7 @@ $band = 0' UNION SELECT login, password, 0 FROM users--
 ```
 
 Requete resultante :
-```sql
+```sql noexec
 SELECT name, forename, role FROM musicians WHERE band='0'
 UNION SELECT login, password, 0 FROM users--'
 ```
@@ -272,7 +272,7 @@ $band = whatever';DROP TABLE users--
 ```
 
 Requete :
-```sql
+```sql noexec
 SELECT name,forename,role FROM musicians WHERE band='whatever';
 DROP TABLE users--'
 ```
@@ -282,7 +282,7 @@ Le point-virgule termine la premiere requete et en commence une nouvelle. L'atta
 **Security explanation:**
 
 Le stacking est possible sur certains SGBD (MySQL avec `mysqli_multi_query`, MS-SQL) mais pas tous. Sur MS-SQL, si `xp_cmdshell` est active, l'attaquant peut meme obtenir un shell systeme :
-```sql
+```sql noexec
 xp_cmdshell 'whoami'
 ```
 
@@ -293,7 +293,7 @@ xp_cmdshell 'whoami'
 ### Expliquez pourquoi le code suivant n'est PAS vulnerable
 
 **Code :**
-```php
+```php noexec
 $stmt = $mysqli->prepare("SELECT * FROM users WHERE name=?");
 $stmt->bind_param("s", $_GET['name']);
 ```
@@ -303,20 +303,20 @@ $stmt->bind_param("s", $_GET['name']);
 Le `?` est un placeholder. La base de donnees compile d'abord le squelette de requete (la structure SQL), puis injecte le parametre comme une DONNEE, jamais comme du CODE SQL.
 
 Si l'utilisateur entre `' OR 1=1--`, la requete effective est :
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = '\\' OR 1=1--'
 ```
 
 L'entree est traitee comme la chaine literale `' OR 1=1--`, pas comme du SQL. La separation code/donnees empeche toute injection.
 
 **Limitation :** les requetes preparees ne fonctionnent PAS pour les noms de tables, colonnes ou mots-cles SQL dynamiques :
-```php
+```php noexec
 // CECI NE MARCHE PAS :
 $stmt = $mysqli->prepare('SELECT col1,col2 FROM a_table ORDER BY ?');
 ```
 
 Pour un ORDER BY dynamique, utiliser une whitelist stricte :
-```php
+```php noexec
 $allowed_columns = ['date', 'title', 'author'];
 $order = in_array($_GET['order'], $allowed_columns) ? $_GET['order'] : 'date';
 ```
@@ -344,7 +344,7 @@ $order = in_array($_GET['order'], $allowed_columns) ? $_GET['order'] : 'date';
 **Verdict : injection de commande, pas injection SQL.**
 
 Commande probable cote serveur :
-```bash
+```bash noexec
 system("echo 'Checking login: " + $login + "'");
 # ou
 system("/usr/bin/check_login '" + $login + "'");
@@ -376,14 +376,14 @@ Protections contre l'injection de commande :
 **Answer:**
 
 **Etape 1 : Insertion (securisee)**
-```php
+```php noexec
 $stmt = $mysqli->prepare("INSERT INTO users (name, ...) VALUES (?, ...)");
 $stmt->bind_param("s", "admin'--");
 // Stocke "admin'--" en base sans probleme
 ```
 
 **Etape 2 : Lecture et reutilisation (VULNERABLE)**
-```php
+```php noexec
 $result = $mysqli->query("SELECT name FROM users WHERE id=42");
 $name = $result['name'];  // $name = "admin'--"
 
@@ -421,7 +421,7 @@ Protection minimale (mieux que rien)
 ```
 
 **Pourquoi l'echappement seul n'est PAS parfait :**
-```php
+```php noexec
 $safe = str_replace("'", "''", $_GET['name']);
 ```
 - Des sequences d'echappement (`\`) peuvent contourner la protection

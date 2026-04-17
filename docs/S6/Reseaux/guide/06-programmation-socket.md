@@ -53,7 +53,7 @@ close(sock)
 
 ### sockaddr_in (IPv4)
 
-```c
+```c noexec
 struct sockaddr_in {
     sa_family_t    sin_family;  // AF_INET
     in_port_t      sin_port;    // Port (network byte order)
@@ -74,7 +74,7 @@ Le cast `(struct sockaddr *)` est necessaire car les fonctions socket prennent d
 
 Le reseau utilise **big-endian**. La machine peut etre little-endian.
 
-```c
+```c noexec
 uint16_t htons(uint16_t hostshort);   // Host to Network (16 bits) - pour les ports
 uint16_t ntohs(uint16_t netshort);    // Network to Host (16 bits)
 uint32_t htonl(uint32_t hostlong);    // Host to Network (32 bits) - pour les IP
@@ -87,7 +87,7 @@ uint32_t ntohl(uint32_t netlong);     // Network to Host (32 bits)
 
 ## Conversion d'adresses IP
 
-```c
+```c noexec
 // String -> binaire
 int inet_aton(const char *cp, struct in_addr *inp);          // Linux
 in_addr_t inet_addr(const char *cp);                         // Cross-platform
@@ -103,7 +103,7 @@ const char *inet_ntop(int af, const void *src, char *dst,    // Moderne (thread-
 
 ## Serveur TCP complet annote
 
-```c
+```c noexec
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
 
 ## Client TCP complet annote
 
-```c
+```c noexec
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -253,7 +253,7 @@ int main(int argc, char **argv) {
 
 ## Serveur UDP complet annote
 
-```c
+```c noexec
 int main(int argc, char **argv) {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);  // SOCK_DGRAM = UDP
 
@@ -298,7 +298,7 @@ int main(int argc, char **argv) {
 
 ### Rejoindre un groupe multicast
 
-```c
+```c noexec
 struct ip_mreq mreq;
 mreq.imr_multiaddr.s_addr = inet_addr("224.0.0.10");  // Groupe multicast
 mreq.imr_interface.s_addr = INADDR_ANY;                // Toutes les interfaces
@@ -308,7 +308,7 @@ setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
 
 ### Envoyer au groupe
 
-```c
+```c noexec
 struct sockaddr_in dest;
 dest.sin_family = AF_INET;
 dest.sin_port = htons(10000);
@@ -319,7 +319,7 @@ sendto(sock, message, len, 0, (struct sockaddr *)&dest, sizeof(dest));
 
 ### Options utiles
 
-```c
+```c noexec
 // Autoriser plusieurs processus sur le meme port
 int opt = 1;
 setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
@@ -339,7 +339,7 @@ setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP, &loop, sizeof(loop));
 
 Pour gerer plusieurs clients en parallele :
 
-```c
+```c noexec
 #include <pthread.h>
 
 void *handle_client(void *arg) {

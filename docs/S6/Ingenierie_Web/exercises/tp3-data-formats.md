@@ -294,7 +294,7 @@ Analyse :
 
 **Answer:**
 
-```javascript
+```javascript noexec
 // Fichier : json/js/person.js (fourni)
 // Execution : node person.js
 

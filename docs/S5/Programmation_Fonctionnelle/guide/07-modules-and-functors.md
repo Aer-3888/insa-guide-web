@@ -106,7 +106,7 @@ let s = IntSet.add 3 (IntSet.add 1 (IntSet.add 2 IntSet.empty))
 
 L'examen 2019 utilise un pattern similaire avec des records de fonctions (une alternative legere aux foncteurs) :
 
-```ocaml
+```ocaml noexec
 (* Au lieu d'un foncteur, on utilise un record *)
 type 'a anneau = {
   addition : 'a -> 'a -> 'a;
@@ -134,7 +134,7 @@ let rec eval_expr an f e = match e with
 
 ### Modules standard utiles
 
-```ocaml
+```ocaml noexec
 (* List : operations sur les listes *)
 List.map, List.filter, List.fold_left, List.fold_right
 List.sort, List.mem, List.assoc, List.length

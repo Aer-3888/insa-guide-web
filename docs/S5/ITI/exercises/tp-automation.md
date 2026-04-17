@@ -112,7 +112,7 @@ EOF
 
 **Answer:**
 
-```python
+```python noexec
 import re
 
 
@@ -307,7 +307,7 @@ Level 0 line (@ID@ FAM)
 
 **Answer:**
 
-```python
+```python noexec
 from gedcom_parser import GEDCOMParser
 
 parser = GEDCOMParser()
@@ -355,7 +355,7 @@ Families: 2
 
 **Answer:**
 
-```python
+```python noexec
 from gedcom_parser import GEDCOMParser
 
 
@@ -425,7 +425,7 @@ def generate_report(parser, output_file):
 
 **Answer:**
 
-```python
+```python noexec
 from gedcom_parser import GEDCOMParser
 from report_generator import generate_report
 
@@ -484,7 +484,7 @@ Families: 2
 
 **Key file I/O patterns:**
 
-```python
+```python noexec
 # Writing with context manager (always closes file properly)
 with open("output.txt", "w", encoding="utf-8") as f:
     f.write("line\n")
@@ -532,7 +532,7 @@ EOF
 
 **Answer:**
 
-```python
+```python noexec
 from pathlib import Path
 from gedcom_parser import GEDCOMParser
 from report_generator import generate_report
@@ -589,7 +589,7 @@ def process_pipeline(input_dir, output_dir):
 
 **Answer:**
 
-```python
+```python noexec
 from batch_processor import process_pipeline
 
 process_pipeline("input_ged", "output_reports")
@@ -633,7 +633,7 @@ sabotiers_report.txt  small_report.txt
 
 **Answer:**
 
-```python
+```python noexec
 from gedcom_parser import GEDCOMParser
 
 
@@ -697,7 +697,7 @@ def validate_gedcom(parser):
 
 **Answer:**
 
-```python
+```python noexec
 from gedcom_parser import GEDCOMParser
 from validator import validate_gedcom
 
@@ -742,7 +742,7 @@ EOF
 
 **Answer:**
 
-```python
+```python noexec
 parser = GEDCOMParser()
 parser.parse_file("broken.ged")
 issues = validate_gedcom(parser)
@@ -768,7 +768,7 @@ Found 4 issue(s):
 
 **5a. Understand argparse subcommands**
 
-```python
+```python noexec
 import argparse
 
 # Create main parser
@@ -796,7 +796,7 @@ args = parser.parse_args()
 
 **Answer:**
 
-```python
+```python noexec
 #!/usr/bin/env python3
 """
 GEDCOM Processing Tool

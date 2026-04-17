@@ -26,7 +26,7 @@ isinstance(x, int)         # True
 ```
 
 ### Strings
-```python
+```python noexec
 s = "Hello, World!"
 s = 'Single quotes work too'
 s = """Multi-line
@@ -50,7 +50,7 @@ f"Name: {name}, Age: {age}"             # f-string (recommended)
 ```
 
 ### Print
-```python
+```python noexec
 print("Hello")                          # Basic
 print(f"x = {x}")                       # f-string
 print(f"Pi: {pi:.2f}")                  # 2 decimal places
@@ -111,7 +111,7 @@ names = [name.upper() for name in ["alice", "bob"]]
 ```
 
 ### Tuples (immutable lists)
-```python
+```python noexec
 t = (1, 2, 3)
 a, b, c = t                # Unpacking
 x, y = y, x                # Swap values
@@ -135,7 +135,7 @@ for key, value in d.items():
 ```
 
 ### Sets
-```python
+```python noexec
 s = {1, 2, 3}
 s.add(4)
 s.remove(2)
@@ -147,7 +147,7 @@ s1 - s2                    # Difference
 ## Control Flow
 
 ### Conditionals
-```python
+```python noexec
 if x > 0:
     print("Positive")
 elif x == 0:
@@ -160,7 +160,7 @@ result = "even" if x % 2 == 0 else "odd"
 ```
 
 ### Loops
-```python
+```python noexec
 # For loop
 for item in [1, 2, 3]:
     print(item)
@@ -185,7 +185,7 @@ while condition:
 
 ## Functions
 
-```python
+```python noexec
 def greet(name, greeting="Hello"):
     """Greet a person (docstring)."""
     return f"{greeting}, {name}!"
@@ -339,7 +339,7 @@ def merge(left, right):
 
 ## File I/O
 
-```python
+```python noexec
 # Reading
 with open("file.txt", "r") as f:
     content = f.read()              # Entire file as string
@@ -378,7 +378,7 @@ with open("out.json", "w") as f:
 
 ## Modules and Imports
 
-```python
+```python noexec
 import os                          # Import entire module
 from pathlib import Path           # Import specific item
 import random as rnd               # Import with alias
@@ -399,7 +399,7 @@ from pathlib import Path           # Path manipulation
 
 ## Performance Measurement
 
-```python
+```python noexec
 from time import time
 
 start = time()
@@ -410,7 +410,7 @@ print(f"Elapsed: {end - start:.6f} seconds")
 
 ## Command-Line Arguments
 
-```python
+```python noexec
 import sys
 
 # Simple: sys.argv

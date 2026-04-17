@@ -13,7 +13,7 @@ MPI utilise le modele **SPMD** (Single Program, Multiple Data) : tous les proces
 
 ## 2. Squelette d'un programme MPI
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -50,7 +50,7 @@ mpiexec -n 4 ./hello
 
 ### MPI_Send (bloquant)
 
-```c
+```c noexec
 MPI_Send(
     const void *buf,     /* donnees a envoyer */
     int count,           /* nombre d'elements (PAS taille en octets) */
@@ -63,7 +63,7 @@ MPI_Send(
 
 ### MPI_Recv (bloquant)
 
-```c
+```c noexec
 MPI_Recv(
     void *buf,           /* buffer de reception */
     int count,           /* nombre max d'elements */
@@ -87,7 +87,7 @@ MPI_Recv(
 
 ### Exemple : ping-pong
 
-```c
+```c noexec
 if (rang == 0) {
     int val = 42;
     MPI_Send(&val, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
@@ -106,7 +106,7 @@ if (rang == 0) {
 
 ### Deadlock classique : Send/Send
 
-```c
+```c noexec
 /* DEADLOCK -- les deux envoient avant de recevoir */
 if (rang == 0) {
     MPI_Send(&a, 1, MPI_INT, 1, 0, comm);
@@ -121,14 +121,14 @@ if (rang == 0) {
 
 **1. Ordonner Send/Recv :**
 
-```c
+```c noexec
 if (rang == 0) { Send puis Recv; }
 else            { Recv puis Send; }
 ```
 
 **2. MPI_Sendrecv (atomique) :**
 
-```c
+```c noexec
 MPI_Sendrecv(&a, 1, MPI_INT, partenaire, 0,
              &b, 1, MPI_INT, partenaire, 0,
              comm, MPI_STATUS_IGNORE);
@@ -136,7 +136,7 @@ MPI_Sendrecv(&a, 1, MPI_INT, partenaire, 0,
 
 **3. Communications non-bloquantes :**
 
-```c
+```c noexec
 MPI_Request req;
 MPI_Isend(&a, 1, MPI_INT, dest, 0, comm, &req);
 MPI_Recv(&b, 1, MPI_INT, src, 0, comm, MPI_STATUS_IGNORE);
@@ -151,14 +151,14 @@ MPI_Wait(&req, MPI_STATUS_IGNORE);
 
 ### MPI_Bcast -- 1 vers tous
 
-```c
+```c noexec
 MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
 /* P0 envoie N a tous. Tous appellent Bcast. */
 ```
 
 ### MPI_Scatter -- distribuer un tableau
 
-```c
+```c noexec
 MPI_Scatter(
     tab_complet, count_par_proc, MPI_DOUBLE,    /* envoi */
     mon_morceau, count_par_proc, MPI_DOUBLE,    /* reception */
@@ -170,7 +170,7 @@ P0 decoupe `tab_complet` en morceaux egaux et en envoie un a chaque processus.
 
 ### MPI_Gather -- rassembler
 
-```c
+```c noexec
 MPI_Gather(
     mon_morceau, count_par_proc, MPI_DOUBLE,    /* envoi */
     tab_complet, count_par_proc, MPI_DOUBLE,    /* reception (root) */
@@ -182,7 +182,7 @@ Chaque processus envoie son morceau, P0 les rassemble.
 
 ### MPI_Reduce -- combiner avec operation
 
-```c
+```c noexec
 MPI_Reduce(
     &ma_valeur, &resultat, 1, MPI_DOUBLE,
     MPI_SUM, 0, MPI_COMM_WORLD
@@ -192,7 +192,7 @@ MPI_Reduce(
 
 ### MPI_Allreduce -- reduce + diffusion
 
-```c
+```c noexec
 MPI_Allreduce(&ma_valeur, &resultat, 1, MPI_DOUBLE,
               MPI_SUM, MPI_COMM_WORLD);
 /* TOUS les processus recoivent le resultat */
@@ -225,7 +225,7 @@ MPI_Allreduce(&ma_valeur, &resultat, 1, MPI_DOUBLE,
 
 ## 6. Communications non-bloquantes
 
-```c
+```c noexec
 MPI_Request req;
 MPI_Isend(&a, n, MPI_DOUBLE, dest, 0, comm, &req);
 /* faire du calcul pendant le transfert */
@@ -239,7 +239,7 @@ Permet de **recouvrir calcul et communication** (overlapping).
 
 ## 7. Mesurer le temps
 
-```c
+```c noexec
 double t0 = MPI_Wtime();
 /* ... calcul ... */
 double t1 = MPI_Wtime();
@@ -252,7 +252,7 @@ Chaque processus a son propre chrono. Utiliser `MPI_Barrier` avant la mesure pou
 
 ## 8. Exemple : calcul de PI distribue (TP4 INSA)
 
-```c
+```c noexec
 MPI_Init(&argc, &argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rang);
 MPI_Comm_size(MPI_COMM_WORLD, &nb_proc);
@@ -278,7 +278,7 @@ MPI_Reduce(&somme_locale, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
 ## 9. Exemple : produit matrice-vecteur distribue (TP5 INSA)
 
-```c
+```c noexec
 /* 1. Bcast du vecteur a tous */
 MPI_Bcast(vecteur, n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -304,7 +304,7 @@ MPI_Gather(resultat, n/nb_proc, MPI_DOUBLE,
 
 Pattern SPMD avec ghost zones : chaque processus stocke N/P lignes utiles + 2 lignes fantomes echangees avec les voisins a chaque iteration.
 
-```c
+```c noexec
 /* Envoi non-bloquant de mes bords aux voisins */
 if (rang > 0)
     MPI_Isend(fragment + M+2, M+2, MPI_DOUBLE, rang-1, 0, comm, &req);
@@ -337,7 +337,7 @@ MPI_Allreduce(&delta_local, &delta_total, 1, MPI_DOUBLE, MPI_SUM, comm);
 
 ## CHEAT SHEET -- MPI
 
-```c
+```c noexec
 /* Initialisation */
 MPI_Init(&argc, &argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rang);

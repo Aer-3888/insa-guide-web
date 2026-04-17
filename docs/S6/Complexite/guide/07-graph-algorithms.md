@@ -15,7 +15,7 @@ sidebar_position: 7
 
 Explore aussi loin que possible avant de revenir en arriere.
 
-```python
+```python noexec
 def dfs(graphe, sommet, visite=None):
     if visite is None: visite = set()
     visite.add(sommet)
@@ -35,7 +35,7 @@ def dfs(graphe, sommet, visite=None):
 
 Explore par niveaux de distance croissante.
 
-```python
+```python noexec
 from collections import deque
 
 def bfs(graphe, depart):

@@ -30,7 +30,7 @@ Chaque bloc alloue a :
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stddef.h>
 
@@ -121,7 +121,7 @@ Echec: plus de memoire disponible
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -295,7 +295,7 @@ void *Mon_malloc(size_t nb_octets) {
 
 **Arithmetique de pointeurs cle :**
 
-```c
+```c noexec
 /* Calculer l'adresse des donnees apres le descripteur */
 void *donnees = (void*)((char*)descripteur + sizeof(Descript_mem));
 
@@ -318,7 +318,7 @@ Parcourir le tas pour fusionner les blocs libres adjacents
 
 **Answer:**
 
-```c
+```c noexec
 /*
  * Verifie si un pointeur est dans la zone du tas
  */
@@ -437,7 +437,7 @@ Apres regroupement_libre() :
 
 **Answer:**
 
-```c
+```c noexec
 /*
  * Mon_calloc -- remplace calloc de la stdlib
  * Alloue count*size octets et les initialise a zero
@@ -488,7 +488,7 @@ void *Mon_calloc(size_t count, size_t size) {
 
 **Answer:**
 
-```c
+```c noexec
 /*
  * Extension d'un bloc occupe en utilisant le bloc libre suivant
  */
@@ -614,7 +614,7 @@ void *Mon_realloc(void *ptr, size_t newsize) {
 
 **Answer pour test.h :**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stddef.h>
 
@@ -630,7 +630,7 @@ void procedure_test(Type_test t, int nb);
 
 **Answer pour test.c (extraits des procedures de test) :**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include "myalloc.h"
@@ -733,7 +733,7 @@ void procedure_test(Type_test t, int nb) {
 
 **Answer pour main.c :**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include "myalloc.h"
@@ -815,7 +815,7 @@ zone n1
 
 Le fichier `myalloc.h` contient des flags de compilation conditionnelle :
 
-```c
+```c noexec
 #define DEBUG           /* Affiche les messages de debogage */
 #define ALLOC_PERSO     /* Utilise Mon_malloc au lieu de malloc */
 ```
@@ -839,7 +839,7 @@ Le fichier `myalloc.h` contient des flags de compilation conditionnelle :
 ## Points importants
 
 1. **Arithmetique de pointeurs :**
-   ```c
+   ```c noexec
    /* Retrouver le descripteur depuis un pointeur utilisateur */
    Descript_mem *desc = (Descript_mem*)ptr - 1;
    /* Equivalent a : (Descript_mem*)((char*)ptr - sizeof(Descript_mem)) */

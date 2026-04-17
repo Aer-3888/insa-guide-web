@@ -74,7 +74,7 @@ flowchart TD
 
 ### CQL (Cassandra Query Language)
 
-```sql
+```sql noexec
 -- Creer un keyspace
 CREATE KEYSPACE magasin
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
@@ -203,7 +203,7 @@ RETURN a.nom, b.nom
 
 ### Requetes de base
 
-```javascript
+```javascript noexec
 // Inserer
 db.etudiants.insertOne({
     nom: "Alice Dupont",
@@ -252,7 +252,7 @@ flowchart LR
     A --> B --> C --> D --> E
 ```
 
-```javascript
+```javascript noexec
 db.etudiants.aggregate([
     { $match: { age: { $gt: 20 } } },
     { $group: {

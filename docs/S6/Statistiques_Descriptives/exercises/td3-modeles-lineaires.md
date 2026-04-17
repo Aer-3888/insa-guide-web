@@ -23,7 +23,7 @@ $$\hat{\boldsymbol{\beta}} = \begin{pmatrix} \hat{\beta}_0 \\ \hat{\beta}_1 \\ \
 
 **En R :**
 
-```r
+```r noexec
 # Construire la matrice X (avec colonne de 1 pour l'intercept)
 X <- cbind(1, x1, x2)
 
@@ -39,7 +39,7 @@ coef(mod)  # Doit donner les memes valeurs
 
 $$\hat{\sigma}^2 = \frac{SCR}{n - p - 1} = \frac{\sum(y_i - \hat{y}_i)^2}{n - 3}$$
 
-```r
+```r noexec
 # Valeurs ajustees
 y_hat <- X %*% B_hat
 
@@ -62,7 +62,7 @@ $$T_0 = \frac{\hat{\beta}_2}{SE(\hat{\beta}_2)} \sim t_{n-p-1}$$
 
 ou $SE(\hat{\beta}_2) = \sqrt{\hat{\sigma}^2 \cdot [(\mathbf{X}^T\mathbf{X})^{-1}]_{33}}$ (element diagonal correspondant).
 
-```r
+```r noexec
 # Variance des coefficients
 Var_B <- sigma2_hat * solve(t(X) %*% X)
 SE_B2 <- sqrt(Var_B[3, 3])
@@ -87,7 +87,7 @@ if (abs(T0) > t_crit) {
 
 $$IC_{95\%}(\beta_2) = \hat{\beta}_2 \pm t_{n-p-1, 0.975} \cdot SE(\hat{\beta}_2)$$
 
-```r
+```r noexec
 ic_low <- B_hat[3] - t_crit * SE_B2
 ic_up  <- B_hat[3] + t_crit * SE_B2
 cat("IC 95% pour beta_2 : [", ic_low, ",", ic_up, "]\n")
@@ -150,7 +150,7 @@ Effet de grande taille ($\eta^2 > 0.14$).
 
 **En R :**
 
-```r
+```r noexec
 # Si on avait les donnees brutes :
 mod <- lm(Y ~ Traitement, data = df)
 anova(mod)

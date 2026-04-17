@@ -18,7 +18,7 @@ Ce TP porte les programmes Java des TPs precedents en C avec l'API POSIX sockets
 
 Tous les fichiers C de ce TP commencent par le meme squelette de portabilite :
 
-```c
+```c noexec
 #ifdef WIN32
 #include <winsock2.h>
 #elif defined(linux)
@@ -62,7 +62,7 @@ The TCP server follows these steps: socket() -> bind() -> listen() -> accept() -
 
 #### Complete code: ServeurTCP.c
 
-```c
+```c noexec
 /* serveur_TCP.c (serveur TCP) */
 
 #ifdef WIN32
@@ -183,7 +183,7 @@ int main(int argc, char **argv) {
 
 #### Complete code: ClientTCP.c
 
-```c
+```c noexec
 /* Client_TCP.c (Client TCP) */
 
 #ifdef WIN32
@@ -328,7 +328,7 @@ Key differences from TCP: no listen()/accept(), use recvfrom()/sendto() which in
 
 #### Complete code: serveur_UDP2_et.c
 
-```c
+```c noexec
 /* serveur_UDP.c (serveur UDP) */
 
 #ifdef WIN32
@@ -432,7 +432,7 @@ int main(int argc, char **argv) {
 
 #### Complete code: client_UDP2_et.c
 
-```c
+```c noexec
 /* client_UDP.c (client UDP) */
 
 #ifdef WIN32
@@ -571,7 +571,7 @@ gcc -o client_udp client_UDP2_et.c
 
 #### Complete code: ServeurPlusMoins.c
 
-```c
+```c noexec
 /* ServeurPlusMoins.c */
 
 #ifdef WIN32
@@ -720,7 +720,7 @@ int main(int argc, char **argv) {
 
 #### Complete code: ClientPlusMoins.c
 
-```c
+```c noexec
 /* ClientPlusMoins.c */
 
 #ifdef WIN32

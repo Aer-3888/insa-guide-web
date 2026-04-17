@@ -20,7 +20,7 @@ sidebar_position: 2
 ### Standardiser les 12 variables (temperatures mensuelles), calculer les composantes principales, conserver les 2 premieres composantes.
 
 **Answer:**
-```python
+```python noexec
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -92,7 +92,7 @@ Variance cumulee avec 2 PCs: ~90%
 ### Tracer le diagramme des valeurs propres pour determiner le nombre de composantes a conserver.
 
 **Answer:**
-```python
+```python noexec
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
 components = range(1, 13)
@@ -125,7 +125,7 @@ plt.show()
 ### Tracer le cercle des correlations et interpreter les axes.
 
 **Answer:**
-```python
+```python noexec
 # Correlation of variables with PCs
 loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
 
@@ -167,7 +167,7 @@ plt.show()
 ### Projeter les villes sur le plan factoriel des 2 premiers axes.
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(12, 10))
 plt.scatter(X_pca[:, 0], X_pca[:, 1], s=100, alpha=0.6, color='steelblue')
 
@@ -199,7 +199,7 @@ Three natural groups are already visible.
 ### Comparer les dendrogrammes obtenus avec les methodes Ward, Complete, Average et Single.
 
 **Answer:**
-```python
+```python noexec
 methods = ['ward', 'complete', 'average', 'single']
 
 fig, axes = plt.subplots(2, 2, figsize=(16, 12))
@@ -231,7 +231,7 @@ plt.show()
 ### Tracer la courbe du coude, le Silhouette score et le Davies-Bouldin index pour determiner le nombre optimal de clusters.
 
 **Answer:**
-```python
+```python noexec
 inertias = []
 silhouettes = []
 davies_bouldins = []
@@ -307,7 +307,7 @@ k=5: Inertie=~2.3,  Silhouette=~0.42, DB=~0.72
 ### Classification avec la 1ere composante uniquement
 
 **Answer:**
-```python
+```python noexec
 # Using only PC1
 Z_1pc = linkage(X_pca[:, :1], method='ward')
 clusters_1pc = fcluster(Z_1pc, t=2, criterion='maxclust')
@@ -329,7 +329,7 @@ This simpler classification misses the oceanic vs continental distinction.
 ### Classification avec 2 composantes, 3 clusters
 
 **Answer:**
-```python
+```python noexec
 Z = linkage(X_pca, method='ward')
 clusters = fcluster(Z, t=3, criterion='maxclust')
 
@@ -354,7 +354,7 @@ Note: The exact cluster numbering may vary between runs, but the groupings are s
 ### Classification avec toutes les composantes
 
 **Answer:**
-```python
+```python noexec
 pca_full_data = PCA()
 X_pca_full = pca_full_data.fit_transform(X_scaled)
 
@@ -376,7 +376,7 @@ for c in range(1, 4):
 ### Afficher le dendrogramme avec la ligne de coupure a 3 clusters.
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(14, 8))
 dendrogram(Z, labels=cities, leaf_font_size=11, leaf_rotation=45)
 plt.axhline(y=4.0, color='red', linestyle='--', linewidth=2, label='Coupure a 3 clusters')
@@ -400,7 +400,7 @@ plt.show()
 ### Visualiser les 3 clusters sur le plan factoriel avec les centres de gravite.
 
 **Answer:**
-```python
+```python noexec
 plt.figure(figsize=(12, 10))
 colors = ['steelblue', 'orange', 'green']
 
@@ -448,7 +448,7 @@ plt.show()
 > Paragon = individu le plus proche du centre de gravite du cluster.
 
 **Answer:**
-```python
+```python noexec
 for c in range(1, 4):
     mask = clusters == c
     cluster_points = X_pca[mask]
@@ -486,7 +486,7 @@ for c in range(1, 4):
 ### Analyser le profil climatique de chaque cluster (temperatures moyennes, amplitude thermique).
 
 **Answer:**
-```python
+```python noexec
 for c in range(1, 4):
     mask = clusters == c
     cluster_cities = [cities[i] for i in range(len(cities)) if clusters[i] == c]
@@ -534,7 +534,7 @@ for c in range(1, 4):
 ### Calculer le Silhouette Score et le Davies-Bouldin Index pour la classification en 3 clusters.
 
 **Answer:**
-```python
+```python noexec
 sil = silhouette_score(X_pca, clusters)
 db = davies_bouldin_score(X_pca, clusters)
 
@@ -591,7 +591,7 @@ Justification:
 ### Comparer les classifications en 2 et 4 classes.
 
 **Answer:**
-```python
+```python noexec
 # Classification en 2 classes
 clusters_2 = fcluster(Z, t=2, criterion='maxclust')
 print("Classification en 2 classes:")

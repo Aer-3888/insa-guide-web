@@ -119,7 +119,7 @@ $$\mathbf{W} \leftarrow \mathbf{W} - \eta \frac{\partial J}{\partial \mathbf{W}}
 
 ## 6. Code Python -- MLP avec scikit-learn
 
-```python
+```python noexec
 from sklearn.neural_network import MLPClassifier
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
@@ -157,7 +157,7 @@ print(classification_report(y_test, y_pred, target_names=data.target_names))
 
 Le TP4 du cours utilise TensorFlow pour la reconnaissance d'images (CIFAR-10) :
 
-```python
+```python noexec
 import tensorflow as tf
 from sklearn.metrics import classification_report, accuracy_score
 

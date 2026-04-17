@@ -29,7 +29,7 @@ sidebar_position: 3
 
 ### Packages requis
 
-```r
+```r noexec
 install.packages("rgl")     # Visualisation 3D
 install.packages("car")     # Outils graphiques
 library(rgl)
@@ -46,7 +46,7 @@ Vous etes consultant pour un client qui souhaite savoir comment accroitre les ve
 
 ### Q1 : Lire les donnees
 
-```r
+```r noexec
 pub <- read.csv("Advertising.csv")
 attach(pub)
 ```
@@ -55,7 +55,7 @@ attach(pub)
 
 Determiner la matrice de correlation entre les 4 variables. Commenter.
 
-```r
+```r noexec
 cor(pub)
 ```
 
@@ -80,7 +80,7 @@ Sales      0.7822    0.5762    0.2283    1.0000
 
 Effectuer la regression lineaire simple de Sales sur TV. Le modele est-il bien ajuste ? Le budget TV a-t-il une influence sur les ventes ?
 
-```r
+```r noexec
 plot(TV, Sales, main = "Ventes vs Publicite TV",
      xlab = "Budget TV (k$)", ylab = "Ventes (k unites)", pch = 19)
 
@@ -105,7 +105,7 @@ Multiple R-squared:  0.6119
 
 **Analyse des residus :**
 
-```r
+```r noexec
 plot(reg_tv$fitted.values, reg_tv$residuals,
      main = "Residus du modele Sales ~ TV",
      xlab = "Valeurs ajustees", ylab = "Residus")
@@ -116,7 +116,7 @@ abline(h =  2 * resume$sigma, col = "red")
 
 **Diagnostic :** Heteroscedasticite visible (dispersion croissante). Transformation log :
 
-```r
+```r noexec
 reg_tv_log <- lm(log(Sales) ~ TV, data = pub)
 resume_log <- summary(reg_tv_log)
 ```
@@ -125,7 +125,7 @@ Les residus sont plus homogenes apres transformation log.
 
 ### Q4 : Reprendre avec Radio, puis avec Newspaper
 
-```r
+```r noexec
 # Radio vs TV
 reg_radio_tv <- lm(Radio ~ TV, data = pub)
 summary(reg_radio_tv)     # R^2 tres faible -> quasi independants
@@ -143,7 +143,7 @@ $\forall i \in \{1, \ldots, 200\}, \quad \text{Sales}_i = \beta_0 + \beta_1 \tex
 
 Estimer les parametres. Que represente concretement $\hat{\beta}_0$ ? Quel pourcentage de la variabilite des ventes est explique par le modele ?
 
-```r
+```r noexec
 regm <- lm(Sales ~ TV + Radio + Newspaper, data = pub)
 resume_mult <- summary(regm)
 print(resume_mult)
@@ -193,7 +193,7 @@ Peut-on affirmer, au risque de 5%, que chaque variable a une influence sur les v
 
 On decide de ne conserver que les variables ayant une influence sur les ventes.
 
-```r
+```r noexec
 reg2 <- lm(Sales ~ TV + Radio, data = pub)
 resume2 <- summary(reg2)
 print(resume2)
@@ -215,7 +215,7 @@ Multiple R-squared:  0.8972,  Adjusted R-squared:  0.8962
 
 ### Q9 : Visualisation 3D et equation de prevision
 
-```r
+```r noexec
 library(rgl)
 library(car)
 scatter3d(Sales ~ TV + Radio, data = pub,
@@ -228,7 +228,7 @@ scatter3d(Sales ~ TV + Radio, data = pub,
 
 Le client investit 100 000$ pour la TV et 20 000$ pour la Radio. Determiner le nombre moyen de produits vendus avec l'intervalle de prevision a 95%.
 
-```r
+```r noexec
 x0 <- data.frame(TV = 100, Radio = 20)
 pred <- predict(reg2, newdata = x0, interval = "prediction")
 print(pred)
@@ -243,7 +243,7 @@ print(pred)
 
 **Interpretation :** On predit des ventes de **11 256 unites**, avec un intervalle de prevision a 95% de [8 075 ; 14 437].
 
-```r
+```r noexec
 detach(pub)
 ```
 
@@ -257,7 +257,7 @@ On souhaite etudier l'impact de la composition du lait sur le rendement fromager
 
 ### Q1 : Importer les donnees
 
-```r
+```r noexec
 lait <- read.table("lait.txt", header = TRUE)
 attach(lait)
 ```
@@ -266,7 +266,7 @@ attach(lait)
 
 Quelles variables sont tres correlees ? Quel impact sur la suite ?
 
-```r
+```r noexec
 cor(lait[, 1:5])
 ```
 
@@ -288,7 +288,7 @@ ExSec     0.7595  0.6506  0.5993  0.5384  1.0000
 
 ### Q3 : Representer Rendement en fonction des variables explicatives
 
-```r
+```r noexec
 par(mfrow = c(2, 3))
 plot(Densite, Rendement, main = "Rendement vs Densite", pch = 19)
 plot(TxButy, Rendement, main = "Rendement vs Taux Butyrique", pch = 19)
@@ -306,7 +306,7 @@ $\forall i \in \{1, \ldots, 85\}, \quad \text{Rendement}_i = \beta_0 + \beta_1 \
 
 #### Q4a : Estimer les parametres
 
-```r
+```r noexec
 reg_complet <- lm(Rendement ~ Densite + TxButy + TxProt + TxCase + ExSec,
                   data = lait)
 resume_complet <- summary(reg_complet)
@@ -340,7 +340,7 @@ Multiple R-squared:  0.6157,  Adjusted R-squared:  0.5913
 
 Si l'eleveur augmente le taux butyrique et le taux proteique de 5 pour mille tout en diminuant de 2 pour mille le taux de caseine :
 
-```r
+```r noexec
 delta <- 5 * coef(reg_complet)["TxButy"] + 5 * coef(reg_complet)["TxProt"] - 2 * coef(reg_complet)["TxCase"]
 cat("Variation du rendement :", delta, "kg/100L\n")
 ```
@@ -349,7 +349,7 @@ $R^2 = 0.616$ : 61.6% de la variabilite du rendement est expliquee par les varia
 
 #### Q4c : Graphe des residus
 
-```r
+```r noexec
 par(mfrow = c(2, 2))
 plot(reg_complet)
 par(mfrow = c(1, 1))
@@ -361,7 +361,7 @@ Les residus sont repartis aleatoirement autour de 0. Pas de structure evidente. 
 
 Realiser une selection automatique de variables par procedure descendante (backward).
 
-```r
+```r noexec
 reg_backward <- step(reg_complet, direction = "backward")
 ```
 
@@ -379,7 +379,7 @@ Rendement ~ Densite + TxButy + TxProt + ExSec
 
 ### Q6 : Modele sans intercept
 
-```r
+```r noexec
 mod3 <- lm(Rendement ~ -1 + Densite + TxButy + TxProt + ExSec, data = lait)
 ```
 
@@ -389,7 +389,7 @@ mod3 <- lm(Rendement ~ -1 + Densite + TxButy + TxProt + ExSec, data = lait)
 
 Quel est le meilleur modele en terme d'AIC ? En terme de $R^2$ ? Quel modele retenez-vous ?
 
-```r
+```r noexec
 cat("Modele complet :\n")
 cat("  AIC =", extractAIC(reg_complet)[2], "\n")
 cat("  R^2 ajuste =", summary(reg_complet)$adj.r.squared, "\n")
@@ -422,7 +422,7 @@ Donner une prediction du rendement fromager moyen d'une vache Prim'Holstein et d
 - Holstein : Densite = 1.032, TxButy = 39.7, TxProt = 31.9, ExSec = 130
 - Normande : Densite = 1.032, TxButy = 42.8, TxProt = 34.5, ExSec = 130
 
-```r
+```r noexec
 df_vaches <- data.frame(
   rbind(
     c(Densite = 1.032, TxButy = 39.7, TxProt = 31.9, ExSec = 130),
@@ -447,7 +447,7 @@ print(pred_vaches[2, ])
 
 **Interpretation :** La vache Normande (fit = 15.13 L/100L) donne un **meilleur rendement** fromager que la Holstein (fit = 14.62 L/100L). La difference s'explique par les taux butyrique et proteique plus eleves.
 
-```r
+```r noexec
 detach(lait)
 ```
 
@@ -461,14 +461,14 @@ On dispose de mesures sur n = 1429 eucalyptus : hauteur (ht) et circonference a 
 
 ### Q1 : Importer les donnees
 
-```r
+```r noexec
 eucal <- read.table("eucalyptus.txt", header = TRUE)
 attach(eucal)
 ```
 
 ### Q2 : Nuage de points
 
-```r
+```r noexec
 plot(circ, ht,
      main = "Hauteur vs Circonference des eucalyptus",
      xlab = "Circonference (cm)", ylab = "Hauteur (m)",
@@ -481,7 +481,7 @@ Rappeler le modele et les hypotheses, puis estimer les parametres.
 
 $\forall i \in \{1, \ldots, n\}, \quad \text{ht}_i = \beta_0 + \beta_1 \text{circ}_i + \varepsilon_i$ avec $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$.
 
-```r
+```r noexec
 reg_simple <- lm(ht ~ circ, data = eucal)
 resume_simple <- summary(reg_simple)
 print(resume_simple)
@@ -489,7 +489,7 @@ print(resume_simple)
 
 ### Q4 : Droite des moindres carres et graphe des residus
 
-```r
+```r noexec
 lines(circ, predict(reg_simple), col = "red", lwd = 3)
 
 plot(reg_simple$fitted.values, reg_simple$residuals,
@@ -513,7 +513,7 @@ Donner l'ecriture matricielle $Y = X\beta + E$ en precisant chaque element.
 
 $$Y = \begin{pmatrix} \text{ht}_1 \\ \vdots \\ \text{ht}_n \end{pmatrix}, \quad X = \begin{pmatrix} 1 & \text{circ}_1 & \sqrt{\text{circ}_1} \\ \vdots & \vdots & \vdots \\ 1 & \text{circ}_n & \sqrt{\text{circ}_n} \end{pmatrix}, \quad \beta = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \end{pmatrix}, \quad E = \begin{pmatrix} \varepsilon_1 \\ \vdots \\ \varepsilon_n \end{pmatrix}$$
 
-```r
+```r noexec
 Y  <- ht
 X0 <- rep(1, length(circ))
 X1 <- circ
@@ -525,7 +525,7 @@ X  <- cbind(X0, X1, X2)
 
 $\hat{\beta} = (X'X)^{-1} X'Y$
 
-```r
+```r noexec
 B <- solve(t(X) %*% X) %*% t(X) %*% Y
 cat("beta_0 =", B[1], "\n")
 cat("beta_1 =", B[2], "\n")
@@ -544,7 +544,7 @@ beta_2 =  5.8903
 
 $$\hat{\sigma}^2 = \frac{\text{SCR}}{n - p - 1} = \frac{\sum_{i=1}^n e_i^2}{n - p - 1}$$
 
-```r
+```r noexec
 y_fit <- B[1] + B[2] * circ + B[3] * sqrt(circ)
 e     <- ht - y_fit
 n     <- length(e)
@@ -557,7 +557,7 @@ cat("sigma =", sigma, "\n")
 
 $$\text{Var}(\hat{\beta}) = \sigma^2 (X'X)^{-1}$$
 
-```r
+```r noexec
 var_beta <- sigma^2 * solve(t(X) %*% X)
 se_B0 <- sqrt(var_beta[1, 1])
 se_B1 <- sqrt(var_beta[2, 2])
@@ -580,7 +580,7 @@ Peut-on affirmer, au risque de 5%, que la racine carree de la circonference a un
 
 4. **Region de rejet ($\alpha = 5\%$) :** $]-\infty, -t_{n-p-1, 0.975}] \cup [t_{n-p-1, 0.975}, +\infty[$
 
-```r
+```r noexec
 T0 <- B[3] / se_B2
 ddl <- n - p - 1
 t_critique <- qt(0.975, ddl)
@@ -599,7 +599,7 @@ if (abs(T0) > t_critique) {
 
 #### Q5f : Verification avec `lm()`
 
-```r
+```r noexec
 eucal2 <- cbind.data.frame(eucal, rcirc = sqrt(eucal[, "circ"]))
 regmult <- lm(ht ~ circ + rcirc, data = eucal2)
 resume_complet <- summary(regmult)
@@ -620,7 +620,7 @@ Les resultats sont **strictement identiques**. C'est exactement ce que fait `lm(
 
 Superposer la courbe du modele au nuage de points et a la droite des moindres carres.
 
-```r
+```r noexec
 plot(circ, ht,
      main = "Comparaison modele simple vs modele avec sqrt(circ)",
      xlab = "Circonference (cm)", ylab = "Hauteur (m)",
@@ -641,7 +641,7 @@ legend("topleft",
 
 **Interpretation :** La courbe bleue (modele avec $\sqrt{\text{circ}}$) epouse mieux les donnees, surtout pour les petites et grandes circonferences. Le modele simple (droite rouge) sous-estime les petits arbres et surestime les grands.
 
-```r
+```r noexec
 detach(eucal)
 ```
 

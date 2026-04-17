@@ -48,7 +48,7 @@ BASE : coherence eventuelle, priorite a la disponibilite. Pour les donnees massi
 
 ### Schema pour un systeme de logs web
 
-```sql
+```sql noexec
 CREATE KEYSPACE monitoring
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
 
@@ -69,7 +69,7 @@ CREATE TABLE web_logs (
 
 ### Requetes autorisees
 
-```sql
+```sql noexec
 -- OK : filtre sur la partition key complete
 SELECT * FROM web_logs WHERE site = 'insa.fr' AND date_log = '2024-03-15';
 
@@ -158,7 +158,7 @@ RETURN DISTINCT c.nom
 
 ### Collection etudiants
 
-```javascript
+```javascript noexec
 // Inserer des documents
 db.etudiants.insertMany([
     {
@@ -185,7 +185,7 @@ db.etudiants.insertMany([
 
 ### Requetes de base
 
-```javascript
+```javascript noexec
 // Q1 : Etudiants de plus de 21 ans
 db.etudiants.find({ age: { $gt: 21 } })
 
@@ -212,7 +212,7 @@ db.etudiants.find({
 
 ### Pipeline d'agregation
 
-```javascript
+```javascript noexec
 // Q7 : Nombre d'etudiants par ville
 db.etudiants.aggregate([
     { $group: {

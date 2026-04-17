@@ -57,7 +57,7 @@ EOF
 
 **Answer:**
 
-```python
+```python noexec
 >>> from bs4 import BeautifulSoup
 >>> with open("dvd_sample.html", "r") as f:
 ...     soup = BeautifulSoup(f, "html.parser")
@@ -100,7 +100,7 @@ Duree: 136 min
 
 **Answer:**
 
-```python
+```python noexec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
@@ -162,7 +162,7 @@ def scrape_dvd_from_url(url):
 
 **Answer:**
 
-```python
+```python noexec
 from parser_web import parse_dvd_page
 
 with open("dvd_sample.html", "r", encoding="utf-8") as f:
@@ -187,7 +187,7 @@ for key, value in info.items():
 
 **Safe patterns to follow:**
 
-```python
+```python noexec
 # ALWAYS check for None before accessing attributes
 elem = soup.find("h1")
 if elem is not None:
@@ -246,7 +246,7 @@ Position 13 digit is 7 --> matches! VALID
 
 **Answer:**
 
-```python
+```python noexec
 import csv
 
 
@@ -307,7 +307,7 @@ def process_barcode_file(csv_file):
 
 **Answer:**
 
-```python
+```python noexec
 from ean13 import validate_ean13, calculate_checksum
 
 # Test individual codes
@@ -364,7 +364,7 @@ EOF
 
 **Answer:**
 
-```python
+```python noexec
 from ean13 import process_barcode_file
 
 valid, invalid = process_barcode_file("barcodes_test.csv")
@@ -399,7 +399,7 @@ Invalid barcodes (2):
 
 **Answer:**
 
-```python
+```python noexec
 import sqlite3
 
 
@@ -473,7 +473,7 @@ class DVDDatabase:
 
 **Answer:**
 
-```python
+```python noexec
 from bd_dvd import DVDDatabase
 
 db = DVDDatabase("test_dvds.db")
@@ -531,7 +531,7 @@ DVD with EAN 5051889066217 already exists
 
 **Answer:**
 
-```python
+```python noexec
 from ean13 import validate_ean13
 from parser_web import parse_dvd_page, scrape_dvd_from_url
 from bd_dvd import DVDDatabase
@@ -656,7 +656,7 @@ User enters barcode
 
 **Answer:**
 
-```python
+```python noexec
 lib = DVDLibrary("demo_dvdtheque.db")
 
 # Add from local HTML file (testing without network)
@@ -687,7 +687,7 @@ lib.close()
 
 **Answer:**
 
-```python
+```python noexec
 lib = DVDLibrary("demo_dvdtheque.db")
 
 # Test with invalid barcode

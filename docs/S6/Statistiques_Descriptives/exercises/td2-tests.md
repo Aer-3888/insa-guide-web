@@ -199,7 +199,7 @@ Au risque de 5%, on ne peut pas conclure a une difference significative entre le
 
 **En R :**
 
-```r
+```r noexec
 # Si on avait les donnees brutes :
 # t.test(A, B, var.equal = TRUE)
 ```

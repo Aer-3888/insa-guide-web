@@ -81,7 +81,7 @@ factorial(4, F)
 
 ### Valeur calorique d'un repas (TP1)
 
-```prolog
+```prolog noexec
 val_cal(H, P, D, Total) :-
     repas(H, P, D),
     calories(H, CalH),
@@ -96,7 +96,7 @@ repas_eq(H, P, D) :-
 
 ### Filtrage par intervalle
 
-```prolog
+```prolog noexec
 % Plats entre 200 et 400 calories
 plat200_400(P) :-
     plat(P),
@@ -231,7 +231,7 @@ prod2(X, Y, Res) :-
 
 ## 5.5 Erreurs frequentes
 
-```prolog
+```prolog noexec
 % ERREUR 1 : oublier is
 mauvais(X, Y, Z) :- Z = X + Y.    % Z = le TERME +(X,Y), pas la somme !
 bon(X, Y, Z) :- Z is X + Y.       % Z = la valeur numerique

@@ -431,7 +431,7 @@ curl -X POST "http://localhost:4444/calendar/cours/new" \
 
 **Answer:**
 
-```javascript
+```javascript noexec
 // Fichier : webapp/js/main.js (fourni)
 document.getElementById('searchbutton').onclick = function () {
     let nommat = document.getElementById('nommat').value;

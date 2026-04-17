@@ -97,7 +97,7 @@ CREATE TABLE client (
 
 Fait reference a la cle primaire d'une autre table. Garantit l'**integrite referentielle**.
 
-```sql
+```sql noexec
 CREATE TABLE commande (
     commandeId INTEGER PRIMARY KEY,
     clientId INTEGER NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE commande (
 | **CHECK** | Condition booleenne | `CHECK (prix >= 0)` |
 | **DEFAULT** | Valeur par defaut | `statut VARCHAR(10) DEFAULT 'actif'` |
 
-```sql
+```sql noexec
 CREATE TABLE produit (
     produitId INTEGER PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -161,7 +161,7 @@ erDiagram
 
 **Table de jonction pour N:M :**
 
-```sql
+```sql noexec
 CREATE TABLE inscription (
     etudiantId INTEGER,
     coursId INTEGER,

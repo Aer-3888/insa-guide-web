@@ -126,7 +126,7 @@ ou $R_i$ est la somme des rangs du groupe $i$, $n_i$ l'effectif du groupe $i$, $
 
 ### Code R
 
-```r
+```r noexec
 # Trois groupes ou plus
 kruskal.test(Y ~ Groupe, data = df)
 # Si p < 0.05 → au moins un groupe differe
@@ -139,7 +139,7 @@ kruskal.test(Calories ~ Type, data = hotdogs)
 
 Si le test est significatif, on fait des comparaisons deux a deux :
 
-```r
+```r noexec
 # Methode 1 : tests de Wilcoxon avec correction de Bonferroni
 pairwise.wilcox.test(df$Y, df$Groupe, p.adjust.method = "bonferroni")
 

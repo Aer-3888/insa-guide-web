@@ -69,7 +69,7 @@ evens = [x for x in range(10) if x % 2 == 0]
 ### 2. Object-Oriented Programming
 
 **Classes**:
-```python
+```python noexec
 class TableauTri:
     """Class for sortable array"""
     
@@ -178,7 +178,7 @@ def merge(left, right):
 
 ### 4. Performance Measurement
 
-```python
+```python noexec
 from time import time
 
 start = time()
@@ -233,7 +233,7 @@ See `src/` directory for:
 ## Common Patterns
 
 ### Array Initialization
-```python
+```python noexec
 # Fixed size with zeros
 arr = [0] * n
 
@@ -246,7 +246,7 @@ arr = list(existing_data)
 ```
 
 ### In-Place vs New Array
-```python
+```python noexec
 # In-place (modifies original)
 lst.sort()
 
@@ -255,7 +255,7 @@ sorted_lst = sorted(lst)
 ```
 
 ### Swapping
-```python
+```python noexec
 # Python idiom (no temp variable needed)
 a, b = b, a
 lst[i], lst[j] = lst[j], lst[i]

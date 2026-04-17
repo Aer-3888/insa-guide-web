@@ -13,7 +13,7 @@ sidebar_position: 6
 
 Une transaction est un **ensemble d'operations** considere comme une **unite indivisible**. Soit toutes les operations reussissent, soit aucune n'est appliquee.
 
-```sql
+```sql noexec
 -- Transfert bancaire : debiter Alice, crediter Bob
 BEGIN TRANSACTION;
   UPDATE compte SET solde = solde - 100 WHERE nom = 'Alice';
@@ -95,7 +95,7 @@ T1: SELECT COUNT(*) FROM compte WHERE solde > 500  -> 11  (fantome !)
 | **REPEATABLE READ** | Empeche | Empeche | Possible |
 | **SERIALIZABLE** | Empeche | Empeche | Empeche |
 
-```sql
+```sql noexec
 -- Definir le niveau d'isolation
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 

@@ -16,7 +16,7 @@ sidebar_position: 3
 
 Une application web construit souvent ses requetes SQL en concatenant des entrees utilisateur :
 
-```php
+```php noexec
 // VULNERABLE : concatenation directe
 $request = "SELECT name, forename, role
              FROM musicians
@@ -97,7 +97,7 @@ Le `;` termine la requete et en commence une nouvelle.
 
 ### Technique 6 : Shell via MS-SQL
 
-```sql
+```sql noexec
 xp_cmdshell 'whoami'
 ```
 
@@ -143,7 +143,7 @@ Protection minimale
 
 ### Requetes preparees (RECOMMANDE)
 
-```php
+```php noexec
 // SECURISE : separation code SQL / donnees
 $stmt = $mysqli->prepare('SELECT usr, pwd FROM users WHERE usr=? AND pwd=?');
 $stmt->bind_param('ss', $usr, $pwd);
@@ -159,7 +159,7 @@ La base compile d'abord la requete, puis injecte les parametres sans les interpr
 ## 3.5 Exemple de DS (Sujet 2025)
 
 **Requete d'authentification :**
-```php
+```php noexec
 $req = "SELECT * FROM users WHERE name='" + $name + "' AND password='" + $pass + "'"
 ```
 

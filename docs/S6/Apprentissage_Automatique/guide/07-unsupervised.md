@@ -38,7 +38,7 @@ ou $\boldsymbol{\mu}_k$ est le centroide du cluster $C_k$.
 
 Tracer l'inertie en fonction de $K$ et chercher le "coude" ou l'inertie commence a diminuer lentement.
 
-```python
+```python noexec
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
@@ -66,7 +66,7 @@ $$s_i = \frac{b_i - a_i}{\max(a_i, b_i)}$$
 - $b_i$ : distance moyenne au cluster le plus proche (separation).
 - $s_i \in [-1, 1]$ : 1 = bien classe, 0 = frontiere, -1 = mal classe.
 
-```python
+```python noexec
 from sklearn.metrics import silhouette_score
 
 for k in range(2, 11):
@@ -111,7 +111,7 @@ Construire une hierarchie de clusters, representee par un **dendrogramme**.
 
 ### Code Python
 
-```python
+```python noexec
 from sklearn.cluster import AgglomerativeClustering
 from scipy.cluster.hierarchy import dendrogram, linkage
 import matplotlib.pyplot as plt
@@ -153,7 +153,7 @@ La variance cumulee aide a choisir le nombre de composantes.
 
 ### Code Python
 
-```python
+```python noexec
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 
@@ -194,7 +194,7 @@ La PCA est souvent utilisee avant un classifieur pour :
 - Accelerer l'entrainement.
 - Combattre la malediction de la dimensionnalite.
 
-```python
+```python noexec
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
@@ -215,7 +215,7 @@ pipe.fit(X_train, y_train)
 
 Methode non lineaire pour la **visualisation** en 2D/3D :
 
-```python
+```python noexec
 from sklearn.manifold import TSNE
 
 tsne = TSNE(n_components=2, perplexity=30, random_state=42)

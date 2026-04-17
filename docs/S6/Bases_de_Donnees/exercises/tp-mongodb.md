@@ -51,7 +51,7 @@ Categories: poi (points d'interet), restaurant, accommodation (logements), attra
 ### Recherchez toutes les informations a propos des lieux dont la categorie est "accommodation".
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.find({"category": "accommodation"});
 ```
 
@@ -68,13 +68,13 @@ Tous les documents avec category = "accommodation".
 ### Donner juste le nom des lieux dont la categorie est "accommodation"
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.find({"category": "accommodation"}, {name: 1});
 ```
 
 Ou avec des variables pour plus de souplesse:
 
-```javascript
+```javascript noexec
 match = {"category": "accommodation"};
 project = {name: 1};
 db.paris.find(match, project).pretty();
@@ -97,7 +97,7 @@ Le second argument de `find()` est la projection. `{name: 1}` = inclure le champ
 ### Affichez toutes les informations sur les lieux dont la categorie est "accommodation" mais en n'affichant ni le champ "_id" ni "contact"
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"category": "accommodation"};
 project = {_id: 0, contact: 0};
 db.paris.find(match, project).pretty();
@@ -116,7 +116,7 @@ Documents accommodation sans les champs _id et contact.
 ### Donner le nom et numero de telephone des lieux ayant un numero de telephone renseigne. Utilisez ($exists, $ne) et ne signifie not-equal.
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"contact.phone": {$exists: 1, $ne: ""}};
 project = {"contact.phone": 1, name: 1};
 db.paris.find(match, project);
@@ -140,7 +140,7 @@ db.paris.find(match, project);
 ### Nom et contacts des lieux ayant "website" et "Foursquare" renseignes
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {
     "contact.Foursquare": {$ne: "", $exists: 1},
     "contact.website": {$ne: "", $exists: 1}
@@ -162,7 +162,7 @@ Plusieurs conditions dans le meme objet match agissent comme un AND implicite. L
 ### Nom des lieux dont le nom contient le mot "hotel" (quelle que soit la casse)
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"name": {$regex: "Hotel", $options: "i"}};
 project = {name: 1};
 db.paris.find(match, project);
@@ -170,7 +170,7 @@ db.paris.find(match, project);
 
 Ou avec la syntaxe regex native:
 
-```javascript
+```javascript noexec
 match = {"name": /Hotel/i};
 db.paris.find(match, {name: 1});
 ```
@@ -193,7 +193,7 @@ L'option `"i"` rend la recherche **case-insensitive** (insensible a la casse). `
 ### Nom et services des lieux ayant un service "chambres non-fumeurs"
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"services": "chambres non-fumeurs"};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
@@ -211,7 +211,7 @@ Quand on filtre un tableau avec une valeur simple, MongoDB cherche si cette vale
 ### Nom et services des lieux dont le premier service est "chambres non-fumeurs"
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"services.0": "chambres non-fumeurs"};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
@@ -232,21 +232,21 @@ Lieux dont le premier element du tableau services est "chambres non-fumeurs".
 
 Methode 1: tester que le second service n'existe pas
 
-```javascript
+```javascript noexec
 match = {"services.0": "chambres non-fumeurs", "services.1": {$exists: 0}};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
 
 Methode 2: utiliser $size
 
-```javascript
+```javascript noexec
 match = {"services.0": "chambres non-fumeurs", "services": {$size: 1}};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
 
 Methode 3: matcher le tableau exact
 
-```javascript
+```javascript noexec
 match = {"services": ["chambres non-fumeurs"]};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
@@ -264,7 +264,7 @@ S'il n'y a qu'un seul service, le second service n'existe pas. On teste l'existe
 ### Nom et services des lieux proposant 5 services
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"services": {$size: 5}};
 project = {"name": 1, "services": 1};
 db.paris.find(match, project);
@@ -287,7 +287,7 @@ Lieux avec exactement 5 services dans le tableau.
 ### Nom et services des lieux proposant au moins 5 services
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"services.4": {$exists: 1}};
 project = {"name": 1, "services": 1};
 db.paris.find(match, project);
@@ -299,7 +299,7 @@ Lieux avec 5 services ou plus.
 **Explanation:**
 `services.4` est l'element a l'index 4 (le 5eme). S'il existe, le tableau a au moins 5 elements. C'est l'astuce car `$size` ne supporte pas `$gte`. Alternative avec aggregate:
 
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$project: {name: 1, services: 1, nbServices: {$size: "$services"}}},
     {$match: {nbServices: {$gte: 5}}}
@@ -313,7 +313,7 @@ db.paris.aggregate([
 ### Donner les adresses des lieux de categorie "accommodation" avec un service "blanchisserie"
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"category": "accommodation", "services": "blanchisserie"};
 project = {"name": 1, "location.address": 1};
 db.paris.find(match, project);
@@ -335,7 +335,7 @@ Deux conditions dans le match (AND implicite): la categorie doit etre accommodat
 ### Categories des lieux ayant au moins une note (reviews.rating) de 4 ou plus
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"reviews.rating": {$gte: 4}};
 project = {"category": 1, "name": 1};
 db.paris.find(match, project);
@@ -354,7 +354,7 @@ Noms et categories des lieux avec au moins un review ayant rating >= 4.
 ### Affiche les sources des commentaires des lieux avec au moins un commentaire "Facebook" (source)
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"reviews.source": "Facebook"};
 project = {"name": 1, "reviews.source": 1};
 db.paris.find(match, project);
@@ -373,7 +373,7 @@ Meme principe que l'exercice 13: la dot notation sur un tableau filtre sur les s
 ### Coordonnees GPS des lieux dont l'adresse contient "rue de rome"
 
 **Answer:**
-```javascript
+```javascript noexec
 match = {"location.address": {$regex: "rue de rome", $options: "i"}};
 project = {"name": 1, "location.coord.coordinates": 1};
 db.paris.find(match, project);
@@ -405,7 +405,7 @@ Doc: https://docs.mongodb.com/manual/aggregation/
 ### Pour les lieux de categorie "accommodation" avec un service "blanchisserie", projeter le resultat sur le nom et numero de telephone (seulement si elle existe), et trier sur le nom
 
 **Answer:**
-```javascript
+```javascript noexec
 opMatch = {$match: {
     "services": "blanchisserie",
     "category": "accommodation",
@@ -437,7 +437,7 @@ Pipeline en 3 etapes:
 ### Nombre de lieux de categorie "accommodation" et ayant un service "chambres non-fumeurs"
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "accommodation", "services": "chambres non-fumeurs"}},
     {$count: "nb_lieux"}
@@ -459,7 +459,7 @@ db.paris.aggregate([
 ### Donner le nombre de lieux par categorie
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$group: {_id: "$category", nb_lieux: {$sum: 1}}},
     {$sort: {nb_lieux: -1}}
@@ -484,7 +484,7 @@ db.paris.aggregate([
 ### Pour les lieux de categorie "accommodation", donner le nombre de lieux pour chaque service
 
 **Answer:**
-```javascript
+```javascript noexec
 opMatch = {$match: {"category": "accommodation"}};
 opUnwind = {$unwind: "$services"};
 opGroup = {$group: {_id: "$services", "tot": {$sum: 1}}};
@@ -521,7 +521,7 @@ Il est donc ensuite facile de travailler sur chaque element avec `$group`.
 ### Trier le resultat precedent par ordre decroissant
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "accommodation"}},
     {$unwind: "$services"},
@@ -545,7 +545,7 @@ Note du sujet: Passez a l'exercice 7 (section geospatiale) si vous le desirez.
 ### Du resultat precedent, n'afficher que les services presents dans plus de 1000 lieux ($gt, greater than)
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "accommodation"}},
     {$unwind: "$services"},
@@ -568,7 +568,7 @@ Le second `$match` agit comme un HAVING en SQL: il filtre les GROUPES apres l'ag
 ### Pour chaque nom de lieu de categorie "poi", donner le nombre de commentaires dont la source (reviews.source) est "Facebook". Trier par ordre decroissant
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "poi"}},
     {$unwind: "$reviews"},
@@ -595,7 +595,7 @@ Pipeline: filtrer par categorie poi -> decomposer les reviews -> filtrer par sou
 ### Pour chaque langue d'un commentaire (reviews.language), donner le nombre de commentaires de lieux ayant un service "chambres non-fumeurs"
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$match: {"services": "chambres non-fumeurs"}},
     {$unwind: "$reviews"},
@@ -622,7 +622,7 @@ On filtre d'abord les lieux avec le service specifique, puis on decompose leurs 
 ### Pour chaque nom de lieu de categorie "restaurant", donner la note moyenne et le nombre de commentaires. Trier le resultat par ordre decroissant de moyenne, puis de nombre
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "restaurant"}},
     {$unwind: "$reviews"},
@@ -652,7 +652,7 @@ db.paris.aggregate([
 ### Pour chaque categorie de lieux et langue de commentaire, donner le nombre de commentaires correspondants
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$unwind: "$reviews"},
     {$group: {
@@ -681,7 +681,7 @@ db.paris.aggregate([
 ### Pour chaque categorie de lieux, donner le nombre moyen de commentaires par langue (reutiliser le resultat precedent)
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$unwind: "$reviews"},
     {$group: {
@@ -709,7 +709,7 @@ Double `$group`: le premier groupe par (categorie, langue), le second re-groupe 
 ### Donner le nombre moyen de commentaires par lieu
 
 **Answer:**
-```javascript
+```javascript noexec
 db.paris.aggregate([
     {$project: {nb_reviews: {$size: "$reviews"}}},
     {$group: {_id: null, moyenne: {$avg: "$nb_reviews"}}}
@@ -734,7 +734,7 @@ Doc: http://docs.mongodb.org/manual/applications/geospatial-indexes/
 
 ### Setup: Creation de l'index et recuperation des coordonnees
 
-```javascript
+```javascript noexec
 // Creer l'index spatial
 db.paris.ensureIndex({"location.coord": "2dsphere"});
 
@@ -761,7 +761,7 @@ Resultat:
 
 Stocker dans des variables:
 
-```javascript
+```javascript noexec
 tourEiffel = [2.3516704899184, 48.857770855496];
 louvre = [2.3358714580536, 48.861018076911];
 saintMichel = [2.3421263694763, 48.849368645992];
@@ -774,7 +774,7 @@ saintMichel = [2.3421263694763, 48.849368645992];
 ### Afficher les noms et adresses des restaurants autour de Saint-Michel dans un rayon de 200m.
 
 **Answer:**
-```javascript
+```javascript noexec
 dist = 200;
 near = {$near: {
     $geometry: {"type": "Point", "coordinates": saintMichel},
@@ -808,7 +808,7 @@ db.paris.find(
 ### Afficher le nom des points d'interets (poi) compris dans le triangle "tour Eiffel - Louvre - Saint-Michel" avec l'operateur $geoWithin
 
 **Answer:**
-```javascript
+```javascript noexec
 triangle = [[tourEiffel, louvre, saintMichel, tourEiffel]];
 
 db.paris.find(
@@ -848,7 +848,7 @@ db.paris.find(
 ### Calculer le nombre de lieux par categorie dans cette zone
 
 **Answer:**
-```javascript
+```javascript noexec
 triangle = [[tourEiffel, louvre, saintMichel, tourEiffel]];
 
 db.paris.aggregate([

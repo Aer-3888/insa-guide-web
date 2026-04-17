@@ -86,7 +86,7 @@ Le maitre distribue le travail dynamiquement aux esclaves qui en demandent.
 
 ### En OpenMP
 
-```c
+```c noexec
 /* Iterations homogenes */
 #pragma omp parallel for schedule(static)
 
@@ -138,7 +138,7 @@ Pattern "scatter-compute-gather" :
 
 Lancer les communications non-bloquantes, faire du calcul utile pendant le transfert, puis attendre la fin.
 
-```c
+```c noexec
 /* Lancer les echanges de halo */
 MPI_Isend(bords, ...);
 MPI_Irecv(ghost, ...);
@@ -159,7 +159,7 @@ calculer_bords(grille, ghost);
 
 Pour les algorithmes iteratifs (chaleur, Jacobi), tous les processus doivent decider ensemble d'arreter.
 
-```c
+```c noexec
 /* Chaque processus calcule son delta local */
 double delta_local = ...;
 

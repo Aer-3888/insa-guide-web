@@ -11,7 +11,7 @@ Une structure regroupe des variables de types differents sous un meme nom.
 
 ### Declaration et typedef
 
-```c
+```c noexec
 /* Methode 1 : struct seul */
 struct Batiment {
     int id;
@@ -39,7 +39,7 @@ typedef struct struct_element {
 
 ### Initialisation et acces aux champs
 
-```c
+```c noexec
 /* Initialisation a la declaration */
 Tache t = {1, 5, 0, {0}, "Analyse des besoins"};
 
@@ -56,7 +56,7 @@ Tache t = {.no = 1, .duree = 5, .titre = "Analyse"};
 
 ### Acces aux champs : `.` vs `->`
 
-```c
+```c noexec
 Tache t;
 Tache *ptr = &t;
 
@@ -89,7 +89,7 @@ Tache t :
 
 ### Passage par valeur (lecture seule)
 
-```c
+```c noexec
 /* La structure est COPIEE -> pas de modification possible */
 void afficherReleve(Releve r) {
     printf("Nom: %s -> min=%d, max=%d\n", r.nom, r.min, r.max);
@@ -102,7 +102,7 @@ int testUsine(Batiment bat) {
 
 ### Passage par pointeur (modification possible)
 
-```c
+```c noexec
 /* On passe l'ADRESSE -> modification possible */
 void saisirReleve(Releve *r) {
     printf("Nom du site: ");
@@ -128,7 +128,7 @@ void changeVille(Batiment *bat, char *nom) {
 
 ## 5.3 Tableaux de structures
 
-```c
+```c noexec
 #define MAXTACHES 64
 Tache tabTaches[MAXTACHES];
 
@@ -165,7 +165,7 @@ int ajoutBatiment(EnsBat *bats, int id, NatureBat nat, float haut, char *ville) 
 
 ## 5.4 Enumerations (enum)
 
-```c
+```c noexec
 /* Definition */
 typedef enum {maison, immeuble, hopital, ecole, usine} NatureBat;
 /* maison=0, immeuble=1, hopital=2, ecole=3, usine=4 */
@@ -192,7 +192,7 @@ typedef enum {FALSE, TRUE} Booleen;
 ```
 
 **Astuce examen : affichage enum avec tableau de chaines :**
-```c
+```c noexec
 /* DS 2020 - Question 12 */
 void printDateV2(Date d) {
     static char* nomMois[] = {
@@ -208,7 +208,7 @@ void printDateV2(Date d) {
 
 Une structure qui contient un pointeur vers elle-meme. Essentielle pour les listes chainees.
 
-```c
+```c noexec
 typedef struct struct_element {
     Tache t;                           /* Donnee stockee */
     struct struct_element *suivant;    /* Pointeur vers le suivant */
@@ -218,7 +218,7 @@ typedef Element* Liste;  /* Une liste = pointeur vers le 1er element */
 ```
 
 **IMPORTANT : on ne peut PAS ecrire :**
-```c
+```c noexec
 typedef struct {
     int data;
     Element *suivant;  /* ERREUR : Element n'est pas encore defini ! */
@@ -226,7 +226,7 @@ typedef struct {
 ```
 
 **Il faut utiliser le nom struct :**
-```c
+```c noexec
 typedef struct struct_element {
     int data;
     struct struct_element *suivant;  /* OK : struct struct_element est defini */
@@ -235,7 +235,7 @@ typedef struct struct_element {
 
 ## 5.6 Descripteur de bloc memoire (TP7)
 
-```c
+```c noexec
 typedef struct descript {
     size_t size;              /* Taille du bloc en octets */
     Statut_memoire statut;    /* LIBRE ou OCCUPE */
@@ -256,7 +256,7 @@ liste_bloc_mem       pointeur retourne par malloc         bloc_suivant
 
 Structure utilisee pour parametriser les fonctions de comptage dans le TP6 GEDCOM :
 
-```c
+```c noexec
 typedef struct {
     char* modele;           /* Motif sscanf pour la detection */
     char* message;          /* Message d'affichage du resultat */

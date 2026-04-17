@@ -11,7 +11,7 @@ En Prolog, il n'y a pas de boucles. Toute iteration se fait par **recursion**.
 
 ### Structure type
 
-```prolog
+```prolog noexec
 % Cas de base : condition d'arret
 predicat(cas_trivial, resultat_trivial).
 
@@ -99,7 +99,7 @@ Un **accumulateur** est un argument supplementaire qui accumule le resultat au f
 
 ### Sans accumulateur (O(n^2) pour renverser)
 
-```prolog
+```prolog noexec
 % Renverser naif : append a chaque etape -> O(n^2)
 renverser_naif([], []).
 renverser_naif([H | T], R) :-
@@ -154,7 +154,7 @@ compte_acc(A, [B | T], Acc, N) :-
 ## 4.4 Recursion sur les arbres
 
 Les arbres binaires sont representes par des termes composes :
-```prolog
+```prolog noexec
 vide                              % arbre vide
 arb_bin(Racine, Gauche, Droite)   % noeud
 ```
@@ -183,7 +183,7 @@ dans_arbre(E, arb_bin(N, _, D)) :-         % chercher a droite
 
 ### Parcours d'arbres
 
-```prolog
+```prolog noexec
 % Infixe : Gauche, Racine, Droite
 infixe(vide, []).
 infixe(arb_bin(N, G, D), L) :-
@@ -237,7 +237,7 @@ insertion_arbre_ordonne(X, arb_bin(X, G, D), arb_bin(X, G, D)).  % deja present
 
 ## 4.5 Recursion sur les relations (fermeture transitive)
 
-```prolog
+```prolog noexec
 % ancetre(X, Y) : X est un ancetre de Y
 ancetre(X, Y) :- parent(X, Y).                  % base : parent direct
 ancetre(X, Y) :- parent(P, Y), ancetre(X, P).   % recursif : transitivite
@@ -258,7 +258,7 @@ Un predicat recursif **termine** si :
 
 ### Piege classique : recursion gauche
 
-```prolog
+```prolog noexec
 % BOUCLE INFINIE (recursion gauche) :
 ancetre(X, Y) :- ancetre(X, P), parent(P, Y).  % DANGER !
 ancetre(X, Y) :- parent(X, Y).

@@ -76,7 +76,7 @@ Le fichier `index.html` est fourni. Il contient un champ texte, deux boutons rad
 
 **Answer:**
 
-```javascript
+```javascript noexec
 // Fichier : First Step/main.js
 
 // 1. Recuperer les references DOM
@@ -139,7 +139,7 @@ function result() {
 ### Bug a corriger
 
 Le code source original contient un bug intentionnel dans la conversion UK :
-```javascript
+```javascript noexec
 // BUG : newStory.replace() retourne une nouvelle chaine mais NE modifie PAS newStory
 newStory.replace("94 farenheit", temperature);   // resultat perdu !
 newStory.replace("300 pounds", weight);           // resultat perdu !
@@ -222,7 +222,7 @@ button {
 }
 ```
 
-```javascript
+```javascript noexec
 // Fichier : Building Blocks/main.js
 
 // 1. References DOM
@@ -280,7 +280,7 @@ btn.onclick = function(event) {
 
 **Answer:**
 
-```javascript
+```javascript noexec
 // Fichier : Intro Objects/main-finished.js
 
 // 1. Obtenir le canvas et son contexte 2D
@@ -409,7 +409,7 @@ loop();
 
 Les tests `Rectangle.test.js` definissent l'interface attendue :
 
-```javascript
+```javascript noexec
 // Fichier : es6_babel/src/test/Rectangle.test.js (fourni)
 import "jest";
 import { Rectangle } from "../main/model.js";
@@ -427,7 +427,7 @@ test("testLinewidth", () => { expect(rec.linewidth).toBe(11); });
 
 **Answer:**
 
-```javascript
+```javascript noexec
 export class Rectangle extends Shape {
     constructor(x, y, w, h, color, linewidth) {
         super(color, linewidth);
@@ -443,7 +443,7 @@ export class Rectangle extends Shape {
 
 ### Q2 : Implementer Line (guide par les tests)
 
-```javascript
+```javascript noexec
 // Fichier : es6_babel/src/test/Line.test.js (fourni)
 test("testX1", () => { expect(line.x1).toBe(1); });
 test("testX2", () => { expect(line.x2).toBe(3); });
@@ -453,7 +453,7 @@ test("testY2", () => { expect(line.y2).toBe(4); });
 
 **Answer:**
 
-```javascript
+```javascript noexec
 export class Line extends Shape {
     constructor(x1, y1, x2, y2, color, linewidth) {
         super(color, linewidth);
@@ -469,14 +469,14 @@ export class Line extends Shape {
 
 ### Q3 : Implementer Drawing (guide par les tests)
 
-```javascript
+```javascript noexec
 // Fichier : es6_babel/src/test/Drawing.test.js (fourni)
 test("testArray", () => { expect(drawing.shapes).toHaveLength(0); });
 ```
 
 **Answer:**
 
-```javascript
+```javascript noexec
 export class Drawing {
     constructor() {
         this.shapes = [];
@@ -490,7 +490,7 @@ export class Drawing {
 
 **Answer:**
 
-```javascript
+```javascript noexec
 // Fichier : es6_babel/src/main/interaction.js
 export class DnD {
     constructor(canvas, interactor) {
@@ -529,7 +529,7 @@ export class DnD {
 
 ### Fichier model.js complet
 
-```javascript
+```javascript noexec
 // Fichier : es6_babel/src/main/model.js (SOLUTION COMPLETE)
 export class Shape {
     constructor(color, linewidth) {

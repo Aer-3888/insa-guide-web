@@ -40,7 +40,7 @@ Un etablissement de vente par correspondance recoit chaque jour un courrier de p
 
 ### Q1 : Lecture des donnees
 
-```r
+```r noexec
 courrier <- read.table("Courrier.txt", header = TRUE)
 attach(courrier)
 ```
@@ -49,7 +49,7 @@ attach(courrier)
 
 Graphiquement, un modele lineaire semble-t-il justifie ?
 
-```r
+```r noexec
 plot(Poids, Nb_lettres,
      xlab = "Poids du courrier (t)",
      ylab = "Nombre de lettres",
@@ -65,7 +65,7 @@ Ecrire un modele de regression simple permettant d'etudier la relation entre le 
 
 **Modele :** $\forall i \in \{1, \ldots, 21\}, \quad \text{Nb\_lettres}_i = \beta_0 + \beta_1 \text{Poids}_i + \varepsilon_i$ avec $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$.
 
-```r
+```r noexec
 reg <- lm(Nb_lettres ~ Poids, data = courrier)
 resume <- summary(reg)
 print(resume)
@@ -90,7 +90,7 @@ F-statistic: 305.6 on 1 and 18 DF,  p-value: 2.558e-12
 
 Superposer la droite des moindres carres aux donnees.
 
-```r
+```r noexec
 x <- c(min(Poids), max(Poids))
 y <- 198 + 57.7 * x
 lines(x, y, col = "blue", lwd = 3)
@@ -100,7 +100,7 @@ lines(x, y, col = "blue", lwd = 3)
 
 Que vaut le coefficient de determination $R^2$ ? Programmer avec R le calcul de ce coefficient.
 
-```r
+```r noexec
 cat("R^2 =", resume$r.squared, "\n")
 ```
 
@@ -114,7 +114,7 @@ R^2 = 0.9444
 
 Tracer le graphe des residus avec les droites $y = 0$, $y = -2\hat{\sigma}$ et $y = 2\hat{\sigma}$. Commenter.
 
-```r
+```r noexec
 plot(reg$fitted.values, reg$residuals,
      xlab = "Valeurs ajustees", ylab = "Residus",
      main = "Analyse des residus")
@@ -147,7 +147,7 @@ Tester l'hypothese de nullite du parametre $\beta_1$. Le modele propose est-il i
 
 Prevoir le nombre de lettres a trier lorsque le poids du courrier est egal a $x_{n+1} = 27.5$ par un calcul direct, puis en utilisant la fonction `predict`.
 
-```r
+```r noexec
 # Calcul direct
 pred_manuelle <- 198 + 57.7 * 27.5
 cat("Prediction manuelle :", pred_manuelle, "\n")
@@ -170,7 +170,7 @@ $$\frac{Y_{n+1} - \hat{y}_{n+1}}{\hat{\sigma}\sqrt{1 + \frac{1}{n} + \frac{(x_{n
 
 Determiner les bornes de l'intervalle de confiance $IC_{95\%}(Y_{n+1})$.
 
-```r
+```r noexec
 pred_intervalle <- predict(reg, data.frame(Poids = 27.5), interval = "prediction")
 print(pred_intervalle)
 ```
@@ -190,7 +190,7 @@ print(pred_intervalle)
 
 A l'aide de la fonction `predict`, tracer les courbes des bornes inferieures et superieures de l'intervalle de prevision de niveau 95%, pour un poids compris entre 0 et 40.
 
-```r
+```r noexec
 I <- predict(reg, data.frame(Poids = 0:40), interval = "prediction")
 plot(Poids, Nb_lettres,
      xlab = "Poids (t)", ylab = "Nombre de lettres",
@@ -200,7 +200,7 @@ lines(0:40, I[, "upr"], col = "red", lty = 2)
 lines(0:40, I[, "fit"], col = "blue", lwd = 2)
 ```
 
-```r
+```r noexec
 detach(courrier)
 ```
 
@@ -214,7 +214,7 @@ Lire le fichier `tomassone.txt` contenant une variable explicative X et 4 variab
 
 **Indication :** Pour chacune des regressions, tracer le nuage de points et le graphe des residus.
 
-```r
+```r noexec
 tomassone <- read.table("tomassone.txt", header = TRUE)
 attach(tomassone)
 ```
@@ -223,7 +223,7 @@ attach(tomassone)
 
 ### Y1 : Cas ideal -- le modele lineaire fonctionne
 
-```r
+```r noexec
 plot(X, Y1, main = "Y1 vs X", pch = 19)
 reg1 <- lm(Y1 ~ X, data = tomassone)
 resume1 <- summary(reg1)
@@ -244,7 +244,7 @@ Multiple R-squared:  0.6416
 
 **Graphe des residus :**
 
-```r
+```r noexec
 plot(reg1$fitted.values, reg1$residuals,
      main = "Residus de Y1",
      xlab = "Valeurs ajustees", ylab = "Residus")
@@ -257,7 +257,7 @@ abline(h = 0, col = "blue")
 
 ### Y2 : Non-linearite -- relation parabolique
 
-```r
+```r noexec
 plot(X, Y2, main = "Y2 vs X", pch = 19)
 reg2 <- lm(Y2 ~ X, data = tomassone)
 resume2 <- summary(reg2)
@@ -271,7 +271,7 @@ Multiple R-squared:  0.6199
 
 **Graphe des residus :**
 
-```r
+```r noexec
 plot(reg2$fitted.values, reg2$residuals,
      main = "Residus de Y2",
      xlab = "Valeurs ajustees", ylab = "Residus")
@@ -282,7 +282,7 @@ abline(h = 0, col = "blue")
 
 **Solution : ajouter $X^2$**
 
-```r
+```r noexec
 X2 <- tomassone[, "X"]^2
 tomassone2 <- cbind(tomassone, X2)
 reg2_poly <- lm(Y2 ~ X + X2, data = tomassone2)
@@ -302,7 +302,7 @@ Multiple R-squared:  0.9701
 
 **Interpretation :** $R^2$ passe de 0.62 a **0.97** -- le modele polynomial est largement superieur. Le terme $X^2$ est hautement significatif ($p = 2.75 \times 10^{-7}$).
 
-```r
+```r noexec
 plot(X, Y2, main = "Y2 avec modele polynomial", pch = 19)
 lines(X, predict(reg2_poly), col = "blue", lwd = 3)
 ```
@@ -311,7 +311,7 @@ lines(X, predict(reg2_poly), col = "blue", lwd = 3)
 
 ### Y3 : Valeur aberrante (outlier)
 
-```r
+```r noexec
 plot(X, Y3, main = "Y3 vs X", pch = 19)
 reg3 <- lm(Y3 ~ X, data = tomassone)
 resume3 <- summary(reg3)
@@ -321,7 +321,7 @@ abline(reg3, col = "green", lwd = 3)
 
 **Graphe des residus avec bandes a $\pm 2\hat{\sigma}$ :**
 
-```r
+```r noexec
 plot(reg3$fitted.values, reg3$residuals,
      ylim = c(-10, 10),
      main = "Residus de Y3",
@@ -335,7 +335,7 @@ abline(h =  2 * resume3$sigma, col = "red")
 
 **Solution : supprimer l'outlier et recalculer**
 
-```r
+```r noexec
 tomassone3 <- tomassone[-16, ]
 reg3_clean <- lm(Y3 ~ X, data = tomassone3)
 resume3_clean <- summary(reg3_clean)
@@ -354,7 +354,7 @@ Multiple R-squared:  0.9972
 
 ### Y4 : Transformation logarithmique necessaire
 
-```r
+```r noexec
 plot(X, Y4, main = "Y4 vs X", pch = 19)
 reg4 <- lm(Y4 ~ X, data = tomassone)
 resume4 <- summary(reg4)
@@ -364,7 +364,7 @@ abline(reg4, col = "purple", lwd = 3)
 
 **Graphe des residus :**
 
-```r
+```r noexec
 plot(reg4$fitted.values, reg4$residuals,
      ylim = c(-8, 8), main = "Residus de Y4")
 abline(h = 0, col = "blue")
@@ -376,7 +376,7 @@ abline(h =  2 * resume4$sigma, col = "red")
 
 **Solution : transformation $\log(Y4)$ + modele polynomial**
 
-```r
+```r noexec
 reg4_log <- lm(log(Y4) ~ X, data = tomassone)
 
 X2 <- tomassone[, "X"]^2
@@ -386,14 +386,14 @@ resume4_poly <- summary(reg4_poly)
 print(resume4_poly)
 ```
 
-```r
+```r noexec
 plot(X, log(Y4), main = "log(Y4) avec modele polynomial", pch = 19)
 lines(X, predict(reg4_poly), col = "blue", lwd = 3)
 ```
 
 **Verification des residus :**
 
-```r
+```r noexec
 plot(reg4_poly$fitted.values, reg4_poly$residuals,
      ylim = c(-0.5, 0.5),
      main = "Residus du modele polynomial sur log(Y4)")
@@ -404,7 +404,7 @@ abline(h =  2 * resume4_poly$sigma, col = "red")
 
 **Interpretation :** Les residus du modele log-polynomial sont maintenant aleatoires et homoscedastiques. La combinaison transformation log + terme quadratique corrige a la fois la non-linearite et l'heteroscedasticite.
 
-```r
+```r noexec
 detach(tomassone)
 ```
 
@@ -431,14 +431,14 @@ La distance d'arret d'un vehicule est egale a la distance de reaction augmentee 
 
 ### Q1 : Importer les donnees
 
-```r
+```r noexec
 freinage <- read.table("freinage.txt", header = TRUE)
 attach(freinage)
 ```
 
 ### Q2 : Representer le nuage de points
 
-```r
+```r noexec
 plot(Vitesse, Dist,
      main = "Distance de freinage vs Vitesse",
      xlab = "Vitesse (km/h)", ylab = "Distance d'arret (m)",
@@ -451,7 +451,7 @@ plot(Vitesse, Dist,
 
 Ajuster le modele : $\forall i \in \{1, \ldots, 11\}, \quad \text{Dist}_i = \beta_0 + \beta_1 \text{Vitesse}_i + \varepsilon_i$ avec $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$.
 
-```r
+```r noexec
 reg <- lm(Dist ~ Vitesse, data = freinage)
 resume <- summary(reg)
 print(resume)
@@ -475,13 +475,13 @@ Multiple R-squared:  0.9796,  Adjusted R-squared:  0.9773
 
 ### Q4 : Tracer la droite de regression en rouge
 
-```r
+```r noexec
 lines(Vitesse, predict(reg), col = "red", lwd = 3)
 ```
 
 ### Q5 : Graphe des residus -- les hypotheses sont-elles verifiees ?
 
-```r
+```r noexec
 plot(reg$fitted.values, reg$residuals,
      ylim = c(-10, 10),
      main = "Residus du modele lineaire",
@@ -497,7 +497,7 @@ abline(h =  2 * resume$sigma, col = "red")
 
 **Nouveau modele :** $\text{Dist}_i = \beta_0 + \beta_1 \text{Vitesse}_i + \beta_2 \text{Vitesse}_i^2 + \varepsilon_i$
 
-```r
+```r noexec
 Vitesse2 <- freinage[, "Vitesse"]^2
 freinage2 <- cbind(freinage, Vitesse2)
 
@@ -520,7 +520,7 @@ Multiple R-squared:  0.9977
 
 **Interpretation :** $R^2 = 0.9977$ : amelioration nette. Le coefficient de $\text{Vitesse}^2$ est hautement significatif ($p = 3.94 \times 10^{-5}$). Les residus du modele polynomial sont maintenant **aleatoires et homoscedastiques**.
 
-```r
+```r noexec
 plot(reg2$fitted.values, reg2$residuals,
      ylim = c(-10, 10),
      main = "Residus du modele polynomial")
@@ -533,7 +533,7 @@ abline(h =  2 * resume2$sigma, col = "red")
 
 Vous roulez a 85 km/h avec un temps de reaction de 2 secondes. Distance d'arret = distance de reaction + distance de freinage.
 
-```r
+```r noexec
 p1 <- predict(reg, data.frame(Vitesse = 85))
 p2 <- predict(reg2, data.frame(Vitesse = 85, Vitesse2 = 85^2))
 
@@ -560,7 +560,7 @@ Distance totale d'arret (polynomial): 99.75 m
 
 **Interpretation :** Le modele polynomial predit une distance de freinage legerement plus grande. A 85 km/h, la distance totale d'arret est d'environ **100 metres** (incluant 2 secondes de temps de reaction). Le modele polynomial est plus fiable car il respecte la physique du freinage.
 
-```r
+```r noexec
 detach(freinage)
 ```
 
@@ -574,14 +574,14 @@ On cherche a modeliser la relation entre le gain journalier en proteines et l'in
 
 ### Q1 : Importer les donnees
 
-```r
+```r noexec
 porcs <- read.csv2("porcs.csv")   # csv2 car format francais (sep = ";", dec = ",")
 attach(porcs)
 ```
 
 ### Q2 : Representer le nuage de points
 
-```r
+```r noexec
 plot(ingestion, gain,
      main = "Gain en proteines vs Ingestion",
      xlab = "Ingestion journaliere (MJ/jour)",
@@ -595,7 +595,7 @@ plot(ingestion, gain,
 
 $\forall i \in \{1, \ldots, 19\}, \quad \text{gain}_i = \beta_0 + \beta_1 \text{ingestion}_i + \varepsilon_i$ avec $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$.
 
-```r
+```r noexec
 reg <- lm(gain ~ ingestion, data = porcs)
 resume <- summary(reg)
 print(resume)
@@ -619,13 +619,13 @@ Multiple R-squared:  0.5434
 
 ### Q4 : Tracer la droite de regression en rouge
 
-```r
+```r noexec
 lines(ingestion, predict(reg), col = "red", lwd = 3)
 ```
 
 ### Q5 : Graphe des residus
 
-```r
+```r noexec
 plot(reg$fitted.values, reg$residuals,
      ylim = c(-50, 50),
      main = "Residus du modele lineaire",
@@ -639,7 +639,7 @@ abline(h =  2 * resume$sigma, col = "red")
 
 **Solution : modele polynomial avec $\text{ingestion}^2$**
 
-```r
+```r noexec
 ingestion2 <- porcs[, "ingestion"]^2
 porcs2 <- cbind(porcs, ingestion2)
 
@@ -680,7 +680,7 @@ L'ecriture matricielle du modele est $Y = X\beta + E$ avec :
 
 $$X_i = \begin{cases} (1, \text{ingestion}_i) & \text{si ingestion}_i \leq 28 \\ (1, 28) & \text{si ingestion}_i > 28 \end{cases}$$
 
-```r
+```r noexec
 n <- nrow(porcs)
 X <- cbind(rep(1, n), pmin(ingestion, 28))
 ```
@@ -689,7 +689,7 @@ X <- cbind(rep(1, n), pmin(ingestion, 28))
 
 On peut utiliser `lm()` sur les donnees filtrees :
 
-```r
+```r noexec
 porcs_inf28 <- porcs[ingestion <= 28, ]
 reg3 <- lm(gain ~ ingestion, data = porcs_inf28)
 resume3 <- summary(reg3)
@@ -711,7 +711,7 @@ $\hat{\beta}_0 = -41.69$, $\hat{\beta}_1 = 7.97$.
 
 #### Q6d : Tracer la courbe d'ajustement en bleu
 
-```r
+```r noexec
 plot(ingestion, gain,
      main = "Modele avec seuil a ingestion = 28",
      pch = 19)
@@ -729,7 +729,7 @@ lines(x_sup28, y_sup28, col = "blue", lwd = 3)
 
 #### Q6e : Coefficient de determination $R^2$
 
-```r
+```r noexec
 y_pred <- ifelse(ingestion <= 28,
                  coef(reg3)[1] + coef(reg3)[2] * ingestion,
                  coef(reg3)[1] + coef(reg3)[2] * 28)
@@ -739,7 +739,7 @@ R2 <- 1 - SCR / SCT
 cat("R^2 du modele avec seuil :", R2, "\n")
 ```
 
-```r
+```r noexec
 detach(porcs)
 ```
 

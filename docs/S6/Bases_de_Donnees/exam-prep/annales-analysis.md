@@ -83,7 +83,7 @@ sidebar_position: 2
 
 **Enonce typique :** "Donner le nom des clients qui ont passe au moins une commande."
 
-```sql
+```sql noexec
 SELECT DISTINCT c.nom
 FROM client c
 JOIN commande co ON c.clientId = co.clientId;
@@ -93,7 +93,7 @@ JOIN commande co ON c.clientId = co.clientId;
 
 **Enonce typique :** "Donner le nom des clients dont le total des commandes depasse la moyenne."
 
-```sql
+```sql noexec
 SELECT c.nom, SUM(co.montant) AS total
 FROM client c
 JOIN commande co ON c.clientId = co.clientId
@@ -105,7 +105,7 @@ HAVING SUM(co.montant) > (SELECT AVG(montant) FROM commande);
 
 **Enonce typique :** "Quels clients ont achete TOUS les produits ?"
 
-```sql
+```sql noexec
 SELECT c.nom
 FROM client c
 WHERE NOT EXISTS (

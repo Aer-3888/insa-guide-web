@@ -53,7 +53,7 @@ connaissances, ecrire des predicats pour extraire des reponses elaborees.
 
 ## Execution
 
-```prolog
+```prolog noexec
 % Charger la base Valois
 [eclipse 1]: ["basevalois"].
 

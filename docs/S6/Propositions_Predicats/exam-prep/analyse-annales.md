@@ -94,7 +94,7 @@ Formules typiques :
 - `is_in : formula -> formula -> bool` -- sous-formule
 
 **Type formula en OCaml :**
-```ocaml
+```ocaml noexec
 type formula =
   | Atom of string
   | Not of formula

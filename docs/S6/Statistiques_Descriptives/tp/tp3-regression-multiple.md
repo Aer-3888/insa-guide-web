@@ -42,7 +42,7 @@ où ε ~ N(0, σ²)
 
 ## Packages requis
 
-```r
+```r noexec
 install.packages("rgl")     # Visualisation 3D
 install.packages("car")     # Outils graphiques avancés
 
@@ -60,7 +60,7 @@ Analyser l'impact de 3 médias publicitaires (TV, Radio, Journaux) sur les vente
 **Workflow:**
 
 #### 1. Analyse de corrélation
-```r
+```r noexec
 cor(pub)  # Matrice de corrélation
 ```
 - TV et Sales: corrélés positivement
@@ -76,7 +76,7 @@ cor(pub)  # Matrice de corrélation
 - Newspaper vs TV: faible corrélation
 
 #### 4. Régression multiple (3 variables)
-```r
+```r noexec
 regm <- lm(Sales ~ TV + Radio + Newspaper)
 ```
 - R² = 0.89 → 89% de variabilité expliquée
@@ -87,14 +87,14 @@ regm <- lm(Sales ~ TV + Radio + Newspaper)
   - Newspaper: **NON** significatif (p > 0.05)
 
 #### 5. Modèle réduit (TV + Radio)
-```r
+```r noexec
 reg2 <- lm(Sales ~ TV + Radio)
 ```
 - Radio a une influence plus forte que TV (coefficient plus élevé)
 - Modèle plus parcimonieux sans perte de qualité
 
 #### 6. Visualisation 3D
-```r
+```r noexec
 scatter3d(Sales ~ TV + Radio, surface=TRUE)
 ```
 - Plan de régression dans l'espace 3D
@@ -102,7 +102,7 @@ scatter3d(Sales ~ TV + Radio, surface=TRUE)
 
 #### 7. Prédiction
 Pour TV=100k$, Radio=20k$:
-```r
+```r noexec
 predict(reg2, data.frame(TV=100, Radio=20), interval="prediction")
 ```
 
@@ -120,7 +120,7 @@ Prédire le rendement fromager à partir de la composition du lait (5 variables)
 **Workflow:**
 
 #### 1. Matrice de corrélation
-```r
+```r noexec
 cor(lait[,1:5])
 ```
 **Observations:**
@@ -134,7 +134,7 @@ cor(lait[,1:5])
 - TxButy, TxProt, TxCase, ExSec vs Rendement: linéaires
 
 #### 3. Régression multiple complète
-```r
+```r noexec
 reg <- lm(Rendement ~ Densite + TxButy + TxProt + TxCase + ExSec)
 ```
 **Variables significatives (p < 0.05):**
@@ -144,7 +144,7 @@ reg <- lm(Rendement ~ Densite + TxButy + TxProt + TxCase + ExSec)
 Les autres variables ne sont pas significatives (multicolinéarité)
 
 #### 4. Sélection automatique (backward)
-```r
+```r noexec
 reg_backward <- step(reg, direction="backward")
 ```
 
@@ -157,7 +157,7 @@ reg_backward <- step(reg, direction="backward")
 **Résultat:** Densite + TxButy + TxProt + ExSec (enlève TxCase)
 
 #### 5. Modèle sans intercept
-```r
+```r noexec
 reg_no_intercept <- lm(Rendement ~ -1 + Densite + TxButy + TxProt + ExSec)
 ```
 - `-1` ou `0` enlève l'ordonnée à l'origine
@@ -168,7 +168,7 @@ Critères:
 - **AIC (Akaike Information Criterion):** plus petit = meilleur
 - **R² ajusté:** pénalise le nombre de variables
 
-```r
+```r noexec
 extractAIC(reg)
 summary(reg)$adj.r.squared
 ```
@@ -177,7 +177,7 @@ summary(reg)$adj.r.squared
 
 #### 7. Prédiction
 Comparer deux vaches (Holstein vs Normande):
-```r
+```r noexec
 predict(reg, newdata=df_vaches, interval="prediction")
 ```
 
@@ -195,7 +195,7 @@ Prédire la hauteur des arbres à partir de leur circonférence avec calcul matr
 **Workflow:**
 
 #### 1. Visualisation et régression simple
-```r
+```r noexec
 plot(circ, ht)
 reg_simple <- lm(ht ~ circ)
 ```
@@ -207,7 +207,7 @@ reg_simple <- lm(ht ~ circ)
 #### 3. Calcul matriciel manuel
 
 **a) Construction des matrices**
-```r
+```r noexec
 Y <- ht                    # Vecteur réponse (n × 1)
 X0 <- rep(1, length(circ)) # Intercept
 X1 <- circ                 # Circonférence
@@ -216,7 +216,7 @@ X <- cbind(X0, X1, X2)     # Matrice de design (n × 3)
 ```
 
 **b) Calcul des coefficients**
-```r
+```r noexec
 B <- solve(t(X) %*% X) %*% t(X) %*% Y
 ```
 - `t(X)`: transposée de X
@@ -226,7 +226,7 @@ B <- solve(t(X) %*% X) %*% t(X) %*% Y
 **Résultat:** B = [β₀, β₁, β₂]'
 
 **c) Calcul de σ (écart-type résiduel)**
-```r
+```r noexec
 y_fit <- X %*% B          # Valeurs ajustées
 e <- Y - y_fit            # Résidus
 n <- length(e)
@@ -235,7 +235,7 @@ sigma <- sqrt(sum(e^2) / (n - p - 1))
 ```
 
 **d) Écarts-types des coefficients**
-```r
+```r noexec
 var_beta <- sigma^2 * solve(t(X) %*% X)
 se_B0 <- sqrt(var_beta[1, 1])
 se_B1 <- sqrt(var_beta[2, 2])
@@ -247,14 +247,14 @@ se_B2 <- sqrt(var_beta[3, 3])
 - **H₁:** β₂ ≠ 0 (racine carrée a un effet)
 
 **Statistique de test:**
-```r
+```r noexec
 T0 <- B[3] / se_B2
 ```
 Sous H₀: T₀ ~ t(n-p-1)
 
 **Région de rejet (α=5%):** ]-∞, -t_{n-p-1, 0.975}] ∪ [t_{n-p-1, 0.975}, +∞[
 
-```r
+```r noexec
 t_critique <- qt(0.975, n-p-1)
 if (abs(T0) > t_critique) {
   # Rejeter H₀
@@ -262,7 +262,7 @@ if (abs(T0) > t_critique) {
 ```
 
 **f) Vérification avec lm()**
-```r
+```r noexec
 reg_complet <- lm(ht ~ circ + sqrt(circ))
 summary(reg_complet)
 ```
@@ -299,7 +299,7 @@ Vérifier que les coefficients correspondent
 
 ### Fonction step()
 
-```r
+```r noexec
 step(reg, direction="backward")  # Backward
 step(reg, direction="forward")   # Forward  
 step(reg, direction="both")      # Stepwise
@@ -321,7 +321,7 @@ step(reg, direction="both")      # Stepwise
 
 ## Visualisation 3D
 
-```r
+```r noexec
 library(rgl)
 library(car)
 
@@ -347,7 +347,7 @@ Lorsque deux variables explicatives sont très corrélées:
 ### Détection
 1. Matrice de corrélation: |r| > 0.8
 2. VIF (Variance Inflation Factor):
-```r
+```r noexec
 library(car)
 vif(reg)  # VIF > 10 → problème
 ```
@@ -359,7 +359,7 @@ vif(reg)  # VIF > 10 → problème
 
 ## Commandes essentielles
 
-```r
+```r noexec
 # Régression multiple
 reg <- lm(Y ~ X1 + X2 + X3, data=df)
 reg <- lm(Y ~ ., data=df)        # Toutes les colonnes sauf Y

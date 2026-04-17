@@ -115,7 +115,7 @@ Analyse complète d'un jeu de données sur les ouragans: importation, nettoyage,
 
 ## Exécution
 
-```r
+```r noexec
 # Se placer dans le répertoire TP1
 setwd("~/Documents/Project/Insa/S6/Statistiques_Descriptives/tp/TP1")
 

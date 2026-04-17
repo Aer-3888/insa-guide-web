@@ -52,7 +52,7 @@ Filtre les **lignes** selon une condition. Equivalent de WHERE en SQL.
 sigma_{prix > 10}(Livre)
 ```
 
-```sql
+```sql noexec
 -- Equivalent SQL
 SELECT * FROM Livre WHERE prix > 10;
 ```
@@ -75,7 +75,7 @@ Selectionne des **colonnes** specifiques. Equivalent de SELECT (avec colonnes) e
 pi_{titre, auteur}(Livre)
 ```
 
-```sql
+```sql noexec
 -- Equivalent SQL
 SELECT DISTINCT titre, auteur FROM Livre;
 ```
@@ -92,7 +92,7 @@ Combine **chaque ligne** d'une relation avec **chaque ligne** de l'autre.
 
 Si R1 a n lignes et R2 a m lignes, le resultat a n * m lignes.
 
-```sql
+```sql noexec
 -- Equivalent SQL
 SELECT * FROM etudiant, professeur;
 -- 73 x 25 = 1825 lignes
@@ -116,7 +116,7 @@ Jointure avec une condition quelconque.
 etudiant |x|_{etudiant.etudId = enseignementSuivi.etudId} enseignementSuivi
 ```
 
-```sql
+```sql noexec
 SELECT *
 FROM etudiant e
 JOIN enseignementSuivi es ON e.etudId = es.etudId;
@@ -132,7 +132,7 @@ Jointure automatique sur les **colonnes de meme nom**.
 
 **Notation :** `R1 |x| R2`
 
-```sql
+```sql noexec
 SELECT * FROM customer NATURAL JOIN facture;
 -- Joint automatiquement sur customerId (colonne commune)
 ```
@@ -145,7 +145,7 @@ SELECT * FROM customer NATURAL JOIN facture;
 | Jointure droite | `R1 RIGHT JOIN R2` | Toutes les lignes de R2 + correspondances de R1 |
 | Jointure complete | `R1 FULL OUTER JOIN R2` | Toutes les lignes des deux cotes |
 
-```sql
+```sql noexec
 -- Tous les clients, meme sans facture
 SELECT c.name, f.amount
 FROM customer c
@@ -174,7 +174,7 @@ Toutes les lignes de R1 **ou** R2 (sans doublons).
 pi_{etudId}(inscription_maths)  U  pi_{etudId}(inscription_physique)
 ```
 
-```sql
+```sql noexec
 SELECT etudId FROM inscription_maths
 UNION
 SELECT etudId FROM inscription_physique;
@@ -188,7 +188,7 @@ Lignes de R1 qui ne sont **pas** dans R2.
 pi_{etudId}(inscription_maths)  -  pi_{etudId}(inscription_physique)
 ```
 
-```sql
+```sql noexec
 SELECT etudId FROM inscription_maths
 EXCEPT
 SELECT etudId FROM inscription_physique;
@@ -202,7 +202,7 @@ Lignes presentes dans R1 **et** dans R2.
 pi_{etudId}(inscription_maths)  ∩  pi_{etudId}(inscription_physique)
 ```
 
-```sql
+```sql noexec
 SELECT etudId FROM inscription_maths
 INTERSECT
 SELECT etudId FROM inscription_physique;
@@ -236,7 +236,7 @@ Ou X = attributs de R1 qui ne sont pas dans R2
 
 ### Realisation en SQL
 
-```sql
+```sql noexec
 -- Methode 1 : double NOT EXISTS
 SELECT e.etudId
 FROM etudiant e
@@ -266,7 +266,7 @@ Renomme une relation ou ses attributs.
 
 Utile pour les auto-jointures ou quand deux relations ont des colonnes de meme nom.
 
-```sql
+```sql noexec
 -- Auto-jointure : etudiants inscrits aux memes cours
 SELECT e1.nom, e2.nom, es1.ensId
 FROM enseignementSuivi es1

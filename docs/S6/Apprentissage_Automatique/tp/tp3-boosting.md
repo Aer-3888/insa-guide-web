@@ -29,7 +29,7 @@ Demographic and employment information:
 Pre-compiled binary (`bonzaiboost`) for decision tree learning and boosting.
 
 ### Key Commands
-```bash
+```bash noexec
 # Generate naive classifier (majority label)
 bonzaiboost -S adult -d 0
 
@@ -104,7 +104,7 @@ racine=age 35
 **Objective**: Compare stopping criteria and tree complexity
 
 #### 3a. Depth-Limited Tree (d=2, 4 leaves)
-```bash
+```bash noexec
 bonzaiboost -S adult -d 2
 bonzaiboost -S adult -C < adult.data > /dev/null  # Training accuracy
 bonzaiboost -S adult -C < adult.test > /dev/null   # Test accuracy
@@ -118,7 +118,7 @@ dot -Tpng adult.tree.dot > adult_d2.png
 #### 3b. MDLPC Stopping Criterion
 MDLPC (Minimum Description Length Principle) automatically determines optimal tree size.
 
-```bash
+```bash noexec
 bonzaiboost -S adult -mdlpc
 bonzaiboost -S adult -C < adult.data > /dev/null
 bonzaiboost -S adult -C < adult.test > /dev/null
@@ -129,7 +129,7 @@ bonzaiboost -S adult -C < adult.test > /dev/null
 2. What is the gap between training and test accuracy (overfitting)?
 
 #### 3c. Full Tree (no stopping)
-```bash
+```bash noexec
 bonzaiboost -S adult -v
 ```
 
@@ -147,7 +147,7 @@ bonzaiboost -S adult -v
 
 AdaBoost combines multiple weak learners (stumps) into a strong ensemble.
 
-```bash
+```bash noexec
 # Train boosting model (100 iterations)
 bonzaiboost -S adult -boost adamh -n 100
 
@@ -162,7 +162,7 @@ bonzaiboost -S adult -boost adamh -C < adult.test > /dev/null
 #### Error Rate Analysis
 Generate learning curves with gnuplot:
 
-```bash
+```bash noexec
 # Generate HTML report with iteration-by-iteration results
 bonzaiboost -S adult -boost adamh -n 100 --info > adult.boost.log.html
 
@@ -239,7 +239,7 @@ Each leaf shows:
 - `bonzaiboost`: Pre-compiled binary (Linux x86-64)
 
 ## Running the Exercises
-```bash
+```bash noexec
 cd TP3/adult/
 
 # Exercise 1

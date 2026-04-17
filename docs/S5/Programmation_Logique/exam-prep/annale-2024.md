@@ -8,7 +8,7 @@ sidebar_position: 3
 ## Exercice 1 : Base de films
 
 Base de faits donnee :
-```prolog
+```prolog noexec
 film(Titre, Annee, NomRealisateur, Genre, Budget).
 acteur(Nom, Prenom, Nationalite, DateNaissance, Genre).
 vedette(Titre, NomActeur, Role).
@@ -18,7 +18,7 @@ vedette(Titre, NomActeur, Role).
 
 "N est un realisateur de prenom P qui a aussi joue en tant que vedette dans le film T qu'il a realise."
 
-```prolog
+```prolog noexec
 real_acteur(N, P, T) :-
     film(T, _, N, _, _),           % N est realisateur du film T
     acteur(N, P, _, _, _),         % N a le prenom P
@@ -31,7 +31,7 @@ real_acteur(N, P, T) :-
 
 "T est un film de l'annee A ayant au moins 3 vedettes."
 
-```prolog
+```prolog noexec
 trois_vedettes(T, A) :-
     film(T, A, _, _, _),
     vedette(T, N1, _),
@@ -48,7 +48,7 @@ Point cle : les trois `\==` assurent que les trois vedettes sont des personnes *
 
 "T est un film qui n'est ni realise ni joue par Eastwood."
 
-```prolog
+```prolog noexec
 sans_eastwood(T) :-
     film(T, _, R, _, _),
     R \== eastwood,                 % pas realise par Eastwood
@@ -61,7 +61,7 @@ Note : `\+` est necessaire pour la negation complete ("il n'existe pas de role d
 
 "N est un realisateur qui a toujours realise des films du meme genre."
 
-```prolog
+```prolog noexec
 % D'abord definir genre_instable
 genre_instable(N) :-
     film(T1, _, N, G1, _),
@@ -109,7 +109,7 @@ R = [b, a]
 
 On supprime la clause 2 intermediaire et on modifie la clause de base pour directement unifier l'accumulateur avec le resultat :
 
-```prolog
+```prolog noexec
 tmp([E|_], E, R, R) :- !.
 ```
 
@@ -125,7 +125,7 @@ La pile stocke les valeurs temporaires. Le programme est une liste d'instruction
 
 ### Q8 : add
 
-```prolog
+```prolog noexec
 interpreter([add | Prog], [Op2, Op1 | Stack], Env, Res) :-
     X is Op1 + Op2,
     interpreter(Prog, [X | Stack], Env, Res).
@@ -136,7 +136,7 @@ Note : Op1 est **en dessous** de Op2 sur la pile (LIFO).
 
 ### Q9 : minus
 
-```prolog
+```prolog noexec
 interpreter([minus | Prog], [Op2, Op1 | Stack], Env, Res) :-
     X is Op1 - Op2,
     interpreter(Prog, [X | Stack], Env, Res).
@@ -144,7 +144,7 @@ interpreter([minus | Prog], [Op2, Op1 | Stack], Env, Res) :-
 
 ### Q10 : mul
 
-```prolog
+```prolog noexec
 interpreter([mul | Prog], [Op2, Op1 | Stack], Env, Res) :-
     X is Op1 * Op2,
     interpreter(Prog, [X | Stack], Env, Res).
@@ -152,7 +152,7 @@ interpreter([mul | Prog], [Op2, Op1 | Stack], Env, Res) :-
 
 ### Q11 : neq (not equal)
 
-```prolog
+```prolog noexec
 interpreter([neq | Prog], [Op2, Op1 | Stack], Env, Res) :-
     Op1 == Op2,
     interpreter(Prog, [0 | Stack], Env, Res).     % egaux -> 0 (faux)
@@ -165,7 +165,7 @@ Deux clauses : une pour le cas "egaux" (push 0), une pour "differents" (push 1).
 
 ### Q12 : if(Cond, Then, Else)
 
-```prolog
+```prolog noexec
 interpreter([if(Cond, Then, _Else) | Prog], Stack, Env, Res) :-
     interpreter(Cond, [], Env, 1),                 % evaluer la condition
     append(Then, Prog, NewProg),                    % concatener Then avec la suite
@@ -192,7 +192,7 @@ L'environnement est une liste d'association `[(id1, val1), (id2, val2), ...]`.
 
 ### Q14 : setvar
 
-```prolog
+```prolog noexec
 interpreter([setvar(Id) | Prog], [V | Stack], Env, Res) :-
     assoc_set(Id, V, Env, NewEnv),
     interpreter(Prog, Stack, NewEnv, Res).
@@ -202,7 +202,7 @@ Depile une valeur et l'associe a la variable `Id` dans l'environnement.
 
 ### Q15 : loadvar
 
-```prolog
+```prolog noexec
 interpreter([loadvar(Id) | Prog], Stack, Env, Res) :-
     assoc_find(Id, Env, Val),
     interpreter(Prog, [Val | Stack], Env, Res).
@@ -212,7 +212,7 @@ Cherche la valeur de `Id` dans l'environnement et l'empile.
 
 ### Q16 : while(Cond, Body)
 
-```prolog
+```prolog noexec
 interpreter([while(Cond, Body) | Prog], Stack, Env, Res) :-
     interpreter(Cond, [], Env, 1),                           % condition vraie
     append(Body, [while(Cond, Body) | Prog], NewProg),       % re-empiler le while

@@ -75,7 +75,7 @@ x[!is.na(x)]   # 5 3 7 (supprimer les NA)
 
 ## 2. Matrices
 
-```r
+```r noexec
 # Creation
 M <- matrix(1:12, nrow = 3, ncol = 4)
 M <- matrix(1:12, nrow = 3, byrow = TRUE)  # remplir par ligne
@@ -104,7 +104,7 @@ B_hat <- solve(t(X) %*% X) %*% t(X) %*% Y
 
 ## 3. Data frames
 
-```r
+```r noexec
 # Creation
 df <- data.frame(
   nom    = c("Alice", "Bob", "Charlie"),
@@ -141,7 +141,7 @@ detach(df)
 
 ## 4. Import de donnees
 
-```r
+```r noexec
 # CSV avec separateur virgule et point decimal
 df <- read.csv("fichier.csv")
 
@@ -169,7 +169,7 @@ summary(df)
 
 ### 5.1 Nuage de points
 
-```r
+```r noexec
 plot(x, y,
      main = "Titre",
      xlab = "Axe X",
@@ -181,7 +181,7 @@ plot(x, y,
 
 ### 5.2 Histogramme
 
-```r
+```r noexec
 hist(x,
      breaks = 20,         # nombre de barres
      col    = "steelblue",
@@ -194,7 +194,7 @@ curve(dnorm(x, mean(x), sd(x)), add = TRUE, col = "red", lwd = 2)
 
 ### 5.3 Boxplot
 
-```r
+```r noexec
 # Simple
 boxplot(x, col = "lightgreen", main = "Boxplot")
 
@@ -207,7 +207,7 @@ abline(h = mean(df$valeur), col = "red", lwd = 2)  # ligne de la moyenne
 
 ### 5.4 Barplot
 
-```r
+```r noexec
 barplot(table(categorie),
         col  = "coral",
         main = "Frequences",
@@ -216,7 +216,7 @@ barplot(table(categorie),
 
 ### 5.5 Disposition multiple
 
-```r
+```r noexec
 par(mfrow = c(2, 2))   # grille 2x2
 plot(...)
 hist(...)
@@ -227,7 +227,7 @@ par(mfrow = c(1, 1))   # revenir a 1 seul
 
 ### 5.6 Ajouter des elements
 
-```r
+```r noexec
 plot(x, y)
 abline(modele, col = "red", lwd = 2)        # droite de regression
 abline(h = 0, col = "blue", lty = 2)         # ligne horizontale
@@ -294,7 +294,7 @@ curve(dnorm(x), add = TRUE, col = "red", lwd = 2)
 
 ### 7.1 Regression lineaire
 
-```r
+```r noexec
 # Regression simple
 mod <- lm(Y ~ X, data = df)
 
@@ -343,7 +343,7 @@ library(car); vif(mod)
 
 ### 7.2 Tests statistiques
 
-```r
+```r noexec
 # t-test
 t.test(x, mu = 10)                  # 1 echantillon
 t.test(x, y)                         # 2 echantillons (Welch)
@@ -377,7 +377,7 @@ kruskal.test(valeur ~ groupe, data = df)
 
 ### 7.3 ANOVA
 
-```r
+```r noexec
 # ANOVA 1 facteur
 mod <- lm(Y ~ Facteur, data = df)
 anova(mod)
@@ -431,14 +431,14 @@ set.seed(42)  # fixer la graine pour des resultats reproductibles
 
 ### 9.2 Repertoire de travail
 
-```r
+```r noexec
 setwd("/chemin/vers/donnees")  # definir le repertoire
 getwd()                         # verifier le repertoire actuel
 ```
 
 ### 9.3 Installer et charger des packages
 
-```r
+```r noexec
 install.packages("car")   # installer une fois
 library(car)               # charger a chaque session
 

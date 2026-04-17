@@ -11,7 +11,7 @@ Un pointeur de fonction stocke l'adresse d'une fonction et permet de l'appeler i
 
 ### Declaration et utilisation
 
-```c
+```c noexec
 /* Declaration : int (*nom)(TypeParam1, TypeParam2) */
 int (*comparateur)(Tache, Tache);
 
@@ -26,7 +26,7 @@ int resultat = (*comparateur)(t1, t2);  /* Notation explicite, equivalente */
 
 ### Fonctions de comparaison (TP5)
 
-```c
+```c noexec
 /* Comparaison par numero d'ID */
 int compareID(Tache t, Tache c) {
     return (c.no) - (t.no);
@@ -47,7 +47,7 @@ int compareNom(Tache t, Tache c) {
 
 Le meme code d'insertion fonctionne avec n'importe quel critere de tri :
 
-```c
+```c noexec
 void ajouttrie(Liste *l, Tache t, int (*ptrfonc)(Tache, Tache)) {
     /* Liste vide ou nouvel element doit etre en tete */
     if ((*l) == NULL || (*ptrfonc)((*l)->t, t) < 0) {
@@ -87,7 +87,7 @@ ajouttrie(&l, tache, compareNom);    /* Tri par nom */
 
 ### Pointeur de fonction comme parametre (TP6)
 
-```c
+```c noexec
 /* Appliquer un traitement a chaque ligne d'un fichier */
 int traiterLignesFichier(FILE *f, int (*ptFonction)(char *)) {
     int cpt = 0;
@@ -115,7 +115,7 @@ traiterLignesFichier(pFile, NULL);                    /* Affiche tout */
 
 ### Structure de base
 
-```c
+```c noexec
 typedef struct struct_element {
     Tache t;                           /* Donnee */
     struct struct_element *suivant;    /* Lien vers le suivant */
@@ -136,7 +136,7 @@ l ----> [Tache1 | *] ----> [Tache2 | *] ----> [Tache3 | NULL]
 
 #### Ajout en debut (O(1))
 
-```c
+```c noexec
 void ajoutdeb(Liste *l, Tache t) {
     Element *elem = (Element *)calloc(1, sizeof(Element));
     elem->t = t;
@@ -156,7 +156,7 @@ APRES :  l --> [A|*] --> [B|*] --> [C|NULL]
 
 #### Comptage des elements
 
-```c
+```c noexec
 int nbelement(Liste l) {
     int res = 0;
     while (l != NULL) {
@@ -169,7 +169,7 @@ int nbelement(Liste l) {
 
 #### Parcours et affichage
 
-```c
+```c noexec
 void afficheListe(Liste l) {
     while (l != NULL) {
         afficheTache(&(l->t));
@@ -180,7 +180,7 @@ void afficheListe(Liste l) {
 
 #### Liberation de la liste (ESSENTIEL)
 
-```c
+```c noexec
 void libererListe(Liste *l) {
     while (*l != NULL) {
         Element *temp = *l;        /* Sauvegarde le noeud courant */
@@ -193,7 +193,7 @@ void libererListe(Liste *l) {
 
 ### Insertion triee
 
-```c
+```c noexec
 void ajouttrield(Liste *l, Tache t) {
     /* Cas 1 : liste vide */
     if (*l == NULL) {
@@ -243,7 +243,7 @@ APRES :  l --> [1|*] --> [2|*] --> [3|*] --> [5|*] --> [7|NULL]
 
 ### Recherche dans une liste (cours - villes)
 
-```c
+```c noexec
 int recherche(Liste l, Ville v, int (*comp)(Ville, Ville)) {
     Liste tp = l;
     int nb = 0;
@@ -264,7 +264,7 @@ Un automate permet de parser des fichiers structures en changeant d'etat selon l
 
 ### Structure de l'automate
 
-```c
+```c noexec
 typedef enum {EINIT, EINDI, ENAME} Etat;
 
 typedef struct {
@@ -290,7 +290,7 @@ typedef struct {
 
 ### Implementation
 
-```c
+```c noexec
 int rechercheNomSabotiers(char* str) {
     static EtatAutomate etatA = {EINIT, ""};   /* Variable STATIQUE */
     char trash[TMAX], extract[TMAX];
@@ -340,7 +340,7 @@ int rechercheNomSabotiers(char* str) {
 
 ### Evolution des exemples du cours
 
-```c
+```c noexec
 /* Version A : sans seed -> toujours les memes valeurs */
 #include <stdio.h>
 #include <stdlib.h>
@@ -352,7 +352,7 @@ int main() {
 }
 ```
 
-```c
+```c noexec
 /* Version B : avec seed basee sur l'heure */
 #include <stdio.h>
 #include <stdlib.h>
@@ -366,7 +366,7 @@ int main() {
 }
 ```
 
-```c
+```c noexec
 /* Version C : valeurs dans un intervalle */
 int main() {
     srand(time(NULL));
@@ -377,7 +377,7 @@ int main() {
 ```
 
 **PIEGE : ne pas appeler srand() dans une boucle !**
-```c
+```c noexec
 /* MAUVAIS : les valeurs sont identiques si la boucle est rapide */
 for (int i = 0; i < 10; i++) {
     srand(time(NULL));  /* Meme seed car time change toutes les secondes */
@@ -393,7 +393,7 @@ for (int i = 0; i < 10; i++) {
 
 ## 8.5 Variables statiques et leur role
 
-```c
+```c noexec
 /* 1. Variable locale statique : persiste entre les appels */
 void compteur() {
     static int n = 0;  /* Initialise UNE SEULE FOIS */
@@ -419,7 +419,7 @@ static char mon_tas[MAX_MEMORY];
 
 ### Pattern : fonctions parametrees par pointeur de fonction
 
-```c
+```c noexec
 /* Comptage generique (TP6) */
 typedef struct {
     char* modele;           /* Motif sscanf */
@@ -460,7 +460,7 @@ int compterFemmes(char *str) {
 
 ### Pattern : allocateur generique (TP7)
 
-```c
+```c noexec
 /* Mon_malloc retourne void* -> utilisable pour n'importe quel type */
 void *Mon_malloc(size_t nb_octets);
 

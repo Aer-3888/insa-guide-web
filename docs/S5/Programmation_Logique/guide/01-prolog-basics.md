@@ -110,7 +110,7 @@ On interroge la base de connaissances :
 
 Un terme compose a un **foncteur** et une **arite** :
 
-```prolog
+```prolog noexec
 % carte/2 : foncteur 'carte', arite 2
 carte(sept, trefle)
 

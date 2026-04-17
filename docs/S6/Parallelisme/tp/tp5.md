@@ -79,7 +79,7 @@ Chaque processus calcule N/P lignes de la matrice.
 
 ### Code commenté
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -239,7 +239,7 @@ Speedup ≈ P
 
 ### Pseudo-code
 
-```c
+```c noexec
 // Processus 0 (maître)
 MPI_Bcast(V, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -306,7 +306,7 @@ while (true) {
 
 ### 1. MPI_Scatter
 
-```c
+```c noexec
 int MPI_Scatter(void *sendbuf, int sendcount, MPI_Datatype sendtype,
                 void *recvbuf, int recvcount, MPI_Datatype recvtype,
                 int root, MPI_Comm comm);
@@ -325,7 +325,7 @@ Processus 0-3 : [A0][A1][A2][A3]
 
 ### 2. MPI_Gather
 
-```c
+```c noexec
 int MPI_Gather(void *sendbuf, int sendcount, MPI_Datatype sendtype,
                void *recvbuf, int recvcount, MPI_Datatype recvtype,
                int root, MPI_Comm comm);
@@ -344,7 +344,7 @@ Processus 0 :  [B0 B1 B2 B3]
 
 ### 3. MPI_Allgather
 
-```c
+```c noexec
 int MPI_Allgather(void *sendbuf, int sendcount, MPI_Datatype sendtype,
                   void *recvbuf, int recvcount, MPI_Datatype recvtype,
                   MPI_Comm comm);
@@ -357,7 +357,7 @@ int MPI_Allgather(void *sendbuf, int sendcount, MPI_Datatype sendtype,
 **MPI_Reduce** : Résultat sur un seul processus (root)
 **MPI_Allreduce** : Résultat sur tous les processus
 
-```c
+```c noexec
 int MPI_Allreduce(void *sendbuf, void *recvbuf, int count,
                   MPI_Datatype datatype, MPI_Op op,
                   MPI_Comm comm);

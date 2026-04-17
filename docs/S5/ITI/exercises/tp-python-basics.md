@@ -15,7 +15,7 @@ sidebar_position: 6
 
 **Answer:**
 
-```python
+```python noexec
 >>> import random
 >>> random.randint(0, 100)
 42
@@ -211,7 +211,7 @@ def merge(left, right):
 
 **Answer:**
 
-```python
+```python noexec
 class TableauTri:
     """Sortable array class for comparing sorting algorithms."""
 
@@ -276,7 +276,7 @@ class TableauTri:
 
 **Test:**
 
-```python
+```python noexec
 tab = TableauTri(10)
 tab.initialiser_aleatoire(0, 100)
 print(f"Original: {tab}")
@@ -306,7 +306,7 @@ Original still: [45, 23, 78, 12, 56, 89, 34, 67, 1, 90]
 
 **Answer:**
 
-```python
+```python noexec
 def benchmark_sorting():
     """Compare sorting algorithm performance."""
     sizes = [100, 500, 1000, 5000, 10000]

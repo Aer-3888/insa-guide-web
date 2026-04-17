@@ -114,20 +114,20 @@ O(1) < O(log n) < O(sqrt(n)) < O(n) < O(n log n) < O(n^2) < O(n^3) < O(2^n) < O(
 ## 4. Calculer la complexite d'un code
 
 ### Boucle simple : O(n)
-```python
+```python noexec
 for i in range(n):
     x = x + 1              # O(1) repete n fois
 ```
 
 ### Boucles imbriquees independantes : O(n^2)
-```python
+```python noexec
 for i in range(n):
     for j in range(n):
         x = x + 1          # O(1) repete n*n fois
 ```
 
 ### Boucles imbriquees dependantes : O(n^2)
-```python
+```python noexec
 for i in range(n):
     for j in range(i):     # j va de 0 a i-1
         x = x + 1
@@ -135,14 +135,14 @@ for i in range(n):
 ```
 
 ### Boucle logarithmique : O(log n)
-```python
+```python noexec
 i = n
 while i > 0:
     i = i // 2             # Divise par 2 a chaque iteration
 ```
 
 ### Boucle combinee : O(n log n)
-```python
+```python noexec
 for i in range(n):          # n fois
     j = n
     while j > 0:
@@ -150,7 +150,7 @@ for i in range(n):          # n fois
 ```
 
 ### Conditionnelle : prendre le pire cas
-```python
+```python noexec
 if condition:
     # O(n)
 else:

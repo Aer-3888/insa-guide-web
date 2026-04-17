@@ -214,7 +214,7 @@ $$\boxed{p\text{-value} < \alpha \Rightarrow \text{Rejeter } H_0}$$
 
 ## 9. Fonctions R essentielles (aide-memoire)
 
-```r
+```r noexec
 # ── Import ───────────────────────
 read.csv("f.csv")
 read.csv2("f.csv")       # format francais

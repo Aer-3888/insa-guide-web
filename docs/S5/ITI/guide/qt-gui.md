@@ -13,7 +13,7 @@ Qt is a cross-platform GUI framework. The LDS course uses PyQt5 (Python bindings
 
 ### Minimal Application
 
-```python
+```python noexec
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 import sys
 
@@ -61,7 +61,7 @@ User clicks button
 
 ### Widget Examples
 
-```python
+```python noexec
 from PyQt5.QtWidgets import (
     QPushButton, QLabel, QLineEdit, QSpinBox,
     QSlider, QComboBox, QCheckBox
@@ -109,7 +109,7 @@ Layouts automatically position widgets and handle window resizing.
 
 ### Layout Types
 
-```python
+```python noexec
 from PyQt5.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QGridLayout, QFormLayout, QWidget
 )
@@ -143,7 +143,7 @@ container.setLayout(vlayout)
 
 ### Nesting Layouts
 
-```python
+```python noexec
 # Main vertical layout with nested horizontal layouts
 main_layout = QVBoxLayout()
 
@@ -165,7 +165,7 @@ main_layout.addLayout(bottom_row)
 
 ### Connecting Signals to Slots
 
-```python
+```python noexec
 # Connect signal to function (slot)
 button.clicked.connect(self.on_button_clicked)
 slider.valueChanged.connect(self.on_slider_changed)
@@ -184,7 +184,7 @@ def on_text_changed(self, text):
 
 ### Custom Signals
 
-```python
+```python noexec
 from PyQt5.QtCore import pyqtSignal
 
 class MyWidget(QWidget):
@@ -203,7 +203,7 @@ widget.data_changed.connect(handle_data_change)
 
 ### Loading and Displaying Images
 
-```python
+```python noexec
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QLabel
 
@@ -222,7 +222,7 @@ label.setPixmap(scaled_pixmap)
 
 ### Pixel Manipulation
 
-```python
+```python noexec
 # Access pixel color
 # QImage.pixel() returns QRgb in 0xAARRGGBB format
 rgb = image.pixel(x, y)
@@ -249,7 +249,7 @@ for x in range(image.width()):
 
 ### Image Properties
 
-```python
+```python noexec
 width = image.width()
 height = image.height()
 depth = image.depth()              # Bits per pixel
@@ -258,7 +258,7 @@ format_type = image.format()       # QImage.Format_RGB32, etc.
 
 ## MDI (Multiple Document Interface)
 
-```python
+```python noexec
 from PyQt5.QtWidgets import QMdiArea, QMdiSubWindow
 
 # Create MDI area as central widget
@@ -278,7 +278,7 @@ mdi.tileSubWindows()
 
 ## Menus and Toolbars
 
-```python
+```python noexec
 # Menu bar
 menubar = self.menuBar()
 file_menu = menubar.addMenu("File")
@@ -304,7 +304,7 @@ toolbar.addAction(save_action)
 
 ## Dialogs
 
-```python
+```python noexec
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QInputDialog
 
 # File open dialog
@@ -331,7 +331,7 @@ number, ok = QInputDialog.getInt(self, "Input", "Enter age:", 18, 0, 120)
 
 ## Complete Application Template
 
-```python
+```python noexec
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
@@ -380,7 +380,7 @@ if __name__ == '__main__':
 
 ## QPainter (Custom Drawing)
 
-```python
+```python noexec
 from PyQt5.QtGui import QPainter, QColor, QPen
 from PyQt5.QtCore import Qt
 
@@ -404,7 +404,7 @@ class ClockWidget(QWidget):
 
 ## QTimer
 
-```python
+```python noexec
 from PyQt5.QtCore import QTimer
 
 # Periodic timer
@@ -421,7 +421,7 @@ QTimer.singleShot(5000, self.delayed_action)
 ## CHEAT SHEET
 
 ### Application Structure
-```python
+```python noexec
 app = QApplication(sys.argv)
 window = QMainWindow()
 window.show()
@@ -444,14 +444,14 @@ QFormLayout   Label + Field pairs
 ```
 
 ### Signals/Slots
-```python
+```python noexec
 widget.signal.connect(slot_function)
 button.clicked.connect(self.on_click)
 slider.valueChanged.connect(self.on_change)
 ```
 
 ### Image
-```python
+```python noexec
 image = QImage("file.jpg")
 pixmap = QPixmap.fromImage(image)
 label.setPixmap(pixmap)
@@ -459,7 +459,7 @@ rgb = image.pixel(x, y)
 ```
 
 ### Dialogs
-```python
+```python noexec
 QFileDialog.getOpenFileName(...)
 QMessageBox.information(self, "Title", "Text")
 QInputDialog.getText(self, "Title", "Prompt:")

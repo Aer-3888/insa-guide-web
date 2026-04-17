@@ -82,7 +82,7 @@ Cost complexity pruning balances tree accuracy with complexity:
 - `weather.nominal.csv`: Weather dataset with categorical features
 
 ## Running the Code
-```bash
+```bash noexec
 # Ensure dependencies are installed
 pip install scikit-learn pandas numpy matplotlib graphviz dtreeviz
 

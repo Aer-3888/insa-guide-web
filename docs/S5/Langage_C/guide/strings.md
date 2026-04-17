@@ -9,7 +9,7 @@ sidebar_position: 8
 
 En C, une chaine est un **tableau de `char`** termine par le caractere nul `'\0'`.
 
-```c
+```c noexec
 char nom[] = "Hello";
 /* Equivalent a : */
 char nom[] = {'H', 'e', 'l', 'l', 'o', '\0'};
@@ -25,7 +25,7 @@ ASCII :   72   101  108  108  111   0
 
 ### Declaration de chaines
 
-```c
+```c noexec
 /* 1. Tableau de char (taille fixe) - MODIFIABLE */
 char str1[20] = "Hello";          /* 20 octets reserves, 6 utilises */
 char str2[] = "World";            /* Taille calculee : 6 octets */
@@ -42,7 +42,7 @@ strcpy(str4, "Hello");
 
 ## 4.2 Lecture et ecriture de chaines
 
-```c
+```c noexec
 char nom[256];
 
 /* Lecture d'un mot (s'arrete au premier espace) */
@@ -63,7 +63,7 @@ printf("%.5s\n", nom);    /* Affiche les 5 premiers caracteres */
 
 ## 4.3 Fonctions de string.h
 
-```c
+```c noexec
 #include <string.h>
 
 char src[] = "Hello";
@@ -72,7 +72,7 @@ char dst[20];
 
 ### strlen - Longueur
 
-```c
+```c noexec
 size_t len = strlen(src);  /* 5 (ne compte PAS le '\0') */
 
 /* PIEGE : strlen parcourt jusqu'a '\0' -> O(n) a chaque appel */
@@ -85,7 +85,7 @@ for (int i = 0; i < len; i++) { ... }
 
 ### strcpy / strncpy - Copie
 
-```c
+```c noexec
 strcpy(dst, src);           /* Copie src dans dst */
 /* DANGER : pas de verification de taille ! Buffer overflow possible */
 
@@ -94,13 +94,13 @@ dst[19] = '\0';            /* IMPORTANT : strncpy ne garantit PAS le '\0' ! */
 ```
 
 **Utilise dans TP6 (automate) :**
-```c
+```c noexec
 strncpy(etatA.nom, extract, TMAX);  /* Copie securisee */
 ```
 
 ### strcmp / strncmp - Comparaison
 
-```c
+```c noexec
 int res = strcmp("abc", "abd");
 /* res < 0 : "abc" < "abd" (lexicographiquement) */
 /* res == 0 : chaines identiques */
@@ -110,7 +110,7 @@ strncmp(s1, s2, n);        /* Compare les n premiers caracteres */
 ```
 
 **Utilise dans les examens (2016, 2020) :**
-```c
+```c noexec
 /* Chercher des batiments dans une ville */
 if (!strcmp(b.ville, ville)) {   /* strcmp retourne 0 si identiques */
     printf("Trouve !\n");
@@ -119,7 +119,7 @@ if (!strcmp(b.ville, ville)) {   /* strcmp retourne 0 si identiques */
 
 ### strcat / strncat - Concatenation
 
-```c
+```c noexec
 char result[50] = "Hello";
 strcat(result, " World");     /* result = "Hello World" */
 /* DANGER : pas de verification de taille ! */
@@ -129,7 +129,7 @@ strncat(result, " !", 3);    /* Ajoute au maximum 3 caracteres */
 
 ### strstr - Recherche de sous-chaine
 
-```c
+```c noexec
 char *pos = strstr("Hello World", "World");
 /* pos pointe vers "World" dans la chaine originale */
 /* pos == NULL si non trouve */
@@ -142,7 +142,7 @@ if (strstr(extract, needle) != NULL) {
 
 ### sscanf - Analyse de chaine
 
-```c
+```c noexec
 char ligne[] = "42 3.14 hello";
 int n;
 double d;
@@ -159,7 +159,7 @@ sscanf(str, " 1 NAME %*[^/\r\n]/%[^/]/%[ \r\n]", nom, reste);
 
 ## 4.4 Manipulation de caracteres (ctype.h)
 
-```c
+```c noexec
 #include <ctype.h>
 
 tolower('A')    /* 'a' */
@@ -170,7 +170,7 @@ isspace(' ')    /* Non-zero (vrai) */
 ```
 
 **Utilise dans TP3 (generation d'identifiants) :**
-```c
+```c noexec
 void identifiant2(char *prenom, char *nom, char *id) {
     id[0] = tolower(prenom[0]);     /* Premiere lettre du prenom en minuscule */
     int i;
@@ -187,7 +187,7 @@ void identifiant2(char *prenom, char *nom, char *id) {
 
 ## 4.5 Buffer overflow - Le danger principal
 
-```c
+```c noexec
 char buffer[10];
 
 /* DANGER : pas de controle de taille */
@@ -204,7 +204,7 @@ buffer[9] = '\0';                        /* Assure la terminaison */
 
 ## 4.6 Concatenation statique vs dynamique (TD2)
 
-```c
+```c noexec
 /* VERSION STATIQUE : buffer fixe, risque de troncature */
 char* concatstat(char* s1, char* s2, char* s3, unsigned int bufflen) {
     unsigned int len1 = strlen(s1);

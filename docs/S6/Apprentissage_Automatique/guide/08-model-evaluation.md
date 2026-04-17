@@ -28,7 +28,7 @@ Reelle Negative     FP (False Positive)    VN (True Negative)
 
 ### Code Python
 
-```python
+```python noexec
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
@@ -103,7 +103,7 @@ $$F_1 = 2 \cdot \frac{0.714 \times 0.833}{0.714 + 0.833} = 2 \cdot \frac{0.595}{
 
 ### Code Python
 
-```python
+```python noexec
 from sklearn.metrics import classification_report
 
 print(classification_report(y_test, y_pred, target_names=['Sain', 'Malade']))
@@ -142,7 +142,7 @@ Les metriques par classe se calculent en considerant chaque classe comme "positi
 | **weighted** | Moyenne ponderee par le support de chaque classe | Classes desequilibrees |
 | **micro** | Calcul global (somme VP, FP, FN) | = Accuracy pour le multiclasse |
 
-```python
+```python noexec
 from sklearn.metrics import f1_score
 
 f1_macro = f1_score(y_test, y_pred, average='macro')
@@ -170,7 +170,7 @@ $$\text{TFP} = \frac{FP}{FP + VN} \quad \text{(1 - specificite)}$$
 
 ### Code Python
 
-```python
+```python noexec
 from sklearn.metrics import roc_curve, roc_auc_score
 import matplotlib.pyplot as plt
 
@@ -194,7 +194,7 @@ plt.show()
 
 Plus informative que ROC quand les classes sont tres desequilibrees :
 
-```python
+```python noexec
 from sklearn.metrics import precision_recall_curve, average_precision_score
 
 precision, recall, thresholds = precision_recall_curve(y_test, y_proba)

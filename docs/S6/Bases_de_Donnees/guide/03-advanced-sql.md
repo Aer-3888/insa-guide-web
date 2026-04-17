@@ -15,7 +15,7 @@ sidebar_position: 3
 
 Une vue est une **requete sauvegardee** sous un nom. Elle se comporte comme une table virtuelle.
 
-```sql
+```sql noexec
 -- Creer une vue
 CREATE VIEW vue_clients_totaux AS
 SELECT c.customerId, c.name,
@@ -61,7 +61,7 @@ DROP VIEW IF EXISTS vue_clients_totaux;
 
 Un CTE est une sous-requete **nommee** definie dans un bloc `WITH`. Le resultat est reutilisable dans la requete principale.
 
-```sql
+```sql noexec
 -- CTE simple
 WITH gros_clients AS (
     SELECT customerId, SUM(amount) AS total
@@ -77,7 +77,7 @@ ORDER BY gc.total DESC;
 
 ### CTEs multiples
 
-```sql
+```sql noexec
 WITH
 totaux AS (
     SELECT customerId, SUM(amount) AS total, COUNT(*) AS nb
@@ -99,7 +99,7 @@ WHERE t.total > s.moy_total;
 
 Utile pour parcourir des hierarchies (employes, categories, arbres).
 
-```sql
+```sql noexec
 -- Hierarchie d'employes
 WITH RECURSIVE hierarchie AS (
     -- Cas de base : le PDG (pas de manager)
@@ -127,7 +127,7 @@ ORDER BY niveau, nom;
 
 Les fonctions fenetres effectuent un calcul sur un **ensemble de lignes liees** a la ligne courante, sans regrouper les resultats (contrairement a GROUP BY).
 
-```sql
+```sql noexec
 SELECT nom, departement, salaire,
        AVG(salaire) OVER (PARTITION BY departement) AS moy_dept,
        RANK() OVER (ORDER BY salaire DESC) AS rang_global
@@ -161,7 +161,7 @@ fonction() OVER (
 
 ### Exemples pratiques
 
-```sql
+```sql noexec
 -- Top 3 des factures par client
 WITH ranked AS (
     SELECT customerId, amount,
@@ -200,7 +200,7 @@ FROM facture;
 
 Une procedure stockee est un **bloc de code SQL** sauvegarde sur le serveur, reutilisable et parametrable.
 
-```sql
+```sql noexec
 -- PostgreSQL / MySQL
 CREATE OR REPLACE PROCEDURE augmenter_prix(
     p_categorie VARCHAR,
@@ -235,7 +235,7 @@ CALL augmenter_prix('Electronique', 5.0);
 
 Un trigger est un **bloc de code execute automatiquement** lors d'un evenement (INSERT, UPDATE, DELETE) sur une table.
 
-```sql
+```sql noexec
 -- SQLite : trigger qui empeche les prix negatifs
 CREATE TRIGGER verifier_prix
 BEFORE INSERT ON produit
@@ -277,7 +277,7 @@ EXECUTE FUNCTION log_modification();
 
 ## 6. CASE WHEN
 
-```sql
+```sql noexec
 -- Classification conditionnelle
 SELECT name, amount,
     CASE

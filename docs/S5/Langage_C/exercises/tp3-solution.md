@@ -17,7 +17,7 @@ sidebar_position: 3
 - Utilisation d'un tableau comme compteur
 
 **Algorithme de l'histogramme :**
-```c
+```c noexec
 Pour chaque valeur v dans le tableau source:
     dest[v]++  // Incremente le compteur de la valeur v
 ```
@@ -26,7 +26,7 @@ Pour chaque valeur v dans le tableau source:
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file tableau.h
  * \brief Module de manipulation de tableaux et histogrammes
@@ -87,7 +87,7 @@ void affiche_histo(int tab[], int taille, int showZ);
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file tableau.c
  * \brief Implementation des fonctions de manipulation de tableaux
@@ -159,7 +159,7 @@ void affiche_histo(int tab[], int taille, int showZ) {
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file histogram.c
  * \brief Programme principal pour generer et afficher un histogramme
@@ -263,7 +263,7 @@ C'est le MEME tableau, pas une copie.
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file login.h
  * \brief Module de generation d'identifiants
@@ -310,7 +310,7 @@ void identifiant2(char prenom[], char nom[], char id[]);
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file login.c
  * \brief Implementation des fonctions de generation d'identifiants
@@ -365,7 +365,7 @@ void identifiant2(char *prenom, char *nom, char *id) {
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file login_main.c
  * \brief Programme principal pour generer des identifiants

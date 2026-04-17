@@ -13,7 +13,7 @@ sidebar_position: 4
 
 ### EXPLAIN QUERY PLAN
 
-```sql
+```sql noexec
 -- Voir comment le SGBD execute une requete
 EXPLAIN QUERY PLAN
 SELECT c.name
@@ -67,7 +67,7 @@ flowchart TD
 - Complexite de recherche : O(log n)
 - Type par defaut dans SQLite, PostgreSQL, MySQL
 
-```sql
+```sql noexec
 -- Creer un index B-tree
 CREATE INDEX idx_code ON demo(code);
 
@@ -86,7 +86,7 @@ Table de hachage : acces direct par cle.
 - **Ne supporte PAS** les intervalles, le tri, les requetes de type `>`, `<`, `BETWEEN`
 - Disponible dans PostgreSQL, MySQL (Memory engine)
 
-```sql
+```sql noexec
 -- PostgreSQL
 CREATE INDEX idx_hash_code ON demo USING HASH (code);
 ```
@@ -104,7 +104,7 @@ CREATE INDEX idx_hash_code ON demo USING HASH (code);
 
 ### 2.3 Index composite (multi-colonnes)
 
-```sql
+```sql noexec
 -- Index sur plusieurs colonnes
 CREATE INDEX idx_composite ON facture(customerId, amount);
 
@@ -174,7 +174,7 @@ flowchart LR
 | NATURAL JOIN | 283s | 4.5s | O(n*m) + overhead |
 | Sous-requete avec JOIN interne | 219s | 5.3s | O(n*m) |
 
-```sql
+```sql noexec
 -- MEILLEURE APPROCHE : sous-requete avec IN
 SELECT name
 FROM customer
@@ -214,7 +214,7 @@ WHERE f.customerId = c.customerId AND f.amount > 999;
 
 ### Bonnes pratiques
 
-```sql
+```sql noexec
 -- BON : filtrer avant de joindre
 SELECT c.name
 FROM customer c
@@ -238,7 +238,7 @@ SELECT * FROM customer WHERE customerId = 42;
 
 ## 7. Transactions et performance
 
-```sql
+```sql noexec
 -- LENT : un commit par insertion
 INSERT INTO demo VALUES (1, 'a');
 INSERT INTO demo VALUES (2, 'b');

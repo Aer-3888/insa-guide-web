@@ -17,7 +17,7 @@ Main  -->  FORK  -->  T0  T1  T2  T3  -->  JOIN  -->  Main
 
 ## 2. Region parallele de base
 
-```c
+```c noexec
 #include <omp.h>
 
 #pragma omp parallel
@@ -31,7 +31,7 @@ Main  -->  FORK  -->  T0  T1  T2  T3  -->  JOIN  -->  Main
 
 ### Controler le nombre de threads (par priorite decroissante)
 
-```c
+```c noexec
 #pragma omp parallel num_threads(8)     /* 1. dans la directive */
 omp_set_num_threads(8);                 /* 2. par appel de fonction */
 /* export OMP_NUM_THREADS=8 */          /* 3. variable d'environnement */
@@ -41,7 +41,7 @@ omp_set_num_threads(8);                 /* 2. par appel de fonction */
 
 ## 3. Paralleliser une boucle : `#pragma omp parallel for`
 
-```c
+```c noexec
 #pragma omp parallel for
 for (int i = 0; i < N; i++) {
     tab[i] = tab[i] * 2;
@@ -76,7 +76,7 @@ OpenMP cree les threads, divise les iterations, synchronise a la fin.
 
 ## 5. Clause `reduction`
 
-```c
+```c noexec
 double somme = 0.0;
 #pragma omp parallel for reduction(+:somme)
 for (int i = 0; i < N; i++) {
@@ -104,7 +104,7 @@ Chaque thread a sa copie locale initialisee a l'element neutre de l'operateur, p
 
 Section critique -- un seul thread a la fois. Equivalent du mutex en Pthreads.
 
-```c
+```c noexec
 #pragma omp critical
 {
     compteur++;
@@ -113,7 +113,7 @@ Section critique -- un seul thread a la fois. Equivalent du mutex en Pthreads.
 
 Nommer les sections critiques pour des verrous independants :
 
-```c
+```c noexec
 #pragma omp critical(verrou_a)
 { /* section A */ }
 
@@ -125,7 +125,7 @@ Nommer les sections critiques pour des verrous independants :
 
 Pour les operations simples sur UNE variable (++, +=). Plus rapide que `critical` car utilise les instructions atomiques du CPU.
 
-```c
+```c noexec
 #pragma omp atomic
 compteur++;
 ```
@@ -142,7 +142,7 @@ compteur++;
 
 Tous les threads attendent que tout le monde soit arrive.
 
-```c
+```c noexec
 #pragma omp parallel
 {
     phase_1();
@@ -153,7 +153,7 @@ Tous les threads attendent que tout le monde soit arrive.
 
 Barriere implicite a la fin de `parallel`, `for`, `sections`, `single`. Supprimer avec `nowait` :
 
-```c
+```c noexec
 #pragma omp for nowait
 for (...) { ... }
 ```
@@ -164,7 +164,7 @@ for (...) { ... }
 
 ### `#pragma omp sections` -- parallelisme de taches
 
-```c
+```c noexec
 #pragma omp parallel sections
 {
     #pragma omp section
@@ -182,7 +182,7 @@ for (...) { ... }
 
 Un seul thread execute le bloc, les autres attendent.
 
-```c
+```c noexec
 #pragma omp parallel
 {
     calcul_parallele();
@@ -200,7 +200,7 @@ Seul le thread 0 execute. Pas de barriere implicite.
 
 ## 8. Politiques de schedule
 
-```c
+```c noexec
 #pragma omp parallel for schedule(TYPE, CHUNK)
 ```
 
@@ -219,7 +219,7 @@ Seul le thread 0 execute. Pas de barriere implicite.
 
 ### `parallel` + `for` separes (reutiliser les threads)
 
-```c
+```c noexec
 #pragma omp parallel
 {
     #pragma omp for
@@ -234,7 +234,7 @@ Seul le thread 0 execute. Pas de barriere implicite.
 
 ### `collapse` pour boucles imbriquees
 
-```c
+```c noexec
 #pragma omp parallel for collapse(2)
 for (int i = 0; i < N; i++) {
     for (int j = 0; j < M; j++) {
@@ -247,7 +247,7 @@ for (int i = 0; i < N; i++) {
 
 ## 10. Exemple complet : calcul de PI
 
-```c
+```c noexec
 #include <stdio.h>
 #include <omp.h>
 
@@ -280,7 +280,7 @@ int main(void)
 
 Stencil a 5 points sur grille 2D (TP2 INSA).
 
-```c
+```c noexec
 #define N 100
 #define M 100
 #define MAX 1000
@@ -327,7 +327,7 @@ do {
 
 ## CHEAT SHEET -- OpenMP
 
-```c
+```c noexec
 /* Directives */
 #pragma omp parallel                      /* region parallele */
 #pragma omp for                           /* distribuer un for */

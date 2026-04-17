@@ -28,7 +28,7 @@ Dans ce TP il s'agit de qualifier / decrire des donnees et d'evaluer leurs carac
 
 **Answer:**
 
-```bash
+```bash noexec
 # Decompresser l'archive
 unzip prep.zip -d prep/
 
@@ -63,7 +63,7 @@ La langue est le francais (le site `pixgame.fr` est enregistre aupres de la FRNI
 
 Oui, l'extension `.html` indique un document HTML (page web). Confirmation avec `file` :
 
-```bash
+```bash noexec
 $ file pixgame.html.prep
 pixgame.html.prep: HTML document, UTF-8 Unicode text, with very long lines
 ```
@@ -74,7 +74,7 @@ Le fichier est un document HTML encode en UTF-8 avec des lignes tres longues.
 
 **Answer:**
 
-```bash
+```bash noexec
 # Taille du fichier
 $ stat pixgame.html.prep
   File: pixgame.html.prep
@@ -96,7 +96,7 @@ Le fichier fait 656 028 octets et contient 16 368 lignes. La derniere modificati
 
 **Answer:**
 
-```bash
+```bash noexec
 # Debut du fichier
 $ head -20 pixgame.html.prep
 <!DOCTYPE html>
@@ -113,7 +113,7 @@ $ tail -20 pixgame.html.prep
 
 **Answer:**
 
-```bash
+```bash noexec
 # Afficher 10 lignes autour de la ligne 8000 (milieu du fichier)
 $ sed -n '7995,8005p' pixgame.html.prep
 
@@ -133,14 +133,14 @@ L'evaluation du contenu est la premiere etape de toute analyse de securite. Le t
 
 **Answer:**
 
-```bash
+```bash noexec
 # Frequence de tous les caracteres (un par ligne, tries par occurrence)
 $ grep -o . pixgame.html.prep | sort | uniq -c | sort -nr | head -20
 ```
 
 On peut aussi utiliser `tr` pour decomposer en caracteres individuels :
 
-```bash
+```bash noexec
 $ cat pixgame.html.prep | tr -c '' '\n' | sort | uniq -c | sort -nr | head -20
 ```
 
@@ -150,7 +150,7 @@ Les caracteres les plus frequents seront probablement les espaces, les lettres m
 
 **Answer:**
 
-```bash
+```bash noexec
 # Compter les occurrences de chaque separateur courant
 $ fgrep -o ' ' pixgame.html.prep | wc -l    # espaces
 $ fgrep -o '	' pixgame.html.prep | wc -l   # tabulations
@@ -178,7 +178,7 @@ Le site utilise des assets externes comme la font "Montserrat" chargee via le CD
 
 **Answer:**
 
-```bash
+```bash noexec
 # Nombre de lignes non vides
 $ grep -v '^\s*$' pixgame.html.prep | wc -l
 14289
@@ -218,14 +218,14 @@ $ sed -n '9825p' pixgame.html.prep | sed 's/x//g' | wc -c
 
 **Answer:**
 
-```bash
+```bash noexec
 # Frequence des termes (mots separes par des espaces)
 $ tr ' ' '\n' < pixgame.html.prep | sort | uniq -c | sort -nr | head -20
 ```
 
 Pour l'analyse HTML, il est plus utile de calculer la frequence des balises :
 
-```bash
+```bash noexec
 # Pipeline complet d'extraction et comptage des balises HTML
 $ grep -v '^\s*$' pixgame.html.prep \
   | sed 's/</ </g' \
@@ -279,7 +279,7 @@ L'analyse des balises HTML cartographie la **surface d'attaque** du site :
 
 **Answer:**
 
-```bash
+```bash noexec
 # Recherche de termes lies aux credentials (insensible a la casse, avec contexte)
 $ fgrep -in 'password' pixgame.html.prep
 830:password=ohsuo6xae7Th
@@ -313,7 +313,7 @@ $ fgrep -in -C 2 'temporary' pixgame.html.prep
 
 ### Recherche de l'interface admin WordPress
 
-```bash
+```bash noexec
 $ fgrep -n 'admin' pixgame.html.prep | head -20
 ```
 
@@ -323,7 +323,7 @@ Vers la ligne 127, la definition de la structure `twdGlobal` de l'objet JavaScri
 - L'URL de l'API REST du backend WordPress (`/wp-json/`)
 - Un format de permalink vers les posts du site
 
-```bash
+```bash noexec
 # Extraire le contexte autour de la ligne 127
 $ sed -n '125,130p' pixgame.html.prep
 ```
@@ -334,7 +334,7 @@ $ sed -n '125,130p' pixgame.html.prep
 
 **Answer:**
 
-```bash
+```bash noexec
 # Lister les termes qui apparaissent exactement 3, 4 ou 5 fois
 $ tr ' ' '\n' < pixgame.html.prep | sort | uniq -c | sort -nr \
   | awk '$1 >= 3 && $1 <= 5 { print }'
@@ -346,7 +346,7 @@ Les termes de faible frequence (3 a 5 occurrences) sont des candidats interessan
 
 **Answer:**
 
-```bash
+```bash noexec
 # Lignes anormalement longues (plus de 1000 caracteres)
 $ awk 'length > 1000 { print NR, length }' pixgame.html.prep
 
@@ -356,7 +356,7 @@ $ grep -n '^\s*$' pixgame.html.prep | head -20
 
 **Monstre identifie :** la ligne 9825 (32 083 caracteres) ne contient que des 'x'. C'est un element completement atypique dans une page HTML. Apres investigation :
 
-```bash
+```bash noexec
 $ sed -n '9825p' pixgame.html.prep | sed 's/x//g' | wc -c
 1
 ```
@@ -367,7 +367,7 @@ La ligne ne contient rien d'autre que des 'x' -- aucun contenu utile. C'est peut
 
 **Answer:**
 
-```bash
+```bash noexec
 # Extraire les URLs
 $ fgrep -o 'http' pixgame.html.prep | wc -l
 
@@ -384,7 +384,7 @@ $ fgrep -i 'wp-content' pixgame.html.prep | head -10
 
 ### Recherche de donnees obfusquees (attributs Base64)
 
-```bash
+```bash noexec
 # Recherche de chaines Base64 (commencent souvent par ey pour du JSON encode)
 $ grep -o 'ey[A-Za-z0-9+/=]*' pixgame.html.prep | head -5
 
@@ -419,7 +419,7 @@ L'obfuscation n'est PAS du chiffrement. Base64 est un encodage reversible en une
 
 **Answer:**
 
-```bash
+```bash noexec
 # Trouver les formulaires
 $ fgrep -n '<form' pixgame.html.prep
 2399:<form class="search-form" ...
@@ -430,7 +430,7 @@ Les deux formulaires font partie du systeme de recherche de contenu du site (lig
 
 ### Examen des scripts externes
 
-```bash
+```bash noexec
 # Scripts charges depuis des domaines externes
 $ grep -o 'src="http[^"]*"' pixgame.html.prep | sort -u | head -20
 ```
@@ -449,7 +449,7 @@ Chaque formulaire et chaque script externe represente un point d'entree potentie
 
 **Answer:**
 
-```bash
+```bash noexec
 # Etape 1 : calculer la frequence des termes dans notre fichier
 $ tr ' ' '\n' < pixgame.html.prep | sort | uniq -c | sort -nr > freq_notre_fichier.txt
 
@@ -502,7 +502,7 @@ Moyens d'acceleration :
 
 ## Commandes shell les plus utiles (a retenir)
 
-```bash
+```bash noexec
 # Pipeline de frequences (Top-N) -- pattern fondamental
 sort | uniq -c | sort -nr | head -N
 

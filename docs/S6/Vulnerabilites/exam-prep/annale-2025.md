@@ -47,14 +47,14 @@ Pour chaque vulnerabilite identifiee, donner les metriques CVSS pertinentes.
 
 ### Enonce
 
-```php
+```php noexec
 $req = "SELECT * FROM users WHERE name = '" + $name
      + "' AND password = '" + $pass + "'"
 ```
 
 ### Question 2.1 : Que se passe-t-il avec `'` comme nom ?
 
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = ''' AND password = '...'
 ```
 **Erreur SQL** : apostrophe non fermee. Cela revele la presence d'une injection SQL.
@@ -62,13 +62,13 @@ SELECT * FROM users WHERE name = ''' AND password = '...'
 ### Question 2.2 : Se connecter en admin sans mot de passe
 
 **Reponse 1** : `$name = admin'--`
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = 'admin'--' AND password = '...'
 ```
 Le `--` commente la verification du mot de passe.
 
 **Reponse 2** : `$name = ' OR 1=1--`
-```sql
+```sql noexec
 SELECT * FROM users WHERE name = '' OR 1=1--' AND password = '...'
 ```
 Retourne tous les utilisateurs (le premier est souvent l'admin).

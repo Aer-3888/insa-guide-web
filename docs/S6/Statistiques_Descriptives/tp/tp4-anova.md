@@ -31,7 +31,7 @@ TP4/
 
 ## Package requis
 
-```r
+```r noexec
 install.packages("emmeans")
 library(emmeans)
 ```
@@ -73,7 +73,7 @@ où:
 2. **Contrainte témoin (défaut R):** α₁ = 0
 
 ### Syntaxe R
-```r
+```r noexec
 # Créer un modèle
 mod <- lm(Y ~ Facteur, data=df)
 
@@ -118,14 +118,14 @@ par(mfrow=c(1,1))
 ### Sans interaction
 **Yᵢⱼₖ = μ + αᵢ + βⱼ + εᵢⱼₖ**
 
-```r
+```r noexec
 mod <- lm(Y ~ FacteurA + FacteurB, data=df)
 ```
 
 ### Avec interaction
 **Yᵢⱼₖ = μ + αᵢ + βⱼ + (αβ)ᵢⱼ + εᵢⱼₖ**
 
-```r
+```r noexec
 mod <- lm(Y ~ FacteurA * FacteurB, data=df)
 # Équivalent à:
 mod <- lm(Y ~ FacteurA + FacteurB + FacteurA:FacteurB, data=df)
@@ -151,13 +151,13 @@ Comparer les caractéristiques nutritionnelles de 3 types de hotdogs.
 **Workflow:**
 
 #### 1. Nettoyage des données
-```r
+```r noexec
 tab <- tab[-which(tab$Type == 4), ]  # Supprimer Type=4 (aberrant)
 tab$Type <- as.factor(tab$Type)      # Convertir en facteur
 ```
 
 #### 2. Statistiques descriptives
-```r
+```r noexec
 summary(Calories)
 by(tab, tab$Type, summary)
 boxplot(Calories ~ Type)
@@ -169,7 +169,7 @@ boxplot(Calories ~ Type)
 - Boeuf: moins riche en sel (en moyenne)
 
 #### 3. Modèle ANOVA
-```r
+```r noexec
 mod1 <- lm(Calories ~ Type, data=tab)
 anova(mod1)
 ```
@@ -181,7 +181,7 @@ anova(mod1)
 **Résultat:** p < 0.05 → le type de hotdog a un effet significatif
 
 #### 4. Graphiques de diagnostic
-```r
+```r noexec
 par(mfrow=c(2,2))
 plot(mod1)
 ```
@@ -193,7 +193,7 @@ plot(mod1)
 - **Q-Q plot:** léger écart aux extrémités (acceptable)
 
 #### 5. Estimation des paramètres
-```r
+```r noexec
 summary(mod1)
 ```
 
@@ -210,7 +210,7 @@ summary(mod1)
 **R² = 0.387:** 38.7% de variabilité expliquée
 
 #### 6. Comparaisons multiples
-```r
+```r noexec
 emmeans(mod1, pairwise ~ Type, adjust="bonferroni")
 ```
 
@@ -241,13 +241,13 @@ Comparer l'acidité de 3 cafés évaluée par 6 juges.
 **Workflow:**
 
 #### 1. Convertir en facteurs
-```r
+```r noexec
 cafe$cafe <- as.factor(cafe$cafe)
 cafe$juge <- as.factor(cafe$juge)
 ```
 
 #### 2. Modèle sans interaction
-```r
+```r noexec
 mod <- lm(acidite ~ cafe + juge, data=cafe)
 anova(mod)
 ```
@@ -266,7 +266,7 @@ anova(mod)
 - **Intérêt d'inclure le juge:** contrôler la variabilité due aux juges pour mieux estimer l'effet café
 
 #### 3. Modèle avec interaction
-```r
+```r noexec
 mod_inter <- lm(acidite ~ cafe * juge, data=cafe)
 anova(mod_inter)
 ```
@@ -280,7 +280,7 @@ anova(mod_inter)
 - Un café peut être jugé plus acide par certains juges et moins par d'autres
 
 #### 4. Comparaisons multiples
-```r
+```r noexec
 emmeans(mod, pairwise ~ cafe, adjust="bonferroni")
 ```
 
@@ -299,14 +299,14 @@ emmeans(mod, pairwise ~ cafe, adjust="bonferroni")
 **Workflow:**
 
 #### 1. Convertir en facteurs
-```r
+```r noexec
 resistance$textile <- as.factor(resistance$textile)
 resistance$position <- as.factor(resistance$position)
 resistance$cycle <- as.factor(resistance$cycle)
 ```
 
 #### 2. Visualisation
-```r
+```r noexec
 boxplot(perte_poids ~ textile, data=resistance,
         main="Perte de poids par textile")
 abline(h=mean(perte_poids), col="red", lwd=3)
@@ -317,7 +317,7 @@ abline(h=mean(perte_poids), col="red", lwd=3)
 - Textile B: perd le plus de poids → moins résistant
 
 #### 3. ANOVA à 1 facteur (textile uniquement)
-```r
+```r noexec
 mod1 <- lm(perte_poids ~ textile, data=resistance)
 anova(mod1)
 ```
@@ -325,7 +325,7 @@ anova(mod1)
 **Résultat:** p < 0.05 → effet significatif du textile
 
 #### 4. ANOVA à 3 facteurs
-```r
+```r noexec
 mod2 <- lm(perte_poids ~ textile + position + cycle, data=resistance)
 anova(mod2)
 ```
@@ -340,14 +340,14 @@ anova(mod2)
 - **Avantage du modèle à 3 facteurs:** contrôle la variabilité due à position et cycle pour mieux estimer l'effet textile
 
 #### 5. Test d'un coefficient spécifique
-```r
+```r noexec
 summary(mod2)$coefficients["textileD", 4] < 0.05
 ```
 
 Vérifie si le coefficient du textile D est significativement différent de 0
 
 #### 6. Comparaisons multiples
-```r
+```r noexec
 emmeans(mod2, pairwise ~ textile, adjust="bonferroni")
 ```
 
@@ -368,7 +368,7 @@ Faire k tests à α=5% augmente le risque d'erreur global:
 Ajuster le seuil de significativité: α' = α / nombre de comparaisons
 
 ### Fonction emmeans
-```r
+```r noexec
 library(emmeans)
 
 # Moyennes estimées avec IC
@@ -396,7 +396,7 @@ $contrasts: comparaisons deux à deux
 
 ## Graphiques de diagnostic
 
-```r
+```r noexec
 par(mfrow=c(2,2))
 plot(mod)
 par(mfrow=c(1,1))
@@ -422,7 +422,7 @@ par(mfrow=c(1,1))
 
 ## Commandes essentielles
 
-```r
+```r noexec
 # Modèle
 mod <- lm(Y ~ Facteur, data=df)
 mod <- lm(Y ~ Facteur1 + Facteur2, data=df)
@@ -477,7 +477,7 @@ anova_table["Facteur", "Pr(>F)"]  # p-value
 ## Pièges à éviter
 
 1. **Oublier de convertir en facteur:**
-   ```r
+   ```r noexec
    df$Facteur <- as.factor(df$Facteur)
    ```
 

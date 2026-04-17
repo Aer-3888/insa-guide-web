@@ -209,7 +209,7 @@ let rec reussite l =
 ### Display cards using the Graphics module
 
 Requires the Graphics library:
-```ocaml
+```ocaml noexec
 #load "graphics.cma";;
 open Graphics;;
 open_graph "";;

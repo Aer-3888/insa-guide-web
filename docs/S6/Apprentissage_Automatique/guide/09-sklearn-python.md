@@ -9,7 +9,7 @@ sidebar_position: 9
 
 Tous les estimateurs suivent la meme API :
 
-```python
+```python noexec
 estimator.fit(X_train, y_train)       # entrainer
 estimator.predict(X_test)              # predire
 estimator.score(X_test, y_test)        # evaluer
@@ -33,7 +33,7 @@ estimator.get_params()                 # voir les hyperparametres
 
 $$z = \frac{x - \mu}{\sigma}$$
 
-```python
+```python noexec
 from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
@@ -45,14 +45,14 @@ X_test_scaled = scaler.transform(X_test)          # SEULEMENT transform sur le t
 
 $$x_{\text{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
 
-```python
+```python noexec
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 ```
 
 ### Encodage des variables categorielles
 
-```python
+```python noexec
 # One-Hot Encoding (pour features nominales non ordonnees)
 from sklearn.preprocessing import OneHotEncoder
 enc = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
@@ -71,7 +71,7 @@ y_encoded = le.fit_transform(y)
 
 ### Vectorisation de texte
 
-```python
+```python noexec
 # Bag of Words
 from sklearn.feature_extraction.text import CountVectorizer
 vec = CountVectorizer(
@@ -101,7 +101,7 @@ vec = TfidfVectorizer(
 
 Les pipelines chainent preprocessing et modele en un seul objet coherent, evitant les fuites de donnees :
 
-```python
+```python noexec
 from sklearn.pipeline import Pipeline
 
 pipe = Pipeline([
@@ -117,7 +117,7 @@ print(f"Score : {pipe.score(X_test, y_test):.3f}")
 
 ### ColumnTransformer (features mixtes)
 
-```python
+```python noexec
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
@@ -146,7 +146,7 @@ pipe = Pipeline([
 
 Teste toutes les combinaisons d'hyperparametres :
 
-```python
+```python noexec
 from sklearn.model_selection import GridSearchCV
 
 param_grid = {
@@ -180,7 +180,7 @@ print(results[['params', 'mean_test_score', 'std_test_score', 'rank_test_score']
 
 Pour un grand espace d'hyperparametres, tester un nombre fixe de combinaisons aleatoires :
 
-```python
+```python noexec
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform, randint
 
@@ -220,7 +220,7 @@ random_search.fit(X_train, y_train)
 
 ### Pipeline complet avec plusieurs modeles
 
-```python
+```python noexec
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import MultinomialNB, GaussianNB
@@ -250,7 +250,7 @@ for name, model in models.items():
 
 ### Donnees numeriques (ex : heart.csv, iris)
 
-```python
+```python noexec
 pipe = Pipeline([
     ('scaler', StandardScaler()),
     ('clf', RandomForestClassifier(n_estimators=100))
@@ -259,7 +259,7 @@ pipe = Pipeline([
 
 ### Donnees textuelles (ex : jv.data, imdb)
 
-```python
+```python noexec
 pipe = Pipeline([
     ('vec', TfidfVectorizer(max_df=0.7, min_df=5)),
     ('clf', MultinomialNB())
@@ -268,7 +268,7 @@ pipe = Pipeline([
 
 ### Donnees categorielles (ex : weather.nominal.csv)
 
-```python
+```python noexec
 from sklearn.naive_bayes import CategoricalNB
 
 pipe = Pipeline([
@@ -279,7 +279,7 @@ pipe = Pipeline([
 
 ### Donnees mixtes (ex : no_show.csv)
 
-```python
+```python noexec
 preprocessor = ColumnTransformer([
     ('num', StandardScaler(), numeric_cols),
     ('cat', OrdinalEncoder(), categorical_cols)
@@ -294,7 +294,7 @@ pipe = Pipeline([
 
 ## 7. Sauvegarde et chargement de modeles
 
-```python
+```python noexec
 import joblib
 
 # Sauvegarder

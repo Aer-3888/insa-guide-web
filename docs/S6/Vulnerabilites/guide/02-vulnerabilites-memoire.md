@@ -18,7 +18,7 @@ Un buffer overflow survient quand un programme ecrit des donnees au-dela des lim
 ### Stack buffer overflow
 
 **Code vulnerable :**
-```c
+```c noexec
 // VULNERABLE : pas de verification de taille
 void greet(char *name) {
     char buffer[64];
@@ -44,7 +44,7 @@ Pile (stack) - adresses hautes en haut
 L'attaquant envoie plus de 64 octets pour ecraser l'adresse de retour et rediriger l'execution.
 
 **Code corrige :**
-```c
+```c noexec
 // SECURISE : limitation de la copie
 void greet(char *name) {
     char buffer[64];
@@ -61,14 +61,14 @@ void greet(char *name) {
 Les tampons alloues dynamiquement (`malloc`, `new`) peuvent aussi deborder. L'exploitation differe : on ecrase les metadonnees du heap (pointeurs de liste chainee) pour obtenir une ecriture arbitraire en memoire.
 
 **Code vulnerable :**
-```c
+```c noexec
 // VULNERABLE : taille non verifiee
 char *buf = malloc(256);
 fgets(buf, 1024, stdin);  // Lit 1024 octets dans un buffer de 256
 ```
 
 **Code corrige :**
-```c
+```c noexec
 // SECURISE : taille coherente
 char *buf = malloc(256);
 if (buf == NULL) { /* gerer l'erreur */ }
@@ -84,7 +84,7 @@ fgets(buf, 256, stdin);  // Lit au maximum la taille allouee
 Si une chaine de format est controlee par l'utilisateur, les specificateurs `%x`, `%n`, `%s` permettent de lire et ecrire en memoire.
 
 **Code vulnerable :**
-```c
+```c noexec
 // VULNERABLE : l'entree utilisateur EST la chaine de format
 char *user_input = get_input();
 printf(user_input);  // L'utilisateur peut injecter %x, %n, etc.
@@ -100,7 +100,7 @@ Resultat : ecrit en memoire (ecriture arbitraire)
 ```
 
 **Code corrige :**
-```c
+```c noexec
 // SECURISE : l'entree est un argument, pas le format
 char *user_input = get_input();
 printf("%s", user_input);  // Le format est fixe
@@ -117,7 +117,7 @@ printf("%s", user_input);  // Le format est fixe
 Un depassement d'entier survient quand une operation arithmetique produit un resultat qui depasse la capacite du type.
 
 **Code vulnerable :**
-```c
+```c noexec
 // VULNERABLE : multiplication peut deborder
 void allocate_buffer(unsigned int count, unsigned int size) {
     unsigned int total = count * size;  // Peut deborder !
@@ -130,7 +130,7 @@ void allocate_buffer(unsigned int count, unsigned int size) {
 ```
 
 **Code corrige :**
-```c
+```c noexec
 // SECURISE : verification de debordement
 #include <stdint.h>
 void allocate_buffer(unsigned int count, unsigned int size) {
@@ -156,7 +156,7 @@ void allocate_buffer(unsigned int count, unsigned int size) {
 Utiliser un pointeur vers une zone memoire deja liberee. Si cette zone a ete reallouee pour un autre objet, l'attaquant peut manipuler les donnees.
 
 **Code vulnerable :**
-```c
+```c noexec
 // VULNERABLE : utilisation apres liberation
 char *ptr = malloc(128);
 // ... utilisation ...
@@ -166,7 +166,7 @@ strcpy(ptr, user_data);  // Ecriture dans une zone liberee
 ```
 
 **Code corrige :**
-```c
+```c noexec
 // SECURISE : mise a NULL apres liberation
 char *ptr = malloc(128);
 // ... utilisation ...

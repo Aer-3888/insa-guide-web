@@ -21,7 +21,7 @@ n! = 1 x 2 x 3 x ... x n
 
 **Answer:**
 
-```c
+```c noexec
 /*!
  * \file factorial.c
  * \brief Calcul de la factorielle et detection de depassement
@@ -167,7 +167,7 @@ sin(x) = x - x^3/3! + x^5/5! - x^7/7! + ...
 2. **Version optimisee** (`sinus2()`) : calcule chaque terme a partir du precedent -- cout O(n)
 
 **Optimisation :**
-```c
+```c noexec
 // Au lieu de recalculer x^(2n+1) / (2n+1)! a chaque fois :
 terme_suivant = terme_precedent * x^2 / (n * (n-1))
 ```

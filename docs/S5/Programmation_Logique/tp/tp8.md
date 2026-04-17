@@ -18,7 +18,7 @@ ou chaque domino est connecte au suivant par des valeurs identiques.
 
 ## Representation
 
-```prolog
+```prolog noexec
 % Un domino : stone(A, B)
 stone(2, 4)    % domino [2:4]
 
@@ -64,7 +64,7 @@ chain([X], [double])
 
 ## Execution
 
-```prolog
+```prolog noexec
 [eclipse 1]: ["tp_dominos"].
 
 % Resoudre pour stones1

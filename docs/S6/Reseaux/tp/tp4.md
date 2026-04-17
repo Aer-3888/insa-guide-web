@@ -28,7 +28,7 @@ Low-level network programming with C sockets API on Linux and Windows.
 ### Essential Headers
 
 **Linux:**
-```c
+```c noexec
 #include <sys/types.h>    // Socket types
 #include <sys/socket.h>   // Socket functions
 #include <netinet/in.h>   // Internet address structures
@@ -38,14 +38,14 @@ Low-level network programming with C sockets API on Linux and Windows.
 ```
 
 **Windows:**
-```c
+```c noexec
 #include <winsock2.h>     // Winsock API
 #pragma comment(lib, "ws2_32.lib")  // Link with Winsock library
 ```
 
 ### Cross-Platform Initialization
 
-```c
+```c noexec
 #ifdef WIN32
 static void init(void) {
     WSADATA wsa;
@@ -81,7 +81,7 @@ static void end(void) { /* Nothing on Linux */ }
 
 **Implementation (ServeurTCP.c):**
 
-```c
+```c noexec
 int main(int argc, char** argv) {
     init();  // Windows initialization
     
@@ -180,7 +180,7 @@ int main(int argc, char** argv) {
 
 **Implementation (ClientTCP.c):**
 
-```c
+```c noexec
 int main(int argc, char** argv) {
     init();
     
@@ -303,7 +303,7 @@ Received: #SRV1=002#
 
 **Implementation (serveur_UDP2_et.c):**
 
-```c
+```c noexec
 int main(int argc, char** argv) {
     init();
     
@@ -372,7 +372,7 @@ int main(int argc, char** argv) {
 
 **Implementation (client_UDP2_et.c):**
 
-```c
+```c noexec
 int main(int argc, char** argv) {
     init();
     
@@ -459,7 +459,7 @@ Implementing the guessing game from TP3 in C.
 
 ### Server (ServeurPlusMoins.c)
 
-```c
+```c noexec
 int main(int argc, char** argv) {
     init();
     
@@ -510,7 +510,7 @@ int main(int argc, char** argv) {
 
 ### Client (ClientPlusMoins.c)
 
-```c
+```c noexec
 int main(int argc, char** argv) {
     init();
     
@@ -603,7 +603,7 @@ Total: 6 packets
 
 ### Common to TCP and UDP
 
-```c
+```c noexec
 // Create socket
 int socket(int domain, int type, int protocol);
 // domain: AF_INET (IPv4), AF_INET6 (IPv6)
@@ -626,7 +626,7 @@ int getpeername(int socket, struct sockaddr *address, socklen_t *length);
 
 ### TCP-Specific
 
-```c
+```c noexec
 // Listen for connections
 int listen(int socket, int backlog);
 // backlog: max queued connections
@@ -646,7 +646,7 @@ ssize_t recv(int socket, void *buffer, size_t length, int flags);
 
 ### UDP-Specific
 
-```c
+```c noexec
 // Send datagram (specify destination)
 ssize_t sendto(int socket, const void *buffer, size_t length,
                int flags, const struct sockaddr *dest_addr,
@@ -664,7 +664,7 @@ ssize_t recvfrom(int socket, void *buffer, size_t length,
 
 ### IPv4 Address Structure
 
-```c
+```c noexec
 struct sockaddr_in {
     sa_family_t    sin_family;  // AF_INET
     in_port_t      sin_port;    // Port (network byte order)
@@ -679,7 +679,7 @@ struct in_addr {
 
 ### Generic Socket Address
 
-```c
+```c noexec
 struct sockaddr {
     sa_family_t sa_family;  // Address family
     char        sa_data[14];  // Address data
@@ -687,7 +687,7 @@ struct sockaddr {
 ```
 
 Used for type casting:
-```c
+```c noexec
 struct sockaddr_in addr;
 bind(sock, (struct sockaddr *)&addr, sizeof(addr));
 ```
@@ -698,7 +698,7 @@ bind(sock, (struct sockaddr *)&addr, sizeof(addr));
 
 Network byte order is **big-endian**. Host may be little-endian.
 
-```c
+```c noexec
 // Host to Network (16-bit)
 uint16_t htons(uint16_t hostshort);
 
@@ -713,7 +713,7 @@ uint32_t ntohl(uint32_t netlong);
 ```
 
 **Example:**
-```c
+```c noexec
 // Port 8000 in network byte order
 serveur.sin_port = htons(8000);
 
@@ -727,7 +727,7 @@ printf("Port: %d\n", ntohs(serveur.sin_port));
 
 ### String to Binary
 
-```c
+```c noexec
 // Linux - preferred
 int inet_aton(const char *cp, struct in_addr *inp);
 
@@ -741,7 +741,7 @@ int inet_pton(int af, const char *src, void *dst);
 
 ### Binary to String
 
-```c
+```c noexec
 // IPv4 only (not thread-safe)
 char *inet_ntoa(struct in_addr in);
 
@@ -750,7 +750,7 @@ const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 ```
 
 **Example:**
-```c
+```c noexec
 // String → Binary
 struct in_addr addr;
 inet_aton("192.168.1.1", &addr);
@@ -767,7 +767,7 @@ printf("IP: %s\n", inet_ntoa(addr));
 
 Errors set `errno`, check with `strerror()`:
 
-```c
+```c noexec
 if (connect(sock, ...) < 0) {
     fprintf(stderr, "connect: %s\n", strerror(errno));
     exit(1);
@@ -778,7 +778,7 @@ if (connect(sock, ...) < 0) {
 
 Use `WSAGetLastError()`:
 
-```c
+```c noexec
 if (connect(sock, ...) == SOCKET_ERROR) {
     fprintf(stderr, "connect failed: %d\n", WSAGetLastError());
     exit(1);
@@ -792,7 +792,7 @@ if (connect(sock, ...) == SOCKET_ERROR) {
 ### 1. Bind fails with "Address already in use"
 
 **Solution:** Enable SO_REUSEADDR:
-```c
+```c noexec
 int opt = 1;
 setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 ```
@@ -821,7 +821,7 @@ telnet 127.0.0.1 8000      # Test connection
 `send()` and `recv()` may transfer less than requested.
 
 **Solution:** Loop until complete:
-```c
+```c noexec
 ssize_t send_all(int sock, const void *buf, size_t len) {
     size_t total = 0;
     while (total < len) {

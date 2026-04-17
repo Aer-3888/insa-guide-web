@@ -66,7 +66,7 @@ R uses a consistent naming scheme for distributions:
 - `f`: F distribution
 
 **Example**: For normal distribution N(μ, σ):
-```r
+```r noexec
 dnorm(x, mean=μ, sd=σ)  # Density at x
 pnorm(x, mean=μ, sd=σ)  # P(X ≤ x)
 qnorm(p, mean=μ, sd=σ)  # Value x where P(X ≤ x) = p

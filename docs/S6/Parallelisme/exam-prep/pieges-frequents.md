@@ -13,7 +13,7 @@ Ce document recense les erreurs les plus courantes dans les copies d'examen de p
 
 ### Code FAUX
 
-```c
+```c noexec
 double somme = 0;
 #pragma omp parallel for
 for (int i = 0; i < N; i++) {
@@ -27,7 +27,7 @@ for (int i = 0; i < N; i++) {
 
 ### Correction
 
-```c
+```c noexec
 double somme = 0;
 #pragma omp parallel for reduction(+:somme)
 for (int i = 0; i < N; i++) {
@@ -45,7 +45,7 @@ La clause `reduction(+:somme)` cree une copie locale dans chaque thread, puis co
 
 ### Code FAUX
 
-```c
+```c noexec
 double x = 3.14;
 #pragma omp parallel for private(x)
 for (int i = 0; i < N; i++) {
@@ -59,7 +59,7 @@ for (int i = 0; i < N; i++) {
 
 ### Correction
 
-```c
+```c noexec
 double x = 3.14;
 #pragma omp parallel for firstprivate(x)
 for (int i = 0; i < N; i++) {
@@ -75,7 +75,7 @@ for (int i = 0; i < N; i++) {
 
 ### Code FAUX
 
-```c
+```c noexec
 #pragma omp parallel for
 for (int i = 1; i < N; i++) {
     tab[i] = tab[i-1] + 1;
@@ -94,7 +94,7 @@ Poser la question : "est-ce que l'iteration i lit ou ecrit une case modifiee par
 
 Parfois la boucle n'est **pas parallelisable** en l'etat. Il faut la reformuler :
 
-```c
+```c noexec
 /* Si tab[i] = tab[0] + i (forme close) */
 #pragma omp parallel for
 for (int i = 1; i < N; i++) {
@@ -126,7 +126,7 @@ gcc -fopenmp programme.c -o programme -lm
 
 ### Code FAUX
 
-```c
+```c noexec
 clock_t t0 = clock();
 #pragma omp parallel for
 for (int i = 0; i < N; i++) { /* ... */ }
@@ -140,7 +140,7 @@ double temps = (double)(t1 - t0) / CLOCKS_PER_SEC;
 
 ### Correction
 
-```c
+```c noexec
 double t0 = omp_get_wtime();
 #pragma omp parallel for
 for (int i = 0; i < N; i++) { /* ... */ }
@@ -160,7 +160,7 @@ double temps = t1 - t0;   /* temps mur (wall-clock) */
 
 ### Code FAUX (mais correct logiquement)
 
-```c
+```c noexec
 int compteurs[NB_THREADS];
 #pragma omp parallel
 {
@@ -178,14 +178,14 @@ Les elements `compteurs[0]`, `compteurs[1]`, etc. sont sur la **meme ligne de ca
 
 **Solution 1 -- Padding :**
 
-```c
+```c noexec
 int compteurs[NB_THREADS * 16];  /* 64 octets entre chaque compteur */
 compteurs[id * 16]++;
 ```
 
 **Solution 2 -- Variables locales (recommandee) :**
 
-```c
+```c noexec
 int total = 0;
 #pragma omp parallel
 {
@@ -204,7 +204,7 @@ int total = 0;
 
 ### Code FAUX
 
-```c
+```c noexec
 if (rang == 0) {
     MPI_Send(buf, N, MPI_DOUBLE, 1, 0, comm);
     MPI_Recv(buf2, N, MPI_DOUBLE, 1, 0, comm, &status);
@@ -229,7 +229,7 @@ Tracer l'ordre des operations :
 
 **Solution 1 -- Alterner :**
 
-```c
+```c noexec
 if (rang == 0) {
     MPI_Send(buf, N, MPI_DOUBLE, 1, 0, comm);
     MPI_Recv(buf2, N, MPI_DOUBLE, 1, 0, comm, &status);
@@ -241,14 +241,14 @@ if (rang == 0) {
 
 **Solution 2 -- Sendrecv :**
 
-```c
+```c noexec
 MPI_Sendrecv(buf, N, MPI_DOUBLE, voisin, 0,
              buf2, N, MPI_DOUBLE, voisin, 0, comm, &status);
 ```
 
 **Solution 3 -- Isend (non-bloquant) :**
 
-```c
+```c noexec
 MPI_Isend(buf, N, MPI_DOUBLE, voisin, 0, comm, &req);
 MPI_Recv(buf2, N, MPI_DOUBLE, voisin, 0, comm, &status);
 MPI_Wait(&req, &status);
@@ -262,7 +262,7 @@ MPI_Wait(&req, &status);
 
 ### Code FAUX
 
-```c
+```c noexec
 if (rang == 0) {
     MPI_Bcast(data, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 }
@@ -275,7 +275,7 @@ Les operations collectives (Bcast, Scatter, Gather, Reduce, Barrier) doivent etr
 
 ### Correction
 
-```c
+```c noexec
 /* TOUS les processus appellent Bcast */
 MPI_Bcast(data, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 /* P0 envoie, les autres recoivent -- mais tous appellent la meme fonction */
@@ -289,7 +289,7 @@ MPI_Bcast(data, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 ### Code FAUX
 
-```c
+```c noexec
 MPI_Send(buf, N * sizeof(double), MPI_DOUBLE, dest, tag, comm);
 ```
 
@@ -299,7 +299,7 @@ Le parametre `count` est le **nombre d'elements**, pas la taille en octets. MPI 
 
 ### Correction
 
-```c
+```c noexec
 MPI_Send(buf, N, MPI_DOUBLE, dest, tag, comm);
 /* N elements de type MPI_DOUBLE */
 ```
@@ -310,7 +310,7 @@ MPI_Send(buf, N, MPI_DOUBLE, dest, tag, comm);
 
 ### Code FAUX
 
-```c
+```c noexec
 int local_n = N / nb_proc;
 MPI_Scatter(data, local_n, MPI_DOUBLE, ...);
 /* Si N=100 et nb_proc=3 : 100/3 = 33, 3*33 = 99, 1 element perdu */
@@ -322,7 +322,7 @@ MPI_Scatter(data, local_n, MPI_DOUBLE, ...);
 
 **Option 2 :** Utiliser `MPI_Scatterv` / `MPI_Gatherv` avec des tailles variables :
 
-```c
+```c noexec
 int *counts = malloc(nb_proc * sizeof(int));
 int *displs = malloc(nb_proc * sizeof(int));
 for (int i = 0; i < nb_proc; i++) {
@@ -341,7 +341,7 @@ MPI_Scatterv(data, counts, displs, MPI_DOUBLE,
 
 ### Code FAUX
 
-```c
+```c noexec
 __global__ void kernel(float *tab, int N) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     tab[i] = tab[i] * 2.0f;  /* buffer overflow si i >= N */
@@ -354,7 +354,7 @@ Le nombre total de threads = `nb_blocs * taille_bloc`. Ce n'est pas toujours un 
 
 ### Correction
 
-```c
+```c noexec
 __global__ void kernel(float *tab, int N) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i < N) {
@@ -371,7 +371,7 @@ __global__ void kernel(float *tab, int N) {
 
 ### Code FAUX
 
-```c
+```c noexec
 float *d_tab;
 cudaMalloc(&d_tab, N * sizeof(float));
 printf("%f\n", d_tab[0]);   /* CRASH -- segfault */
@@ -383,7 +383,7 @@ printf("%f\n", d_tab[0]);   /* CRASH -- segfault */
 
 ### Correction
 
-```c
+```c noexec
 float *d_tab, *h_tab;
 cudaMalloc(&d_tab, N * sizeof(float));
 h_tab = malloc(N * sizeof(float));
@@ -398,7 +398,7 @@ printf("%f\n", h_tab[0]);   /* OK */
 
 ### Code FAUX
 
-```c
+```c noexec
 kernel<<<blocs, threads>>>(d_tab, N);
 cudaMemcpy(h_tab, d_tab, N * sizeof(float), cudaMemcpyDeviceToHost);
 ```
@@ -409,7 +409,7 @@ Le lancement du kernel est **asynchrone**. Le CPU continue immediatement. En pra
 
 ### Bonne pratique
 
-```c
+```c noexec
 kernel<<<blocs, threads>>>(d_tab, N);
 cudaDeviceSynchronize();   /* attendre la fin du kernel */
 /* Maintenant on peut lire les resultats */
@@ -450,7 +450,7 @@ Pour verifier votre reponse, tester les cas limites :
 
 ### Code FAUX
 
-```c
+```c noexec
 for (int i = 0; i < NB; i++) {
     pthread_create(&threads[i], NULL, func, &i);
 }
@@ -462,7 +462,7 @@ Tous les threads recoivent un **pointeur vers la meme variable** `i`. Quand le t
 
 ### Correction
 
-```c
+```c noexec
 int numeros[NB];
 for (int i = 0; i < NB; i++) {
     numeros[i] = i;
@@ -472,7 +472,7 @@ for (int i = 0; i < NB; i++) {
 
 Ou avec un cast (courant mais moins propre) :
 
-```c
+```c noexec
 pthread_create(&threads[i], NULL, func, (void*)(intptr_t)i);
 /* Dans func : int id = (intptr_t)arg; */
 ```

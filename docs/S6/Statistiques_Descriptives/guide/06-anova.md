@@ -80,7 +80,7 @@ $$F = \frac{CME}{CMR} = \frac{\text{variabilite inter-groupes}}{\text{variabilit
 
 ### Verification
 
-```r
+```r noexec
 # Normalite
 shapiro.test(residuals(modele))
 
@@ -104,7 +104,7 @@ Si l'ANOVA rejette $H_0$, on sait qu'au moins un groupe differe, mais **lequel**
 
 ### 6.1 Tukey HSD (Honest Significant Difference)
 
-```r
+```r noexec
 TukeyHSD(aov(Y ~ Groupe, data = df))
 ```
 
@@ -112,7 +112,7 @@ Controle le risque global a $\alpha = 0.05$ pour toutes les comparaisons deux a 
 
 ### 6.2 Bonferroni (avec emmeans)
 
-```r
+```r noexec
 library(emmeans)
 comp <- emmeans(modele, pairwise ~ Groupe, adjust = "bonferroni")
 print(comp)
@@ -133,7 +133,7 @@ $$\eta^2 = \frac{SCE}{SCT}$$
 
 ## 7. Exemple du TP4 : Hotdogs
 
-```r
+```r noexec
 tab <- read.table("hotdogs.txt", header = TRUE)
 tab <- tab[-which(tab$Type == 4), ]  # Supprimer le type aberrant
 tab$Type <- as.factor(tab$Type)
@@ -187,7 +187,7 @@ L'interaction signifie que l'effet d'un facteur **depend du niveau** de l'autre 
 
 ### Graphique d'interaction
 
-```r
+```r noexec
 interaction.plot(facteur_A, facteur_B, Y)
 ```
 
@@ -208,7 +208,7 @@ interaction.plot(facteur_A, facteur_B, Y)
 
 ### Code R
 
-```r
+```r noexec
 # Modele avec interaction
 mod <- lm(Y ~ facteur_A * facteur_B, data = df)
 # Equivalent a : lm(Y ~ facteur_A + facteur_B + facteur_A:facteur_B)
@@ -242,7 +242,7 @@ flowchart TD
 
 ## 11. Exemple du TP4 : Acidite du cafe
 
-```r
+```r noexec
 cafe <- read.csv("cafe.csv")
 cafe$cafe <- as.factor(cafe$cafe)
 cafe$juge <- as.factor(cafe$juge)
@@ -265,7 +265,7 @@ emmeans(mod_add, pairwise ~ cafe, adjust = "bonferroni")
 
 ### Exemple du TP4 : Resistance textile
 
-```r
+```r noexec
 resistance <- read.table("resistance_textile.txt", header = TRUE)
 resistance$position <- as.factor(resistance$position)
 resistance$cycle <- as.factor(resistance$cycle)
@@ -294,7 +294,7 @@ Si l'interaction A:B est significative, dire "A a un effet significatif" est tro
 
 ### Piege 2 : Oublier de convertir en facteur
 
-```r
+```r noexec
 # FAUX : R traite Type comme numerique
 mod <- lm(Y ~ Type, data = df)
 

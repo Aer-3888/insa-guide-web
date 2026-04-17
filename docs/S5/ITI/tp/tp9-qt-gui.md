@@ -22,7 +22,7 @@ Introduction to GUI application development with Qt and Python:
 **Qt**: Cross-platform GUI framework (C++)
 **PyQt**: Python bindings for Qt
 
-```python
+```python noexec
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
 from PyQt5.QtCore import Qt
 import sys
@@ -50,7 +50,7 @@ Common Qt widgets:
 ### 3. Layouts
 
 Automatic widget positioning:
-```python
+```python noexec
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout
 
 # Vertical layout
@@ -77,7 +77,7 @@ Layout types:
 
 **Event-driven programming**: Respond to user actions
 
-```python
+```python noexec
 # Signal: Event that can be emitted
 # Slot: Function that handles signal
 
@@ -96,7 +96,7 @@ Common signals:
 
 ### 5. Image Processing
 
-```python
+```python noexec
 from PyQt5.QtGui import QImage, QPixmap
 
 # Load image
@@ -119,7 +119,7 @@ image.setPixel(x, y, new_rgb)
 
 ### 6. MDI (Multiple Document Interface)
 
-```python
+```python noexec
 from PyQt5.QtWidgets import QMdiArea, QMdiSubWindow
 
 mdi_area = QMdiArea()
@@ -187,7 +187,7 @@ See `src/` and exercise directories (`ex2/`, `ex3/`, `ex4/`) for complete implem
 ## Common Patterns
 
 ### Main Window Template
-```python
+```python noexec
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -203,7 +203,7 @@ class MainWindow(QMainWindow):
 ```
 
 ### Dialog Pattern
-```python
+```python noexec
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
 
 class MyDialog(QDialog):
@@ -218,7 +218,7 @@ class MyDialog(QDialog):
 ```
 
 ### Menu and Toolbar
-```python
+```python noexec
 # Menu bar
 menubar = self.menuBar()
 file_menu = menubar.addMenu("File")

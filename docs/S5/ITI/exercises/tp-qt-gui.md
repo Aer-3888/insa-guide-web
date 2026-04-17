@@ -13,7 +13,7 @@ sidebar_position: 7
 
 **Answer:**
 
-```python
+```python noexec
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
 **Answer:**
 
-```python
+```python noexec
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QLabel, QFileDialog,
@@ -210,7 +210,7 @@ if __name__ == "__main__":
 
 **Answer:**
 
-```python
+```python noexec
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QPen
@@ -314,7 +314,7 @@ if __name__ == "__main__":
 
 **Answer:**
 
-```python
+```python noexec
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QMdiArea, QMdiSubWindow,
@@ -427,7 +427,7 @@ if __name__ == "__main__":
 
 **RGB pixel manipulation:**
 
-```python
+```python noexec
 # Extract channels from 32-bit ARGB pixel
 rgb = image.pixel(x, y)     # Returns 0xAARRGGBB
 r = (rgb >> 16) & 0xFF      # Shift right 16, mask 8 bits

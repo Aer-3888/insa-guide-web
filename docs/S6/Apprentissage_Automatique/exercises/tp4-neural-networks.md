@@ -28,7 +28,7 @@ sidebar_position: 4
 
 **Answer:**
 
-```python
+```python noexec
 #!/usr/bin/python3
 
 # Prevent TensorFlow from reserving all GPU memory
@@ -64,7 +64,7 @@ x_test.shape= (10000, 32, 32, 3)
 
 ### Reshape for each model type
 
-```python
+```python noexec
 # For the Perceptron: flatten each image into a vector of 3072 values
 x_train_flat = x_train.reshape(50000, 3072)
 x_test_flat = x_test.reshape(10000, 3072)
@@ -91,7 +91,7 @@ x_train_cnn.shape= (50000, 32, 32, 3)
 
 **Answer:**
 
-```python
+```python noexec
 def perceptron(nbhidden=1):
     entree = tf.keras.Input(shape=(3072,))
     hidden = tf.keras.layers.Dense(units=nbhidden, activation='relu')(entree)
@@ -123,7 +123,7 @@ Input (3072) --> Dense(nbhidden, ReLU) --> Dense(10, Softmax) --> Output
 
 ### Training
 
-```python
+```python noexec
 clf = perceptron(100000)
 clf.fit(x_train_flat, y_train, epochs=20, batch_size=51)
 ```
@@ -134,7 +134,7 @@ clf.fit(x_train_flat, y_train, epochs=20, batch_size=51)
 
 ### Evaluation
 
-```python
+```python noexec
 predictions = clf.predict(x_test_flat).argmax(-1)
 print(classification_report(y_test, predictions))
 print('accuracy_score=', accuracy_score(y_test, predictions))
@@ -177,7 +177,7 @@ print('accuracy_score=', accuracy_score(y_test, predictions))
 
 The original source file contains a **bug on lines 30 and 32**. The 2nd and 3rd Conv2D layers are connected to `entree` (the input) instead of `layer` (the previous layer's output):
 
-```python
+```python noexec
 # BUGGY CODE (lines 28-33 of tp_nn.py):
 layer = tf.keras.layers.Conv2D(32, kernel_size=(5,5), strides=(1,1), activation='relu')(entree)
 layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2), strides=(2,2))(layer)
@@ -191,7 +191,7 @@ This creates an architecture where all 3 conv blocks are connected directly to t
 
 ### Corrected CNN
 
-```python
+```python noexec
 def cnn():
     entree = tf.keras.Input(shape=(32, 32, 3))
 
@@ -268,7 +268,7 @@ Input (32x32x3)
 
 ### Training and evaluation
 
-```python
+```python noexec
 clf = cnn()
 clf.fit(x_train_cnn, y_train, epochs=20, batch_size=51)
 
@@ -317,7 +317,7 @@ Epoch 20/20
 
 **Answer:**
 
-```python
+```python noexec
 def main():
     # Load CIFAR-10
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
@@ -381,7 +381,7 @@ accuracy_score= 0.79
 
 **Answer:**
 
-```python
+```python noexec
 # MLP with different sizes
 for hidden in [100, 1000, 10000, 100000]:
     clf = perceptron(hidden)

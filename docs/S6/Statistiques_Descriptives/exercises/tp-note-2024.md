@@ -36,7 +36,7 @@ Le fichier comporte 495 observations avec 3 variables :
 
 ### Q1 : Importer les donnees
 
-```r
+```r noexec
 salaire <- read.table("salaire.txt", header = TRUE)
 str(salaire)
 head(salaire)
@@ -55,7 +55,7 @@ head(salaire)
 
 ### Q2 : Nuage de points MaxSalary vs Score
 
-```r
+```r noexec
 plot(salaire$Score, salaire$MaxSalary,
      main = "Salaire maximal en fonction du score",
      xlab = "Score", ylab = "Salaire maximal ($)",
@@ -74,7 +74,7 @@ $$\text{MaxSalary}_i = \beta_0 + \beta_1 \cdot \text{Score}_i + \varepsilon_i, \
 
 #### Q3a : Ajuster le modele et tester l'influence du score
 
-```r
+```r noexec
 mod1 <- lm(MaxSalary ~ Score, data = salaire)
 summary(mod1)
 ```
@@ -102,7 +102,7 @@ Multiple R-squared:  0.5339
 
 #### Q3b : Tracer la droite de regression
 
-```r
+```r noexec
 plot(salaire$Score, salaire$MaxSalary,
      main = "Salaire maximal en fonction du score",
      xlab = "Score", ylab = "Salaire maximal ($)",
@@ -112,7 +112,7 @@ abline(mod1, col = "red", lwd = 2)
 
 #### Q3c : Prediction pour Score = 850
 
-```r
+```r noexec
 predict(mod1, newdata = data.frame(Score = 850))
 ```
 
@@ -126,7 +126,7 @@ Le modele lineaire predit un salaire maximal de **73 287 $** pour un score de 85
 
 #### Q3d : Graphe des residus
 
-```r
+```r noexec
 resume1 <- summary(mod1)
 plot(mod1$fitted.values, mod1$residuals,
      main = "Residus du modele lineaire",
@@ -152,7 +152,7 @@ Au vu de la courbure dans les residus, on propose un modele **polynomial de degr
 
 $$\text{MaxSalary}_i = \beta_0 + \beta_1 \cdot \text{Score}_i + \beta_2 \cdot \text{Score}_i^2 + \varepsilon_i$$
 
-```r
+```r noexec
 salaire$Score2 <- salaire$Score^2
 
 mod2 <- lm(MaxSalary ~ Score + Score2, data = salaire)
@@ -176,7 +176,7 @@ Le coefficient de $\text{Score}^2$ est **negatif et significatif** ($p < 2 \time
 
 #### Q4b : Tracer la courbe d'ajustement
 
-```r
+```r noexec
 score_seq <- seq(min(salaire$Score), max(salaire$Score), length.out = 300)
 pred2 <- predict(mod2, newdata = data.frame(Score = score_seq, Score2 = score_seq^2))
 
@@ -192,7 +192,7 @@ legend("topleft", legend = c("Lineaire", "Polynomial deg 2"),
 
 #### Q4c : Prediction pour Score = 850
 
-```r
+```r noexec
 predict(mod2, newdata = data.frame(Score = 850, Score2 = 850^2))
 ```
 
@@ -221,7 +221,7 @@ Pour chaque observation $i$ :
 
 Plus precisement, la 3e colonne vaut $(\text{seuil} - \text{Score}_i) \cdot \mathbb{1}_{\text{Score}_i \geq \text{seuil}}$.
 
-```r
+```r noexec
 seuil <- 650
 n <- nrow(salaire)
 
@@ -234,7 +234,7 @@ X <- cbind(
 
 #### Q5b : Estimer le vecteur beta
 
-```r
+```r noexec
 Y <- salaire$MaxSalary
 beta_hat <- solve(t(X) %*% X) %*% t(X) %*% Y
 print(beta_hat)
@@ -258,7 +258,7 @@ La croissance du salaire **ralentit** apres le seuil de 650.
 
 #### Q5c : Tracer la courbe d'ajustement
 
-```r
+```r noexec
 Y_hat <- X %*% beta_hat
 
 # Trier par Score pour le trace
@@ -278,7 +278,7 @@ legend("topleft",
 
 #### Q5d : Coefficient de determination $R^2$
 
-```r
+```r noexec
 SCR <- sum((Y - Y_hat)^2)
 SCT <- sum((Y - mean(Y))^2)
 R2 <- 1 - SCR / SCT
@@ -289,7 +289,7 @@ cat("R2 =", R2, "\n")
 
 #### Q5e : Prediction pour Score = 850
 
-```r
+```r noexec
 x_new <- c(1, 850, seuil - 850)   # Score=850 >= seuil, donc 3e composante = 650-850 = -200
 pred_morceaux <- x_new %*% beta_hat
 cat("Prediction (morceaux) :", pred_morceaux, "\n")
@@ -307,13 +307,13 @@ $$\text{MaxSalary}_i^{-0.25} = \beta_0 + \beta_1 \sqrt{\text{Score}_i} + \vareps
 
 #### Q6a : Creer la variable sqScore
 
-```r
+```r noexec
 salaire$sqScore <- sqrt(salaire$Score)
 ```
 
 #### Q6b : Nuage de points et histogramme
 
-```r
+```r noexec
 Y_transf <- salaire$MaxSalary^(-0.25)
 
 par(mfrow = c(1, 2))
@@ -337,7 +337,7 @@ par(mfrow = c(1, 1))
 
 #### Q6c : Estimer les parametres
 
-```r
+```r noexec
 mod_puissance <- lm(MaxSalary^(-0.25) ~ sqScore, data = salaire)
 summary(mod_puissance)
 ```
@@ -361,7 +361,7 @@ Multiple R-squared:  0.8838
 
 Pour obtenir la courbe sur l'echelle originale, on inverse la transformation : $\text{MaxSalary} = (\hat{Y}_{\text{transf}})^{-4}$.
 
-```r
+```r noexec
 score_seq <- seq(min(salaire$Score), max(salaire$Score), length.out = 300)
 pred_transf <- predict(mod_puissance,
                        newdata = data.frame(sqScore = sqrt(score_seq)))
@@ -382,7 +382,7 @@ legend("topleft",
 
 #### Q6e : Prediction pour Score = 850
 
-```r
+```r noexec
 pred_transf_850 <- predict(mod_puissance,
                            newdata = data.frame(sqScore = sqrt(850)))
 pred_850 <- pred_transf_850^(-4)
@@ -393,7 +393,7 @@ cat("Prediction (puissance) :", pred_850, "$\n")
 
 #### Q6f : Intervalle de prevision a 95%
 
-```r
+```r noexec
 score_pred <- data.frame(sqScore = sqrt(seq(80, 1020, length.out = 300)))
 pred_ic <- predict(mod_puissance, newdata = score_pred, interval = "prediction")
 
@@ -441,7 +441,7 @@ Variables :
 
 ### Q1 : Importer les donnees
 
-```r
+```r noexec
 golf <- read.table("golf.txt", header = TRUE, row.names = 1)
 str(golf)
 head(golf)
@@ -461,14 +461,14 @@ avec $\varepsilon_i \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$.
 
 #### Q2a : Estimer les parametres
 
-```r
+```r noexec
 modele1 <- lm(PrizeMoney ~ ., data = golf)
 summary(modele1)
 ```
 
 #### Q2b : Graphe des residus et QQ-plot
 
-```r
+```r noexec
 par(mfrow = c(1, 2))
 plot(modele1$fitted.values, modele1$residuals,
      main = "Residus vs Ajustees",
@@ -496,7 +496,7 @@ $$\ln(\text{PrizeMoney}_i) = \beta_0 + \beta_1 \text{AveDrivingDistance}_i + \cd
 
 #### Q3a : Estimer les parametres
 
-```r
+```r noexec
 modele2 <- lm(log(PrizeMoney) ~ ., data = golf)
 summary(modele2)
 ```
@@ -521,7 +521,7 @@ Multiple R-squared:  0.5862
 
 #### Q3b : Retrouver $\hat{\sigma}$ par le calcul
 
-```r
+```r noexec
 # Methode summary
 sigma_summary <- summary(modele2)$sigma
 cat("sigma (summary) :", sigma_summary, "\n")
@@ -541,7 +541,7 @@ ou $p$ est le nombre de parametres (intercept inclus).
 
 #### Q3c : Retrouver la statistique de test et p-value pour $\beta_3$ (GIR)
 
-```r
+```r noexec
 # Construire la matrice X
 X <- model.matrix(modele2)
 Y <- log(golf$PrizeMoney)
@@ -576,7 +576,7 @@ Sous $H_0$, $T = \hat{\beta}_3 / \text{SE}(\hat{\beta}_3) \sim t(n - p)$.
 
 #### Q3d : Correlations entre variables explicatives
 
-```r
+```r noexec
 matcor <- cor(golf[, -1])   # Exclure PrizeMoney (colonne 1)
 round(matcor, 2)
 ```
@@ -596,7 +596,7 @@ La multicolinearite entre ces variables pose des **problemes d'estimation** : le
 
 On ne conserve que les variables dont le coefficient est significatif ($p < 0.05$) dans le modele 2.
 
-```r
+```r noexec
 # Variables significatives dans modele2 : GIR et BirdieConversion
 modele3 <- lm(log(PrizeMoney) ~ GIR + BirdieConversion, data = golf)
 summary(modele3)
@@ -620,7 +620,7 @@ Multiple R-squared:  0.5489
 
 ### Q5 : Selection automatique -- stepwise
 
-```r
+```r noexec
 modele4 <- step(modele2, direction = "both")
 summary(modele4)
 ```
@@ -633,7 +633,7 @@ Le modele final retenu contient typiquement : `AveDrivingDistance`, `GIR`, `Bird
 
 ### Q6 : Comparaison des modeles (AIC et $R^2$)
 
-```r
+```r noexec
 # AIC
 cat("AIC modele2 (complet) :", extractAIC(modele2)[2], "\n")
 cat("AIC modele3 (manuel)  :", extractAIC(modele3)[2], "\n")
@@ -661,7 +661,7 @@ cat("R2 modele4 :", summary(modele4)$r.squared, "\n")
 
 ### Q7 : Prediction pour Thomas Levet
 
-```r
+```r noexec
 levet <- data.frame(
   AveDrivingDistance = 286.9,
   DrivingAccuracy    = 64.01,
@@ -706,7 +706,7 @@ Variables : `genre`, `risque`, `medicament`, `taux` (taux de cholesterol).
 
 ### Q1 : Installer et charger emmeans
 
-```r
+```r noexec
 install.packages("emmeans")
 library(emmeans)
 ```
@@ -715,7 +715,7 @@ library(emmeans)
 
 ### Q2 : Importer les donnees
 
-```r
+```r noexec
 chol <- read.table("cholesterol.txt", header = TRUE)
 str(chol)
 head(chol)
@@ -735,7 +735,7 @@ head(chol)
 
 ### Q3 : Transformer en facteurs
 
-```r
+```r noexec
 chol$genre      <- as.factor(chol$genre)
 chol$risque     <- as.factor(chol$risque)
 chol$medicament <- as.factor(chol$medicament)
@@ -747,7 +747,7 @@ chol$medicament <- as.factor(chol$medicament)
 
 #### Q4a : Boxplots du taux par medicament
 
-```r
+```r noexec
 boxplot(taux ~ medicament, data = chol,
         main = "Taux de cholesterol par medicament",
         xlab = "Medicament", ylab = "Taux de cholesterol",
@@ -768,7 +768,7 @@ $$Y_{ij} = \mu + \alpha_i + \varepsilon_{ij}, \quad \varepsilon_{ij} \overset{ii
 
 ou $Y_{ij}$ est le taux du $j$-eme patient ayant recu le medicament $i$, $\mu$ le taux moyen, $\alpha_i$ l'effet du medicament $i$.
 
-```r
+```r noexec
 mod_chol1 <- lm(taux ~ medicament, data = chol)
 summary(mod_chol1)
 ```
@@ -790,7 +790,7 @@ medicamentM3   X.XXX    X.XXX     X.XX    X.XXX
 
 #### Q4c : Le medicament a-t-il un effet significatif ?
 
-```r
+```r noexec
 anova(mod_chol1)
 ```
 
@@ -808,7 +808,7 @@ La matrice $X$ (72 x 3) a la structure :
 - Colonne 2 : 1 si le patient a recu M2, 0 sinon
 - Colonne 3 : 1 si le patient a recu M3, 0 sinon
 
-```r
+```r noexec
 n <- nrow(chol)
 X <- cbind(
   rep(1, n),                                             # intercept
@@ -829,7 +829,7 @@ print(beta_hat)
 
 #### Q5a : Estimer les parametres
 
-```r
+```r noexec
 mod_chol3 <- lm(taux ~ medicament + genre + risque, data = chol)
 summary(mod_chol3)
 ```
@@ -848,7 +848,7 @@ risquefort     X.XXX    X.XXX     X.XX    X.XXX
 
 #### Q5b : Variables avec un effet significatif
 
-```r
+```r noexec
 anova(mod_chol3)
 ```
 
@@ -873,7 +873,7 @@ L'ajout de `genre` et `risque` permet de **controler** ces facteurs parasites, r
 
 #### Q5c : Le coefficient de M3 est-il significativement different de 0 ?
 
-```r
+```r noexec
 resume_chol3 <- summary(mod_chol3)
 coef_M3 <- resume_chol3$coefficients["medicamentM3", ]
 print(coef_M3)
@@ -886,7 +886,7 @@ print(coef_M3)
 
 #### Q5d : M3 vs M2 -- comparaison avec emmeans
 
-```r
+```r noexec
 comp_med <- emmeans(mod_chol3, pairwise ~ medicament, adjust = "bonferroni")
 print(comp_med)
 ```
@@ -906,7 +906,7 @@ Le contraste `M2 - M3` avec sa p-value (corrigee par Bonferroni) permet de repon
 
 On identifie le medicament avec la **moyenne la plus basse** dans les emmeans :
 
-```r
+```r noexec
 print(comp_med$emmeans)
 ```
 
@@ -916,7 +916,7 @@ Le medicament avec le `emmean` le plus bas est celui qui reduit le plus le chole
 
 #### Q5f : Prediction pour une femme a faible risque
 
-```r
+```r noexec
 # Avec le medicament choisi a Q5e (supposons M3 pour l'exemple)
 new_patient <- data.frame(
   medicament = factor("M3", levels = levels(chol$medicament)),

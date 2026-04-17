@@ -64,7 +64,7 @@ Le programme s'execute en deux parties :
 
 Un kernel est une fonction executee par chaque thread du GPU. On ecrit le code pour **un seul thread**, CUDA le lance des milliers de fois.
 
-```c
+```c noexec
 __global__ void additionner(float *a, float *b, float *c, int n)
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -107,19 +107,19 @@ Grille (grid) : ensemble de tous les blocs
 
 ### LA formule a connaitre : index global
 
-```c
+```c noexec
 int i = blockIdx.x * blockDim.x + threadIdx.x;
 ```
 
 ### Calcul du nombre de blocs
 
-```c
+```c noexec
 int nb_blocs = (N + taille_bloc - 1) / taille_bloc;  /* ceil(N/B) */
 ```
 
 ### Syntaxe de lancement
 
-```c
+```c noexec
 kernel<<<nb_blocs, taille_bloc>>>(args);
 ```
 
@@ -133,7 +133,7 @@ Bloc 2: threadIdx = 0,1,2,3  -> i = 8,9,10,11
 
 ### Dimensions 2D
 
-```c
+```c noexec
 dim3 taille_bloc(16, 16);   /* 16x16 = 256 threads */
 dim3 nb_blocs((largeur+15)/16, (hauteur+15)/16);
 kernel<<<nb_blocs, taille_bloc>>>(args);
@@ -150,7 +150,7 @@ if (col < largeur && lig < hauteur) { /* traiter (lig,col) */ }
 
 Le CPU et le GPU ont des memoires **separees**. Il faut copier explicitement.
 
-```c
+```c noexec
 /* Allouer sur le GPU */
 float *d_a;
 cudaMalloc((void **)&d_a, N * sizeof(float));
@@ -173,7 +173,7 @@ cudaFree(d_a);
 
 Memoire rapide (~5 cycles) accessible par tous les threads d'un **meme bloc**.
 
-```c
+```c noexec
 __global__ void kernel(float *donnees, int n)
 {
     __shared__ float cache[256];
@@ -193,7 +193,7 @@ __global__ void kernel(float *donnees, int n)
 
 ## 8. Reduction sur GPU
 
-```c
+```c noexec
 __global__ void reduction_somme(float *entree, float *sortie, int n)
 {
     __shared__ float cache[256];
@@ -221,7 +221,7 @@ Donne un resultat partiel par bloc. Relancer le kernel sur les sommes partielles
 
 ## 9. Gestion des erreurs
 
-```c
+```c noexec
 #define CUDA_CHECK(appel) do { \
     cudaError_t err = appel; \
     if (err != cudaSuccess) { \
@@ -251,7 +251,7 @@ CUDA_CHECK(cudaDeviceSynchronize());
 
 ### Acces coalescent
 
-```c
+```c noexec
 /* BON : threads consecutifs -> adresses consecutives */
 float val = tableau[threadIdx.x];
 
@@ -275,7 +275,7 @@ float val = tableau[threadIdx.x * 32];
 
 ## CHEAT SHEET -- CUDA
 
-```c
+```c noexec
 /* Allocation et copie */
 cudaMalloc(&d_ptr, taille);
 cudaMemcpy(d_ptr, h_ptr, taille, cudaMemcpyHostToDevice);

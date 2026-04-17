@@ -155,13 +155,13 @@ Les collectives (Bcast, Scatter, Gather, Reduce) sont des operations **collectiv
 
 ### Q : Donner la formule de l'index global d'un thread GPU
 
-```c
+```c noexec
 int i = blockIdx.x * blockDim.x + threadIdx.x;
 ```
 
 ### Q : Calculer le nombre de blocs pour N=10000 elements et des blocs de 256 threads
 
-```c
+```c noexec
 int nb_blocs = (10000 + 256 - 1) / 256 = 10255 / 256 = 40 blocs
 /* 40 * 256 = 10240 threads, dont 240 inactifs (garde if (i < N)) */
 ```

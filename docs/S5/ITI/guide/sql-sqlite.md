@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS items (
 
 ### INSERT
 
-```sql
+```sql noexec
 INSERT INTO students (name, age, grade)
 VALUES ('Alice', 20, 15.5);
 
@@ -84,7 +84,7 @@ SELECT * FROM students WHERE grade < 10;
 
 ### SELECT
 
-```sql
+```sql noexec
 -- Basic
 SELECT * FROM students;
 SELECT name, grade FROM students;
@@ -114,7 +114,7 @@ SELECT name AS student_name, grade AS note FROM students;
 
 ### Aggregate Functions
 
-```sql
+```sql noexec
 SELECT COUNT(*) FROM students;                      -- Count rows
 SELECT COUNT(DISTINCT age) FROM students;           -- Count unique ages
 SELECT AVG(grade) FROM students;                    -- Average
@@ -136,7 +136,7 @@ HAVING avg_grade > 14;
 
 ### UPDATE
 
-```sql
+```sql noexec
 UPDATE students SET grade = 16.0 WHERE id = 1;
 UPDATE students SET grade = grade + 1 WHERE grade < 10;
 UPDATE students SET age = age + 1;                  -- All rows
@@ -144,7 +144,7 @@ UPDATE students SET age = age + 1;                  -- All rows
 
 ### DELETE
 
-```sql
+```sql noexec
 DELETE FROM students WHERE id = 1;
 DELETE FROM students WHERE grade < 5;
 DELETE FROM students;                               -- Delete ALL rows
@@ -152,7 +152,7 @@ DELETE FROM students;                               -- Delete ALL rows
 
 ### JOIN
 
-```sql
+```sql noexec
 -- INNER JOIN: Only matching rows from both tables
 SELECT students.name, courses.title, enrollments.grade
 FROM students
@@ -175,7 +175,7 @@ ORDER BY e.grade DESC;
 
 ### Subqueries
 
-```sql
+```sql noexec
 -- Subquery in WHERE
 SELECT name FROM students
 WHERE grade > (SELECT AVG(grade) FROM students);
@@ -192,7 +192,7 @@ WHERE avg_by_age.avg_grade > 14;
 
 ### ALTER TABLE and DROP
 
-```sql
+```sql noexec
 ALTER TABLE students ADD COLUMN phone TEXT;
 ALTER TABLE students RENAME TO alumni;
 DROP TABLE IF EXISTS temp_data;
@@ -200,7 +200,7 @@ DROP TABLE IF EXISTS temp_data;
 
 ### Indexes
 
-```sql
+```sql noexec
 CREATE INDEX idx_student_name ON students(name);
 CREATE UNIQUE INDEX idx_student_email ON students(email);
 DROP INDEX idx_student_name;
@@ -210,7 +210,7 @@ DROP INDEX idx_student_name;
 
 ### Basic Connection
 
-```python
+```python noexec
 import sqlite3
 
 # Connect (creates file if doesn't exist)
@@ -249,7 +249,7 @@ conn.close()
 
 ### Parameterized Queries (CRITICAL)
 
-```python
+```python noexec
 # WRONG -- vulnerable to SQL injection
 cursor.execute(f"SELECT * FROM users WHERE name = '{user_input}'")
 
@@ -267,7 +267,7 @@ cursor.executemany("INSERT INTO users (name, email) VALUES (?, ?)", data)
 
 ### Database Class Pattern
 
-```python
+```python noexec
 import sqlite3
 
 class Database:
@@ -318,7 +318,7 @@ class Database:
 
 ### Context Manager Pattern
 
-```python
+```python noexec
 import sqlite3
 
 class Database:
@@ -342,7 +342,7 @@ with Database('db.sqlite') as cursor:
 
 ## Qt Database Integration
 
-```python
+```python noexec
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 from PyQt5.QtCore import Qt
 
@@ -394,7 +394,7 @@ table_view.hideColumn(0)    # Hide ID column
 ## CHEAT SHEET
 
 ### SQL Quick Reference
-```sql
+```sql noexec
 CREATE TABLE t (id INTEGER PRIMARY KEY, name TEXT);
 INSERT INTO t (name) VALUES ('val');
 SELECT * FROM t WHERE condition;
@@ -405,7 +405,7 @@ SELECT col, COUNT(*) FROM t GROUP BY col HAVING COUNT(*) > 1;
 ```
 
 ### Python sqlite3
-```python
+```python noexec
 conn = sqlite3.connect('db.db')
 cursor = conn.cursor()
 cursor.execute("SQL", (params,))     # ALWAYS use ? params

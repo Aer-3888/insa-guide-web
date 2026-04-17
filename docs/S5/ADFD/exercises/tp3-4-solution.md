@@ -19,7 +19,7 @@ sidebar_position: 3
 
 ## Setup: Imports and Constants
 
-```python
+```python noexec
 import sys
 print(sys.version)
 
@@ -45,7 +45,7 @@ LATITUDE, LONGITUDE = 48.117266, -1.6777926  # Centre de Rennes
 
 ## Data Loading
 
-```python
+```python noexec
 photos_orig = pd.read_csv("flickrRennes.csv")
 photos = photos_orig.copy()
 photos.head()
@@ -70,7 +70,7 @@ photos.head()
 ### Question: Affichez le nombre de photos contenues dans le DataFrame.
 
 **Answer:**
-```python
+```python noexec
 len(photos)
 ```
 
@@ -84,7 +84,7 @@ len(photos)
 ### Question: Affichez les valeurs moyennes et medianes de la latitude et longitude. Cela vous parait-il coherent ?
 
 **Answer:**
-```python
+```python noexec
 print(photos["lat"].mean())
 print(photos["long"].mean())
 print(photos["lat"].median())
@@ -106,7 +106,7 @@ print(photos["long"].median())
 ### Question: De quelle annee date la photo la plus ancienne ? Et la plus recente ?
 
 **Answer:**
-```python
+```python noexec
 print(photos["date_taken_year"].min())
 print(photos["date_taken_year"].max())
 ```
@@ -124,7 +124,7 @@ print(photos["date_taken_year"].max())
 ### Question: Affichez le nombre d'utilisateurs distincts.
 
 **Answer:**
-```python
+```python noexec
 photos["id_photographer"].nunique()
 ```
 
@@ -138,7 +138,7 @@ photos["id_photographer"].nunique()
 ### Question: Affichez le nombre de valeurs distinctes de id_photo.
 
 **Answer:**
-```python
+```python noexec
 photos["id_photo"].nunique()
 ```
 
@@ -160,7 +160,7 @@ photos["id_photo"].nunique()
 > Indication: la documentation de la classe DataFrame se trouve ici: https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
 
 **Answer:**
-```python
+```python noexec
 photos = photos.drop_duplicates()
 ```
 
@@ -169,7 +169,7 @@ photos = photos.drop_duplicates()
 ### Question: Affichez la nouvelle taille du jeu de donnees.
 
 **Answer:**
-```python
+```python noexec
 len(photos)
 ```
 
@@ -187,7 +187,7 @@ len(photos)
 ### Question: Afficher le nombre de photos par utilisateurs distincts.
 
 **Answer:**
-```python
+```python noexec
 photos_per_user = photos.groupby("id_photographer").size()
 print(photos_per_user)
 ```
@@ -214,7 +214,7 @@ Length: 213, dtype: int64
 ### Question: Affichez le nombre d'utilisateurs n'ayant poste qu'une seule photo.
 
 **Answer:**
-```python
+```python noexec
 single_photo_users = (photos_per_user == 1).sum()
 print(single_photo_users)
 ```
@@ -233,7 +233,7 @@ print(single_photo_users)
 > Le resultat devrait ressembler a l'image `photographes_par_photo.png`.
 
 **Answer:**
-```python
+```python noexec
 photo_counts = photos_per_user.value_counts().sort_index()
 plt.figure(figsize=(10, 6))
 plt.bar(photo_counts.index, photo_counts.values)
@@ -252,7 +252,7 @@ plt.show()
 > Indication: la fonction matplotlib a utiliser est `bar`, la fonction `hist` n'est pas ce que vous cherchez.
 
 **Answer:**
-```python
+```python noexec
 month_counts = photos.groupby("date_taken_month").size()
 plt.figure(figsize=(10, 6))
 plt.bar(month_counts.index, month_counts.values)
@@ -271,7 +271,7 @@ plt.show()
 
 The notebook provides the following code to display photos on a map:
 
-```python
+```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
     tiles="cartodbpositron",
@@ -299,7 +299,7 @@ rennes_map
 > Note: passer le parametre `as_index = False` pour eviter la creation d'un index multiple.
 
 **Answer:**
-```python
+```python noexec
 photos = photos.groupby(
     ['id_photographer', 'date_taken_year', 'date_taken_month',
      'date_taken_day', 'date_taken_hour'],
@@ -317,7 +317,7 @@ photos = photos.groupby(
 ### Question: Affichez le DataFrame modifie.
 
 **Answer:**
-```python
+```python noexec
 photos
 ```
 
@@ -328,7 +328,7 @@ photos
 ### Question: Affichez le nombre de photos contenues dans le DataFrame.
 
 **Answer:**
-```python
+```python noexec
 len(photos)
 ```
 
@@ -344,7 +344,7 @@ len(photos)
 ### Question: Affichez les photos du DataFrame sur une carte.
 
 **Answer:**
-```python
+```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
     tiles="cartodbpositron",
@@ -380,7 +380,7 @@ rennes_map
 > Parametres conseilles pour DBSCAN: eps=0.00030, min_samples=7
 
 **Answer:**
-```python
+```python noexec
 clustering = sklearn.cluster.DBSCAN(eps=0.00030, min_samples=7)
 labels = clustering.fit_predict(photos[["lat", "long"]].values)
 ```
@@ -396,7 +396,7 @@ labels = clustering.fit_predict(photos[["lat", "long"]].values)
 > Vous devez obtenir un tableau qui indique le numero de cluster de chaque photo, comme celui-ci: array([-1, -1, -1, ..., -1, -1, -1])
 
 **Answer:**
-```python
+```python noexec
 print(labels)
 ```
 
@@ -410,7 +410,7 @@ array([-1, -1, -1, ..., -1, -1, -1])
 ### Question: Ajoutez ces informations au DataFrame, dans une nouvelle colonne "cluster". Affichez le DataFrame.
 
 **Answer:**
-```python
+```python noexec
 photos["cluster"] = labels
 photos
 ```
@@ -422,7 +422,7 @@ photos
 ### Question: Affichez la liste des labels de cluster du DataFrame, sans les doublons. Quel label est utilise pour marquer une photo qui n'appartient pas a un cluster ?
 
 **Answer:**
-```python
+```python noexec
 photos["cluster"].unique()
 ```
 
@@ -439,7 +439,7 @@ array([-1,  0, 14,  1,  6,  2,  3,  7,  4,  5,  8,  9, 10, 11, 12, 13, 15,
 ### Question: Affichez les url de toutes les photos appartenant au cluster de label 2.
 
 **Answer:**
-```python
+```python noexec
 photos[photos["cluster"] == 2]["url"].values
 ```
 
@@ -468,7 +468,7 @@ array(['https://www.flickr.com/photos/119588793@N07/36609063310/',
 
 The notebook provides a color function:
 
-```python
+```python noexec
 COLORS = ['darkpurple', 'cadetblue', 'orange', 'purple', 'lightred',
           'darkblue', 'pink', 'green', 'lightblue', 'blue',
           'darkgreen', 'lightgreen', 'gray', 'red', 'lightgrayblack',
@@ -484,7 +484,7 @@ def get_color(label):
 ### Question: Affichez les photos sur une carte, avec pour chaque photo une couleur correspondante au cluster dont elle fait partie.
 
 **Answer:**
-```python
+```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
     tiles="cartodbpositron",
@@ -509,7 +509,7 @@ rennes_map
 ### Question: Modifiez la question precedente pour ajouter un marqueur par cluster (au milieu de preference), de la bonne couleur et avec un texte indiquant le label du cluster.
 
 **Answer:**
-```python
+```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
     tiles="cartodbpositron",
@@ -557,7 +557,7 @@ rennes_map
 
 > La fonction magic nettoie les tags des photos. Cette fonction "masquee" vous est donnee.
 
-```python
+```python noexec
 # Obfuscated tag cleaning function (provided by the teacher)
 O00OOOOOO0OO0O0OO = {
     'a': 'a', 'a': 'a', 'a': 'a', 'a': 'a',
@@ -581,7 +581,7 @@ The magic function performs: lowercase, accent removal, stopword removal, IMG/DS
 
 The TP provides a complete example:
 
-```python
+```python noexec
 # Example dataset
 dataset = [['Milk', 'Onion', 'Nutmeg', 'Kidney Beans', 'Eggs', 'Yogurt'],
            ['Dill', 'Onion', 'Nutmeg', 'Kidney Beans', 'Eggs', 'Yogurt'],
@@ -624,7 +624,7 @@ print(frequent_itemsets)
 
 ### Initialize cluster labels
 
-```python
+```python noexec
 cluster_labels = {}
 for cluster in photos["cluster"].unique():
     cluster_labels[cluster] = "no label"
@@ -653,7 +653,7 @@ print(cluster_labels)
 > Note: C'est a vous de jouer sur le seuil de support (minsup) pour observer a quel moment vous obtenez quelque chose d'interessant.
 
 **Answer:**
-```python
+```python noexec
 def identify_cluster(cluster_nb):
     cluster_photos = photos[photos["cluster"] == cluster_nb]
 
@@ -728,7 +728,7 @@ print(cluster_labels)
 ### Question: Associer le cluster et son etiquette dans l'affichage avec la carte.
 
 **Answer:**
-```python
+```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
     tiles="cartodbpositron",

@@ -54,7 +54,7 @@ Attaquant                Serveur web              Reseau interne
 
 ### Code vulnerable
 
-```python
+```python noexec
 # VULNERABLE : URL non validee
 @app.route('/fetch')
 def fetch():
@@ -65,7 +65,7 @@ def fetch():
 
 ### Code corrige
 
-```python
+```python noexec
 # SECURISE : whitelist de domaines + validation
 import urllib.parse
 
@@ -109,7 +109,7 @@ Log du cours  : /../../../../../../etc/passwd  --> INFO (path traversal)
 
 ### Code vulnerable
 
-```python
+```python noexec
 # VULNERABLE : concatenation directe du chemin
 @app.route('/download')
 def download():
@@ -119,7 +119,7 @@ def download():
 
 ### Code corrige
 
-```python
+```python noexec
 # SECURISE : normalisation et verification
 import os
 

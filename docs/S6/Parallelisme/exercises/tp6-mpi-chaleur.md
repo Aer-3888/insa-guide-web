@@ -47,7 +47,7 @@ sidebar_position: 6
 
 **Answer:**
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -182,7 +182,7 @@ A chaque iteration, l'echange de halos (halo exchange) met a jour les ghost zone
 
 ### Code complet
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

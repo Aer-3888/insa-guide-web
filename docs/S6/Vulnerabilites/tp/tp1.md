@@ -74,7 +74,7 @@ Most frequent tags:
 
 ### Shell Commands Used
 
-```bash
+```bash noexec
 # File type and encoding
 file pixgame.html.prep
 stat pixgame.html.prep

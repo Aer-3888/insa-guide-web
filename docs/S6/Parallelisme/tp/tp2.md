@@ -34,7 +34,7 @@ Le calcul s'arrête lorsque la variation totale devient suffisamment petite.
 
 ### Pseudo-code séquentiel
 
-```c
+```c noexec
 double T[N+2][M+2], T1[N+2][M+2];
 
 // Initialisation
@@ -63,7 +63,7 @@ do {
 3. Déclarer les variables de boucle comme `private`
 
 **Code parallèle**:
-```c
+```c noexec
 do {
     delta = 0;
     #pragma omp parallel for reduction(+:delta)
@@ -85,13 +85,13 @@ do {
 ### Optimisations implémentées
 
 1. **Linéarisation de la matrice** :
-   ```c
+   ```c noexec
    // Au lieu de T[i][j], utiliser T[i*(N+2)+j]
    // Améliore la localité spatiale
    ```
 
 2. **Swap de pointeurs** au lieu de copie :
-   ```c
+   ```c noexec
    Temp = T1;
    T1 = T;
    T = Temp;
@@ -99,7 +99,7 @@ do {
    ```
 
 3. **Calcul d'index optimisé** :
-   ```c
+   ```c noexec
    int machin = k*(N+2);  // Pré-calcul hors de la boucle j
    T1[machin+j] = ...
    ```
@@ -139,7 +139,7 @@ make test1  # Lance des tests de performance
 
 Le code mesure le temps avec `omp_get_wtime()` :
 
-```c
+```c noexec
 double prev = omp_get_wtime();
 // ... calcul ...
 fprintf(stderr, "%f\n", omp_get_wtime() - prev);
@@ -193,7 +193,7 @@ Algorithme ancien (IIIe siècle av. J.-C.) pour trouver tous les nombres premier
 
 ### Pseudo-code
 
-```c
+```c noexec
 // Initialisation
 for i ← 0 to N-1 do
     a[i] = i
@@ -222,7 +222,7 @@ end for
 **Difficulté** : La boucle externe n'est PAS parallélisable directement (dépendances).
 
 **Solution** : Paralléliser la boucle externe avec prudence
-```c
+```c noexec
 #pragma omp parallel for
 for (long int i=2; i<=maxBorne; i++) {
     if (a[i] > 0) {
@@ -285,7 +285,7 @@ x[k+1][i] = (b[i] - Σ A[i][j] × x[k][j] pour j≠i) / A[i][i]
 
 ### Pseudo-code
 
-```c
+```c noexec
 // Initialisation
 x = guess initial
 
@@ -310,7 +310,7 @@ while (non convergé) {
 ### Parallélisation
 
 **Stratégie** : Paralléliser la boucle externe (sur i)
-```c
+```c noexec
 #pragma omp parallel for private(σ, j)
 for (int i = 0; i < n; i++) {
     σ = 0;
@@ -336,14 +336,14 @@ for (int i = 0; i < n; i++) {
 Par défaut : `schedule(static)` → chunks contigus
 
 Autres options :
-```c
+```c noexec
 #pragma omp parallel for schedule(dynamic, chunk)
 #pragma omp parallel for schedule(guided)
 ```
 
 ### 2. Réduction avec opérations mathématiques
 
-```c
+```c noexec
 #pragma omp parallel for reduction(+:delta)
 ```
 OpenMP gère automatiquement :
@@ -359,14 +359,14 @@ Barrière implicite à la fin de :
 - `#pragma omp single`
 
 Barrière explicite :
-```c
+```c noexec
 #pragma omp barrier
 ```
 
 ### 4. Sections de code critique
 
 À éviter (très lent) :
-```c
+```c noexec
 #pragma omp critical
 {
     // Code sérialisé

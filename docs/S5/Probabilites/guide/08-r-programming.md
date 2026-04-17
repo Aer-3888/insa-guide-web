@@ -79,7 +79,7 @@ length(x)            # 3
 
 ## 8.3 Data Frames
 
-```r
+```r noexec
 # Create
 df <- data.frame(name=c("A","B","C"), height=c(175,182,165), age=c(19,18,21))
 
@@ -107,7 +107,7 @@ data <- read.table("data.txt", header=TRUE, sep="\t")
 
 ## 8.4 Apply Family (Avoid Loops!)
 
-```r
+```r noexec
 # apply: for matrices
 apply(matrix, 1, fun)       # Apply to each row
 apply(matrix, 2, fun)       # Apply to each column
@@ -179,7 +179,7 @@ dmultinom(c(5, 5, 2), prob=c(18/38, 18/38, 2/38))
 
 ### Basic Plots
 
-```r
+```r noexec
 # Scatter plot
 plot(x, y, type="p", col="blue", pch=19, main="Title", xlab="X", ylab="Y")
 
@@ -203,7 +203,7 @@ barplot(counts, names.arg=labels, col="steelblue")
 
 ### Customization
 
-```r
+```r noexec
 # Legend
 legend("topright", legend=c("Normal", "Student"), col=c("blue","red"),
        lwd=2, lty=c(1,2))
@@ -228,7 +228,7 @@ segments(x0, y0, x1, y1, col="blue", lwd=2)
 
 ## 8.7 Statistical Testing
 
-```r
+```r noexec
 # One-sample t-test
 t.test(x, mu=100, conf.level=0.95)
 

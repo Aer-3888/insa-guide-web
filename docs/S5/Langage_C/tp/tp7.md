@@ -30,7 +30,7 @@ Chaque bloc alloué a:
 
 ## Structure de Données
 
-```c
+```c noexec
 typedef enum {LIBRE, OCCUPE} Statut_memoire;
 
 typedef struct descript {
@@ -92,7 +92,7 @@ make
 
 Le fichier `myalloc.h` contient des flags:
 
-```c
+```c noexec
 #define DEBUG           /* Affiche les messages de débogage */
 #define ALLOC_PERSO     /* Utilise Mon_malloc au lieu de malloc */
 ```
@@ -101,7 +101,7 @@ Décommenter `DEBUG` pour voir les opérations d'allocation/libération.
 
 ## Exemple d'Utilisation
 
-```c
+```c noexec
 #include "myalloc.h"
 
 int main() {
@@ -121,20 +121,20 @@ int main() {
 ## Points Importants
 
 ### 1. Pointeur Arithmétique
-```c
+```c noexec
 /* Calculer l'adresse des données après le descripteur */
 void *donnees = (void*)((char*)descripteur + sizeof(Descript_mem));
 ```
 
 ### 2. Retrouver le Descripteur depuis un Pointeur
-```c
+```c noexec
 /* L'utilisateur a un pointeur vers les données */
 /* Le descripteur est juste avant */
 Descript_mem *desc = (Descript_mem*)((char*)ptr - sizeof(Descript_mem));
 ```
 
 ### 3. Coalescence de Blocs
-```c
+```c noexec
 if (bloc->suiv != NULL && bloc->suiv->statut == LIBRE) {
     bloc->size += sizeof(Descript_mem) + bloc->suiv->size;
     bloc->suiv = bloc->suiv->suiv;

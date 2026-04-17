@@ -33,7 +33,7 @@ tail -30 principal.i
 ```
 
 **Expected output (last section):**
-```c
+```c noexec
 # 5 "principal.c"
 int main() {
     int tab[10000];

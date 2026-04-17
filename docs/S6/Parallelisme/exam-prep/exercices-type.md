@@ -60,7 +60,7 @@ S(inf) = 1 / (1-f) = 1 / 0.086 = 11.63
 
 Paralleliser le code suivant avec OpenMP. Indiquer les clauses necessaires.
 
-```c
+```c noexec
 double total = 0;
 double tab[N];
 int max_idx = 0;
@@ -84,7 +84,7 @@ for (int i = 0; i < N; i++) {
 
 **Approche en deux passes :**
 
-```c
+```c noexec
 double total = 0;
 double max_val = -INFINITY;
 int max_idx = 0;
@@ -108,7 +108,7 @@ for (int i = 0; i < N; i++) {
 
 Ou avec une section critique (moins performant) :
 
-```c
+```c noexec
 #pragma omp parallel for reduction(+:total)
 for (int i = 0; i < N; i++) {
     double val = compute(tab[i]);
@@ -128,7 +128,7 @@ for (int i = 0; i < N; i++) {
 
 Le code suivant produit des resultats incorrects. Identifier le probleme et le corriger.
 
-```c
+```c noexec
 int histogram[256] = {0};
 unsigned char image[WIDTH * HEIGHT];
 
@@ -144,7 +144,7 @@ for (int i = 0; i < WIDTH * HEIGHT; i++) {
 
 **Solution 1 -- atomic :**
 
-```c
+```c noexec
 #pragma omp parallel for
 for (int i = 0; i < WIDTH * HEIGHT; i++) {
     #pragma omp atomic
@@ -154,7 +154,7 @@ for (int i = 0; i < WIDTH * HEIGHT; i++) {
 
 **Solution 2 -- histogrammes locaux (plus rapide) :**
 
-```c
+```c noexec
 #pragma omp parallel
 {
     int local_hist[256] = {0};
@@ -179,7 +179,7 @@ for (int i = 0; i < WIDTH * HEIGHT; i++) {
 
 Ce programme MPI peut-il provoquer un deadlock ? Justifier.
 
-```c
+```c noexec
 if (rang == 0) {
     MPI_Send(buf_a, N, MPI_DOUBLE, 1, 0, comm);
     MPI_Send(buf_b, N, MPI_DOUBLE, 1, 1, comm);
@@ -201,7 +201,7 @@ if (rang == 0) {
 
 **Correction avec Sendrecv :**
 
-```c
+```c noexec
 if (rang == 0) {
     MPI_Sendrecv(buf_a, N, MPI_DOUBLE, 1, 0,
                  buf_c, N, MPI_DOUBLE, 1, 0, comm, &status);
@@ -227,7 +227,7 @@ Ecrire un programme MPI qui calcule la norme L2 d'un vecteur de taille N, distri
 
 ### Solution
 
-```c
+```c noexec
 int rang, nb_proc;
 MPI_Init(&argc, &argv);
 MPI_Comm_rank(MPI_COMM_WORLD, &rang);
@@ -278,7 +278,7 @@ Ecrire un kernel CUDA qui calcule C[i] = A[i] * B[i] + alpha pour chaque element
 
 ### Solution
 
-```c
+```c noexec
 __global__ void saxpy_like(float *A, float *B, float *C,
                            float alpha, int N)
 {
@@ -311,7 +311,7 @@ On parallelise une boucle ou l'iteration i a un cout proportionnel a i^2. Quel s
 - `dynamic` : les threads prennent des iterations a la demande, equilibrant la charge.
 - `guided` : blocs de taille decroissante, bon compromis entre static et dynamic.
 
-```c
+```c noexec
 #pragma omp parallel for schedule(dynamic, 4)
 for (int i = 0; i < N; i++) {
     /* travail proportionnel a i^2 */

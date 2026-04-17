@@ -48,7 +48,7 @@ Donnees: 73 etudiants (etudiants.txt), 25 professeurs (profs.txt).
 ### Liste des prenoms et noms des etudiants
 
 **Answer:**
-```sql
+```sql noexec
 SELECT nom, prenom
 FROM etudiant;
 ```
@@ -73,7 +73,7 @@ Simple SELECT sans filtre retournant toutes les lignes de la table etudiant. La 
 ### Liste des professeurs dont le nom contient la lettre 'a'
 
 **Answer:**
-```sql
+```sql noexec
 SELECT nom, prenom
 FROM professeur
 WHERE nom LIKE '%a%';
@@ -97,7 +97,7 @@ L'operateur LIKE avec le pattern '%a%' fait du pattern matching. Le caractere '%
 ### Liste des associations possibles (produit cartesien) professeur et etudiant
 
 **Answer:**
-```sql
+```sql noexec
 SELECT etudId, profId
 FROM etudiant, professeur;
 ```
@@ -123,7 +123,7 @@ Sans clause WHERE, le FROM sur deux tables genere le produit cartesien: chaque l
 ### Quelle est la taille de page (taille de bloc) de SQLite ?
 
 **Answer:**
-```sql
+```sql noexec
 PRAGMA page_size;
 ```
 
@@ -148,13 +148,13 @@ sqlite3 test_demo.db < database.sql
 ```
 
 Schema genere:
-```sql
+```sql noexec
 CREATE TABLE demo(id INTEGER PRIMARY KEY, code INTEGER);
 -- 1 000 000 lignes avec code aleatoire dans [0, 100 000 000[
 ```
 
 Activer le timer:
-```sql
+```sql noexec
 .timer ON
 ```
 
@@ -165,7 +165,7 @@ Activer le timer:
 ### Requete avec un code existant dans la base
 
 **Answer:**
-```sql
+```sql noexec
 SELECT *
 FROM demo
 WHERE code = 62518937;
@@ -191,7 +191,7 @@ Sans index, SQLite effectue un parcours sequentiel (SCAN TABLE) de toutes les li
 ### Requete avec un code inexistant dans la base
 
 **Answer:**
-```sql
+```sql noexec
 SELECT *
 FROM demo
 WHERE code = 99999999;
@@ -214,7 +214,7 @@ Legerement plus rapide que Q1 car il n'y a pas de ligne a formatter/retourner, m
 ### Requete avec un code inexistant et condition impossible (>)
 
 **Answer:**
-```sql
+```sql noexec
 SELECT *
 FROM demo
 WHERE code > 999999999;
@@ -237,7 +237,7 @@ La comparaison '>' est plus couteuse que '=' car SQLite ne peut pas s'arreter de
 ### Analyser le plan d'execution avant index (EXPLAIN QUERY PLAN)
 
 **Answer:**
-```sql
+```sql noexec
 EXPLAIN QUERY PLAN SELECT * FROM demo WHERE code = 62518937;
 -- Result: SCAN TABLE demo
 
@@ -266,7 +266,7 @@ EXPLAIN QUERY PLAN revele la strategie d'execution de SQLite. "SCAN TABLE" signi
 ### Creer un index sur la colonne code
 
 **Answer:**
-```sql
+```sql noexec
 CREATE INDEX demoIDX ON demo(code);
 ```
 
@@ -283,7 +283,7 @@ SQLite construit un arbre B+ tree sur les valeurs de code. L'arbre a une profond
 ### Re-executer les memes requetes AVEC l'index et comparer les temps
 
 **Answer:**
-```sql
+```sql noexec
 -- Q1 avec index (valeur existante)
 SELECT * FROM demo WHERE code = 62518937;
 -- Temps: ~0.0001s (acceleration x1000)
@@ -307,7 +307,7 @@ SELECT * FROM demo WHERE code > 999999999;
 
 Plans d'execution apres index:
 
-```sql
+```sql noexec
 EXPLAIN QUERY PLAN SELECT * FROM demo WHERE code = 62518937;
 -- SEARCH TABLE demo USING COVERING INDEX demoIDX (code=?)
 
@@ -334,7 +334,7 @@ sqlite3 test_facture.db < database1.sql
 ```
 
 Schema genere:
-```sql
+```sql noexec
 CREATE TABLE facture (factureId INTEGER, customerId TEXT, amount REAL);
 CREATE TABLE customer (customerId TEXT, name TEXT);
 -- 1 000 000 lignes chacune, montants dans [0, 1000.01] euros
@@ -351,7 +351,7 @@ Probleme: Trouver les noms des clients ayant au moins une facture > 999 euros.
 **Answer:**
 
 **Requete 1: JOIN avec WHERE**
-```sql
+```sql noexec
 SELECT c.name
 FROM customer c, facture f
 WHERE f.customerId = c.customerId AND f.amount > 999;
@@ -359,7 +359,7 @@ WHERE f.customerId = c.customerId AND f.amount > 999;
 Temps: ~200 secondes. Complexite: O(n*m) -- boucle imbriquee (nested loop).
 
 **Requete 2: Sous-requete avec IN (LA PLUS RAPIDE)**
-```sql
+```sql noexec
 SELECT name
 FROM customer
 WHERE customerId IN (
@@ -371,7 +371,7 @@ WHERE customerId IN (
 Temps: ~0.996 secondes. Complexite: O(n+m) -- deux parcours lineaires sequentiels.
 
 **Requete 3: NATURAL JOIN avec WHERE**
-```sql
+```sql noexec
 SELECT name
 FROM (customer NATURAL JOIN facture)
 WHERE amount > 999;
@@ -379,7 +379,7 @@ WHERE amount > 999;
 Temps: ~283 secondes (LA PLUS LENTE). Complexite: O(n*m) + overhead de resolution des noms de colonnes.
 
 **Requete 4: Sous-requete avec IN et JOIN interne**
-```sql
+```sql noexec
 SELECT name
 FROM customer
 WHERE customerId IN (
@@ -411,7 +411,7 @@ La requete 2 est 200x plus rapide car: (1) la sous-requete parcourt facture UNE 
 ### Desactiver l'index automatique et re-mesurer
 
 **Answer:**
-```sql
+```sql noexec
 PRAGMA automatic_index = 0;
 ```
 
@@ -428,7 +428,7 @@ Quand automatic_index est active (par defaut), SQLite peut creer des index tempo
 ### Analyser les plans d'execution des 4 requetes (EXPLAIN QUERY PLAN)
 
 **Answer:**
-```sql
+```sql noexec
 -- Requete 1
 EXPLAIN QUERY PLAN
 SELECT c.name FROM customer c, facture f
@@ -469,7 +469,7 @@ EXPLAIN QUERY PLAN permet de comprendre la strategie sans executer la requete. O
 ### Creer un index composite et re-mesurer les 4 requetes
 
 **Answer:**
-```sql
+```sql noexec
 CREATE INDEX IamSpeeed ON facture(customerId, amount);
 ```
 

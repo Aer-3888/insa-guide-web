@@ -145,7 +145,7 @@ Note sur le polymorphisme : `'a`, `'b`, `'c` sont des **variables de type**. `pr
 
 Les records sont des tuples nommes.
 
-```ocaml
+```ocaml noexec
 (* Declaration du type *)
 type carte = {h : haut; c : coul}
 

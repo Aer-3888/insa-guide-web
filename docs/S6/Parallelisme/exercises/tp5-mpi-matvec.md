@@ -60,7 +60,7 @@ Matrice NxN (sur P0)          Vecteur V         Resultat R
 
 ### Code complet
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -184,20 +184,20 @@ int main(int argc, char *argv[])
 ### Detail des communications collectives
 
 **MPI_Bcast(V) :**
-```c
+```c noexec
 MPI_Bcast(vectAMult, n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 ```
 P0 envoie les N doubles de V a tous. Apres, tous les processus ont une copie identique de V.
 
 **MPI_Scatter(Mat) :**
-```c
+```c noexec
 MPI_Scatter(matriceAMult, n*(n/nbproc), MPI_DOUBLE,
             matFragment,  n*(n/nbproc), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 ```
 Decoupe la matrice en P morceaux contigus de n*(n/nbproc) doubles. Le processus k recoit les lignes k*N/P a (k+1)*N/P-1. Le premier argument (`matriceAMult`) n'est lu que par P0 (peut etre NULL sur les autres).
 
 **MPI_Gather(R) :**
-```c
+```c noexec
 MPI_Gather(rezFragment, n/nbproc, MPI_DOUBLE,
            rez,         n/nbproc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 ```
@@ -245,7 +245,7 @@ Le maitre (P0) distribue les lignes dynamiquement aux esclaves. Chaque esclave r
 
 ### Code complet
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

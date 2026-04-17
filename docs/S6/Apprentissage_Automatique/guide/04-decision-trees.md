@@ -143,7 +143,7 @@ $$\text{Cout} = \text{Erreur} + \alpha \times \text{Nombre de feuilles}$$
 
 Plus $\alpha$ est grand, plus l'arbre est elague.
 
-```python
+```python noexec
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 import numpy as np
@@ -192,7 +192,7 @@ A chaque noeud de chaque arbre, on ne considere qu'un sous-ensemble aleatoire de
 - Classification : $m = \sqrt{p}$ typiquement.
 - Regression : $m = p/3$ typiquement.
 
-```python
+```python noexec
 from sklearn.ensemble import RandomForestClassifier
 
 rf = RandomForestClassifier(
@@ -226,7 +226,7 @@ Construction **sequentielle** : chaque classifieur corrige les erreurs du preced
    - Normaliser : $Z_t = 2\sqrt{\epsilon_t(1-\epsilon_t)}$
 3. Prediction : $H(\mathbf{x}) = \text{signe}\left(\sum_{t=1}^{T} \alpha_t h_t(\mathbf{x})\right)$
 
-```python
+```python noexec
 from sklearn.ensemble import AdaBoostClassifier
 
 ada = AdaBoostClassifier(
@@ -251,7 +251,7 @@ print(f"Accuracy : {ada.score(X_test, y_test):.3f}")
 
 ## 8. Visualisation d'arbres
 
-```python
+```python noexec
 from sklearn.tree import plot_tree, export_graphviz
 import matplotlib.pyplot as plt
 

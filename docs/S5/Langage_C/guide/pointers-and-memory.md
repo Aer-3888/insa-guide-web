@@ -9,7 +9,7 @@ sidebar_position: 6
 
 Un pointeur est une variable qui contient l'**adresse memoire** d'une autre variable.
 
-```c
+```c noexec
 int a = 42;
 int *ptr = &a;   /* ptr contient l'adresse de a */
 
@@ -33,7 +33,7 @@ Variable    Adresse       Valeur
 
 ### 1. Declaration
 
-```c
+```c noexec
 int *ptr;       /* Pointeur vers un int */
 double *dptr;   /* Pointeur vers un double */
 char *cptr;     /* Pointeur vers un char (ou une chaine) */
@@ -46,7 +46,7 @@ int *a, *b;     /* Correct : a et b sont des pointeurs */
 
 ### 2. Prise d'adresse (&)
 
-```c
+```c noexec
 int a = 42;
 int *ptr = &a;  /* & = "adresse de" */
 
@@ -57,7 +57,7 @@ scanf("%d", ptr);     /* Equivalent si ptr = &a */
 
 ### 3. Dereferencement (*)
 
-```c
+```c noexec
 int a = 42;
 int *ptr = &a;
 
@@ -71,7 +71,7 @@ printf("%d\n", a);    /* 100 */
 
 Cet exercice est **typique des examens**. Il faut tracer l'etat des variables ligne par ligne.
 
-```c
+```c noexec
 void main() {
     int a = 1;
     int b = 2;
@@ -123,7 +123,7 @@ L7     | 4  | 2  | 2  | &c   | &b   | *ptr1(=c) *= *ptr2(=b) -> 1*2=2
 
 En C, un nom de tableau est **un pointeur constant** vers le premier element.
 
-```c
+```c noexec
 int tab[5] = {10, 20, 30, 40, 50};
 
 /* Les expressions suivantes sont equivalentes : */
@@ -151,7 +151,7 @@ tab + 2 = 0x1008
 
 ### Passage de tableaux aux fonctions
 
-```c
+```c noexec
 /* Un tableau passe a une fonction se decompose en pointeur */
 void affiche_tab(int tab[], int taille) {
     /* tab est en realite un int* ici */
@@ -176,7 +176,7 @@ void doubler(int tab[], int taille) {
 
 L'arithmetique des pointeurs tient compte de la **taille du type pointe**.
 
-```c
+```c noexec
 int tab[5] = {10, 20, 30, 40, 50};
 int *p = tab;
 
@@ -192,7 +192,7 @@ ptrdiff_t diff = fin - debut;  /* 4 (elements, pas octets) */
 ```
 
 **Arithmetique avec cast (TP7 - allocateur memoire) :**
-```c
+```c noexec
 /* Pour calculer en OCTETS, caster en char* */
 Descript_mem *nouveau_bloc = (Descript_mem *)((char *)bloc_courant + nb_octet_total);
 /*                                          ^^^^^^^^
@@ -209,7 +209,7 @@ Descript_mem *desc = (Descript_mem *)ptr;
 
 ## 2.6 Pointeur NULL et verification
 
-```c
+```c noexec
 int *ptr = NULL;  /* Pointeur qui ne pointe nulle part */
 
 /* TOUJOURS verifier avant de dereferencer */
@@ -227,7 +227,7 @@ if (ptr != NULL) {
 
 Un `void*` est un pointeur **generique** qui peut pointer vers n'importe quel type.
 
-```c
+```c noexec
 void *ptr;
 
 int a = 42;
@@ -241,7 +241,7 @@ ptr = &a;  /* OK : void* accepte n'importe quelle adresse */
 ```
 
 **Utilise dans TP7 pour Mon_malloc :**
-```c
+```c noexec
 void *Mon_malloc(size_t nb_octets) {
     /* ... recherche d'un bloc libre ... */
     Descript_mem *curr = liste_bloc_mem;
@@ -259,7 +259,7 @@ char *str = (char *)malloc(100 * sizeof(char));
 
 Necessaire quand une fonction doit modifier un **pointeur** (pas la valeur pointee).
 
-```c
+```c noexec
 /* Pour modifier un int dans une fonction : on passe int* */
 void modifier_valeur(int *ptr) {
     *ptr = 42;
@@ -273,7 +273,7 @@ void modifier_pointeur(int **pptr) {
 ```
 
 **Utilise dans TP5 pour l'insertion en liste chainee :**
-```c
+```c noexec
 typedef Element* Liste;  /* Liste = pointeur vers Element */
 
 void ajoutdeb(Liste *l, Tache t) {

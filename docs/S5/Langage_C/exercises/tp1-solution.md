@@ -296,13 +296,13 @@ $ gcc -Wall main.c -o main
 ```
 
 **Oublier `&` dans `scanf` :**
-```c
+```c noexec
 scanf("%lf", n);   /* FAUX -- n est une valeur, pas une adresse */
 scanf("%lf", &n);  /* CORRECT -- &n est l'adresse de n */
 ```
 
 **Confondre `%f` et `%lf` dans `scanf` :**
-```c
+```c noexec
 double n;
 scanf("%f", &n);   /* FAUX -- %f est pour float, pas double */
 scanf("%lf", &n);  /* CORRECT -- %lf est pour double */

@@ -13,7 +13,7 @@ sidebar_position: 11
 
 **Answer:**
 
-```python
+```python noexec
 import sqlite3
 
 
@@ -84,7 +84,7 @@ sqlite3 student_registry.db ".schema students"
 ```
 
 **Expected output:**
-```sql
+```sql noexec
 CREATE TABLE students (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE students (
 
 **Answer (gestionBD.py / BDRegMat.py):**
 
-```python
+```python noexec
 import sqlite3
 
 
@@ -217,7 +217,7 @@ class StudentDB:
 
 **Test the CRUD operations:**
 
-```python
+```python noexec
 from student_db import StudentDB
 
 db = StudentDB("student_registry.db")
@@ -286,7 +286,7 @@ db.close()
 
 **Answer:**
 
-```python
+```python noexec
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -411,7 +411,7 @@ if __name__ == "__main__":
 
 **Answer:**
 
-```python
+```python noexec
 import sqlite3
 
 

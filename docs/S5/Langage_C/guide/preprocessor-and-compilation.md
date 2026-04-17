@@ -11,7 +11,7 @@ Le preprocesseur transforme le code AVANT la compilation. Ses directives commenc
 
 ### #include - Inclusion de fichiers
 
-```c
+```c noexec
 #include <stdio.h>     /* Bibliotheque standard (repertoires systeme) */
 #include <stdlib.h>    /* malloc, free, exit, rand, ... */
 #include <string.h>    /* strlen, strcpy, strcmp, ... */
@@ -28,7 +28,7 @@ Le preprocesseur transforme le code AVANT la compilation. Ses directives commenc
 
 ### #define - Constantes et macros
 
-```c
+```c noexec
 /* Constantes symboliques */
 #define LGMAX 64
 #define NMAXPRED 16
@@ -51,7 +51,7 @@ BON(2 + 3)      /* Se developpe en : ((2 + 3) * (2 + 3)) = 25 */
 
 ### Macros de redirection (TP7)
 
-```c
+```c noexec
 /* Remplacer les fonctions standard par des versions personnalisees */
 #ifdef ALLOC_PERSO
 #define malloc(size)        Mon_malloc(size)
@@ -65,7 +65,7 @@ BON(2 + 3)      /* Se developpe en : ((2 + 3) * (2 + 3)) = 25 */
 
 ### Compilation conditionnelle
 
-```c
+```c noexec
 /* Activer/desactiver des fonctionnalites */
 #define DEBUG
 
@@ -86,7 +86,7 @@ void debug_print(char *format, ...) {
 
 ### Protection contre les inclusions multiples
 
-```c
+```c noexec
 /* TOUJOURS dans les fichiers .h */
 #ifndef TACHE_H
 #define TACHE_H
@@ -103,7 +103,7 @@ void afficheTache(Tache *t);
 
 ### Constantes mathematiques (portabilite)
 
-```c
+```c noexec
 /* Necessaire sur Windows pour M_PI et M_E */
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -151,7 +151,7 @@ tache.h        tache.c         main.c
 
 ### Fichier .h (interface)
 
-```c
+```c noexec
 /* tache.h - NE contient QUE : */
 /* - Protection d'inclusion */
 /* - #include necessaires */
@@ -188,7 +188,7 @@ int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches);
 
 ### Fichier .c (implementation)
 
-```c
+```c noexec
 /* tache.c - Contient l'implementation */
 #include "tache.h"  /* Inclut ses propres declarations */
 

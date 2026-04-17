@@ -157,7 +157,7 @@ let nb_elem file =
 
 #### Evaluation d'un programme (examen 2023)
 
-```ocaml
+```ocaml noexec
 type state = (qname * int) list
 
 let rec get st q = match st with

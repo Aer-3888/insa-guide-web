@@ -15,7 +15,7 @@ sidebar_position: 2
 
 **Answer:**
 
-```python
+```python noexec
 import pandas as pd
 import numpy as np
 
@@ -51,7 +51,7 @@ The dataset contains 14 columns with the following attributes:
 
 ### Observe key statistics
 
-```python
+```python noexec
 print("Number of individuals:", len(df['PatientId'].unique()), "unique out of", len(df))
 print("Number of appointments:", len(df['AppointmentID'].unique()), "unique out of", len(df))
 print("These people live in neighbourhoods such as", df['Neighbourhood'].unique())
@@ -74,7 +74,7 @@ These people live in neighbourhoods such as ['JARDIM DA PENHA' 'MATA DA PRAIA' .
 
 **Answer:**
 
-```python
+```python noexec
 proc_df = df.copy()
 from sklearn.preprocessing import LabelEncoder
 
@@ -119,7 +119,7 @@ proc_df.head()
 
 **Answer:**
 
-```python
+```python noexec
 from sklearn.model_selection import train_test_split
 
 # Remove PatientId and AppointmentID: identifiers, not features
@@ -152,7 +152,7 @@ print(len(y_test), "entries in the testing set")
 
 **Answer:**
 
-```python
+```python noexec
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 
@@ -172,7 +172,7 @@ Cross-fold validation took 45 seconds
 
 ### What are the most significant features?
 
-```python
+```python noexec
 # Fit once on train to get feature importances
 the_rand_forest.fit(x_train, y_train)
 print("Fitted")
@@ -206,7 +206,7 @@ Alcoholism       : 0.51%
 
 ### Correlation analysis (Pairplot)
 
-```python
+```python noexec
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -230,7 +230,7 @@ plt.show()
 
 ### 5a: First approach with a fixed K
 
-```python
+```python noexec
 from sklearn import neighbors
 
 nb_neighb = 70
@@ -246,7 +246,7 @@ accuracy on testing is 79.76%
 
 ### 5b: Visualize the two most significant features
 
-```python
+```python noexec
 %matplotlib inline
 x = Xframe
 y = Yframe
@@ -273,7 +273,7 @@ plt.show()
 
 ### 5c: Tuning the meta-parameter K
 
-```python
+```python noexec
 results = []
 possible_neighbours_parameters = (
     [1, 2, 3, 5, 10, 15]
@@ -308,7 +308,7 @@ Best performance: k=60
 
 ### 5d: Plot the validation curve
 
-```python
+```python noexec
 %matplotlib inline
 best_valid = max(results)
 plt.axline(
@@ -334,7 +334,7 @@ plt.show()
 
 ### 5e: Final test with best K
 
-```python
+```python noexec
 clf = neighbors.KNeighborsClassifier(best_k)
 clf.fit(x_train, y_train)
 print("The final testing score for k={} is {}% .".format(
@@ -361,7 +361,7 @@ The problem with `sklearn.naive_bayes` is that it only offers models capable of 
 
 Keep only the 8 categorical/binary features and use `CategoricalNB`.
 
-```python
+```python noexec
 from sklearn.naive_bayes import CategoricalNB
 
 # Restrict to categorical features only
@@ -411,7 +411,7 @@ Scale Age, AppointmentDelay, ScheduledDay, and AppointmentDay into discrete cate
 
 For ScheduledDay and AppointmentDay: extract the day of the week (0-6).
 
-```python
+```python noexec
 x_scal_train = x_train.copy()
 x_scal_test = x_test.copy()
 
@@ -473,7 +473,7 @@ x_scal_train.head()
 
 ### Train and evaluate with scaled data
 
-```python
+```python noexec
 results = []
 fold_num = 4
 for _ in range(fold_num):
@@ -500,7 +500,7 @@ Average test Accuracy: 79.08%
 
 ### 7a: Tuning the number of estimators
 
-```python
+```python noexec
 from sklearn.ensemble import AdaBoostClassifier
 
 possible_nbes = [1] + list(range(2, 50, 2)) + list(range(50, 500, 50))
@@ -529,7 +529,7 @@ The best number of estimators varies across runs (1, 7, 50, 100...).
 
 ### 7b: Plot the validation curve
 
-```python
+```python noexec
 %matplotlib inline
 best_valid = max(results)
 plt.axline(
@@ -555,7 +555,7 @@ plt.show()
 
 ### 7c: Final test
 
-```python
+```python noexec
 clf = AdaBoostClassifier(n_estimators=best_nbe)
 clf.fit(x_train, y_train)
 print("Accuracy of AdaBoostClassifier: {}%".format(

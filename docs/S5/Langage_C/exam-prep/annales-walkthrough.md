@@ -10,7 +10,7 @@ sidebar_position: 2
 ### Exercice 1 : Correction de code
 
 **Code a corriger (resume) :**
-```c
+```c noexec
 #include "stdio.h"    /* ERREUR 1 : guillemets au lieu de < > */
 main() {              /* ERREUR 2 : manque le type de retour int */
     /* pas de int i; */ /* ERREUR 3 : i non declare */
@@ -20,7 +20,7 @@ main() {              /* ERREUR 2 : manque le type de retour int */
 ```
 
 **Corrections :**
-```c
+```c noexec
 #include <stdio.h>     /* < > pour les bibliotheques standard */
 int main() {           /* int main(), pas juste main() */
     int i;             /* Declarer la variable */
@@ -33,7 +33,7 @@ int main() {           /* int main(), pas juste main() */
 ### Exercice 2 : Structures et dates
 
 **Q2 - Utiliser un enum :**
-```c
+```c noexec
 typedef enum {FALSE, TRUE} Booleen;
 
 int main() {
@@ -42,7 +42,7 @@ int main() {
 ```
 
 **Q3 - Enum des mois :**
-```c
+```c noexec
 typedef enum {
     JANVIER = 1, FEVRIER, MARS, AVRIL, MAI, JUIN,
     JUILLET, AOUT, SEPTEMBRE, OCTOBRE, NOVEMBRE, DECEMBRE
@@ -51,7 +51,7 @@ typedef enum {
 ```
 
 **Q4 - Structure Date :**
-```c
+```c noexec
 typedef struct {
     int jour, annee;
     Mois mois;
@@ -59,7 +59,7 @@ typedef struct {
 ```
 
 **Q5-Q6 - Setter avec pointeur :**
-```c
+```c noexec
 /* Pourquoi un pointeur ? Pour MODIFIER la structure originale */
 void setMois(Date *d, Mois m) {
     d->mois = m;    /* -> car d est un pointeur */
@@ -67,21 +67,21 @@ void setMois(Date *d, Mois m) {
 ```
 
 **Q7 - Prediction de sortie :**
-```c
+```c noexec
 Date d;
 d.mois = FEVRIER;
 printf("%d", d.mois);  /* Affiche 2 (FEVRIER = 2) */
 ```
 
 **Q8-Q9 - Getter par valeur :**
-```c
+```c noexec
 Mois getMois(Date d) {
     return d.mois;    /* . car d est une valeur (pas un pointeur) */
 }
 ```
 
 **Q10 - Saisie complete :**
-```c
+```c noexec
 void scanDate(Date *d) {
     printf("Jour: "); scanf("%d", &(d->jour));
     printf("Mois: "); scanf("%d", &(d->mois));
@@ -91,7 +91,7 @@ void scanDate(Date *d) {
 ```
 
 **Q12 - Affichage avec mois en lettres (variable statique) :**
-```c
+```c noexec
 void printDateV2(Date d) {
     static char* nomMois[] = {
         "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
@@ -106,14 +106,14 @@ void printDateV2(Date d) {
 Le `static` evite de reinitialiser le tableau a chaque appel de la fonction. Le tableau est cree une seule fois en memoire et persiste.
 
 **Q14 - Comparaison de dates :**
-```c
+```c noexec
 int equalDate(Date d1, Date d2) {
     return d1.jour == d2.jour && d1.mois == d2.mois && d1.annee == d2.annee;
 }
 ```
 
 **Q15 - Comparaison d'ordre :**
-```c
+```c noexec
 int compareDate(Date d1, Date d2) {
     /* 0 = d1 < d2, 1 = d1 == d2, 2 = d1 > d2 */
     if (equalDate(d1, d2)) return 1;
@@ -124,7 +124,7 @@ int compareDate(Date d1, Date d2) {
 ```
 
 **Q16 - Copie dynamique :**
-```c
+```c noexec
 Date* copyDate(Date d) {
     Date *res = (Date *)malloc(sizeof(Date));
     if (res == NULL) {
@@ -139,7 +139,7 @@ Date* copyDate(Date d) {
 ```
 
 **Q17 - Recherche dans un tableau :**
-```c
+```c noexec
 Booleen searchBirthdayDate(Date aChercher, Date *tab, int nbDates) {
     for (int i = 0; i < nbDates; i++) {
         if (equalDate(aChercher, tab[i]))
@@ -154,17 +154,17 @@ Booleen searchBirthdayDate(Date aChercher, Date *tab, int nbDates) {
 ## DS 2016 : Batiments (exercice type structures + fichiers)
 
 **Q1 - Enum :**
-```c
+```c noexec
 typedef enum {maison, immeuble, hopital, ecole, usine} NatureBat;
 ```
 
 **Q2 - Constante :**
-```c
+```c noexec
 #define LG_MAX 63
 ```
 
 **Q3 - Structure :**
-```c
+```c noexec
 typedef struct {
     int id;
     NatureBat nature;
@@ -177,7 +177,7 @@ typedef struct {
 ```
 
 **Q4-Q5 - Test de nature :**
-```c
+```c noexec
 int testUsine(Batiment bat) {
     return bat.nature == usine;
     /* Passage par valeur : bat est une COPIE, pas besoin de la modifier */
@@ -185,7 +185,7 @@ int testUsine(Batiment bat) {
 ```
 
 **Q6-Q7 - Modification de nature :**
-```c
+```c noexec
 void changeNature(Batiment *bat, NatureBat nat) {
     bat->nature = nat;
     /* Passage par POINTEUR car on MODIFIE la structure */
@@ -193,7 +193,7 @@ void changeNature(Batiment *bat, NatureBat nat) {
 ```
 
 **Q8-Q9 - Modification de ville :**
-```c
+```c noexec
 void changeVille(Batiment *bat, char *nom) {
     strcpy(bat->ville, nom);
     /* ATTENTION : on ne peut PAS faire bat->ville = nom
@@ -204,7 +204,7 @@ void changeVille(Batiment *bat, char *nom) {
 ```
 
 **Q10-Q11 - Ajout a un ensemble :**
-```c
+```c noexec
 typedef struct {
     int nbat;
     Batiment ens[NBATMAX];
@@ -225,7 +225,7 @@ int ajoutBatiment(EnsBat *bats, int id, NatureBat nat, float haut, char *ville) 
 ```
 
 **Q12-Q13 - Recherche par ville :**
-```c
+```c noexec
 void chercheDansVille(EnsBat ens, char *ville) {
     for (int i = 0; i < ens.nbat; i++) {
         if (!strcmp(ens.ens[i].ville, ville)) {
@@ -237,7 +237,7 @@ void chercheDansVille(EnsBat ens, char *ville) {
 ```
 
 **Q14 - Difference EnsBat vs EnsBat2 :**
-```c
+```c noexec
 typedef struct { int nbat; Batiment ens[NBATMAX]; } EnsBat;   /* Taille fixe */
 typedef struct { int nbat; Batiment *ens; } EnsBat2;          /* Taille dynamique */
 /* EnsBat2 necessite malloc pour allouer ens, mais peut avoir n'importe quelle taille */
@@ -249,7 +249,7 @@ typedef struct { int nbat; Batiment *ens; } EnsBat2;          /* Taille dynamiqu
 ## DS 2014-2015 : Releves meteorologiques
 
 **Structure de donnees :**
-```c
+```c noexec
 typedef struct {
     char nom[TAILLE_NOM_SITE];
     int min;
@@ -258,7 +258,7 @@ typedef struct {
 ```
 
 **Ecriture dans un fichier :**
-```c
+```c noexec
 int enregistrerReleves(Releve tabRel[], int N, char *nomFichier) {
     FILE *f = fopen(nomFichier, "w");
     if (f == NULL) {
@@ -283,7 +283,7 @@ int enregistrerReleves(Releve tabRel[], int N, char *nomFichier) {
 
 ### 1. Toujours present : enum + struct + typedef
 Chaque examen demande de definir un type enum et une structure. Savoir ecrire :
-```c
+```c noexec
 typedef enum { ... } NomEnum;
 typedef struct { ... } NomStruct;
 ```
@@ -295,7 +295,7 @@ Savoir quand utiliser un pointeur vs une valeur :
 
 ### 3. Tres frequent : fscanf + fprintf
 Pattern complet :
-```c
+```c noexec
 FILE *f = fopen(nom, "r");   /* ou "w" */
 if (f == NULL) { fprintf(stderr, "Erreur\n"); return -1; }
 /* ... fscanf/fprintf ... */
@@ -303,14 +303,14 @@ fclose(f);
 ```
 
 ### 4. Frequent : strcmp pour comparer des chaines
-```c
+```c noexec
 if (!strcmp(s1, s2)) { /* identiques */ }
 /* OU */
 if (strcmp(s1, s2) == 0) { /* identiques */ }
 ```
 
 ### 5. Frequent : malloc + free
-```c
+```c noexec
 Type *p = (Type *)malloc(n * sizeof(Type));
 if (p == NULL) { /* erreur */ }
 /* ... utilisation ... */

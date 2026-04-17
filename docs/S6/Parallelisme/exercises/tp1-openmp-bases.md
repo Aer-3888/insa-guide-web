@@ -35,7 +35,7 @@ Le sujet rappelle les commandes de base :
 
 Le programme utilise `#pragma omp parallel` pour creer une region parallele. Chaque thread execute le bloc et affiche son rang via `omp_get_thread_num()`. A la fin de la region parallele, une barriere implicite synchronise tous les threads, puis le thread maitre affiche le message de terminaison.
 
-```c
+```c noexec
 #include <omp.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -97,7 +97,7 @@ Sans le flag `-fopenmp`, le programme compile et s'execute avec 1 seul thread sa
 
 Chaque thread calcule ses propres bornes en fonction de son rang et du nombre total de threads. On utilise `#pragma omp parallel` (sans `for`) et chaque thread itere sur sa tranche.
 
-```c
+```c noexec
 #include <omp.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -125,7 +125,7 @@ int main(void)
 
 **Piege de la division entiere :** Avec ITERNUM=100 et 3 threads, `100/3 = 33`, donc le thread 2 va de 66 a 98 (33*3=99). L'iteration 99 est perdue. Pour corriger, le dernier thread devrait aller jusqu'a ITERNUM :
 
-```c
+```c noexec
 int fin = (num == tot - 1) ? ITERNUM : (ITERNUM / tot) * (num + 1);
 ```
 
@@ -133,7 +133,7 @@ Le commentaire du code original suggere ITERNUM=420, qui est le PPCM de 1 a 8, d
 
 ### Partie 2 : Avec `#pragma omp parallel for`
 
-```c
+```c noexec
 #include <omp.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -181,7 +181,7 @@ Les 100 iterations sont affichees dans un ordre non-deterministe. Avec la versio
 
 Le code sequentiel fourni par le sujet :
 
-```c
+```c noexec
 #include<stdio.h>
 int main () {
     static long nb_pas = 100000000; // 10^8
@@ -209,7 +209,7 @@ Les variables `som` et `x` sont partagees par defaut. Si plusieurs threads font 
 
 ### Version parallele optimisee
 
-```c
+```c noexec
 #include <stdlib.h>
 #include <stdio.h>
 #include <omp.h>
@@ -242,7 +242,7 @@ int main(void)
 
 ### Pourquoi NE PAS utiliser `critical`
 
-```c
+```c noexec
 /* MAUVAISE approche -- plus lent que sequentiel */
 #pragma omp parallel for private(x)
 for (long i = 1; i <= nb_pas; i++) {

@@ -132,7 +132,7 @@ permutation_aux(X, [Y | T], [Y | S]) :-
 ## Exercice 2 : Base COVID
 
 Base de faits donnee :
-```prolog
+```prolog noexec
 femme(laurence).
 homme(bertrand). homme(yann).
 collegues(laurence, yann). collegues(yann, bertrand). ...
@@ -146,7 +146,7 @@ gout(laurence, moyen). gout(yann, non).
 
 "X est un individu connu dans la base (apparait dans au moins un fait)."
 
-```prolog
+```prolog noexec
 individu(X) :- femme(X).
 individu(X) :- homme(X).
 individu(X) :- toux(X).
@@ -161,7 +161,7 @@ Note : un individu peut apparaitre dans plusieurs faits. Ce predicat est non-det
 
 ### Q11 : fievre/1
 
-```prolog
+```prolog noexec
 fievre(X) :- temperature(X, T), T >= 38.
 ```
 
@@ -169,7 +169,7 @@ Resultats : `yann` (38), `bertrand` (39).
 
 ### Q12 : covid/1, grippe/1
 
-```prolog
+```prolog noexec
 covid(X) :- fievre(X).
 covid(X) :- toux(X).
 covid(X) :- gout(X, non), odorat(X, non).
@@ -186,7 +186,7 @@ grippe(X) :- fievre(X), toux(X).
 
 "X peut travailler s'il n'a ni la grippe ni le COVID."
 
-```prolog
+```prolog noexec
 travail(X) :-
     individu(X),
     \+(grippe(X)),
@@ -203,7 +203,7 @@ L'ordre est important : `individu(X)` instancie X **avant** les `\+`.
 
 "Trouver toutes les personnes potentiellement contaminees par X en N etapes."
 
-```prolog
+```prolog noexec
 contagion(X, N, L) :-
     findall(Y, contamine(N, X, Y), L1),
     sort(L1, L).

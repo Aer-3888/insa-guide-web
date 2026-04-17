@@ -71,7 +71,7 @@ const msg = `Bonjour ${nom}, 2+2 = ${2+2}`;   // backticks
 
 ## 2. Fonctions et arrow functions
 
-```javascript
+```javascript noexec
 // Declaration classique (hoisted)
 function addition(a, b) { return a + b; }
 
@@ -93,7 +93,7 @@ const tab2 = [...tab1, 4, 5];   // copie + ajout
 
 ### ATTENTION : this dans les arrow functions
 
-```javascript
+```javascript noexec
 const jeu = {
     points: 0,
     // function : this = l'objet jeu
@@ -139,7 +139,7 @@ personne["nom"];         // "Alice"
 - Valeurs : string, number, boolean, null, array, object
 - Pas de commentaires, pas de fonctions, pas de trailing comma
 
-```javascript
+```javascript noexec
 JSON.stringify(objet);     // objet -> texte JSON
 JSON.parse(texte);         // texte JSON -> objet
 ```
@@ -181,7 +181,7 @@ const reussite = etudiants
 
 ## 5. Classes ES6
 
-```javascript
+```javascript noexec
 export class Shape {
     constructor(color, linewidth) {
         this.color = color;
@@ -206,7 +206,7 @@ export class Rectangle extends Shape {
 
 ### Selectionner des elements
 
-```javascript
+```javascript noexec
 document.getElementById("header");            // un element par id
 document.querySelector(".carte");              // premier par selecteur CSS
 document.querySelectorAll(".carte");           // tous par selecteur CSS
@@ -214,7 +214,7 @@ document.querySelectorAll(".carte");           // tous par selecteur CSS
 
 ### Modifier le DOM
 
-```javascript
+```javascript noexec
 element.textContent = "Nouveau texte";         // securise (pas de HTML)
 element.classList.add("active");               // ajouter une classe
 element.setAttribute("data-x", "3");           // attribut
@@ -227,7 +227,7 @@ element.remove();                               // supprimer
 
 ### Evenements
 
-```javascript
+```javascript noexec
 // addEventListener (RECOMMANDE)
 bouton.addEventListener("click", (evt) => {
     evt.target;           // element qui a declenche
@@ -249,13 +249,13 @@ Phase 2: TARGET  (sur l'element)
 Phase 3: BUBBLING (cible -> document)  <-- defaut de addEventListener
 ```
 
-```javascript
+```javascript noexec
 evt.stopPropagation();  // arreter la remontee
 ```
 
 ### Delegation d'evenements
 
-```javascript
+```javascript noexec
 liste.addEventListener("click", (evt) => {
     if (evt.target.tagName === "LI") {
         console.log(evt.target.textContent);
@@ -269,7 +269,7 @@ liste.addEventListener("click", (evt) => {
 
 ### Promises
 
-```javascript
+```javascript noexec
 const promesse = new Promise((resolve, reject) => {
     if (succes) resolve("Donnees");
     else reject("Erreur");
@@ -279,7 +279,7 @@ promesse.then(data => ...).catch(err => ...);
 
 ### async/await
 
-```javascript
+```javascript noexec
 async function chargerUtilisateur(id) {
     try {
         const response = await fetch(`/api/users/${id}`);
@@ -292,7 +292,7 @@ async function chargerUtilisateur(id) {
 
 ### fetch API
 
-```javascript
+```javascript noexec
 // GET
 const data = await (await fetch('/api/data')).json();
 
@@ -308,7 +308,7 @@ await fetch('/api/data', {
 
 ## 8. Modules
 
-```javascript
+```javascript noexec
 // utils.js -- exports nommes
 export function addition(a, b) { return a + b; }
 export const PI = 3.14;

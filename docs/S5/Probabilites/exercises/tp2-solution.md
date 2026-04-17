@@ -9,7 +9,7 @@ sidebar_position: 2
 
 ## Setup
 
-```r
+```r noexec
 # Install MASS package if not already installed
 # install.packages("MASS")
 library(MASS)
@@ -24,7 +24,7 @@ The `MASS` package provides the `michelson` dataset containing Michelson's 1879 
 ### 1. Load and explore the `michelson` dataset from MASS library
 
 **Answer:**
-```r
+```r noexec
 library(MASS)
 
 summary(michelson)
@@ -73,7 +73,7 @@ Speed values are in km/s with 299,000 subtracted (so 850 means 299,850 km/s). Th
 ### 2. Calculate mean and standard deviation
 
 **Answer:**
-```r
+```r noexec
 mu <- mean(michelson$Speed)
 sigma <- sd(michelson$Speed)
 n <- length(michelson$Speed)
@@ -108,7 +108,7 @@ This gives an unbiased estimator of the population variance. With $n = 100$, the
 $$\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{P} \mu \quad \text{as } n \to \infty$$
 
 **Answer:**
-```r
+```r noexec
 # Calculate cumulative mean using cumsum
 cumulative_means <- cumsum(michelson$Speed) / (1:n)
 
@@ -129,7 +129,7 @@ legend("topright",
 **Expected output:**
 Blue line starting at the first measurement (850), fluctuating significantly for the first ~20 measurements, then progressively stabilizing toward the final mean 852.4 (red dashed line). The path zigzags but the trend is convergent.
 
-```r
+```r noexec
 # Convergence at key points
 key_points <- c(1, 5, 10, 20, 50, 100)
 
@@ -162,7 +162,7 @@ The standard error $\text{SE} = \sigma/\sqrt{n}$ governs the rate of convergence
 
 $$\text{Var}(\bar{X}_n) = \frac{\sigma^2}{n}, \quad \text{SD}(\bar{X}_n) = \frac{\sigma}{\sqrt{n}}$$
 
-```r
+```r noexec
 # Visualize with standard error bands
 standard_errors <- sigma / sqrt(1:n)
 
@@ -192,7 +192,7 @@ Funnel-shaped confidence envelope that narrows as $n$ increases. At $n = 1$, $\t
 ### 4. Create histogram with theoretical normal overlay (Central Limit Theorem)
 
 **Answer:**
-```r
+```r noexec
 hist(michelson$Speed,
      freq = FALSE, breaks = 25,
      col = "lightblue", border = "white",
@@ -217,7 +217,7 @@ Roughly bell-shaped histogram of 100 measurements with the red $\mathcal{N}(852.
 ### 5. Group by experiment and compare distributions
 
 **Answer:**
-```r
+```r noexec
 # Calculate mean for each experiment using tapply()
 experiment_means <- tapply(michelson$Speed, michelson$Expt, mean)
 
@@ -259,7 +259,7 @@ $$\bar{X}_n \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right) \quad \text{app
 
 The `tapply(VALUES, GROUPS, FUNCTION)` function applies a function to data grouped by a factor. The empirical SD (34.28) is higher than the predicted SE (17.67), but with only 5 data points the estimate is very unreliable.
 
-```r
+```r noexec
 # Bootstrap simulation to demonstrate CLT more clearly
 n_simulations <- 1000
 sample_size <- 20
@@ -295,7 +295,7 @@ legend("topright",
 **Expected output:**
 Bell-shaped histogram of 1000 simulated means, narrower than the original data distribution. The green $\mathcal{N}(852.4, 17.67)$ curve fits well. Red dots mark actual experiment means.
 
-```r
+```r noexec
 # Compare different sample sizes
 sample_sizes <- c(5, 10, 20, 50)
 par(mfrow = c(2, 2))

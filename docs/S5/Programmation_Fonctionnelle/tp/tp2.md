@@ -73,7 +73,7 @@ let rec sigma3 (f, fc) i acc (a, b) =
 ```
 
 ### Numerical Integration
-```ocaml
+```ocaml noexec
 let integre f (a, b, dx) = dx *. cum f (a, b) dx
 ```
 

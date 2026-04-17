@@ -163,7 +163,7 @@ Pour chaque cluster:
 
 ### Bibliothèques utilisées
 
-```python
+```python noexec
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler

@@ -75,7 +75,7 @@ Ou approximation plus simple :
 
 ### Implémentation séquentielle
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -142,7 +142,7 @@ printf("Convergence en %d itérations, erreur = %e\n", iter, error);
 
 **Stratégie** : Paralléliser la boucle sur `i` (calcul de chaque composante de x_new)
 
-```c
+```c noexec
 #include <omp.h>
 
 double start = omp_get_wtime();
@@ -203,14 +203,14 @@ printf("Temps : %.6f s, Itérations : %d, Erreur : %e\n",
 ### Optimisations possibles
 
 1. **Stockage compact de la matrice** :
-   ```c
+   ```c noexec
    // Au lieu de double **A, utiliser double *A
    // A[i][j] → A[i*N + j]
    // Meilleure localité spatiale
    ```
 
 2. **Éviter la vérification `j != i`** :
-   ```c
+   ```c noexec
    sigma = 0;
    for (int j = 0; j < i; j++) {
        sigma += A[i*N + j] * x_old[j];
@@ -227,7 +227,7 @@ printf("Temps : %.6f s, Itérations : %d, Erreur : %e\n",
    ```
 
 3. **Précalcul de 1/A[i][i]** :
-   ```c
+   ```c noexec
    double *inv_diag = malloc(N * sizeof(double));
    for (int i = 0; i < N; i++) {
        inv_diag[i] = 1.0 / A[i*N + i];
@@ -237,7 +237,7 @@ printf("Temps : %.6f s, Itérations : %d, Erreur : %e\n",
    ```
 
 4. **Vectorisation (SIMD)** :
-   ```c
+   ```c noexec
    #pragma omp simd
    for (int j = 0; j < N; j++) {
        sigma += A[i*N + j] * x_old[j];
@@ -310,7 +310,7 @@ export OMP_NUM_THREADS=4
 
 Pour équilibrer la charge quand les itérations ont des coûts variables :
 
-```c
+```c noexec
 #pragma omp parallel for schedule(dynamic)
 ```
 
@@ -324,7 +324,7 @@ Pour équilibrer la charge quand les itérations ont des coûts variables :
 
 Pour paralléliser plusieurs niveaux de boucles :
 
-```c
+```c noexec
 #pragma omp parallel for collapse(2)
 for (int i = 0; i < N; i++) {
     for (int j = 0; j < M; j++) {
@@ -337,7 +337,7 @@ Crée N×M itérations distribuées entre threads.
 
 ### 3. Nowait (éviter les barrières)
 
-```c
+```c noexec
 #pragma omp parallel
 {
     #pragma omp for nowait
@@ -352,7 +352,7 @@ Le `nowait` évite la barrière entre A et B (si B n'a pas besoin que A soit ter
 
 ### 4. SIMD (vectorisation)
 
-```c
+```c noexec
 #pragma omp simd
 for (int i = 0; i < N; i++) {
     a[i] = b[i] + c[i];
@@ -365,7 +365,7 @@ Exploite les instructions SIMD du processeur (AVX, SSE).
 
 Pour algorithmes non-réguliers (arbres, graphes) :
 
-```c
+```c noexec
 #pragma omp parallel
 {
     #pragma omp single
@@ -401,7 +401,7 @@ Utiliser des outils comme :
 
 ### 3. Mesure fine des performances
 
-```c
+```c noexec
 double start = omp_get_wtime();
 #pragma omp parallel
 {

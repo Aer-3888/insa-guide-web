@@ -25,7 +25,7 @@ Un **thread** est un fil d'execution leger au sein d'un processus. Tous les thre
 
 ### pthread_create
 
-```c
+```c noexec
 #include <pthread.h>
 
 int pthread_create(
@@ -39,7 +39,7 @@ int pthread_create(
 
 ### pthread_join
 
-```c
+```c noexec
 int pthread_join(
     pthread_t thread,    /* thread a attendre */
     void **retval        /* [OUT] valeur retournee (ou NULL) */
@@ -49,7 +49,7 @@ int pthread_join(
 
 ### Exemple complet
 
-```c
+```c noexec
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -87,7 +87,7 @@ int main(void)
 
 Utiliser une structure quand on veut passer plusieurs valeurs :
 
-```c
+```c noexec
 typedef struct {
     int id;
     int debut;
@@ -114,7 +114,7 @@ void *calculer_somme(void *arg)
 
 Une **race condition** se produit quand deux threads accedent a la **meme variable** en meme temps et qu'au moins un ecrit. Le resultat depend de l'ordonnancement, qui est imprevisible.
 
-```c
+```c noexec
 int compteur = 0;  /* Variable partagee */
 
 void *incrementer(void *arg)
@@ -133,7 +133,7 @@ void *incrementer(void *arg)
 
 Un **mutex** est un verrou : un seul thread peut le detenir a la fois.
 
-```c
+```c noexec
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 pthread_mutex_lock(&verrou);    /* entrer en section critique */
@@ -143,7 +143,7 @@ pthread_mutex_unlock(&verrou);  /* sortir de la section critique */
 
 **Regle d'or :** la section critique doit etre la plus **courte** possible.
 
-```c
+```c noexec
 /* BON */
 double r = calcul_complexe(donnees);  /* hors mutex */
 pthread_mutex_lock(&verrou);
@@ -168,7 +168,7 @@ Un **deadlock** se produit quand deux threads s'attendent mutuellement.
 
 **Ordre global :** tous les threads prennent les verrous dans le meme ordre.
 
-```c
+```c noexec
 /* Thread 1 et 2 : toujours A avant B */
 pthread_mutex_lock(&verrou_A);
 pthread_mutex_lock(&verrou_B);
@@ -179,7 +179,7 @@ pthread_mutex_unlock(&verrou_A);
 
 **trylock :** essayer sans bloquer, relacher si echec.
 
-```c
+```c noexec
 while (1) {
     pthread_mutex_lock(&verrou_A);
     if (pthread_mutex_trylock(&verrou_B) == 0) break;
@@ -193,7 +193,7 @@ while (1) {
 
 Permettent a un thread de **dormir** en attendant un evenement, au lieu de boucler (attente active).
 
-```c
+```c noexec
 pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 /* Thread qui attend */
@@ -217,7 +217,7 @@ pthread_mutex_unlock(&mutex);
 
 ## 8. Patron producteur-consommateur
 
-```c
+```c noexec
 #define TAILLE_BUFFER 5
 
 int buffer[TAILLE_BUFFER];
@@ -263,7 +263,7 @@ pthread_mutex_unlock(&mutex);
 
 ## CHEAT SHEET -- Pthreads
 
-```c
+```c noexec
 /* Creation / attente */
 pthread_create(&t, NULL, fonction, arg);
 pthread_join(t, NULL);

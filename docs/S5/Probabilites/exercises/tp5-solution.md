@@ -9,7 +9,7 @@ sidebar_position: 5
 
 ## Setup
 
-```r
+```r noexec
 # For multinomial computations, base R is sufficient
 # For multivariate normal (optional extension):
 # install.packages("mvtnorm")

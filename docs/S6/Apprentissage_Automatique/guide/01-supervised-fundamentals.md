@@ -60,7 +60,7 @@ $$\text{Erreur totale} = \text{Biais}^2 + \text{Variance} + \text{Bruit irreduct
 
 ### Split simple
 
-```python
+```python noexec
 from sklearn.model_selection import train_test_split
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -103,7 +103,7 @@ $$\text{Score CV} = \frac{1}{K} \sum_{k=1}^{K} \text{Score}_k$$
 
 ### Code Python
 
-```python
+```python noexec
 from sklearn.model_selection import cross_val_score
 
 scores = cross_val_score(clf, X, y, cv=10, scoring='accuracy')
@@ -112,7 +112,7 @@ print(f"Accuracy moyenne : {scores.mean():.3f} (+/- {scores.std():.3f})")
 
 ### Variantes
 
-```python
+```python noexec
 from sklearn.model_selection import StratifiedKFold, RepeatedStratifiedKFold
 
 # Stratifie : meme distribution de classes dans chaque fold
@@ -135,7 +135,7 @@ Score test:   65%    |    => Overfitting
 
 ### Courbes d'apprentissage
 
-```python
+```python noexec
 from sklearn.model_selection import learning_curve
 import matplotlib.pyplot as plt
 import numpy as np
@@ -174,7 +174,7 @@ plt.show()
 
 ### GridSearchCV
 
-```python
+```python noexec
 from sklearn.model_selection import GridSearchCV
 
 param_grid = {
@@ -216,7 +216,7 @@ print(f"Score test : {grid.score(X_test, y_test):.3f}")
 
 $$z = \frac{x - \mu}{\sigma}$$
 
-```python
+```python noexec
 from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
@@ -226,7 +226,7 @@ X_test_scaled = scaler.transform(X_test)  # ATTENTION: transform seulement, pas 
 
 ### Vectorisation de texte
 
-```python
+```python noexec
 # Sac de mots booleens
 from sklearn.feature_extraction.text import CountVectorizer
 vec = CountVectorizer(lowercase=True, binary=True, max_df=0.8, min_df=10)

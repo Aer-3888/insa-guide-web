@@ -128,7 +128,7 @@ let rec qs l = match l with
 
 ### Partitions d'entiers (TP4)
 
-```ocaml
+```ocaml noexec
 (* Generer toutes les partitions de n *)
 let partition n =
   let rec partition_faible m k = match (m, k) with
@@ -210,7 +210,7 @@ let _ = List.filter (fun s -> s <> "Nil") (to_list (constr l))
 
 ### Positionnement d'arbre (TP6)
 
-```ocaml
+```ocaml noexec
 type coord = int * int
 type 'a arbinp = (coord * 'a) arbin
 
@@ -252,7 +252,7 @@ let n5 = noeud 5 [noeud 3 [feuille 4; noeud 7 [feuille 10; feuille 12; feuille 1
 
 ### Operations sur arbres n-aires
 
-```ocaml
+```ocaml noexec
 (* Plus long chemin *)
 let rec pluslongue a =
   let rec arb a acc = match a with

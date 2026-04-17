@@ -11,7 +11,7 @@ sidebar_position: 7
 
 `findall(Template, Goal, List)` collecte **toutes** les solutions de Goal dans une liste.
 
-```prolog
+```prolog noexec
 ?- findall(X, membre(X, [a, b, c]), L).
 % L = [a, b, c]
 
@@ -40,7 +40,7 @@ count(Goal, N) :-
 
 `setof` est comme bagof mais **trie** et **elimine les doublons**.
 
-```prolog
+```prolog noexec
 ?- setof(P, plat(P), L).
 % L = [bar_aux_algues, grillade_de_boeuf, poulet_au_tilleul, saumon_oseille]
 
@@ -51,7 +51,7 @@ count(Goal, N) :-
 
 ### Utilisation dans les TPs
 
-```prolog
+```prolog noexec
 % TP1 : lister les plats entre 200 et 400 cal
 test_plat200_400 :-
     test(sortedof(P, plat200_400(P),
@@ -72,7 +72,7 @@ total_pieces_livrees_fournisseur(F, Total) :-
 
 Prolog permet de modifier la base de faits pendant l'execution.
 
-```prolog
+```prolog noexec
 % Ajouter un fait
 ?- assert(aime(jean, pizza)).
 % ou assertz (a la fin) / asserta (au debut)
@@ -85,12 +85,12 @@ Prolog permet de modifier la base de faits pendant l'execution.
 ```
 
 **Attention** : les predicats dynamiques doivent etre declares :
-```prolog
+```prolog noexec
 :- dynamic aime/2.
 ```
 
 **Utilisation dans le TP4** : insertion "en place" dans un arbre via variables libres :
-```prolog
+```prolog noexec
 % Utilise free/1 (ECLiPSe) pour detecter les variables non instanciees
 insertion_arbre_ordonne1(X, B) :-
     free(B), !,
@@ -110,7 +110,7 @@ Le TP6 montre comment Prolog peut simuler des operations relationnelles SQL.
 
 ### Operations de base
 
-```prolog
+```prolog noexec
 % SELECTION (WHERE)
 selection_lyon(Num, Nom) :- piece(Num, Nom, lyon).
 
@@ -130,7 +130,7 @@ produit_cartesien(F1, Nom, Ville, F2, Piece, Qte) :-
 
 ### Operations ensemblistes avec cut-fail
 
-```prolog
+```prolog noexec
 % INTERSECTION : present dans les deux tables
 intersection(Nom, Ville) :-
     demandeFournisseur(Nom, Ville),
@@ -159,7 +159,7 @@ La **division** est l'operation la plus complexe : "trouver les F qui fournissen
 
 Logique : F fournit toutes les pieces de Lyon = il n'existe PAS de piece de Lyon que F ne fournit PAS.
 
-```prolog
+```prolog noexec
 division(F) :-
     fournisseurReference(F, _, _),
     \+(existe_piece_lyon_non_fournie(F)).
@@ -171,7 +171,7 @@ existe_piece_lyon_non_fournie(F) :-
 
 ### Requetes recursives (au-dela du SQL)
 
-```prolog
+```prolog noexec
 % Composition transitive : quels composants faut-il pour une voiture ?
 est_compose_de(C, U) :- assemblage(C, U, _).
 est_compose_de(C, V) :- assemblage(C, U, _), est_compose_de(U, V).
@@ -201,7 +201,7 @@ nb_voitures_par_piece(NbPoss) :-
 
 Schema tres courant en Prolog : generer toutes les possibilites, puis filtrer.
 
-```prolog
+```prolog noexec
 % Trouver un repas equilibre
 repas_equilibre(H, P, D) :-
     repas(H, P, D),          % GENERER : enumerer tous les repas

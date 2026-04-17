@@ -11,7 +11,7 @@ Le **cut** (`!`) est un predicat qui reussit toujours mais **supprime les points
 1. Il empeche le backtracking sur les clauses **precedentes** du meme predicat
 2. Il empeche le backtracking sur les sous-buts **a gauche** du cut dans la meme clause
 
-```prolog
+```prolog noexec
 p(X) :- a(X), !, b(X).   % Si a(X) reussit et qu'on passe le cut,
                            % on ne reviendra JAMAIS aux autres clauses de p
                            % ni aux autres solutions de a(X)
@@ -113,7 +113,7 @@ classify(_, negative).
 
 Le pattern `!, fail` est la base de la negation en Prolog :
 
-```prolog
+```prolog noexec
 % "Il n'existe pas de piece de Lyon que F ne fournit pas"
 pas_fournisseur_reference(Nom, Ville) :-
     fournisseurReference(_, Nom, Ville),
@@ -151,7 +151,7 @@ L'operateur `\+` (ou `not` dans certaines implementations) est la negation par e
 
 **Semantique** : `\+(G)` reussit si et seulement si `G` echoue.
 
-```prolog
+```prolog noexec
 ?- \+(membre(d, [a, b, c])).   % true (d n'est pas dans la liste)
 ?- \+(membre(a, [a, b, c])).   % false (a est dans la liste)
 
@@ -175,7 +175,7 @@ existe_piece_lyon_non_fournie(F) :-
 
 **PIEGE MAJEUR** : la negation par echec NE FONCTIONNE PAS avec des variables libres.
 
-```prolog
+```prolog noexec
 ?- \+(membre(X, [a, b, c])).
 % false ! Parce que membre(X, [a,b,c]) REUSSIT (X=a)
 % Donc \+ echoue.
@@ -186,7 +186,7 @@ existe_piece_lyon_non_fournie(F) :-
 
 **Regle** : `\+(Goal)` ne lie jamais de variables. Les variables dans Goal doivent etre **instanciees** avant l'appel.
 
-```prolog
+```prolog noexec
 % FAUX : X est libre -> \+ ne fonctionnera pas comme attendu
 faux(X) :- \+(membre(X, [a, b, c])), humain(X).
 
@@ -210,7 +210,7 @@ p(3).
 
 ### Exercice type : corriger un predicat avec cut
 
-```prolog
+```prolog noexec
 % Version avec cut rouge (TP6 : pas_fournisseur_reference)
 sans_eastwood(T) :-
     film(T, _, N1, _, _),
@@ -237,7 +237,7 @@ Le cut dans `tmp` empeche de continuer a chercher apres la premiere occurrence d
 
 ## 6.6 Erreurs frequentes avec le cut
 
-```prolog
+```prolog noexec
 % ERREUR 1 : cut trop tot (masque des solutions valides)
 membre_faux(X, [X | _]) :- !.    % ne trouve que la 1ere occurrence
 membre_faux(X, [_ | T]) :- membre_faux(X, T).

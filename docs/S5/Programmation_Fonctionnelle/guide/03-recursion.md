@@ -36,7 +36,7 @@ let rec fact n =
 
 La plupart des fonctions sur les listes suivent le meme schema :
 
-```ocaml
+```ocaml noexec
 let rec f l = match l with
   | [] -> valeur_de_base          (* Cas de base *)
   | e :: rest -> ... f rest ...   (* Cas recursif *)
@@ -205,7 +205,7 @@ let rec sigma4 (f, fc) (p, fi) acc a =
 
 Trace detaillee :
 
-```ocaml
+```ocaml noexec
 (* sigma3 ((fun x -> 2*x), (+)) 2 0 (2, 6)   *)
 (* = (+) (2*2) (sigma3 ... (4, 6))             *)
 (* = (+) 4 ((+) (2*4) (sigma3 ... (6, 6)))     *)
@@ -220,7 +220,7 @@ Trace detaillee :
 
 Une technique puissante : appliquer une fonction jusqu'a obtenir un point fixe.
 
-```ocaml
+```ocaml noexec
 let rec jqastable x f =
   if f x = x then x else jqastable (f x) f
 (* val jqastable : 'a -> ('a -> 'a) -> 'a *)
@@ -239,7 +239,7 @@ let _ = jqastable 13 (fun x ->
 
 ### Integration numerique (application)
 
-```ocaml
+```ocaml noexec
 (* Methode des rectangles *)
 let integre f (a, b, dx) = dx *. cum f (a, b) dx
 

@@ -64,7 +64,7 @@ Correction : mise a jour de polkit
 
 ### Recherche de fichiers SUID (audit de securite)
 
-```bash
+```bash noexec
 # Trouver tous les fichiers SUID
 find / -perm -4000 -type f 2>/dev/null
 
@@ -95,7 +95,7 @@ find / -perm -0002 -type f 2>/dev/null
 
 Au lieu de donner tous les droits root, on peut donner des capacites individuelles :
 
-```bash
+```bash noexec
 # Donner la capacite de lier aux ports privilegies (< 1024) sans root
 setcap 'cap_net_bind_service=+ep' /usr/bin/myapp
 ```
@@ -120,7 +120,7 @@ Isoler un processus pour limiter l'impact d'une compromission.
 
 ### Exemple : seccomp
 
-```c
+```c noexec
 // Autoriser uniquement read, write, exit, sigreturn
 scmp_filter_ctx ctx = seccomp_init(SCMP_ACT_KILL);
 seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(read), 0);

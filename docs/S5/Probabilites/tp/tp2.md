@@ -53,7 +53,7 @@ Or equivalently: X̄ₙ ~ N(μ, σ²/n) approximately
 ### 3. Key R Functions
 
 #### Data Loading and Summary
-```r
+```r noexec
 library(MASS)           # Load package with datasets
 summary(data)           # Summary statistics
 head(data)              # First few rows
@@ -63,7 +63,7 @@ var(data$column)        # Variance
 ```
 
 #### Grouped Operations
-```r
+```r noexec
 tapply(values, groups, function)
 # Apply function to values grouped by groups
 # Example: tapply(speed, experiment, mean)
@@ -71,13 +71,13 @@ tapply(values, groups, function)
 ```
 
 #### Cumulative Operations
-```r
+```r noexec
 cumsum(x)               # Cumulative sum
 cumsum(x) / (1:length(x))  # Cumulative mean
 ```
 
 #### Random Generation
-```r
+```r noexec
 rbinom(n, size, prob)   # Generate binomial random variables
 # n = number of experiments
 # size = number of trials per experiment

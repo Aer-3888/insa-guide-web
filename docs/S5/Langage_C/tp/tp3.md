@@ -27,7 +27,7 @@ Créer un programme qui:
 - Utilisation d'un tableau comme compteur
 
 **Algorithme de l'histogramme:**
-```c
+```c noexec
 Pour chaque valeur v dans le tableau source:
     dest[v]++  // Incrémente le compteur de la valeur v
 ```
@@ -93,7 +93,7 @@ make
 ## Points Importants
 
 ### 1. Nombres Aléatoires en C
-```c
+```c noexec
 #include <stdlib.h>
 #include <time.h>
 
@@ -107,7 +107,7 @@ int val = rand() % 20;  // Génère un nombre entre 0 et 19
 - Ne pas oublier de réserver de l'espace pour le `'\0'` final
 
 ### 3. Manipulation de Caractères
-```c
+```c noexec
 #include <ctype.h>
 
 char c = 'A';

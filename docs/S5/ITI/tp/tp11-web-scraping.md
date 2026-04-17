@@ -52,7 +52,7 @@ HTML (HyperText Markup Language) structures web content:
 
 Python library for parsing HTML/XML:
 
-```python
+```python noexec
 from bs4 import BeautifulSoup
 
 # Parse HTML string
@@ -66,7 +66,7 @@ with open('page.html', 'r') as f:
 
 ### 3. Finding Elements
 
-```python
+```python noexec
 # Find first matching element
 h1 = soup.find('h1')
 div = soup.find('div', class_='content')
@@ -87,7 +87,7 @@ soup.select('[href]')             # Elements with href attribute
 
 ### 4. Extracting Data
 
-```python
+```python noexec
 # Get element text
 text = elem.get_text()
 text = elem.string
@@ -105,7 +105,7 @@ siblings = list(elem.next_siblings)
 
 ### 5. Web Requests
 
-```python
+```python noexec
 from urllib.request import urlopen
 
 # Fetch web page
@@ -121,7 +121,7 @@ soup = BeautifulSoup(html, 'html.parser')
 
 ### 6. Error Handling
 
-```python
+```python noexec
 try:
     response = urlopen(url)
     soup = BeautifulSoup(response, 'html.parser')
@@ -168,7 +168,7 @@ Work with EAN13 barcodes for DVDs.
 Store scraped DVD data in SQLite database.
 
 **Schema**:
-```sql
+```sql noexec
 CREATE TABLE dvds (
     id INTEGER PRIMARY KEY,
     ean TEXT UNIQUE,
@@ -210,7 +210,7 @@ See `src/` directory and original files:
 ## Common Patterns
 
 ### Basic Scraping Template
-```python
+```python noexec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
@@ -236,7 +236,7 @@ def scrape_page(url):
 ```
 
 ### Table Parsing
-```python
+```python noexec
 def parse_table(soup):
     table = soup.find('table', class_='data')
     rows = []
@@ -250,7 +250,7 @@ def parse_table(soup):
 ```
 
 ### Link Extraction
-```python
+```python noexec
 def extract_links(soup, base_url):
     links = []
     for a in soup.find_all('a', href=True):
@@ -323,7 +323,7 @@ def validate_ean13(code):
 
 BeautifulSoup only parses static HTML. For JavaScript-rendered content:
 
-```python
+```python noexec
 # Option 1: Use Selenium (loads JavaScript)
 from selenium import webdriver
 driver = webdriver.Chrome()

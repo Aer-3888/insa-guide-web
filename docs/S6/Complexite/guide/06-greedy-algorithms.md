@@ -27,7 +27,7 @@ L'algorithme glouton :
 
 ## 2. Schema general (du cours)
 
-```python
+```python noexec
 def chercher_glouton(i, X, S):
     y = choix(S[i])               # meilleur element selon critere local
     if predicat_partiel(X, i, y): # contrainte respectee ?
@@ -50,7 +50,7 @@ def chercher_glouton(i, X, S):
 
 **Critere glouton :** Trier par **heure de fin croissante**.
 
-```python
+```python noexec
 def reservation_salles(activites):
     activites.sort(key=lambda a: a.fin)
     selection = [activites[0]]

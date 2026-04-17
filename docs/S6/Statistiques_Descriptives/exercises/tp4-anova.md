@@ -43,7 +43,7 @@ $$Y_{ij} = \mu + \alpha_i + \varepsilon_{ij}, \quad \varepsilon_{ij} \overset{ii
 
 ### Package requis
 
-```r
+```r noexec
 install.packages("emmeans")
 library(emmeans)
 ```
@@ -64,7 +64,7 @@ Question : le type de viande influe-t-il sur les calories ? Sur le sodium ?
 
 #### Q1a : Charger les donnees
 
-```r
+```r noexec
 tab <- read.table("hotdogs.txt", header = TRUE)
 head(tab)
 str(tab)
@@ -126,7 +126,7 @@ tab$Type <- as.factor(tab$Type)
 
 #### Q2a : Resumer les variables Calories et Sodium
 
-```r
+```r noexec
 attach(tab)
 summary(Calories)
 summary(Sodium)
@@ -346,7 +346,7 @@ La derniere ligne du summary (`F-statistic: 16.08 on 2 and 51 DF, p-value: 4.632
 
 #### Q3e : Comparaisons multiples avec Bonferroni
 
-```r
+```r noexec
 library(emmeans)
 emmeans(mod1, pairwise ~ Type, adjust = "bonferroni")
 ```
@@ -435,7 +435,7 @@ Type3         57.62      26.42   2.181    0.034 *
 
 Meme si le coefficient Type3 est individuellement significatif ($p = 0.034$), le test **global** de l'ANOVA n'est pas significatif ($p = 0.172$). On ne peut pas conclure a un effet global du type sur le sodium.
 
-```r
+```r noexec
 detach(tab)
 ```
 
@@ -479,7 +479,7 @@ cafe  juge  acidite
 
 $$\text{acidite}_{ij} = \mu + \alpha_i + \varepsilon_{ij}, \quad \varepsilon_{ij} \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$$
 
-```r
+```r noexec
 cafe <- read.csv("cafe.csv")
 cafe$cafe <- as.factor(cafe$cafe)
 cafe$juge <- as.factor(cafe$juge)
@@ -686,7 +686,7 @@ print(comp_cafe)
 
 **Recommandation :** Pour un cafe **peu acide**, choisir le **cafe 1** (acidite moyenne = 3.17). Il est significativement moins acide que les cafes 2 ($p = 0.005$) et 3 ($p = 0.0004$).
 
-```r
+```r noexec
 detach(cafe)
 ```
 
@@ -728,7 +728,7 @@ position  cycle  textile  perte_poids
 
 ### Q1 : Installer et charger emmeans
 
-```r
+```r noexec
 install.packages("emmeans")
 library(emmeans)
 ```
@@ -737,7 +737,7 @@ library(emmeans)
 
 ### Q2 : Importer et convertir en facteurs
 
-```r
+```r noexec
 resistance <- read.table("resistance_textile.txt", header = TRUE)
 attach(resistance)
 
@@ -946,7 +946,7 @@ print(comp_textile)
 
 **Conclusion pour l'entreprise :** Choisir le **textile D** (ou B, car ils ne different pas significativement avec $p = 1.00$). Ces deux textiles ont la perte de poids la plus faible et sont **significativement plus resistants** que le textile A. Le textile C est intermediaire.
 
-```r
+```r noexec
 detach(resistance)
 ```
 

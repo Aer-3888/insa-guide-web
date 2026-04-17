@@ -11,7 +11,7 @@ En Prolog, une liste est soit :
 - La **liste vide** : `[]`
 - Un element (la **tete**) suivi du reste (la **queue**) : `[H|T]`
 
-```prolog
+```prolog noexec
 % Exemples
 []                  % liste vide
 [a]                 % = [a | []]

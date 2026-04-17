@@ -17,7 +17,7 @@ sidebar_position: 1
 
 Classification (supervised learning). We have labeled examples with 3 classes (setosa, versicolor, virginica) and we seek to predict the class of a new example from its features.
 
-```python
+```python noexec
 from sklearn.datasets import load_iris
 
 irisData = load_iris()
@@ -59,7 +59,7 @@ The features (`irisData.data`) and class labels (`irisData.target`) are stored i
 
 ## Part 2: Plotting Parts of the Data
 
-```python
+```python noexec
 %matplotlib inline
 from matplotlib import pyplot as plt
 
@@ -95,7 +95,7 @@ Looking only at sepal length and sepal width, setosa is easily separable from th
 
 ## Part 3: Classifying with kNN
 
-```python
+```python noexec
 from sklearn import neighbors
 
 nb_neighb = 15
@@ -132,7 +132,7 @@ The accuracy is measured on the training set itself, which gives the empirical (
 
 ### Train/test split and confusion matrix
 
-```python
+```python noexec
 from sklearn.model_selection import train_test_split
 import random
 from sklearn.metrics import confusion_matrix, accuracy_score
@@ -187,7 +187,7 @@ Whenever we overfit, the real error is significantly higher than the empirical e
 
 ### Manual K-Fold
 
-```python
+```python noexec
 from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
 
@@ -214,7 +214,7 @@ average accuracy: ~0.9733
 
 ### One-liner with cross_val_score
 
-```python
+```python noexec
 from sklearn.model_selection import cross_val_score
 
 t_scores = cross_val_score(clf, X, y, cv=10)
@@ -234,7 +234,7 @@ print(t_scores.mean())
 
 ### Loading the dataset
 
-```python
+```python noexec
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -262,7 +262,7 @@ Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach',
 
 ### Building Tmax and visualizing it
 
-```python
+```python noexec
 from sklearn import tree
 from graphviz import Source
 
@@ -306,7 +306,7 @@ This tree is called **Tmax** (the maximum tree). It is obtained by recursively a
 
 ### Alternative visualization with dtreeviz
 
-```python
+```python noexec
 from dtreeviz.trees import dtreeviz
 
 graph = dtreeviz(
@@ -342,7 +342,7 @@ All three parameters control tree complexity. Restrictive values (small depth, l
 
 ### Step 1: Get alpha values
 
-```python
+```python noexec
 path = clf.cost_complexity_pruning_path(X_train, y_train)
 ccp_alphas, impurities = path.ccp_alphas, path.impurities
 print(ccp_alphas)
@@ -360,7 +360,7 @@ Each alpha value corresponds to a pruning level. Alpha=0 gives Tmax, the last al
 
 ### Step 2: Train a tree for each alpha and plot the curves
 
-```python
+```python noexec
 from sklearn.metrics import accuracy_score
 
 # Train a tree for each alpha
@@ -420,7 +420,7 @@ The best alpha is approximately **0.020**. It gives the best accuracy on the val
 
 ### Pruned tree with best alpha
 
-```python
+```python noexec
 best_alpha = 0.020
 clf_ = tree.DecisionTreeClassifier(random_state=0, ccp_alpha=best_alpha)
 clf_.fit(X_train, y_train)
@@ -453,7 +453,7 @@ Validation score 0.8021978021978022
 
 ### Loading the weather.nominal.csv dataset
 
-```python
+```python noexec
 data = 'weather.nominal.csv'
 df = pd.read_csv(data)
 df.head()
@@ -483,7 +483,7 @@ df.head()
 
 ### Training a Categorical Naive Bayes
 
-```python
+```python noexec
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.naive_bayes import CategoricalNB
 
@@ -519,7 +519,7 @@ Train score 0.9285714285714286
 
 ### Q14: Explain what is displayed by `clf.class_log_prior_` and `clf.feature_log_prob_` and link that with what you've seen during the course. Do these figures correspond to what you get when doing it by yourself (explain)?
 
-```python
+```python noexec
 from math import exp, log
 
 print(clf.class_log_prior_)
@@ -567,7 +567,7 @@ The sklearn values do not match exactly because sklearn applies **Laplace smooth
 - P(overcast | no play) = (0+1)/(5+3) = 1/8 => ln(1/8) = -2.079 (matches)
 - P(rainy | no play) = (2+1)/(5+3) = 3/8 => ln(3/8) = -0.981 (matches)
 
-```python
+```python noexec
 # Verification
 print([log(x / 14) for x in [5, 9]])
 print("Outlook = 2 for class = 1")
@@ -613,7 +613,7 @@ Under the naive hypothesis: P(x|class) = P(x1|class) * P(x2|class) * ... * P(xn|
 
 #### Step 1: Load the data and compute prior probabilities
 
-```python
+```python noexec
 import pandas as pd
 from math import sqrt, log
 
@@ -638,7 +638,7 @@ print("A priori probabilities:", a_priori_prob)
 
 #### Step 2: Likelihoods for nominal features
 
-```python
+```python noexec
 # Outlook likelihoods
 likeli_outlook = [
     dict([
@@ -668,7 +668,7 @@ print("Windy likelihoods:", likeli_windy)
 
 #### Step 3: Likelihoods for continuous features (Normal distribution)
 
-```python
+```python noexec
 # Temperature: compute mean and standard deviation per class
 temp_mu = [
     sum(df[df["play"] == y]["temperature"]) / len(df[df["play"] == y].index)
@@ -721,7 +721,7 @@ print("P(humidity in 81 +/- 1):", likeli_hum_81)
 
 #### Step 4: Combine with Bayes' theorem
 
-```python
+```python noexec
 # Likelihood = product of all individual likelihoods (naive hypothesis)
 likelihood = [
     likeli_hum_81[y] * likeli_temp_73[y]

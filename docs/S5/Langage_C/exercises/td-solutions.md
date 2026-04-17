@@ -72,7 +72,7 @@ int main() {
 
 ### Exercice 3 : Nombres premiers
 
-```c
+```c noexec
 /* Q1 : Test d'un nombre premier */
 int main() {
     int n, estPremier = 1;
@@ -129,7 +129,7 @@ int estPremierOptimise(int n) {
 
 ### Exercice 4 : Recherche dans un tableau
 
-```c
+```c noexec
 /* Q1 : Recherche lineaire */
 #define MYMAXSIZE 20
 
@@ -188,7 +188,7 @@ int rechercheDichotomique(int tab[], int nb, int n) {
 
 ### Exercice : Tracage de pointeurs
 
-```c
+```c noexec
 void main() {
     int a = 1, b = 2, c = 3;
     int *ptr1, *ptr2;
@@ -206,7 +206,7 @@ void main() {
 
 ### Exercice : Passage par valeur vs reference
 
-```c
+```c noexec
 /* PASSAGE PAR VALEUR */
 int fonct(int a, int b) {
     a = 2 * a;    /* Modifie la COPIE locale */
@@ -238,7 +238,7 @@ int main() {
 
 ### Exercice : Robot mobile (struct + enum)
 
-```c
+```c noexec
 typedef enum {AVANCER, TOURNERG, TOURNERD} Action;
 typedef enum {NORD, OUEST, SUD, EST} Direction;
 
@@ -272,7 +272,7 @@ int tournerGauche(Mobile *m) {
 
 ### Exercice : Concatenation de chaines (allocation dynamique)
 
-```c
+```c noexec
 /* Version dynamique avec realloc si le buffer est trop petit */
 char* concatdyn(char* s1, char* s2, char* s3, unsigned int bufflen) {
     unsigned int len1 = strlen(s1);

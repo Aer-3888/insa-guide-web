@@ -23,7 +23,7 @@ Chaque tâche a:
 
 ## Structure de Données
 
-```c
+```c noexec
 typedef struct {
     int no;                 /* Numéro de la tâche */
     int duree;              /* Durée en heures */
@@ -82,7 +82,7 @@ make
 ## Points Importants
 
 ### 1. Ouverture de Fichiers
-```c
+```c noexec
 FILE *fichier = fopen("nom.txt", "r");  /* Lecture */
 if (fichier == NULL) {
     fprintf(stderr, "Erreur d'ouverture\n");
@@ -96,19 +96,19 @@ Modes:
 - `"a"` - Ajout (écrit à la fin)
 
 ### 2. Lecture Formatée avec fscanf()
-```c
+```c noexec
 fscanf(f, "%d %d %d", &t->no, &t->duree, &t->nbPred);
 fscanf(f, "%[^\n]s", t->titre);  /* Lit jusqu'au \n */
 ```
 
 ### 3. Écriture Formatée avec fprintf()
-```c
+```c noexec
 fprintf(f, "%d %d %d ", t->no, t->duree, t->nbPred);
 fprintf(f, "%s\n", t->titre);
 ```
 
 ### 4. Fermeture de Fichier
-```c
+```c noexec
 if (fclose(fichier)) {
     fprintf(stderr, "Erreur à la fermeture\n");
 }
@@ -116,7 +116,7 @@ if (fclose(fichier)) {
 **Important:** Toujours fermer les fichiers ouverts!
 
 ### 5. Détection de Fin de Fichier
-```c
+```c noexec
 while (!feof(fichier)) {
     /* Lecture... */
 }

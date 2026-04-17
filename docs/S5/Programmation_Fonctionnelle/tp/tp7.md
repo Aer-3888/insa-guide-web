@@ -77,7 +77,7 @@ let rec compter a =
 ```
 
 ### Path Generation
-```ocaml
+```ocaml noexec
 let rec ajout n l = match l with
   | [] -> []
   | x :: reste -> [n :: x] @ (ajout n reste)
@@ -88,7 +88,7 @@ let rec listbr a = match a with
 ```
 
 ### Tree Equality
-```ocaml
+```ocaml noexec
 let rec egal a b = match (a, b) with
   | Feuille f, Feuille slim -> f = slim
   | Noeud (n, d), Noeud (v, w) ->

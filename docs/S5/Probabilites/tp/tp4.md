@@ -70,7 +70,7 @@ Known σ = 1ml, target μ = 1000ml, n = 40 bottles.
 
 ## R Functions
 
-```r
+```r noexec
 t.test(x, mu=μ₀, conf.level=0.95)              # One-sample
 t.test(x, y, var.equal=TRUE, conf.level=0.95)  # Two-sample
 qt(p, df)                                        # t quantile

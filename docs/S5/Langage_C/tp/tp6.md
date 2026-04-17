@@ -49,7 +49,7 @@ ENAME --[INDI]--> EINDI (nouvel individu)
 
 ## Structure de l'Automate
 
-```c
+```c noexec
 /* États possibles */
 typedef enum {EINIT, EINDI, ENAME, NBETAT} Etat;
 
@@ -102,19 +102,19 @@ make gedcom
 ## Points Importants
 
 ### 1. Variables Statiques
-```c
+```c noexec
 static EtatAutomate etatA = {EINIT, ""};
 ```
 Une variable statique conserve sa valeur entre les appels de fonction (mémorisation de l'état).
 
 ### 2. Pointeurs de Fonctions
-```c
+```c noexec
 int (*scanner)(char *str, char *chIndi, char *extract);
 scanner = sscanf;  /* Fonction à utiliser pour l'extraction */
 ```
 
 ### 3. Lecture de Lignes
-```c
+```c noexec
 char ligne[TMAX];
 while (fgets(ligne, TMAX, fichier) != NULL) {
     /* Traitement de la ligne */
@@ -122,7 +122,7 @@ while (fgets(ligne, TMAX, fichier) != NULL) {
 ```
 
 ### 4. Switch sur Énumérations
-```c
+```c noexec
 switch (etatA.etat) {
     case EINIT:
         /* Actions en état initial */

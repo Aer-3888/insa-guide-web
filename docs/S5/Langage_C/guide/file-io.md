@@ -7,7 +7,7 @@ sidebar_position: 5
 
 ## 6.1 Ouverture et fermeture de fichiers
 
-```c
+```c noexec
 #include <stdio.h>
 
 /* Ouverture */
@@ -41,7 +41,7 @@ if (fclose(fichier)) {
 
 ### Pattern robuste (TP6)
 
-```c
+```c noexec
 typedef enum {ARRET, RETOUR} TypeRetour;
 
 FILE *ouvrirFichier(char *nom, char *mode, TypeRetour t) {
@@ -61,7 +61,7 @@ void fermerFichier(FILE *f) {
 
 ## 6.2 Lecture formatee (fscanf)
 
-```c
+```c noexec
 /* Lire des valeurs formatees depuis un fichier */
 int no, duree, nbPred;
 fscanf(fichier, "%d %d %d", &no, &duree, &nbPred);
@@ -75,7 +75,7 @@ fscanf(fichier, " %[^\n]", titre);
 
 ### Lecture complete d'une tache (TP4)
 
-```c
+```c noexec
 void saisieTache(Tache *t, FILE *f) {
     /* Lecture des attributs numeriques */
     fscanf(f, "%d %d %d", &(t->no), &(t->duree), &(t->nbPred));
@@ -103,7 +103,7 @@ void saisieTache(Tache *t, FILE *f) {
 
 ### Lecture de toutes les taches
 
-```c
+```c noexec
 int lireTachesFichier(char *nomFichier, Tache *tab) {
     FILE *fichier;
     
@@ -133,7 +133,7 @@ int lireTachesFichier(char *nomFichier, Tache *tab) {
 
 ## 6.3 Ecriture formatee (fprintf)
 
-```c
+```c noexec
 /* Ecrire dans un fichier */
 fprintf(fichier, "%d %d %d ", t.no, t.duree, t.nbPred);
 
@@ -146,7 +146,7 @@ fprintf(stdout, "Message normal\n");
 
 ### Ecriture de taches dans un fichier (TP4)
 
-```c
+```c noexec
 int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches) {
     FILE *fichier;
     
@@ -176,7 +176,7 @@ int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches) {
 
 ## 6.4 Lecture ligne par ligne (fgets)
 
-```c
+```c noexec
 char ligne[TMAX];
 
 /* fgets lit UNE ligne (incluant le '\n') */
@@ -188,7 +188,7 @@ while (fgets(ligne, TMAX, fichier) != NULL) {
 
 ### Traitement generique avec pointeur de fonction (TP6)
 
-```c
+```c noexec
 /* Fonction qui applique un traitement a chaque ligne du fichier */
 int traiterLignesFichier(FILE *f, int (*ptFonction)(char *)) {
     int cpt = 0;
@@ -215,7 +215,7 @@ traiterLignesFichier(pFile, NULL);  /* Affiche simplement les lignes */
 
 ## 6.5 Detection de fin de fichier
 
-```c
+```c noexec
 /* Methode 1 : feof (apres une lecture) */
 while (!feof(fichier)) {
     /* Lecture ... */
@@ -234,7 +234,7 @@ while (fgets(ligne, TMAX, fichier) != NULL) {
 ```
 
 **PIEGE avec feof :**
-```c
+```c noexec
 /* MAUVAIS : lit une tache de trop */
 while (!feof(fichier)) {
     saisieTache(&t, fichier);
@@ -254,7 +254,7 @@ while (!feof(fichier)) {
 
 ## 6.6 Lecture de notes avec calcul de moyenne (TD2)
 
-```c
+```c noexec
 int main() {
     float notes[NB_ELEVES_MAX];
     int nb_notes;
@@ -292,7 +292,7 @@ int main() {
 
 ## 6.7 Lecture avec taille dynamique (TP5)
 
-```c
+```c noexec
 /* Le fichier commence par le nombre d'elements */
 Tache *lireTachesFichierDyn(char *nomFichier, int *nbtaches) {
     FILE *fichier;
@@ -317,7 +317,7 @@ Tache *lireTachesFichierDyn(char *nomFichier, int *nbtaches) {
 
 ## 6.8 Fichiers CSV (cours - villes)
 
-```c
+```c noexec
 /* Lecture d'un fichier CSV avec sscanf */
 Ville convertir(char *chaine) {
     Ville v;

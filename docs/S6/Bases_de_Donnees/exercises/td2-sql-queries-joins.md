@@ -14,7 +14,7 @@ sidebar_position: 2
 
 ### Q1 : Pour chaque etudiant, liste des professeurs qui lui enseignent
 
-```sql
+```sql noexec
 SELECT DISTINCT e.nom AS etudiant, p.nom AS professeur
 FROM etudiant e
 JOIN enseignementSuivi es ON e.etudId = es.etudId
@@ -24,7 +24,7 @@ ORDER BY e.nom, p.nom;
 
 ### Q2 : Etudiants qui ont le meme nom qu'un professeur
 
-```sql
+```sql noexec
 SELECT e.nom, e.prenom
 FROM etudiant e
 WHERE e.nom IN (SELECT p.nom FROM professeur p);
@@ -37,7 +37,7 @@ JOIN professeur p ON e.nom = p.nom;
 
 ### Q3 : Paires d'etudiants qui suivent au moins un cours commun
 
-```sql
+```sql noexec
 SELECT DISTINCT e1.nom AS etudiant1, e2.nom AS etudiant2
 FROM enseignementSuivi es1
 JOIN enseignementSuivi es2 ON es1.ensId = es2.ensId
@@ -54,7 +54,7 @@ JOIN etudiant e2 ON es2.etudId = e2.etudId;
 
 ### Q4 : Etudiants inscrits a au moins un cours enseigne par le professeur P1
 
-```sql
+```sql noexec
 -- Avec IN
 SELECT e.nom, e.prenom
 FROM etudiant e
@@ -76,7 +76,7 @@ WHERE EXISTS (
 
 ### Q5 : Cours qui ne sont suivis par aucun etudiant
 
-```sql
+```sql noexec
 SELECT ens.ensId, ens.sujet
 FROM enseignement ens
 WHERE ens.ensId NOT IN (
@@ -92,7 +92,7 @@ WHERE es.etudId IS NULL;
 
 ### Q6 : Etudiant(s) inscrit(s) au plus grand nombre de cours
 
-```sql
+```sql noexec
 -- Methode 1 : sous-requete scalaire
 SELECT e.nom, e.prenom, COUNT(DISTINCT es.ensId) AS nb_cours
 FROM etudiant e
@@ -121,7 +121,7 @@ LIMIT 1;
 
 ### Q7 : Etudiants inscrits a TOUS les cours
 
-```sql
+```sql noexec
 -- Methode double NOT EXISTS
 SELECT e.nom, e.prenom
 FROM etudiant e
@@ -140,7 +140,7 @@ WHERE NOT EXISTS (
 
 ### Q8 : Professeurs qui enseignent TOUS les cours
 
-```sql
+```sql noexec
 SELECT p.nom, p.prenom
 FROM professeur p
 WHERE NOT EXISTS (
@@ -160,13 +160,13 @@ WHERE NOT EXISTS (
 
 ### Q9 : Traduire `sigma_{sujet='BD'}(enseignement)`
 
-```sql
+```sql noexec
 SELECT * FROM enseignement WHERE sujet = 'BD';
 ```
 
 ### Q10 : Traduire `pi_{nom}(etudiant) - pi_{nom}(professeur)`
 
-```sql
+```sql noexec
 SELECT DISTINCT nom FROM etudiant
 EXCEPT
 SELECT DISTINCT nom FROM professeur;

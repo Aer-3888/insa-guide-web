@@ -136,7 +136,7 @@ unlock_mutex()                  |              <- DEBLOQUE
 
 **Answer:**
 
-```c
+```c noexec
 /**
  * TP 5: Multicast Chat
  */
@@ -163,7 +163,7 @@ unlock_mutex()                  |              <- DEBLOQUE
 
 **Macro-based argument definition** -- allows generic parsing and help generation:
 
-```c
+```c noexec
 /**
  * Macro that defines the command-line flags.
  * Each FLAG(name, short_name, description) generates:
@@ -202,7 +202,7 @@ typedef struct {
 
 **Data structures** -- shared state and thread parameter structs:
 
-```c
+```c noexec
 /**
  * Shared input buffer between threads.
  * Protected by a mutex to prevent race conditions.
@@ -236,7 +236,7 @@ typedef struct {
 
 **Utility functions** -- error handling, pthread checking, safe allocation:
 
-```c
+```c noexec
 static const char *program_name = NULL;
 
 #define PRINTF_LIKE __attribute__((format(printf, 1, 2)))
@@ -287,7 +287,7 @@ void *safe_malloc(const size_t size) {
 
 **Answer:**
 
-```c
+```c noexec
 /**
  * Print program usage line.
  */
@@ -396,7 +396,7 @@ static void args_parse(Args *args, char *argv[], const char *program_name) {
 
 **Answer:**
 
-```c
+```c noexec
 /**
  * Mutex wrappers with error checking.
  */
@@ -482,7 +482,7 @@ In normal (canonical) mode, the terminal buffers input line by line: `fgetc()` o
 
 In raw mode, each character is available immediately (no need for Enter) and echo is disabled (we handle display ourselves via `input_string_draw`).
 
-```c
+```c noexec
 /**
  * Enable terminal raw mode.
  *
@@ -519,14 +519,14 @@ static void terminal_disable_raw_mode() {
 Message protocol format: `<username>@<message content>\n\0`
 
 Parsing on receive:
-```c
+```c noexec
 char *at = strchr(buffer, '@');    /* Find the '@' */
 *at = '\0';                         /* Split the string */
 const char *name = buffer;          /* Before '@' = username */
 const char *content = at + 1;       /* After '@' = message */
 ```
 
-```c
+```c noexec
 /**
  * Display a received message in format "HH:MM: name: content"
  * then redraw the input prompt.
@@ -569,7 +569,7 @@ static void print_message(char *message, const size_t message_length,
 
 The receive thread runs in an infinite loop. Since the socket has joined the multicast group (via `IP_ADD_MEMBERSHIP`) and is bound to the group port, `recv()` receives datagrams sent to the group. The thread is cancelled via `pthread_cancel()` when the send thread exits.
 
-```c
+```c noexec
 /**
  * Receive thread: listens for multicast messages.
  * Runs until cancelled by pthread_cancel().
@@ -610,7 +610,7 @@ The send thread handles:
 - Special key handling: Backspace (127), Ctrl+L (12), Ctrl+D (4/EOF)
 - On Enter: format the message as `username@content\n\0`, send via `sendto()` to multicast group, clear the buffer
 
-```c
+```c noexec
 /**
  * Send thread: reads keyboard and sends to multicast group.
  * Exits when user presses Ctrl+D (EOF).
@@ -727,7 +727,7 @@ The main function follows these steps:
 10. Cancel and join the receive thread (`pthread_cancel` + `pthread_join`)
 11. Cleanup resources
 
-```c
+```c noexec
 int main(const int argc, char *argv[]) {
     (void)argc;
 
@@ -1030,7 +1030,7 @@ Data:
 
 **Using additional options** :
 
-```c
+```c noexec
 /* Set TTL (how many router hops the packet can cross) */
 unsigned char ttl = 5;
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));

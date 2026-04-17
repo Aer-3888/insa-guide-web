@@ -63,7 +63,7 @@ Ces requetes recursives sont impossibles en SQL standard (sans CTE recursif).
 
 ## Execution
 
-```prolog
+```prolog noexec
 [eclipse 1]: ["tp_BDD"].
 [eclipse 2]: tests.
 

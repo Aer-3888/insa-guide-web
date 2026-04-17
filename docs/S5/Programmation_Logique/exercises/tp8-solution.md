@@ -11,7 +11,7 @@ sidebar_position: 8
 
 ## Representation
 
-```prolog
+```prolog noexec
 % Un domino : stone(A, B)
 stone(2, 4)    % domino [2:4]
 
@@ -46,7 +46,7 @@ stones3([stone(6, 6), stone(6, 5), stone(6, 4), stone(6, 3), stone(6, 2),
 
 ## Affichage des chaines
 
-```prolog
+```prolog noexec
 print_chains([]).
 print_chains([C | Rest]) :-
     print1chain(C),

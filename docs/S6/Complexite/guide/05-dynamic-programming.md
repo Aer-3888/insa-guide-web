@@ -39,7 +39,7 @@ Les memes sous-problemes apparaissent plusieurs fois dans l'arbre recursif.
 ## 3. Deux approches d'implementation
 
 ### Top-down (memoisation)
-```python
+```python noexec
 memo = {}
 def f_dyn(params):
     if params in memo: return memo[params]
@@ -53,7 +53,7 @@ def f_dyn(params):
 Avantage : facile a coder a partir du recursif naif.
 
 ### Bottom-up (iteratif)
-```python
+```python noexec
 def f_iter(n):
     table = initialiser_cas_de_base()
     for taille croissante:

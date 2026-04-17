@@ -86,7 +86,7 @@ Au lieu de calculer explicitement la transformation $\phi(\mathbf{x})$, on utili
 
 ### Binaire
 
-```python
+```python noexec
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
@@ -115,7 +115,7 @@ Scikit-learn gere automatiquement le multiclasse par **One-vs-One** (par defaut 
 - $K$ classes => $K(K-1)/2$ classifieurs binaires.
 - Prediction par vote majoritaire.
 
-```python
+```python noexec
 from sklearn.svm import SVC
 
 clf = SVC(kernel='rbf', C=10, gamma='scale', decision_function_shape='ovr')
@@ -128,7 +128,7 @@ clf.fit(X_train, y_train)
 
 Pour les gros datasets, `SVC` est lent ($O(n^2)$ a $O(n^3)$). Utiliser `LinearSVC` qui est beaucoup plus rapide :
 
-```python
+```python noexec
 from sklearn.svm import LinearSVC
 
 clf = LinearSVC(C=1.0, max_iter=10000)
@@ -151,7 +151,7 @@ clf.fit(X_train, y_train)
 
 ## 8. Exemple complet
 
-```python
+```python noexec
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.datasets import load_breast_cancer

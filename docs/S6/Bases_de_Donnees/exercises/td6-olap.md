@@ -69,7 +69,7 @@ erDiagram
 
 ### Q1 : Chiffre d'affaires par region
 
-```sql
+```sql noexec
 SELECT m.region, SUM(v.montant) AS ca
 FROM vente v
 JOIN magasin m ON v.magasinId = m.magasinId
@@ -79,7 +79,7 @@ ORDER BY ca DESC;
 
 ### Q2 : CA par region et par trimestre
 
-```sql
+```sql noexec
 SELECT m.region, t.trimestre, t.annee, SUM(v.montant) AS ca
 FROM vente v
 JOIN magasin m ON v.magasinId = m.magasinId
@@ -90,7 +90,7 @@ ORDER BY t.annee, t.trimestre, m.region;
 
 ### Q3 : ROLLUP -- sous-totaux hierarchiques
 
-```sql
+```sql noexec
 SELECT m.region, m.ville, SUM(v.montant) AS ca
 FROM vente v
 JOIN magasin m ON v.magasinId = m.magasinId
@@ -113,7 +113,7 @@ GROUP BY ROLLUP(m.region, m.ville);
 
 ### Q4 : CUBE -- toutes les combinaisons
 
-```sql
+```sql noexec
 SELECT m.region, p.categorie, SUM(v.montant) AS ca
 FROM vente v
 JOIN magasin m ON v.magasinId = m.magasinId
@@ -125,7 +125,7 @@ GROUP BY CUBE(m.region, p.categorie);
 
 ### Q5 : GROUPING SETS
 
-```sql
+```sql noexec
 -- Seulement les totaux par region ET les totaux par categorie (pas les deux ensemble)
 SELECT m.region, p.categorie, SUM(v.montant) AS ca
 FROM vente v
@@ -139,7 +139,7 @@ GROUP BY GROUPING SETS (
 
 ### Q6 : Distinguer vrais NULL des sous-totaux avec GROUPING()
 
-```sql
+```sql noexec
 SELECT
     m.region,
     p.categorie,

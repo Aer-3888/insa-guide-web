@@ -73,7 +73,7 @@ let c = {h = As; c = Coeur}
 ```
 
 ### Complex Pattern Matching
-```ocaml
+```ocaml noexec
 let rec reduc l = match l with
   | (e1::l1')::(l2)::(e3::l3')::l' ->
       if e1.c = e3.c || e1.h = e3.h then ...

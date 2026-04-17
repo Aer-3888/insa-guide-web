@@ -37,7 +37,7 @@ Les cartes sont representees par `carte(Hauteur, Couleur)` et les mains par
 
 ## Execution
 
-```prolog
+```prolog noexec
 [eclipse 1]: ["cartes"].
 [eclipse 2]: test.
 

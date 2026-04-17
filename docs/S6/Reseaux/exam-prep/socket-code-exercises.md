@@ -13,7 +13,7 @@ Exercices types de code socket en C, tels qu'ils apparaissent en DS.
 
 **Donne** : completer les blancs dans ce serveur TCP echo.
 
-```c
+```c noexec
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -71,7 +71,7 @@ int main() {
 
 ## Exercice 2 : Completer un client UDP
 
-```c
+```c noexec
 int main(int argc, char **argv) {
     int sock = socket(AF_INET, _____, 0);          // (a)
 
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
 
 **Solution :**
 
-```c
+```c noexec
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -165,7 +165,7 @@ int main(int argc, char **argv) {
 
 **Donne** : le code suivant contient 5 erreurs. Les trouver.
 
-```c
+```c noexec
 int main() {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);     // 1
 
@@ -203,7 +203,7 @@ int main() {
 
 **Enonce** : completer le code pour rejoindre le groupe multicast 224.0.0.42 sur le port 5000.
 
-```c
+```c noexec
 int sock = socket(AF_INET, SOCK_DGRAM, 0);
 
 // Rejoindre le groupe multicast
@@ -238,7 +238,7 @@ bind(sock, (struct sockaddr *)&addr, sizeof(addr));
 
 ## Aide-memoire : fonctions a connaitre
 
-```c
+```c noexec
 // Creation
 socket(AF_INET, SOCK_STREAM/SOCK_DGRAM, 0)
 

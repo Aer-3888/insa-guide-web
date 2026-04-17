@@ -37,7 +37,7 @@ X_centered = X - mean(X)           # Centering (centrage)
 X_scaled = X_centered / std(X)     # Reduction (reduction)
 ```
 
-```python
+```python noexec
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
@@ -99,7 +99,7 @@ Keep components with eigenvalue > 1 (for normalized PCA). Rationale: a component
 ### Rule 3: Scree Plot (Diagramme des valeurs propres)
 Plot eigenvalues and look for an "elbow" -- a point where the decrease in eigenvalue slows significantly.
 
-```python
+```python noexec
 pca = PCA()
 pca.fit(X_scaled)
 
@@ -170,7 +170,7 @@ The correlation circle plots each original variable as a point within a unit cir
 
 ### Computing Correlations (Loadings)
 
-```python
+```python noexec
 # Method 1: From pca.components_ (true correlation between variable and axis)
 loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
 
@@ -182,7 +182,7 @@ loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
 
 ### Drawing the Correlation Circle
 
-```python
+```python noexec
 fig, ax = plt.subplots(figsize=(8, 8))
 
 # Unit circle
@@ -241,7 +241,7 @@ Since sum_j r(x_j, F_k)^2 = lambda_k (for normalized PCA), this gives a proporti
 
 **Note on the TP1 notebook**: The `loadings` DataFrame in the TP stores `pca.components_.T` (the eigenvector weights, not the correlations). Squaring these gives the squared weights, which are proportional to contributions since each eigenvector is unit-norm (components sum to 1).
 
-```python
+```python noexec
 loadings = pd.DataFrame(
     pca.components_.T,
     columns=[f'PC{i+1}' for i in range(n_components)],
@@ -256,7 +256,7 @@ contributions = loadings ** 2
 
 After PCA, you can color the factorial plane by a qualitative variable to see if it explains the axes:
 
-```python
+```python noexec
 # Color by SalePrice (quantitative)
 plt.scatter(X_pca[:, 0], X_pca[:, 1], c=df['SalePrice'], cmap='viridis')
 
@@ -295,7 +295,7 @@ This is the **CAH-MIXTE** method covered in TP2. See [Chapter 3: Clustering](/S5
 
 ### PCA Pipeline
 
-```python
+```python noexec
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 

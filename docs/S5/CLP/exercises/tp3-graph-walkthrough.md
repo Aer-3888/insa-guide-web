@@ -20,7 +20,7 @@ This TP implements graph algorithms in ARM assembly: depth-first search (DFS), v
 **Answer:**
 
 **C equivalent:**
-```c
+```c noexec
 struct Graph {
     int   nbSommets;     // offset 0:  number of vertices
     char* nom;           // offset 4:  pointer to array of vertex names

@@ -18,7 +18,7 @@ classiques : parcours, sous-arbre, remplacement, isomorphisme, ABR.
 
 ## Representation
 
-```prolog
+```prolog noexec
 % Arbre vide
 vide
 
@@ -50,7 +50,7 @@ arb_bin(1,
 
 ## Execution
 
-```prolog
+```prolog noexec
 [eclipse 1]: ["arbres"].
 [eclipse 2]: ["tp_arbres_tests"].
 [eclipse 3]: tests.

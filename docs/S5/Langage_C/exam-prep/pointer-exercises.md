@@ -13,7 +13,7 @@ Les questions de pointeurs sont les plus difficiles de l'examen. Voici des exerc
 
 **Remplir le tableau d'etat des variables apres chaque ligne :**
 
-```c
+```c noexec
 int a = 10, b = 20, c = 30;
 int *p1 = &a;
 int *p2 = &b;
@@ -45,7 +45,7 @@ L5     | 20 | 35 | 100 | &c | &c | *p1(=c) = 100
 
 **Que produit ce programme ?**
 
-```c
+```c noexec
 void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
@@ -87,7 +87,7 @@ y = 10          x <- y (=10)             y = 5
 
 **Que produit ce programme ?**
 
-```c
+```c noexec
 int tab[] = {10, 20, 30, 40, 50};
 int *p = tab;
 
@@ -123,7 +123,7 @@ Sortie :
 
 **Que produit ce programme ?**
 
-```c
+```c noexec
 typedef struct {
     int x, y;
 } Point;
@@ -171,7 +171,7 @@ a.x = 100 : modifie seulement a (b est une COPIE independante)
 
 **Identifier les erreurs et fuites memoire :**
 
-```c
+```c noexec
 int main() {
     int *p = (int *)malloc(5 * sizeof(int));
     
@@ -206,7 +206,7 @@ ERREUR 3 : Utilisation de q apres free(q) -> use-after-free !
 ```
 
 **Version corrigee :**
-```c
+```c noexec
 int main() {
     int *p = (int *)malloc(5 * sizeof(int));
     if (p == NULL) return 1;
@@ -235,7 +235,7 @@ int main() {
 
 **Dessiner l'etat de la memoire apres chaque operation :**
 
-```c
+```c noexec
 int main() {
     int *a = (int *)malloc(sizeof(int));
     *a = 42;
@@ -281,7 +281,7 @@ Sortie: 52 52
 
 **Que produit ce code ?**
 
-```c
+```c noexec
 void ajouter(int **ptr) {
     *ptr = (int *)malloc(sizeof(int));
     **ptr = 99;

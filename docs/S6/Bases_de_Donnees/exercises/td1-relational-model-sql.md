@@ -43,7 +43,7 @@ CREATE TABLE enseignementSuivi (
 
 ### Q1 : Liste des prenoms et noms des etudiants
 
-```sql
+```sql noexec
 SELECT nom, prenom
 FROM etudiant;
 ```
@@ -52,7 +52,7 @@ FROM etudiant;
 
 ### Q2 : Professeurs dont le nom contient la lettre 'a'
 
-```sql
+```sql noexec
 SELECT nom, prenom
 FROM professeur
 WHERE nom LIKE '%a%';
@@ -64,7 +64,7 @@ WHERE nom LIKE '%a%';
 
 ### Q3 : Produit cartesien etudiant-professeur
 
-```sql
+```sql noexec
 SELECT etudId, profId
 FROM etudiant, professeur;
 ```
@@ -79,7 +79,7 @@ FROM etudiant, professeur;
 
 ### Q4 : Etudiants et les cours qu'ils suivent
 
-```sql
+```sql noexec
 SELECT e.nom, e.prenom, ens.sujet
 FROM etudiant e
 JOIN enseignementSuivi es ON e.etudId = es.etudId
@@ -90,7 +90,7 @@ JOIN enseignement ens ON es.ensId = ens.ensId;
 
 ### Q5 : Etudiants qui suivent le cours 'BD'
 
-```sql
+```sql noexec
 SELECT e.nom, e.prenom
 FROM etudiant e
 JOIN enseignementSuivi es ON e.etudId = es.etudId
@@ -100,7 +100,7 @@ WHERE ens.sujet = 'BD';
 
 ### Q6 : Etudiants qui ne suivent aucun cours
 
-```sql
+```sql noexec
 SELECT e.nom, e.prenom
 FROM etudiant e
 LEFT JOIN enseignementSuivi es ON e.etudId = es.etudId
@@ -136,7 +136,7 @@ pi_{etudId, ensId}(enseignementSuivi) div pi_{ensId}(enseignement)
 
 **En SQL :**
 
-```sql
+```sql noexec
 SELECT e.nom
 FROM etudiant e
 WHERE NOT EXISTS (
@@ -155,7 +155,7 @@ WHERE NOT EXISTS (
 
 ### Q9 : Nombre d'etudiants par cours
 
-```sql
+```sql noexec
 SELECT ens.sujet, COUNT(DISTINCT es.etudId) AS nb_etudiants
 FROM enseignement ens
 JOIN enseignementSuivi es ON ens.ensId = es.ensId
@@ -164,7 +164,7 @@ GROUP BY ens.ensId, ens.sujet;
 
 ### Q10 : Cours ayant plus de 10 etudiants inscrits
 
-```sql
+```sql noexec
 SELECT ens.sujet, COUNT(DISTINCT es.etudId) AS nb_etudiants
 FROM enseignement ens
 JOIN enseignementSuivi es ON ens.ensId = es.ensId
@@ -174,7 +174,7 @@ HAVING COUNT(DISTINCT es.etudId) > 10;
 
 ### Q11 : Professeur qui enseigne le plus de cours differents
 
-```sql
+```sql noexec
 SELECT p.nom, p.prenom, COUNT(DISTINCT es.ensId) AS nb_cours
 FROM professeur p
 JOIN enseignementSuivi es ON p.profId = es.profId

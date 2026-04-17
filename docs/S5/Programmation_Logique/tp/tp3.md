@@ -55,7 +55,7 @@ On utilise uniquement `membre` et `hors_de` (+ recursivite).
 
 ## Execution
 
-```prolog
+```prolog noexec
 [eclipse 1]: ["listes"].
 [eclipse 2]: ["tp_listes_tests"].
 [eclipse 3]: tests.

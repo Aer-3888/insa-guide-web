@@ -32,7 +32,7 @@ flowchart TD
 
 ### Requete de base
 
-```sql
+```sql noexec
 -- Tous les etudiants
 SELECT nom, prenom FROM etudiant;
 
@@ -62,7 +62,7 @@ WHERE nom LIKE 'D%' AND prenom IS NOT NULL;
 
 ### DISTINCT : supprimer les doublons
 
-```sql
+```sql noexec
 -- Villes distinctes des clients
 SELECT DISTINCT ville FROM client;
 ```
@@ -89,7 +89,7 @@ flowchart LR
 
 ### INNER JOIN
 
-```sql
+```sql noexec
 -- Clients avec leurs factures (seuls les clients ayant des factures)
 SELECT c.name, f.amount
 FROM customer c
@@ -98,7 +98,7 @@ INNER JOIN facture f ON c.customerId = f.customerId;
 
 ### LEFT JOIN
 
-```sql
+```sql noexec
 -- Tous les clients, meme sans facture
 SELECT c.name, f.amount
 FROM customer c
@@ -113,7 +113,7 @@ WHERE f.factureId IS NULL;
 
 ### CROSS JOIN (produit cartesien)
 
-```sql
+```sql noexec
 -- Toutes les combinaisons etudiant-professeur
 SELECT e.nom, p.nom
 FROM etudiant e CROSS JOIN professeur p;
@@ -136,7 +136,7 @@ FROM etudiant e CROSS JOIN professeur p;
 
 ### Sous-requete avec IN
 
-```sql
+```sql noexec
 -- Clients avec au moins une facture > 999 euros
 SELECT name
 FROM customer
@@ -147,7 +147,7 @@ WHERE customerId IN (
 
 ### Sous-requete avec EXISTS
 
-```sql
+```sql noexec
 -- Clients avec au moins une facture
 SELECT c.name
 FROM customer c
@@ -167,7 +167,7 @@ WHERE EXISTS (
 
 ### Sous-requete dans FROM
 
-```sql
+```sql noexec
 -- Montant moyen par client, filtre
 SELECT sub.name, sub.moyenne
 FROM (
@@ -181,7 +181,7 @@ WHERE sub.moyenne > 500;
 
 ### Sous-requete scalaire
 
-```sql
+```sql noexec
 -- Clients dont le total depasse la moyenne globale
 SELECT c.name, SUM(f.amount) AS total
 FROM customer c
@@ -208,7 +208,7 @@ HAVING SUM(f.amount) > (SELECT AVG(amount) FROM facture);
 
 ### GROUP BY
 
-```sql
+```sql noexec
 -- Nombre de factures et total par client
 SELECT c.name,
        COUNT(*) AS nb_factures,
@@ -221,7 +221,7 @@ GROUP BY c.customerId, c.name;
 
 ### HAVING : filtrer les groupes
 
-```sql
+```sql noexec
 -- Clients avec plus de 5 factures
 SELECT c.name, COUNT(*) AS nb
 FROM customer c
@@ -232,7 +232,7 @@ HAVING COUNT(*) > 5;
 
 ### WHERE vs HAVING
 
-```sql
+```sql noexec
 -- WHERE filtre les LIGNES (avant GROUP BY)
 -- HAVING filtre les GROUPES (apres GROUP BY)
 SELECT customerId, AVG(amount) AS moy
@@ -246,7 +246,7 @@ HAVING AVG(amount) > 500;  -- garder clients avec moyenne > 500
 
 ## 6. ORDER BY et LIMIT
 
-```sql
+```sql noexec
 -- Trier par montant decroissant, limiter a 10 resultats
 SELECT name, total
 FROM vue_clients_totaux
@@ -270,7 +270,7 @@ LIMIT 10 OFFSET 10;
 | Intersection | `INTERSECT` | Lignes de A **et** B |
 | Difference | `EXCEPT` | Lignes de A **pas dans** B |
 
-```sql
+```sql noexec
 -- Etudiants en maths OU physique
 SELECT etudId FROM inscription_maths
 UNION
@@ -297,7 +297,7 @@ SELECT etudId FROM inscription_physique;
 
 ### Methode 1 : double NOT EXISTS
 
-```sql
+```sql noexec
 -- Etudiants inscrits a TOUS les cours
 SELECT e.nom
 FROM etudiant e
@@ -317,7 +317,7 @@ WHERE NOT EXISTS (
 
 ### Methode 2 : comptage
 
-```sql
+```sql noexec
 -- Etudiants inscrits a TOUS les cours (par comptage)
 SELECT e.nom
 FROM etudiant e

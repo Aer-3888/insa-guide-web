@@ -3,6 +3,7 @@ import type {ReactNode} from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import CodeBlock from '@theme-original/CodeBlock';
 import {useRuntime} from '../runtimes/RuntimeContext';
+import {usePageCode} from './PageCodeContext';
 import type {ExecutionResult} from '../runtimes/types';
 import styles from './CodeRunner.module.css';
 
@@ -51,7 +52,9 @@ function formatTime(ms: number): string {
 
 function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
   const [result, setResult] = useState<ExecutionResult | null>(null);
+  const [setupInfo, setSetupInfo] = useState<string | null>(null);
   const {status, info, execute, interrupt} = useRuntime(language);
+  const {getPrecedingBlocks} = usePageCode(language, code);
 
   const isExecuting = status === 'executing';
   const isLoading = status === 'loading';
@@ -59,9 +62,20 @@ function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
 
   const handleRun = useCallback(async () => {
     setResult(null);
+    setSetupInfo(null);
+
+    const preceding = getPrecedingBlocks();
+    if (preceding.length > 0) {
+      setSetupInfo(`Execution des ${preceding.length} bloc(s) precedent(s)...`);
+      for (const block of preceding) {
+        await execute(block, {});
+      }
+      setSetupInfo(null);
+    }
+
     const execResult = await execute(code, {});
     setResult(execResult);
-  }, [execute, code]);
+  }, [execute, code, getPrecedingBlocks]);
 
   const handleStop = useCallback(() => {
     interrupt();
@@ -111,9 +125,16 @@ function CodeRunnerInner({code, language}: CodeRunnerProps): ReactNode {
         )}
       </div>
 
-      {(isActive || result) && (
+      {(isActive || setupInfo || result) && (
         <div className={styles.output} role="region" aria-label="Execution output">
-          {isActive && (
+          {setupInfo && (
+            <div className={styles.loadingRow}>
+              <SpinnerIcon />
+              <span>{setupInfo}</span>
+            </div>
+          )}
+
+          {isActive && !setupInfo && (
             <div className={styles.loadingRow}>
               <SpinnerIcon />
               <span>

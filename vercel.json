@@ -4,6 +4,18 @@
   "outputDirectory": "build",
   "installCommand": "npm install",
   "framework": "docusaurus-2",
+  "redirects": [
+    {
+      "source": "/S5/:path(.*)",
+      "destination": "/s5/:path",
+      "permanent": true
+    },
+    {
+      "source": "/S6/:path(.*)",
+      "destination": "/s6/:path",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

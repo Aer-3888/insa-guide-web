@@ -465,7 +465,38 @@ function main() {
         courseManifest.sections["tp"] = tpFiles;
       }
 
+      // --- Generate course index.md landing page ---
       if (courseFileCount > 0) {
+        const courseDestDir = path.join(DOCS_DIR, semester, course);
+        const indexPath = path.join(courseDestDir, "index.md");
+        const sections = [];
+        if (courseManifest.sections["guide"]) {
+          sections.push("- [Guide](guide/readme)");
+        }
+        if (courseManifest.sections["exercises"]) {
+          sections.push("- [Exercices](exercises/readme)");
+        }
+        if (courseManifest.sections["exam-prep"]) {
+          sections.push("- [Preparation Examen](exam-prep/readme)");
+        }
+        if (courseManifest.sections["tp"]) {
+          sections.push("- [TP (Enonces)](tp/)");
+        }
+        const indexContent = [
+          "---",
+          `title: "${courseTitle.replace(/"/g, '\\"')}"`,
+          "sidebar_position: 0",
+          "---",
+          "",
+          `# ${courseTitle}`,
+          "",
+          ...sections,
+          "",
+        ].join("\n");
+        mkdirSafe(courseDestDir);
+        fs.writeFileSync(indexPath, indexContent, "utf-8");
+        courseFileCount++;
+
         console.log(`Syncing ${semester}/${course}... ${courseFileCount} files`);
         semesterManifest.courses.push(courseManifest);
         totalFiles += courseFileCount;

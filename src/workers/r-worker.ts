@@ -39,14 +39,14 @@ interface WebRCaptureOutput {
 
 interface WebRCaptureResult {
   output: WebRCaptureOutput[];
-  images: Array<{ type: string; data: Uint8Array }>;
+  images: ImageBitmap[];
   result: unknown;
 }
 
 interface WebRShelter {
   captureR: (
     code: string,
-    options?: { withAutoprint?: boolean },
+    options?: { withAutoprint?: boolean; captureGraphics?: boolean | { width?: number; height?: number } },
   ) => Promise<WebRCaptureResult>;
   purge: () => Promise<void>;
 }
@@ -71,12 +71,18 @@ function postResponse(response: WorkerResponse): void {
   postMessage(response);
 }
 
-function arrayBufferToBase64(buffer: Uint8Array): string {
+async function imageBitmapToDataURL(bitmap: ImageBitmap): Promise<string> {
+  const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+  const ctx = canvas.getContext('2d')!;
+  ctx.drawImage(bitmap, 0, 0);
+  const blob = await canvas.convertToBlob({ type: 'image/png' });
+  const buffer = await blob.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
   let binary = '';
-  for (let i = 0; i < buffer.byteLength; i++) {
-    binary += String.fromCharCode(buffer[i]);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
   }
-  return btoa(binary);
+  return `data:image/png;base64,${btoa(binary)}`;
 }
 
 async function initWebR(): Promise<void> {
@@ -167,7 +173,10 @@ async function executeCode(code: string, id: number): Promise<void> {
       return;
     }
 
-    const result = await shelter.captureR(sanitized, { withAutoprint: true });
+    const result = await shelter.captureR(sanitized, {
+      withAutoprint: true,
+      captureGraphics: { width: 600, height: 400 },
+    });
 
     const prefix = warnings.length > 0 ? warnings.join('\n') + '\n\n' : '';
     const stdout = prefix + result.output
@@ -180,12 +189,11 @@ async function executeCode(code: string, id: number): Promise<void> {
       .map((o) => o.data)
       .join('\n');
 
-    // Convert any captured plot images to base64 data URLs.
     const images: string[] = [];
     if (result.images && result.images.length > 0) {
       for (const img of result.images) {
-        const base64 = arrayBufferToBase64(img.data);
-        images.push(`data:image/png;base64,${base64}`);
+        const dataUrl = await imageBitmapToDataURL(img);
+        images.push(dataUrl);
       }
     }
 

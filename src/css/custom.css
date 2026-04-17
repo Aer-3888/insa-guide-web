@@ -1,0 +1,220 @@
+:root {
+  --ifm-color-primary: #003366;
+  --ifm-color-primary-dark: #002d5c;
+  --ifm-color-primary-darker: #002a57;
+  --ifm-color-primary-darkest: #002347;
+  --ifm-color-primary-light: #003970;
+  --ifm-color-primary-lighter: #003c75;
+  --ifm-color-primary-lightest: #004585;
+  --ifm-color-accent: #0066CC;
+  --ifm-code-font-size: 95%;
+  --ifm-heading-font-weight: 700;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 51, 102, 0.1);
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --section-bg-alt: #f8fafc;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #4d9aff;
+  --ifm-color-primary-dark: #2d87ff;
+  --ifm-color-primary-darker: #1d7dff;
+  --ifm-color-primary-darkest: #0066e6;
+  --ifm-color-primary-light: #6dadff;
+  --ifm-color-primary-lighter: #7db7ff;
+  --ifm-color-primary-lightest: #add3ff;
+  --ifm-color-accent: #66b3ff;
+  --docusaurus-highlighted-code-line-bg: rgba(77, 154, 255, 0.15);
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --section-bg-alt: #0f172a;
+}
+
+/* ---- Hero ---- */
+
+.hero--insa {
+  background: linear-gradient(135deg, #003366 0%, #0066CC 100%);
+  color: #ffffff;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+[data-theme='dark'] .hero--insa {
+  background: linear-gradient(135deg, #001a33 0%, #003d7a 100%);
+}
+
+.hero--insa .hero__title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.hero--insa .hero__subtitle {
+  font-size: 1.35rem;
+  opacity: 0.9;
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ---- Course Cards ---- */
+
+.course-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.course-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: inherit;
+}
+
+.course-card__code {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ifm-color-accent);
+  margin-bottom: 0.25rem;
+}
+
+.course-card__name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-font-color-base);
+}
+
+.course-card__topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.course-card__topic {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary-darkest);
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+[data-theme='dark'] .course-card__topic {
+  background: rgba(77, 154, 255, 0.15);
+  color: var(--ifm-color-primary-lighter);
+}
+
+/* ---- Features Section ---- */
+
+.features-section {
+  background: var(--section-bg-alt);
+  padding: 4rem 0;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.feature-card__icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card__desc {
+  font-size: 0.95rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1.6;
+}
+
+/* ---- Code Runner ---- */
+
+.code-runner {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.code-runner__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: var(--ifm-color-primary-darkest);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.code-runner__editor {
+  min-height: 200px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9rem;
+}
+
+.code-runner__output {
+  border-top: 1px solid var(--card-border);
+  padding: 0.75rem 1rem;
+  background: var(--section-bg-alt);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85rem;
+  min-height: 60px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* ---- Section Headings ---- */
+
+.section-heading {
+  font-size: 1.75rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-subheading {
+  font-size: 1rem;
+  text-align: center;
+  color: var(--ifm-font-color-secondary);
+  margin-bottom: 2.5rem;
+}
+
+/* ---- Grid Layouts ---- */
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}

@@ -1,0 +1,768 @@
+{
+  "semesters": [
+    {
+      "id": "S5",
+      "courses": [
+        {
+          "id": "ADFD",
+          "title": "ADFD -- Analyse de Donnees et Fouille de Donnees (Data Analysis & Data Mining)",
+          "sections": {
+            "guide": [
+              "01-preprocessing.md",
+              "02-pca.md",
+              "03-clustering.md",
+              "04-data-mining-nlp.md",
+              "05-pandas.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "tp1-solution.md",
+              "tp2-solution.md",
+              "tp3-4-solution.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exam-walkthrough.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3-4.md"
+            ]
+          }
+        },
+        {
+          "id": "CLP",
+          "title": "CLP -- Conception Logique des Processeurs (Processor Logic Design)",
+          "sections": {
+            "guide": [
+              "readme.md",
+              "assembly-arm.md",
+              "combinational-logic.md",
+              "logisim-circuits.md",
+              "pgcd-arithmetic.md",
+              "processor-architecture.md",
+              "sequential-logic.md"
+            ],
+            "exercises": [
+              "td-assembly.md",
+              "td-combinational.md",
+              "td-processor.md",
+              "td-sequential.md",
+              "tp1-gcd-walkthrough.md",
+              "tp2-matrix-walkthrough.md",
+              "tp3-graph-walkthrough.md",
+              "tp4-gpio-walkthrough.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exam-assembly-walkthrough.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md"
+            ]
+          }
+        },
+        {
+          "id": "CPOO",
+          "title": "CPOO -- Conception et Programmation Orientees Objet",
+          "sections": {
+            "guide": [
+              "01-oop-fundamentals.md",
+              "02-inheritance-polymorphism.md",
+              "03-design-patterns.md",
+              "04-uml-diagrams.md",
+              "05-collections-generics.md",
+              "06-exception-handling.md",
+              "07-best-practices-testing.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "td-solutions.md",
+              "tp1-solution.md",
+              "tp2-solution.md",
+              "tp3-solution.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exam-walkthroughs.md",
+              "question-bank.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3-gitlab-exercises.md"
+            ]
+          }
+        },
+        {
+          "id": "ITI",
+          "title": "ITI - Introduction aux Techniques de l'Ingenieur",
+          "sections": {
+            "guide": [
+              "readme.md",
+              "build-tools.md",
+              "debugging.md",
+              "git.md",
+              "python-basics.md",
+              "qt-gui.md",
+              "regex.md",
+              "shell-bash.md",
+              "sql-sqlite.md",
+              "web-scraping.md"
+            ],
+            "exercises": [
+              "tp-automation.md",
+              "tp-build-tools.md",
+              "tp-debugging.md",
+              "tp-gedcom.md",
+              "tp-git.md",
+              "tp-python-basics.md",
+              "tp-qt-gui.md",
+              "tp-regex.md",
+              "tp-shell-advanced.md",
+              "tp-shell-basics.md",
+              "tp-sqlite.md",
+              "tp-web-scraping.md"
+            ],
+            "exam-prep": [
+              "readme.md"
+            ],
+            "tp": [
+              "tp10-sqlite.md",
+              "tp11-web-scraping.md",
+              "tp12-automation.md",
+              "tp1-shell-basics.md",
+              "tp2-shell-advanced.md",
+              "tp3-regex.md",
+              "tp4-gedcom.md",
+              "tp5-build-tools.md",
+              "tp6-debugging.md",
+              "tp7-git.md",
+              "tp8-python-basics.md",
+              "tp9-qt-gui.md"
+            ]
+          }
+        },
+        {
+          "id": "Langage_C",
+          "title": "Langage C (ESM05) - Guide de Cours Complet",
+          "sections": {
+            "guide": [
+              "readme.md",
+              "advanced-topics.md",
+              "c-fundamentals.md",
+              "dynamic-memory.md",
+              "file-io.md",
+              "pointers-and-memory.md",
+              "preprocessor-and-compilation.md",
+              "strings.md",
+              "structures-and-unions.md"
+            ],
+            "exercises": [
+              "td-solutions.md",
+              "tp1-solution.md",
+              "tp2-solution.md",
+              "tp3-solution.md",
+              "tp4-solution.md",
+              "tp5-solution.md",
+              "tp6-solution.md",
+              "tp7-solution.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "annales-walkthrough.md",
+              "pointer-exercises.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md",
+              "tp5.md",
+              "tp6.md",
+              "tp7.md"
+            ]
+          }
+        },
+        {
+          "id": "Probabilites",
+          "title": "Probabilites -- Course Guide",
+          "sections": {
+            "guide": [
+              "01-probability-foundations.md",
+              "02-discrete-random-variables.md",
+              "03-continuous-random-variables.md",
+              "04-limit-theorems.md",
+              "05-confidence-intervals.md",
+              "06-hypothesis-testing.md",
+              "07-joint-distributions.md",
+              "08-r-programming.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "tp1-solution.md",
+              "tp2-solution.md",
+              "tp3-solution.md",
+              "tp4-solution.md",
+              "tp5-solution.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "distribution-recognition.md",
+              "formula-sheet.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md",
+              "tp5.md"
+            ]
+          }
+        },
+        {
+          "id": "Programmation_Fonctionnelle",
+          "title": "Programmation Fonctionnelle -- Guide de cours",
+          "sections": {
+            "guide": [
+              "01-ocaml-basics.md",
+              "02-pattern-matching.md",
+              "03-recursion.md",
+              "04-higher-order-functions.md",
+              "05-algebraic-data-types.md",
+              "06-lists-and-trees.md",
+              "07-modules-and-functors.md",
+              "08-imperative-features.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "tp1-solution.md",
+              "tp2-solution.md",
+              "tp3-solution.md",
+              "tp4-solution.md",
+              "tp5-solution.md",
+              "tp6-solution.md",
+              "tp7-solution.md",
+              "tp8-solution.md",
+              "tp9-solution.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exam-2019.md",
+              "exam-2020.md",
+              "exam-2023.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md",
+              "tp5.md",
+              "tp6.md",
+              "tp7.md",
+              "tp8.md",
+              "tp9.md"
+            ]
+          }
+        },
+        {
+          "id": "Programmation_Logique",
+          "title": "Programmation Logique (Prolog) -- Guide de Cours",
+          "sections": {
+            "guide": [
+              "01-prolog-basics.md",
+              "02-unification-resolution.md",
+              "03-lists.md",
+              "04-recursion.md",
+              "05-arithmetic.md",
+              "06-cut-negation.md",
+              "07-advanced-topics.md",
+              "08-resolution-trees.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "tp1-solution.md",
+              "tp2-solution.md",
+              "tp3-solution.md",
+              "tp4-solution.md",
+              "tp5-solution.md",
+              "tp6-solution.md",
+              "tp8-solution.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "annale-2023.md",
+              "annale-2024.md",
+              "annale-recurrent-patterns.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md",
+              "tp5.md",
+              "tp6.md",
+              "tp8.md"
+            ]
+          }
+        },
+        {
+          "id": "SDD",
+          "title": "SDD -- Structures de Donnees (Data Structures)",
+          "sections": {
+            "guide": [
+              "01-linked-lists.md",
+              "02-iterators.md",
+              "03-stacks-queues.md",
+              "04-hash-tables.md",
+              "05-binary-trees.md",
+              "06-heaps-priority-queues.md",
+              "07-graphs-dijkstra.md",
+              "08-quadtrees.md",
+              "09-complexity.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "tp1-linked-lists.md",
+              "tp2-iterators.md",
+              "tp3-geographic-db.md",
+              "tp4-scheduling.md",
+              "tp5-hash-tables.md",
+              "tp6-binary-trees.md",
+              "tp7-quadtrees.md",
+              "tp8-heaps-dijkstra.md",
+              "tp9-final-project.md"
+            ],
+            "exam-prep": [
+              "readme.md"
+            ],
+            "tp": [
+              "tp1-linked-lists.md",
+              "tp2-iterators.md",
+              "tp3-geographic-db.md",
+              "tp4-scheduling.md",
+              "tp5-hash-tables.md",
+              "tp6-binary-trees.md",
+              "tp7-quadtrees.md",
+              "tp8-heaps-dijkstra.md",
+              "tp-final-project.md"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "S6",
+      "courses": [
+        {
+          "id": "Apprentissage_Automatique",
+          "title": "Guide -- Apprentissage Automatique / Machine Learning (S6)",
+          "sections": {
+            "guide": [
+              "01-supervised-fundamentals.md",
+              "02-linear-regression.md",
+              "03-logistic-regression.md",
+              "04-decision-trees.md",
+              "05-svm.md",
+              "06-neural-networks.md",
+              "07-unsupervised.md",
+              "08-model-evaluation.md",
+              "09-sklearn-python.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "readme.md",
+              "tp1-sklearn-decision-trees.md",
+              "tp2-ml-pipeline.md",
+              "tp3-boosting.md",
+              "tp4-neural-networks.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exam-patterns.md"
+            ],
+            "tp": [
+              "tp1-sklearn-decision-trees.md",
+              "tp2-ml-pipeline.md",
+              "tp3-boosting.md",
+              "tp4-neural-networks.md"
+            ]
+          }
+        },
+        {
+          "id": "Bases_de_Donnees",
+          "title": "Bases de Donnees -- Guide de cours (S6, INSA Rennes)",
+          "sections": {
+            "guide": [
+              "01-relational-model.md",
+              "02-sql-fundamentals.md",
+              "03-advanced-sql.md",
+              "04-query-optimization.md",
+              "05-normalization.md",
+              "06-transactions-concurrency.md",
+              "07-nosql-databases.md",
+              "08-relational-algebra.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "td1-relational-model-sql.md",
+              "td2-sql-queries-joins.md",
+              "td3-4-normalization.md",
+              "td5-xml-xquery.md",
+              "td6-olap.md",
+              "td7-nosql.md",
+              "tp-cassandra.md",
+              "tp-mongodb.md",
+              "tp-neo4j.md",
+              "tp-query-evaluation.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "annales-analysis.md",
+              "cheat-sheet-exam.md"
+            ],
+            "tp": [
+              "tp1-query-evaluation.md",
+              "tp2-cassandra.md",
+              "tp3-neo4j.md",
+              "tp4-mongodb.md"
+            ]
+          }
+        },
+        {
+          "id": "Complexite",
+          "title": "Complexite -- Guide Complet (S6 INSA Rennes)",
+          "sections": {
+            "guide": [
+              "01-asymptotic-notation.md",
+              "02-recurrences.md",
+              "03-sorting-algorithms.md",
+              "04-divide-and-conquer.md",
+              "05-dynamic-programming.md",
+              "06-greedy-algorithms.md",
+              "07-graph-algorithms.md",
+              "08-np-completeness.md",
+              "09-amortized-analysis.md",
+              "10-performance-evaluation.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "01-recurrences.md",
+              "02-complexity-calculation.md",
+              "03-dynamic-programming.md",
+              "04-greedy-and-bnb.md",
+              "05-performance-evaluation.md",
+              "readme.md"
+            ],
+            "exam-prep": [
+              "readme.md"
+            ]
+          }
+        },
+        {
+          "id": "Graphes_Algorithmique",
+          "title": "Graphes et Algorithmique -- Guide complet (S6, INSA Rennes 3A INFO)",
+          "sections": {
+            "guide": [
+              "01-graph-fundamentals.md",
+              "02-graph-traversals.md",
+              "03-shortest-paths.md",
+              "04-minimum-spanning-trees.md",
+              "05-network-flow.md",
+              "06-euler-hamilton.md",
+              "07-graph-coloring.md",
+              "08-planarity.md",
+              "09-trees-forests.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "01-definitions-representations.md",
+              "02-roy-warshall-routing.md",
+              "03-strong-connectivity.md",
+              "04-coloring-stability.md",
+              "05-shortest-paths.md",
+              "06-scheduling.md",
+              "07-network-flows.md",
+              "readme.md"
+            ],
+            "exam-prep": [
+              "01-exam-strategy.md",
+              "02-typical-problems.md",
+              "03-algorithm-traces.md",
+              "04-common-proofs.md",
+              "readme.md"
+            ]
+          }
+        },
+        {
+          "id": "Ingenierie_Web",
+          "title": "Ingenierie Web -- Guide de cours S6 INSA Rennes",
+          "sections": {
+            "guide": [
+              "01-http-web-fundamentals.md",
+              "02-html-css.md",
+              "03-javascript.md",
+              "04-java-spring-boot.md",
+              "05-orm-jpa.md",
+              "06-xml-json.md",
+              "07-web-security.md",
+              "08-angular-typescript.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "readme.md",
+              "tp1-javascript.md",
+              "tp2-rest-api.md",
+              "tp3-data-formats.md",
+              "tp4-orm-jpa.md",
+              "tp5-spring-boot.md"
+            ],
+            "exam-prep": [
+              "readme.md"
+            ],
+            "tp": [
+              "tp1-javascript.md",
+              "tp2-rest-api.md",
+              "tp3-data-formats.md",
+              "tp4-orm-jpa.md",
+              "tp5-angular.md",
+              "tp-github-resources.md",
+              "tp-legacy-2022.md"
+            ]
+          }
+        },
+        {
+          "id": "Parallelisme",
+          "title": "Parallelisme -- Guide de cours (S6, 3A INFO)",
+          "sections": {
+            "guide": [
+              "01-fondamentaux.md",
+              "02-pthreads.md",
+              "03-openmp.md",
+              "04-mpi.md",
+              "05-algorithmes.md",
+              "06-synchronisation.md",
+              "07-performance.md",
+              "08-gpu-cuda.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "readme.md",
+              "tp1-openmp-bases.md",
+              "tp2-3-openmp-avance.md",
+              "tp4-mpi-pi.md",
+              "tp5-mpi-matvec.md",
+              "tp6-mpi-chaleur.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exercices-type.md",
+              "pieges-frequents.md",
+              "questions-cours.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md",
+              "tp5.md",
+              "tp6.md"
+            ]
+          }
+        },
+        {
+          "id": "Propositions_Predicats",
+          "title": "Propositions et Predicats -- Guide complet (S6)",
+          "sections": {
+            "guide": [
+              "01-logique-propositionnelle.md",
+              "02-formes-normales.md",
+              "03-deduction-naturelle.md",
+              "04-calcul-des-sequents.md",
+              "05-logique-des-predicats.md",
+              "06-semantique-des-predicats.md",
+              "07-unification-et-resolution.md",
+              "08-completude-et-solidite.md",
+              "readme.md",
+              "cheat-sheet.md"
+            ],
+            "exercises": [
+              "01-calcul-propositionnel.md",
+              "02-formes-normales.md",
+              "03-resolution.md",
+              "04-predicats-et-traduction.md",
+              "05-unification.md",
+              "06-deduction-naturelle.md",
+              "readme.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "analyse-annales.md",
+              "exercices-types-resolus.md"
+            ]
+          }
+        },
+        {
+          "id": "Reseaux",
+          "title": "Reseaux (Computer Networks) -- Course Guide",
+          "sections": {
+            "guide": [
+              "01-modele-osi-tcpip.md",
+              "02-physique-liaison.md",
+              "03-couche-reseau-ip.md",
+              "04-couche-transport.md",
+              "05-couche-application.md",
+              "06-programmation-socket.md",
+              "07-protocoles-routage.md",
+              "08-securite-reseau.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "readme.md",
+              "tp1-network-discovery.md",
+              "tp2-udp-tcp-java.md",
+              "tp3-tcp-services.md",
+              "tp4-sockets-c.md",
+              "tp5-multicast-chat.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "exam-strategy.md",
+              "protocol-analysis.md",
+              "routing-exercises.md",
+              "socket-code-exercises.md",
+              "subnetting-drills.md"
+            ],
+            "tp": [
+              "tp1.md",
+              "tp2.md",
+              "tp3.md",
+              "tp4.md",
+              "tp5.md"
+            ]
+          }
+        },
+        {
+          "id": "Statistiques_Descriptives",
+          "title": "Guide -- Statistiques Descriptives (S6, INSA Rennes 3A)",
+          "sections": {
+            "guide": [
+              "01-descriptive-statistics.md",
+              "02-statistical-estimation.md",
+              "03-hypothesis-testing.md",
+              "04-common-tests.md",
+              "05-linear-regression.md",
+              "06-anova.md",
+              "07-nonparametric-tests.md",
+              "08-r-programming.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "readme.md",
+              "td1-estimation.md",
+              "td2-tests.md",
+              "td3-modeles-lineaires.md",
+              "tp1-intro-r.md",
+              "tp2-regression-simple.md",
+              "tp3-regression-multiple.md",
+              "tp4-anova.md",
+              "tp-note-2024.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "decision-tree.md",
+              "formula-sheet.md"
+            ],
+            "tp": [
+              "tp1-intro-r.md",
+              "tp2-regression-simple.md",
+              "tp3-regression-multiple.md",
+              "tp4-anova.md"
+            ]
+          }
+        },
+        {
+          "id": "TAL",
+          "title": "Guide TALEO -- Traitement Automatique du Langage Ecrit et Oral",
+          "sections": {
+            "guide": [
+              "01-fondamentaux-tal.md",
+              "02-modeles-langage.md",
+              "03-representation-texte.md",
+              "04-etiquetage-pos-ner.md",
+              "05-analyse-syntaxique.md",
+              "06-ner-extraction.md",
+              "07-classification-texte.md",
+              "08-grammaires-formelles.md",
+              "09-recherche-information.md",
+              "readme.md"
+            ],
+            "exercises": [
+              "01-viterbi-traces.md",
+              "02-cky-traces.md",
+              "03-naive-bayes-calculs.md",
+              "04-tfidf-calculs.md",
+              "05-ngram-perplexite.md",
+              "06-transition-parser.md",
+              "readme.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "analyse-annales.md",
+              "formules-essentielles.md",
+              "questions-reponses.md"
+            ]
+          }
+        },
+        {
+          "id": "Vulnerabilites",
+          "title": "Vulnerabilites -- Guide de revision complet",
+          "sections": {
+            "guide": [
+              "01-fondamentaux-securite.md",
+              "02-vulnerabilites-memoire.md",
+              "03-injection-sql.md",
+              "04-xss-csrf.md",
+              "05-injection-commandes.md",
+              "06-techniques-exploitation.md",
+              "07-mecanismes-defense.md",
+              "08-vulnerabilites-web.md",
+              "09-authentification-sessions.md",
+              "10-cryptographie-protocoles.md",
+              "11-securite-reseau.md",
+              "12-man-in-the-middle.md",
+              "13-securite-systeme.md",
+              "14-securite-cloud.md",
+              "15-developpement-securise.md",
+              "readme.md",
+              "cheat-sheet.md"
+            ],
+            "exercises": [
+              "readme.md",
+              "exercices-cvss.md",
+              "exercices-injection-sql.md",
+              "exercices-protocoles.md",
+              "exercices-xss-csrf.md",
+              "tp1-shell-security.md"
+            ],
+            "exam-prep": [
+              "readme.md",
+              "annale-2017-2018.md",
+              "annale-2020-2021.md",
+              "annale-2025.md",
+              "strategie-ds.md",
+              "synthese-questions-types.md"
+            ],
+            "tp": [
+              "tp1.md"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

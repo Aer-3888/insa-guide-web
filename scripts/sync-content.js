@@ -266,7 +266,7 @@ function syncFile(sourcePath, destDir, originalFilename, index) {
   const title = extractTitle(content, normalizedName.replace(/\.md$/, ""));
   const sidebarPos = deriveSidebarPosition(originalFilename, index);
 
-  let processed = content;
+  let processed = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
   if (!hasFrontmatter(processed)) {
     processed = addFrontmatter(processed, title, sidebarPos);
   }
@@ -448,7 +448,7 @@ function main() {
         const title = extractTitle(content, tpName.replace(/_/g, " "));
         const sidebarPos = deriveSidebarPosition(tpName, index);
 
-        let processed = content;
+        let processed = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
         if (!hasFrontmatter(processed)) {
           processed = addFrontmatter(processed, title, sidebarPos);
         }

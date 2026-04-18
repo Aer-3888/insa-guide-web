@@ -5,21 +5,17 @@ sidebar_position: 0
 
 # Preparation a l'examen ITI
 
-## Structure des examens
+## Structure de l'examen
 
-Le cours ITI comporte **deux examens distincts** :
+Depuis l'annee 2025-2026, le cours ITI est evalue par **un seul examen** qui regroupe les sujets auparavant repartis entre deux examens distincts (FUS pour la partie systemes/shell, et LDS pour la partie scripting/Python).
 
-### 1. Examen FUS/ITI (novembre)
-- **Duree** : ~2 heures
+### Examen ITI (unique)
+- **Duree** : ~2-3 heures
 - **Format** : ecrit, sur papier
-- **Sujets** : shell, Makefile, systemes de fichiers, debogage, regex, grep
-- **Annales disponibles** : 2012-2024 (FUS), 2026 (ITI)
+- **Sujets** : shell, Makefile, systemes de fichiers, debogage, regex, grep, Python, Qt, SQL, web scraping
+- **Annales disponibles** : annales FUS (2012-2024) et LDS (2016-2025) pour s'entrainer, ITI 2026 pour le format actuel
 
-### 2. Examen LDS (janvier)
-- **Duree** : ~2 heures
-- **Format** : ecrit, sur papier
-- **Sujets** : Python, Qt, SQL, web scraping, automatisation
-- **Annales disponibles** : 2016-2025 (LDS), 2026 (ITI)
+> **Note historique :** Les annees precedentes, la matiere etait scindee en deux cours separes avec chacun son propre examen : **FUS** (Fondamentaux Unix et Systemes, en novembre) et **LDS** (Langages de Script, en janvier). Les annales de ces deux examens restent pertinentes pour reviser.
 
 ## Inventaire des annales
 

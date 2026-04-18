@@ -1,31 +1,31 @@
 ---
-title: "TP5 - List Operations"
+title: "TP5 - Operations sur les listes"
 sidebar_position: 5
 ---
 
-# TP5 - List Operations
+# TP5 - Operations sur les listes
 
-> Following teacher instructions from: `data/moodle/tp/tp5/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp5/README.md`
 
 ---
 
-## Exercise 1
+## Exercice 1
 
-### Basic operations: `longueur`, `appartient`, `rang`, `rang_opt`
+### Operations de base : `longueur`, `appartient`, `rang`, `rang_opt`
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* List length *)
+(* Longueur d'une liste *)
 let rec longueur l = match l with
   | [] -> 0
   | e :: r -> 1 + longueur r
 
-(* Check membership *)
+(* Verifier l'appartenance *)
 let rec appartient e l = match l with
   | [] -> false
   | e1 :: tl -> if e1 = e then true else appartient e tl
 
-(* Find index, returns 0 if not found *)
+(* Trouver l'indice, retourne 0 si non trouve *)
 let rec rang e l = match l with
   | [] -> 0
   | e1 :: tl ->
@@ -33,10 +33,10 @@ let rec rang e l = match l with
       else if rang e tl = 0 then 0
       else 1 + rang e tl
 
-(* Option type for safe indexing *)
+(* Type option pour l'indexation sure *)
 type 'a option = None | Some of 'a
 
-(* Find index as option type *)
+(* Trouver l'indice sous forme de type option *)
 let rec rang_opt e l = match l with
   | [] -> None
   | e1 :: tl ->
@@ -46,7 +46,7 @@ let rec rang_opt e l = match l with
         | Some c -> Some (c + 1)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # longueur [1; 2; 3];;
 - : int = 3
@@ -68,11 +68,11 @@ let rec rang_opt e l = match l with
 
 ---
 
-## Exercise 2
+## Exercice 2
 
-### List concatenation (`concatl`)
+### Concatenation de listes (`concatl`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec concatl l1 l2 = match l1, l2 with
   | [], l2 -> l2
@@ -80,7 +80,7 @@ let rec concatl l1 l2 = match l1, l2 with
   | e1 :: tl, l2 -> e1 :: (concatl tl l2)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # concatl [1; 2; 3] [4; 5; 6];;
 - : int list = [1; 2; 3; 4; 5; 6]
@@ -92,19 +92,19 @@ let rec concatl l1 l2 = match l1, l2 with
 
 ---
 
-## Exercise 3
+## Exercice 3
 
-### List slicing: `debliste` (first n elements) and `finliste` (last n elements)
+### Decoupage de listes : `debliste` (n premiers elements) et `finliste` (n derniers elements)
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* First n elements *)
+(* Les n premiers elements *)
 let rec debliste l n = match l, n with
   | [], _ -> l
   | _, 0 -> []
   | e1 :: tl, n -> e1 :: debliste tl (n - 1)
 
-(* Last n elements *)
+(* Les n derniers elements *)
 let rec finliste l n = match l with
   | [] -> []
   | e :: tl ->
@@ -112,7 +112,7 @@ let rec finliste l n = match l with
       else finliste tl n
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # debliste [1; 2; 3; 4; 5; 6; 7] 3;;
 - : int list = [1; 2; 3]
@@ -126,11 +126,11 @@ let rec finliste l n = match l with
 
 ---
 
-## Exercise 4
+## Exercice 4
 
-### Replace all occurrences of `x` with `y` in a list (`remplace`)
+### Remplacer toutes les occurrences de `x` par `y` dans une liste (`remplace`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec remplace x y l = match l with
   | [] -> []
@@ -139,7 +139,7 @@ let rec remplace x y l = match l with
       else e1 :: (remplace x y tl)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # remplace 2 42 [1; 2; 3; 2; 5];;
 - : int list = [1; 42; 3; 42; 5]
@@ -149,20 +149,20 @@ let rec remplace x y l = match l with
 
 ---
 
-## Exercise 5
+## Exercice 5
 
-### Sublist operations: `entete`, `sousliste`, `oter`
+### Operations sur les sous-listes : `entete`, `sousliste`, `oter`
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Check if l is a prefix of l1 *)
+(* Verifier si l est un prefixe de l1 *)
 let rec entete l l1 = match l, l1 with
   | [], _ -> true
   | _, [] -> false
   | e1 :: t1, e2 :: t2 ->
       if e1 = e2 then entete t1 t2 else false
 
-(* Check if l appears as a contiguous sublist in l1 *)
+(* Verifier si l apparait comme sous-liste contigue dans l1 *)
 let rec sousliste l l1 = match l, l1 with
   | [], _ -> true
   | _, [] -> false
@@ -172,7 +172,7 @@ let rec sousliste l l1 = match l, l1 with
         else sousliste l t2
       else sousliste l t2
 
-(* Remove prefix l from l1 if l is a prefix *)
+(* Retirer le prefixe l de l1 si l est un prefixe *)
 let oter l l1 =
   if entete l l1 then
     let rec hotter la lb = match la, lb with
@@ -184,7 +184,7 @@ let oter l l1 =
   else l1
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # entete [1; 2; 3] [1; 2; 3; 2; 5];;
 - : bool = true
@@ -202,16 +202,16 @@ let oter l l1 =
 
 ---
 
-## Exercise 6
+## Exercice 6
 
-### Advanced replacement: `remplacel` and `supprimel`
+### Remplacement avance : `remplacel` et `supprimel`
 
-`remplacel l1 l2 l` replaces all occurrences of sublist `l1` with `l2` in `l`.
-`supprimel l1 l` removes all occurrences of sublist `l1` from `l`.
+`remplacel l1 l2 l` remplace toutes les occurrences de la sous-liste `l1` par `l2` dans `l`.
+`supprimel l1 l` supprime toutes les occurrences de la sous-liste `l1` dans `l`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Replace all occurrences of sublist l1 with l2 in l *)
+(* Remplacer toutes les occurrences de la sous-liste l1 par l2 dans l *)
 let rec remplacel l1 l2 l = match l with
   | [] -> []
   | e2 :: t2 ->
@@ -219,13 +219,13 @@ let rec remplacel l1 l2 l = match l with
         concatl l2 (remplacel l1 l2 (oter l1 l))
       else e2 :: remplacel l1 l2 t2
 
-(* Remove all occurrences of sublist l1 from l *)
+(* Supprimer toutes les occurrences de la sous-liste l1 dans l *)
 let supprimel l1 l = match l1 with
   | [] -> l
   | _ -> remplacel l1 [] l
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # remplacel [1; 2; 1] [5; 6] [4; 1; 2; 1; 2; 1; 2; 1; 3; 8];;
 - : int list = [4; 5; 6; 2; 5; 6; 2; 5; 6; 3; 8]

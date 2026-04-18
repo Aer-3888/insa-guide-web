@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # TP6 - Analyse de Fichiers GEDCOM et Automates
 
-> Following teacher instructions from: `S5/Langage_C/data/moodle/tp/tp6/README.md`
+> D'apres les instructions du TP : `S5/Langage_C/data/moodle/tp/tp6/README.md`
 
 ## Contexte : Format GEDCOM
 
@@ -28,7 +28,7 @@ GEDCOM (GEnealogical Data COMmunication) est un format standard pour echanger de
 
 ### Mise en place des fonctions utilitaires fichier -- Implementer les fonctions `ouvrirFichier()`, `fermerFichier()`, `lireLigneFichier()`, et `traiterLignesFichier()`
 
-**Answer pour fichier.h :**
+**Reponse pour fichier.h :**
 
 ```c noexec
 #ifndef FICHIER_H_INCLUDED
@@ -49,7 +49,7 @@ int traiterLignesFichier(FILE *f, int (*ptFonction)(char *));
 #endif /* FICHIER_H_INCLUDED */
 ```
 
-**Answer pour commun.h :**
+**Reponse pour commun.h :**
 
 ```c noexec
 #ifndef COMMUN_H_INCLUDED
@@ -60,7 +60,7 @@ int traiterLignesFichier(FILE *f, int (*ptFonction)(char *));
 #endif /* COMMUN_H_INCLUDED */
 ```
 
-**Answer pour fichier.c :**
+**Reponse pour fichier.c :**
 
 ```c noexec
 #include "fichier.h"
@@ -122,7 +122,7 @@ int traiterLignesFichier(FILE *f, int (*ptFonction)(char *)) {
 
 ### Extraction des noms et des professions -- Implementer `lireNom()` et `lireOccu()` avec des variables statiques pour compter les detections
 
-**Answer pour traitement.h :**
+**Reponse pour traitement.h :**
 
 ```c noexec
 #ifndef TRAITEMENT_H_INCLUDED
@@ -134,7 +134,7 @@ int lireOccu(char * str);
 #endif /* TRAITEMENT_H_INCLUDED */
 ```
 
-**Answer pour traitement.c :**
+**Reponse pour traitement.c :**
 
 ```c noexec
 #include <stdio.h>
@@ -216,7 +216,7 @@ int lireOccu(char * str) {
 
 ### Compter les femmes/hommes et les naissances -- Implementer des fonctions de comptage generiques avec une structure Comptage
 
-**Answer pour traitementOpt.h :**
+**Reponse pour traitementOpt.h :**
 
 ```c noexec
 #ifndef TRAITEMENTOPT_H_INCLUDED
@@ -242,7 +242,7 @@ int compterNaissances(char* str);
 #endif
 ```
 
-**Answer pour traitementOpt.c :**
+**Reponse pour traitementOpt.c :**
 
 ```c noexec
 #include "traitementOpt.h"
@@ -311,7 +311,7 @@ int compterNaissances(char* str) {
 
 ### Question 24 : Quel est le nom complet de la variable qui memorise le nom d'un individu dans l'automate ?
 
-**Answer:**
+**Reponse :**
 
 C'est `etatA.nom` (de type `char[TMAX]` au sein d'une structure de type `EtatAutomate`). Cette variable est declaree comme `static` dans la fonction `rechercheNomSabotiers()`, ce qui lui permet de conserver sa valeur entre les appels successifs de la fonction.
 
@@ -321,7 +321,7 @@ C'est `etatA.nom` (de type `char[TMAX]` au sein d'une structure de type `EtatAut
 
 ### Question 25 : Quelles transitions d'etats sont deja programmees dans le code fourni ?
 
-**Answer:**
+**Reponse :**
 
 Avec le code fourni, les transitions suivantes sont deja programmees :
 - **EINIT --> EINDI** : Quand on detecte une balise INDI (un individu)
@@ -345,7 +345,7 @@ ENAME --[INDI]--> EINDI (nouvel individu)
 
 ### Question 26 : Creer automaton.h et modifier principal.c pour tester la fonction `rechercheNomSabotiers()`
 
-**Answer pour automaton.h :**
+**Reponse pour automaton.h :**
 
 ```c noexec
 #ifndef AUTOMATON_H
@@ -378,7 +378,7 @@ int rechercheNomSabotiers(char* str);
 
 ### Question 27 : Completer le code pour afficher le nom des personnes dont le titre de profession contient le mot 'sabotier'
 
-**Answer pour automaton.c :**
+**Reponse pour automaton.c :**
 
 ```c noexec
 #include "automaton.h"
@@ -455,7 +455,7 @@ int rechercheNomSabotiers(char* str) {
 
 ## Programme principal (principal.c)
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -533,7 +533,7 @@ clean:
 	rm -f gedcom
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 cd tp6/src
@@ -541,7 +541,7 @@ make
 ./gedcom
 ```
 
-**Expected output (avec exemple.ged contenant un sabotier) :**
+**Sortie attendue (avec exemple.ged contenant un sabotier) :**
 
 ```
 PERONNE

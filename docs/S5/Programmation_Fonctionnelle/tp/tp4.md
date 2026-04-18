@@ -1,58 +1,58 @@
 ---
-title: "TP4 - List Algorithms and Partitions"
+title: "TP4 - Algorithmes sur les listes et partitions"
 sidebar_position: 4
 ---
 
-# TP4 - List Algorithms and Partitions
+# TP4 - Algorithmes sur les listes et partitions
 
-## Overview
+## Vue d'ensemble
 
-Advanced list algorithms including:
-- Quicksort
-- Bubble sort with fixed points
-- List generation and manipulation
-- Integer partitions
+Algorithmes avances sur les listes :
+- Tri rapide (quicksort)
+- Tri a bulle avec point fixe
+- Generation et manipulation de listes
+- Partitions d'entiers
 
-## Exercises
+## Exercices
 
-### 1. Quicksort (`split`, `qs`)
-Implement the quicksort algorithm:
-- `split v l`: Partition list around pivot value `v`
-- `qs l`: Recursively sort the list
+### 1. Tri rapide (`split`, `qs`)
+Implementer l'algorithme de tri rapide :
+- `split v l` : Partitionner la liste autour du pivot `v`
+- `qs l` : Trier recursivement la liste
 
-**Concepts**: Divide and conquer, list partitioning
+**Concepts** : Diviser pour regner, partitionnement de listes
 
-### 2. Kth Element (`kieme`)
-Extract the kth element from a list.
+### 2. K-ieme element (`kieme`)
+Extraire le k-ieme element d'une liste.
 
-**Concepts**: List indexing, pattern matching
+**Concepts** : Indexation de listes, pattern matching
 
-### 3. Fixed Point (`jqastable`)
-Find the fixed point of a function through repeated application.
+### 3. Point fixe (`jqastable`)
+Trouver le point fixe d'une fonction par application repetee.
 
-**Concepts**: Higher-order functions, convergence
+**Concepts** : Fonctions d'ordre superieur, convergence
 
-### 4. Bubble Sort (`unebulle`, `tribulle`)
-- `unebulle`: Perform one bubble pass
-- `tribulle`: Repeat until sorted (fixed point)
+### 4. Tri a bulle (`unebulle`, `tribulle`)
+- `unebulle` : Effectuer une passe du tri a bulle
+- `tribulle` : Repeter jusqu'au tri complet (point fixe)
 
-**Concepts**: Iterative sorting, fixed points
+**Concepts** : Tri iteratif, points fixes
 
-### 5. List Utilities
-- `merge`: Flatten a list of lists
-- `create f k`: Create list by applying function
-- `insert j ll`: Insert element at head of each sublist
+### 5. Utilitaires sur les listes
+- `merge` : Aplatir une liste de listes
+- `create f k` : Creer une liste par application de fonction
+- `insert j ll` : Inserer un element en tete de chaque sous-liste
 
-**Concepts**: List transformations, map operations
+**Concepts** : Transformations de listes, operations de type map
 
-### 6. Integer Partitions (`partition`)
-Generate all partitions of an integer n.
+### 6. Partitions d'entiers (`partition`)
+Generer toutes les partitions d'un entier n.
 
-**Concepts**: Combinatorics, recursive generation
+**Concepts** : Combinatoire, generation recursive
 
-## Key Algorithms
+## Algorithmes cles
 
-### Quicksort
+### Tri rapide
 ```ocaml
 let rec split v l = match l with
   | [] -> ([], [])
@@ -65,27 +65,27 @@ let rec qs l = match l with
   | e :: l' -> qs (fst(split e l')) @ (e :: qs (snd(split e l')))
 ```
 
-### Fixed Point Iteration
+### Iteration par point fixe
 ```ocaml
 let rec jqastable x f =
   if f x = x then x else jqastable (f x) f
 ```
 
-### Integer Partitions
-Generates all ways to write n as a sum of positive integers.
+### Partitions d'entiers
+Genere toutes les facons d'ecrire n comme somme d'entiers positifs.
 
-Example: `partition 5` generates:
+Exemple : `partition 5` genere :
 - [5], [4;1], [3;2], [3;1;1], [2;2;1], [2;1;1;1], [1;1;1;1;1]
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp4.ml";;
 ```
 
-## Expected Results
+## Resultats attendus
 
 - `qs [4; 12; 27; -12; 7; 8; 1; 3; 6; 12; 42]` → [-12; 1; 3; 4; 6; 7; 8; 12; 12; 27; 42]
 - `kieme 7 [4; 12; 27; -12; 7; 1; 8; 3; 6; 12; 42]` → 8
-- `partition 5` → 7 different partitions
+- `partition 5` → 7 partitions differentes

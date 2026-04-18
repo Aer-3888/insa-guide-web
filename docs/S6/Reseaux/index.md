@@ -1,9 +1,9 @@
 ---
-title: "Reseaux (Computer Networks) -- Course Guide"
+title: "Reseaux -- Guide de cours"
 sidebar_position: 0
 ---
 
-# Reseaux (Computer Networks) -- Course Guide
+# Reseaux -- Guide de cours
 
 - [Guide](guide/)
 - [Exercices](exercises/)

@@ -269,9 +269,9 @@ export OMP_NUM_THREADS=4
 
 ## Ressources
 
-- Spécification OpenMP: https://www.openmp.org/specifications/
-- Info CPU Linux: `cat /proc/cpuinfo`
-- Tutoriel OpenMP: https://hpc-tutorials.llnl.gov/openmp/
+- Specification OpenMP : https://www.openmp.org/specifications/
+- Info CPU Linux : `cat /proc/cpuinfo`
+- Tutoriel OpenMP : https://hpc-tutorials.llnl.gov/openmp/
 
 ---
 

@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # TP4 - Structures et Entrees/Sorties Fichier
 
-> Following teacher instructions from: `S5/Langage_C/data/moodle/tp/tp4/README.md`
+> D'apres les instructions du TP : `S5/Langage_C/data/moodle/tp/tp4/README.md`
 
 ## Contexte
 
@@ -34,7 +34,7 @@ Chaque tache a un numero d'identification, une duree (en heures), des predecesse
 
 ### Definir la structure Tache et les prototypes (tache.h)
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -98,7 +98,7 @@ Total :             ~140 octets (+ padding eventuel)
 
 ### Lecture/Ecriture -- Implementer `saisieTache()` pour lire une tache depuis un fichier
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -145,7 +145,7 @@ fscanf(f, " %[^\n]", t->titre) :
 
 ### Affichage -- Implementer `afficheTache()` et `afficheTabTaches()`
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 void afficheTache(Tache *t) {
@@ -181,7 +181,7 @@ void afficheTabTaches(Tache *tab_t, int nbtaches) {
 
 ### Implementer `lireTachesFichier()` pour lire toutes les taches d'un fichier
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 int lireTachesFichier(char *nomFichier, Tache *tab) {
@@ -221,7 +221,7 @@ int lireTachesFichier(char *nomFichier, Tache *tab) {
 
 ### Calculs -- Implementer `sommeDureeTotale()` pour calculer la duree totale de toutes les taches
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 int sommeDureeTotale(Tache *tab_t, int nbtaches) {
@@ -240,7 +240,7 @@ int sommeDureeTotale(Tache *tab_t, int nbtaches) {
 
 ### Implementer `ecrireTachesFichier()` pour ecrire les taches dans un fichier
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches) {
@@ -282,7 +282,7 @@ int ecrireTachesFichier(char *nomFichier, Tache *tab_t, int nbTaches) {
 
 ### Programme principal complet (main.c) -- Lire les taches, les afficher, calculer la duree, ecrire dans un nouveau fichier
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -353,7 +353,7 @@ run: $(TARGET)
 .PHONY: all clean run
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 cd tp4/src
@@ -361,7 +361,7 @@ make
 ./main
 ```
 
-**Expected output:**
+**Sortie attendue :**
 
 ```
 Lecture du fichier taches.txt...

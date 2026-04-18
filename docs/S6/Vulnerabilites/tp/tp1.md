@@ -1,117 +1,117 @@
 ---
-title: "TP1 - Shell for Security: File Analysis"
+title: "TP1 - Shell for Security : Analyse de fichier"
 sidebar_position: 1
 ---
 
-# TP1 - Shell for Security: File Analysis
+# TP1 - Shell for Security : Analyse de fichier
 
-## Objective
+## Objectif
 
-Analyze a security-sensitive data file (.prep) to identify vulnerabilities, extract metrics, and search for security elements like passwords, credentials, and obfuscated data.
+Analyser un fichier de donnees sensibles (.prep) pour identifier des vulnerabilites, extraire des metriques et rechercher des elements de securite tels que des mots de passe, des identifiants et des donnees obfusquees.
 
-## Assignment
+## Enonce
 
-**File**: TP-Shell-1.pdf
+**Fichier** : TP-Shell-1.pdf
 
-**Tasks**:
-1. Select a random file from prep.zip
-2. Evaluate content (file type, structure, language)
-3. Calculate metrics (line count, character frequencies, structural elements)
-4. Search for security elements (passwords, credentials, admin URLs, obfuscated data)
-5. Document findings with shell commands
+**Taches** :
+1. Selectionner un fichier aleatoire dans prep.zip
+2. Evaluer le contenu (type de fichier, structure, langue)
+3. Calculer des metriques (nombre de lignes, frequences de caracteres, elements structurels)
+4. Rechercher des elements de securite (mots de passe, identifiants, URLs d'administration, donnees obfusquees)
+5. Documenter les resultats avec des commandes shell
 
-**Constraints**:
-- Use shell commands only (no Python scripts except for calculations)
-- Focus on literal string searches (fgrep) not regex
-- No binary files provided
+**Contraintes** :
+- Utiliser uniquement des commandes shell (pas de scripts Python sauf pour les calculs)
+- Privilegier les recherches de chaines litterales (fgrep) plutot que les regex
+- Aucun fichier binaire fourni
 
-## Solution
+## Corrige
 
-**File analyzed**: `pixgame.html.prep` (WordPress site homepage)
+**Fichier analyse** : `pixgame.html.prep` (page d'accueil d'un site WordPress)
 
-**Results**: `resultat-GONZALEZ.txt`
+**Resultats** : `resultat-GONZALEZ.txt`
 
-### Key Findings
+### Resultats principaux
 
-#### 1. File Metrics
-- **Type**: UTF-8 HTML file with very long lines
-- **Size**: 656,028 bytes
-- **Lines**: 16,368 total, 14,289 non-empty
-- **Longest line**: 32,083 characters (line 9825, filled with 'x')
-- **Average line length**: ~44 characters
+#### 1. Metriques du fichier
+- **Type** : fichier HTML UTF-8 avec des lignes tres longues
+- **Taille** : 656 028 octets
+- **Lignes** : 16 368 au total, 14 289 non vides
+- **Plus longue ligne** : 32 083 caracteres (ligne 9825, remplie de 'x')
+- **Longueur moyenne d'une ligne** : ~44 caracteres
 
-#### 2. HTML Structure
-Most frequent tags:
-- `<div>`: 794 occurrences
-- `<span>`: 355
-- `<a>`: 310 (links)
-- `<script>`: 63
-- `<form>`: 2 (search forms)
+#### 2. Structure HTML
+Balises les plus frequentes :
+- `<div>` : 794 occurrences
+- `<span>` : 355
+- `<a>` : 310 (liens)
+- `<script>` : 63
+- `<form>` : 2 (formulaires de recherche)
 
-#### 3. Security Vulnerabilities Found
+#### 3. Vulnerabilites de securite trouvees
 
-**Critical: WordPress Admin Credentials Exposed**
-- Location: Line 127 in `twdGlobal` JavaScript object
-- Exposed data:
-  - WordPress admin panel URL
-  - **Authentication nonce** for REST API
-  - REST API endpoint URL
-  - Permalink format
+**Critique : identifiants d'administration WordPress exposes**
+- Emplacement : Ligne 127 dans l'objet JavaScript `twdGlobal`
+- Donnees exposees :
+  - URL du panneau d'administration WordPress
+  - **Nonce d'authentification** pour l'API REST
+  - URL du point d'acces de l'API REST
+  - Format des permaliens
 
-**Impact**: The nonce allows API authentication without credentials. Even if rotated per session, exposing it to all site visitors is a critical security flaw.
+**Impact** : Le nonce permet l'authentification API sans identifiants. Meme s'il est renouvele a chaque session, l'exposer a tous les visiteurs du site constitue une faille de securite critique.
 
-**Plaintext Passwords Found**:
-- Line 830: `password=ohsuo6xae7Th`
-- Lines 1469-1471: `Mot de Passe\nip6ooja6Eize`
-- Lines 6779, 6781: `Login\naiv1Xaet4vee`
-- Lines 2554, 2557: `va5eijih9OPe\nCREDential`
-- Lines 6889, 8691: `temporary\neich7So5xo4a`
+**Mots de passe en clair trouves** :
+- Ligne 830 : `password=ohsuo6xae7Th`
+- Lignes 1469-1471 : `Mot de Passe\nip6ooja6Eize`
+- Lignes 6779, 6781 : `Login\naiv1Xaet4vee`
+- Lignes 2554, 2557 : `va5eijih9OPe\nCREDential`
+- Lignes 6889, 8691 : `temporary\neich7So5xo4a`
 
-**Obfuscated JavaScript Attributes**:
-- Lines 2563-2564: Base64-encoded CSS/font configurations in `tdc_css` and `f_article_font_size` attributes
-- Lines 3765, 3770-3772, 3784-3788: More Base64-encoded JSON structures
-- All decode to benign formatting data (JSON with margins, font sizes)
+**Attributs JavaScript obfusques** :
+- Lignes 2563-2564 : Configurations CSS/police encodees en Base64 dans les attributs `tdc_css` et `f_article_font_size`
+- Lignes 3765, 3770-3772, 3784-3788 : Autres structures JSON encodees en Base64
+- Toutes les donnees decodees sont des donnees de formatage inoffensives (JSON avec marges, tailles de police)
 
-### Shell Commands Used
+### Commandes shell utilisees
 
 ```bash noexec
-# File type and encoding
+# Type et encodage du fichier
 file pixgame.html.prep
 stat pixgame.html.prep
 
-# Line count (total and non-empty)
+# Nombre de lignes (total et non vides)
 wc -l pixgame.html.prep
 cat pixgame.html.prep | grep -v '^\s*$' | wc -l
 
-# Calculate longest line length
+# Calculer la longueur de la plus longue ligne
 cat pixgame.html.prep | grep -v '^\s*$' | awk '{ print length }' | \
   python -c "print(max([int(input()) for _ in range(14289)]))"
 
-# Tag frequency analysis
+# Analyse de frequence des balises
 cat pixgame.html.prep | grep -v '^\s*$' | sed 's/</ </g' | sed 's/>/> /g' | \
   tr ' ' '\n' | grep '^<[^!/]' | cut -b '2-' | sed 's/>//g' | \
   sort | uniq -c | sort -nr
 
-# Search for admin credentials
+# Recherche d'identifiants d'administration
 grep "admin" pixgame.html.prep -n
 
-# Search for password-related strings
+# Recherche de chaines liees aux mots de passe
 grep -i "password\|login\|credential" pixgame.html.prep -n
 
-# Decode Base64 obfuscated content
+# Decodage du contenu obfusque en Base64
 grep -o 'ey.*=' pixgame.html.prep | base64 -d
 ```
 
-## Lessons Learned
+## Lecons retenues
 
-1. **Client-side exposure**: Never embed authentication tokens (nonces, API keys) in client-side JavaScript
-2. **Password storage**: Plaintext passwords in HTML are catastrophic - use proper authentication systems
-3. **Obfuscation ≠ Security**: Base64 encoding is not encryption; it provides no security
-4. **Surface area analysis**: Shell commands can quickly map attack surface (forms, scripts, external resources)
-5. **WordPress security**: Default WordPress installations expose admin paths; hardening is essential
+1. **Exposition cote client** : ne jamais embarquer de jetons d'authentification (nonces, cles API) dans le JavaScript cote client
+2. **Stockage des mots de passe** : les mots de passe en clair dans le HTML sont catastrophiques -- utiliser des systemes d'authentification adaptes
+3. **Obfuscation =/= Securite** : l'encodage Base64 n'est pas du chiffrement ; il ne fournit aucune protection
+4. **Analyse de la surface d'attaque** : les commandes shell permettent de cartographier rapidement la surface d'attaque (formulaires, scripts, ressources externes)
+5. **Securite WordPress** : les installations WordPress par defaut exposent les chemins d'administration ; le durcissement est indispensable
 
-## Files
+## Fichiers
 
-- `TP-Shell-1.pdf` - Assignment description
-- `prep.zip` - Data files for analysis (19MB archive)
-- `resultat-GONZALEZ.txt` - Complete analysis report (original submission)
+- `TP-Shell-1.pdf` - Description de l'enonce
+- `prep.zip` - Fichiers de donnees pour l'analyse (archive de 19 Mo)
+- `resultat-GONZALEZ.txt` - Rapport d'analyse complet (rendu original)

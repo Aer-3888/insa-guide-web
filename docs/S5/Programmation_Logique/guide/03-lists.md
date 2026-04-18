@@ -292,7 +292,7 @@ eniemefinal(N, X, A) :- enieme2(N, X, A).
 
 ---
 
-## CHEAT SHEET -- Listes
+## AIDE-MEMOIRE -- Listes
 
 ```
 NOTATION
@@ -311,7 +311,7 @@ PREDICATS FONDAMENTAUX
   msort(L, S)           trier
   flatten(L, F)         aplatir
 
-PATTERNS RECURSIFS
+SCHEMAS RECURSIFS
   p([], ...).                      % cas de base : liste vide
   p([H|T], ...) :- ..., p(T, ...). % cas recursif : traiter H, recurser sur T
 

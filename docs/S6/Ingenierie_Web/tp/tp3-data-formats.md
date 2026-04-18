@@ -1,13 +1,13 @@
 ---
-title: "TP 3 — Data Formats"
+title: "TP 3 — Formats de donnees"
 sidebar_position: 3
 ---
 
-# TP 3 — Data Formats
+# TP 3 — Formats de donnees
 
-Working with JSON and XML data formats.
+Travail avec les formats de donnees JSON et XML.
 
-## Directories
+## Repertoires
 
-- `json/` — JSON processing exercises
-- `xml/` — XML processing exercises
+- `json/` -- Exercices de traitement JSON
+- `xml/` -- Exercices de traitement XML

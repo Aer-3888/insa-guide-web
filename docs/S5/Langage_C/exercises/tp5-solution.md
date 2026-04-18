@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # TP5 - Allocation Dynamique et Listes Chainees
 
-> Following teacher instructions from: `S5/Langage_C/data/moodle/tp/tp5/README.md`
+> D'apres les instructions du TP : `S5/Langage_C/data/moodle/tp/tp5/README.md`
 
 ## Contexte
 
@@ -36,7 +36,7 @@ Ce TP etend le TP4 (structure Tache) avec l'allocation dynamique et les listes c
 [Tache1|*]-->[Tache2|*]-->[Tache3|NULL]
 ```
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -87,7 +87,7 @@ Liste l (pointeur vers le premier element)
 
 ### Implementer la structure Tache avec allocation dynamique (tache.h et tache.c) -- Inclure `lireTachesFichierDyn()` pour lire un nombre variable de taches
 
-**Answer pour tache.h :**
+**Reponse pour tache.h :**
 
 ```c noexec
 /*!
@@ -126,7 +126,7 @@ Tache * lireTachesFichierDyn(char * nomFichier, int * nbtaches);
 #endif
 ```
 
-**Answer pour tache.c :**
+**Reponse pour tache.c :**
 
 ```c noexec
 #include "tache.h"
@@ -261,7 +261,7 @@ int ecrireTachesFichier(char * nomFichier, Tache *tab_t, int nbTaches) {
 
 ### Manipulation de base -- Implementer `ajoutdeb()` pour ajouter un element en debut de liste, `nbelement()` pour compter les elements, `afficheListe()` pour afficher la liste
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <string.h>
@@ -339,7 +339,7 @@ l --> [Tache3|*]-->[Tache1|*]-->[Tache2|NULL]
 
 ### Insertion triee par ID -- Implementer `ajouttrield()` pour inserer un element en maintenant l'ordre par numero de tache
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -394,7 +394,7 @@ comparateur = &compareID;          /* Assignation */
 int resultat = comparateur(t1, t2); /* Appel */
 ```
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -461,7 +461,7 @@ int compareNom(Tache t, Tache c) {
 
 ### Programme principal -- Lire les taches dynamiquement et les inserer triees dans une liste chainee
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -521,7 +521,7 @@ run: $(TARGET)
 .PHONY: all clean run
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 cd tp5/src
@@ -529,7 +529,7 @@ make
 ./main
 ```
 
-**Expected output:**
+**Sortie attendue :**
 
 ```
 Nombre de taches: 7

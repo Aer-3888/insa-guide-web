@@ -216,7 +216,7 @@ int total = 0;
 
 ---
 
-## CHEAT SHEET -- Synchronisation
+## AIDE-MEMOIRE -- Synchronisation
 
 ```
 Race condition : acces concurrent non protege -> mutex, atomic, reduction

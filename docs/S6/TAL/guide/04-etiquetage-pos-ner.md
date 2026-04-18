@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # Chapitre 4 -- Etiquetage POS et Algorithme de Viterbi
 
-## 4.1 POS Tagging (Part-of-Speech Tagging)
+## 4.1 Etiquetage morpho-syntaxique (POS Tagging)
 
 L'etiquetage morpho-syntaxique consiste a assigner une categorie grammaticale a chaque token.
 
@@ -237,7 +237,7 @@ Combine BiLSTM (predictions riches) + couche CRF (coherence entre etiquettes).
 | Type | Generatif | Discriminant | Discriminant |
 | Hypotheses fortes | Oui | Non | Non |
 | Dependances longues | Non | Partiellement | Oui |
-| Features manuelles | Non | Oui | Non (apprises) |
+| Caracteristiques manuelles | Non | Oui | Non (apprises) |
 | Besoin de donnees | Faible | Moyen | Eleve |
 | Interpretabilite | Bonne | Bonne | Faible |
 | Performance POS | ~97% | ~97% | ~97%+ |
@@ -267,8 +267,8 @@ CRF :
 
 COMPARAISON :
   HMM = generatif, hypotheses fortes, peu de donnees
-  CRF = discriminant, features manuelles, flexible
-  RNN = discriminant, features apprises, beaucoup de donnees
+  CRF = discriminant, caracteristiques manuelles, flexible
+  RNN = discriminant, caracteristiques apprises, beaucoup de donnees
   LSTM-CRF = etat de l'art
 
 PIEGES :

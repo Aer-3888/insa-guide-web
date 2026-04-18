@@ -5,11 +5,11 @@ sidebar_position: 0
 
 # Exercices
 
-- [td solutions](td-solutions)
-- [tp1 solution](tp1-solution)
-- [tp2 solution](tp2-solution)
-- [tp3 solution](tp3-solution)
-- [tp4 solution](tp4-solution)
-- [tp5 solution](tp5-solution)
-- [tp6 solution](tp6-solution)
-- [tp7 solution](tp7-solution)
+- [Solutions TD](td-solutions)
+- [Solution TP1](tp1-solution)
+- [Solution TP2](tp2-solution)
+- [Solution TP3](tp3-solution)
+- [Solution TP4](tp4-solution)
+- [Solution TP5](tp5-solution)
+- [Solution TP6](tp6-solution)
+- [Solution TP7](tp7-solution)

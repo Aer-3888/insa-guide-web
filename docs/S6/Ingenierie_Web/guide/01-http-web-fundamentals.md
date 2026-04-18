@@ -16,7 +16,7 @@ sidebar_position: 1
 7. [REST : principes architecturaux](#7-rest--principes-architecturaux)
 8. [Architecture client-serveur](#8-architecture-client-serveur)
 9. [Pieges courants](#9-pieges-courants)
-10. [Cheat Sheet](#10-cheat-sheet)
+10. [Aide-memoire](#10-aide-memoire)
 
 ---
 
@@ -100,26 +100,26 @@ Client (navigateur)                     Serveur (Spring Boot)
 
 ```
 +--------+----------+---------------------------------------------------+
-| Verbe  | Action   | Description                                       |
-+--------+----------+---------------------------------------------------+
-| POST   | Create   | Creer une nouvelle ressource                      |
-|        |          | Donnees dans le body                              |
-+--------+----------+---------------------------------------------------+
-| GET    | Read     | Lire / recuperer une ressource                    |
-|        |          | Lecture seule, PAS de body                         |
-+--------+----------+---------------------------------------------------+
-| PUT    | Update   | Remplacer completement une ressource              |
-|        |          | Objet complet dans le body                        |
-+--------+----------+---------------------------------------------------+
-| PATCH  | Update   | Modifier partiellement une ressource              |
-|        |          | Seuls les attributs a modifier dans le body       |
-+--------+----------+---------------------------------------------------+
-| DELETE | Delete   | Supprimer une ressource                           |
-|        |          | Identifiant dans l'URI                            |
+| Verbe  | Action    | Description                                       |
++--------+-----------+---------------------------------------------------+
+| POST   | Creer     | Creer une nouvelle ressource                      |
+|        |           | Donnees dans le body                              |
++--------+-----------+---------------------------------------------------+
+| GET    | Lire      | Lire / recuperer une ressource                    |
+|        |           | Lecture seule, PAS de body                         |
++--------+-----------+---------------------------------------------------+
+| PUT    | Modifier  | Remplacer completement une ressource              |
+|        |           | Objet complet dans le body                        |
++--------+-----------+---------------------------------------------------+
+| PATCH  | Modifier  | Modifier partiellement une ressource              |
+|        |           | Seuls les attributs a modifier dans le body       |
++--------+-----------+---------------------------------------------------+
+| DELETE | Supprimer | Supprimer une ressource                           |
+|        |           | Identifiant dans l'URI                            |
 +--------+----------+---------------------------------------------------+
 ```
 
-### Difference PUT vs PATCH
+### Difference entre PUT et PATCH
 
 ```
 PUT (remplacement complet) :
@@ -267,10 +267,10 @@ CONFLIT : GET /api/foo/{param1}  et  GET /api/foo/{param2}
 |-----------|---------------|
 | Operations CRUD + authentification | Asynchrone (latence reseau) |
 | Repose sur HTTP (standard) | Verbeux (en-tetes HTTP) |
-| API explicite front-end / back-end | Unidirectionnel (back ne peut pas contacter le front) |
+| API explicite front-end / back-end | Unidirectionnel (le back ne peut pas contacter le front) |
 | Supporte par toutes les bibliotheques | |
 
-**Alternative** : WebSockets pour communication bidirectionnelle en temps reel.
+**Alternative** : les WebSockets pour une communication bidirectionnelle en temps reel.
 
 ---
 
@@ -332,7 +332,7 @@ src/main/java/fr/insarennes/
 
 ---
 
-## 10. Cheat Sheet
+## 10. Aide-memoire
 
 ```
 HTTP = protocole de communication du Web

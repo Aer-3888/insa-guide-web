@@ -5,6 +5,6 @@ sidebar_position: 0
 
 # TP (Enonces)
 
-- [tp1](tp1)
-- [tp2](tp2)
-- [tp3 gitlab exercises](tp3-gitlab-exercises)
+- [TP1](tp1)
+- [TP2](tp2)
+- [Exercices TP3 gitlab](tp3-gitlab-exercises)

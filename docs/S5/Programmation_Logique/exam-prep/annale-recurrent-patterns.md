@@ -1,11 +1,11 @@
 ---
-title: "Patterns recurrents dans les annales (2015-2026)"
+title: "Motifs recurrents dans les annales (2015-2026)"
 sidebar_position: 4
 ---
 
-# Patterns recurrents dans les annales (2015-2026)
+# Motifs recurrents dans les annales (2015-2026)
 
-## Pattern 1 : Base de faits + regles deductives
+## Motif 1 : Base de faits + regles deductives
 
 Apparait dans **presque chaque annale**. On donne une base de faits thematique et on demande d'ecrire des regles.
 
@@ -44,7 +44,7 @@ pour_tout(X) :-
 
 ---
 
-## Pattern 2 : Predicats sur les listes
+## Motif 2 : Predicats sur les listes
 
 Apparait dans **2 annales sur 3** au minimum.
 
@@ -100,7 +100,7 @@ liste_somme([X1|L1], [X2|L2], [X3|L3]) :-
 
 ---
 
-## Pattern 3 : Predicat mystere (comprehension)
+## Motif 3 : Predicat mystere (comprehension)
 
 Apparait dans **la moitie des annales**. On donne un predicat et on demande :
 - Que retourne-t-il pour tel appel ?
@@ -122,11 +122,11 @@ tmp([E|_], E, R, R) :- !.
 tmp([F|L], E, Rest, Acc) :- tmp(L, E, Rest, [F|Acc]).
 ```
 
-**Technique d'accumulateur inverse** : l'accumulateur `[F|Acc]` accumule les elements en tete, ce qui les **inverse**. C'est le pattern le plus frequent dans les predicats mystere.
+**Technique d'accumulateur inverse** : l'accumulateur `[F|Acc]` accumule les elements en tete, ce qui les **inverse**. C'est le schema le plus frequent dans les predicats mystere.
 
 ---
 
-## Pattern 4 : Arbre de resolution / Trace
+## Motif 4 : Arbre de resolution / Trace
 
 Apparait dans **la moitie des annales**.
 
@@ -147,7 +147,7 @@ Apparait dans **la moitie des annales**.
 
 ---
 
-## Pattern 5 : Cut et negation
+## Motif 5 : Cut et negation
 
 ### Questions types
 
@@ -179,7 +179,7 @@ classify(_, negative).
 
 ---
 
-## Pattern 6 : Recursion transitive
+## Motif 6 : Recursion transitive
 
 Apparait dans les TPs et parfois aux examens.
 
@@ -198,7 +198,7 @@ rel_quantifiee(X, Y, Q) :-
 
 ---
 
-## Pattern 7 : findall + agregation
+## Motif 7 : findall + agregation
 
 ```prolog noexec
 % Compter
@@ -220,7 +220,7 @@ solutions_uniques(Goal, Template, L) :-
 
 ---
 
-## Recapitulatif : que reviser en priorite
+## Recapitulatif : que reviser en priorite ?
 
 ```
 INDISPENSABLE (chaque examen)
@@ -233,7 +233,7 @@ TRES IMPORTANT (1 examen sur 2)
   [x] Trace d'execution (4 ports)
   [x] Arbre de resolution SLD
   [x] Predicat mystere (comprehension)
-  [x] Cut (green vs red, impact sur les solutions)
+  [x] Cut (vert vs rouge, impact sur les solutions)
 
 IMPORTANT (1 examen sur 3)
   [x] findall / bagof / setof

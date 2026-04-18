@@ -1,95 +1,95 @@
 ---
-title: "TP1 - Introduction to OCaml"
+title: "TP1 - Introduction a OCaml"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction to OCaml
+# TP1 - Introduction a OCaml
 
-## Overview
+## Vue d'ensemble
 
-This lab introduces fundamental OCaml concepts including:
-- Basic functions and expressions
-- Conditional expressions
-- Tuples and pattern matching
-- Higher-order functions
+Ce TP introduit les concepts fondamentaux d'OCaml :
+- Fonctions et expressions de base
+- Expressions conditionnelles
+- Tuples et pattern matching
+- Fonctions d'ordre superieur
 - Recursion
 
-## Exercises
+## Exercices
 
-### 1. Basic Arithmetic (`mul2`)
-Multiply a number by 2.
+### 1. Arithmetique de base (`mul2`)
+Multiplier un nombre par 2.
 
-**Concepts**: Simple function definition, arithmetic operations
+**Concepts** : Definition de fonction simple, operations arithmetiques
 
-### 2. Absolute Value (`vabs`)
-Calculate the absolute value of an integer.
+### 2. Valeur absolue (`vabs`)
+Calculer la valeur absolue d'un entier.
 
-**Concepts**: Conditional expressions (`if-then-else`)
+**Concepts** : Expressions conditionnelles (`if-then-else`)
 
-### 3. Range Testing (`test1`, `test2`)
-- `test1`: Check if a number is in range [12, 29]
-- `test2`: Check if a number equals 2, 5, 9, or 23
+### 3. Tests d'intervalle (`test1`, `test2`)
+- `test1` : Verifier si un nombre est dans l'intervalle [12, 29]
+- `test2` : Verifier si un nombre vaut 2, 5, 9 ou 23
 
-**Concepts**: Boolean operators (`&&`, `||`), comparison operators
+**Concepts** : Operateurs booleens (`&&`, `||`), operateurs de comparaison
 
-### 4. Tuple Operations (`test3`)
-Test if the first element of a pair equals 12.
+### 4. Operations sur les tuples (`test3`)
+Tester si le premier element d'une paire vaut 12.
 
-**Concepts**: Tuple access with `fst` and `snd`
+**Concepts** : Acces aux tuples avec `fst` et `snd`
 
-### 5. Leap Year (`bissext`)
-Determine if a year is a leap year using the Gregorian calendar rules.
+### 5. Annee bissextile (`bissext`)
+Determiner si une annee est bissextile selon les regles du calendrier gregorien.
 
-**Concepts**: Modulo operator, complex boolean logic
+**Concepts** : Operateur modulo, logique booleenne complexe
 
-### 6. Tuple Projections (`proj1`, `proj23`)
-Extract elements from 3-tuples.
+### 6. Projections de tuples (`proj1`, `proj23`)
+Extraire des elements de triplets.
 
-**Concepts**: Pattern matching on tuples
+**Concepts** : Pattern matching sur les tuples
 
-### 7. Nested Tuple Operations (`inv2`)
-Extract and swap elements from nested pairs.
+### 7. Operations sur tuples imbriques (`inv2`)
+Extraire et permuter des elements de paires imbriquees.
 
-**Concepts**: Nested pattern matching
+**Concepts** : Pattern matching imbrique
 
-### 8. Pair Increment (`incrpaire`)
-Increment both elements of a pair.
+### 8. Increment de paire (`incrpaire`)
+Incrementer les deux elements d'une paire.
 
-**Concepts**: Tuple construction
+**Concepts** : Construction de tuples
 
-### 9. Higher-Order Functions (`appliquepaire`, `incrpaire2`)
-Apply a function to both elements of a pair.
+### 9. Fonctions d'ordre superieur (`appliquepaire`, `incrpaire2`)
+Appliquer une fonction aux deux elements d'une paire.
 
-**Concepts**: Functions as first-class values, function parameters
+**Concepts** : Fonctions comme valeurs de premiere classe, fonctions en parametre
 
-### 10. Function Composition (`rapport`, `mytan`)
-Compute the ratio of two functions and implement tangent.
+### 10. Composition de fonctions (`rapport`, `mytan`)
+Calculer le rapport de deux fonctions et implementer la tangente.
 
-**Concepts**: Functions returning functions, closures
+**Concepts** : Fonctions retournant des fonctions, fermetures (closures)
 
-### 11. Primality Testing (`premier`)
-Check if a number is prime using trial division.
+### 11. Test de primalite (`premier`)
+Verifier si un nombre est premier par division par essai.
 
-**Concepts**: Nested recursive functions, local definitions
+**Concepts** : Fonctions recursives imbriquees, definitions locales
 
-### 12. Nth Prime (`n_premier`)
-Find the nth prime number.
+### 12. N-ieme nombre premier (`n_premier`)
+Trouver le n-ieme nombre premier.
 
-**Concepts**: Combining multiple recursive functions
+**Concepts** : Combinaison de plusieurs fonctions recursives
 
-## Key OCaml Concepts
+## Concepts cles OCaml
 
 ### Pattern Matching
 ```ocaml
 let proj1 (a, b, c) = a
 ```
 
-### Higher-Order Functions
+### Fonctions d'ordre superieur
 ```ocaml
 let appliquepaire f p = (f (fst p), f (snd p))
 ```
 
-### Nested Functions
+### Fonctions imbriquees
 ```ocaml
 let premier n =
   let rec estpremier x n =
@@ -100,15 +100,15 @@ let premier n =
   estpremier 2 n
 ```
 
-## Running the Code
+## Execution du code
 
-Load the file in OCaml toplevel:
+Charger le fichier dans le toplevel OCaml :
 ```bash
 ocaml
 # #use "tp1.ml";;
 ```
 
-Or compile and run:
+Ou compiler et executer :
 ```bash
 ocamlc -o tp1 tp1.ml
 ./tp1

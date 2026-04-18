@@ -1,65 +1,65 @@
 ---
-title: "TP5 - Multicast Chat Application"
+title: "TP5 - Application de chat multicast"
 sidebar_position: 5
 ---
 
-# TP5 - Multicast Chat Application
+# TP5 - Application de chat multicast
 
-Advanced network programming: IP multicast, multithreading, and real-time communication.
+Programmation reseau avancee : multicast IP, multithreading et communication temps reel.
 
-## Objectives
+## Objectifs
 
-- Understand IP multicast concepts
-- Implement multicast socket programming in C
-- Use POSIX threads (pthreads) for concurrent operations
-- Build a real-time chat application
-- Handle terminal I/O in raw mode
+- Comprendre les concepts du multicast IP
+- Implementer la programmation socket multicast en C
+- Utiliser les threads POSIX (pthreads) pour les operations concurrentes
+- Construire une application de chat temps reel
+- Gerer les entrees/sorties du terminal en mode raw
 
-## Topics Covered
+## Themes abordes
 
-1. **IP Multicast** - Group communication protocol
-2. **Multithreading** - Concurrent send/receive operations
-3. **Terminal Control** - Raw mode for interactive input
-4. **Chat Protocol** - Message formatting and display
-
----
-
-## IP Multicast Concepts
-
-### What is Multicast?
-
-**Multicast** allows one-to-many communication:
-- One sender, multiple receivers
-- More efficient than unicast to each receiver
-- Less overhead than broadcast
-
-### Multicast Addresses
-
-**IPv4 multicast range:** 224.0.0.0 to 239.255.255.255
-
-| Range | Purpose |
-|-------|---------|
-| 224.0.0.0 - 224.0.0.255 | Local network (not routed) |
-| 224.0.1.0 - 238.255.255.255 | Global multicast |
-| 239.0.0.0 - 239.255.255.255 | Organization-local |
-
-**Common addresses:**
-- `224.0.0.1` - All hosts on this subnet
-- `224.0.0.2` - All routers on this subnet
-- `224.0.0.10` - Custom application (used in this TP)
-
-### How It Works
-
-1. **Sender** sends UDP packets to multicast group address
-2. **Receivers** join the multicast group (subscribe)
-3. **Network** delivers packets to all group members
-4. **IGMP** (Internet Group Management Protocol) manages group membership
+1. **Multicast IP** - Protocole de communication de groupe
+2. **Multithreading** - Operations d'envoi/reception concurrentes
+3. **Controle du terminal** - Mode raw pour la saisie interactive
+4. **Protocole de chat** - Formatage et affichage des messages
 
 ---
 
-## Architecture Overview
+## Concepts du multicast IP
 
-### Application Design
+### Qu'est-ce que le multicast ?
+
+Le **multicast** permet la communication un-vers-plusieurs :
+- Un emetteur, plusieurs recepteurs
+- Plus efficace que l'unicast vers chaque recepteur
+- Moins de surcout que le broadcast
+
+### Adresses multicast
+
+**Plage multicast IPv4 :** 224.0.0.0 a 239.255.255.255
+
+| Plage | Usage |
+|-------|-------|
+| 224.0.0.0 - 224.0.0.255 | Reseau local (non route) |
+| 224.0.1.0 - 238.255.255.255 | Multicast global |
+| 239.0.0.0 - 239.255.255.255 | Organisation locale |
+
+**Adresses courantes :**
+- `224.0.0.1` - Tous les hotes de ce sous-reseau
+- `224.0.0.2` - Tous les routeurs de ce sous-reseau
+- `224.0.0.10` - Application personnalisee (utilisee dans ce TP)
+
+### Fonctionnement
+
+1. L'**emetteur** envoie des paquets UDP a l'adresse du groupe multicast
+2. Les **recepteurs** rejoignent le groupe multicast (s'abonnent)
+3. Le **reseau** livre les paquets a tous les membres du groupe
+4. **IGMP** (Internet Group Management Protocol) gere l'appartenance aux groupes
+
+---
+
+## Vue d'ensemble de l'architecture
+
+### Conception de l'application
 
 ```
 ┌─────────────────────────────────────┐
@@ -80,25 +80,25 @@ Advanced network programming: IP multicast, multithreading, and real-time commun
     └─────────┘      └─────────────┘
 ```
 
-### Thread Communication
+### Communication entre threads
 
-- **Shared resource:** Input string (user typing)
-- **Synchronization:** Mutex protects input string
-- **Coordination:** Main thread waits for send thread to exit
+- **Ressource partagee :** Chaine de saisie (texte en cours de frappe)
+- **Synchronisation :** Un mutex protege la chaine de saisie
+- **Coordination :** Le thread principal attend que le thread d'envoi se termine
 
 ---
 
 ## Implementation (main.c)
 
-### 1. Command-Line Argument Parsing
+### 1. Analyse des arguments en ligne de commande
 
-**Usage:**
+**Utilisation :**
 ```bash
 ./chat ADDRESS PORT NAME
 ./chat 224.0.0.10 10000 Alice
 ```
 
-**Argument structure:**
+**Structure des arguments :**
 ```c noexec
 typedef struct {
     bool help;
@@ -109,7 +109,7 @@ typedef struct {
 } Args;
 ```
 
-**Macro-based argument definition:**
+**Definition des arguments par macros :**
 ```c noexec
 #define ARGS_FLAGS \
     FLAG(help, h, "show this help message and exit") \
@@ -121,9 +121,9 @@ typedef struct {
     PARAM(name, NAME, "the name of the user")
 ```
 
-This allows generic parsing and help generation.
+Cela permet l'analyse generique et la generation de l'aide.
 
-### 2. Socket Setup
+### 2. Configuration du socket
 
 ```c noexec
 // Create UDP socket
@@ -161,11 +161,11 @@ if (bind(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
 }
 ```
 
-### Key Socket Options
+### Options socket importantes
 
 #### `IP_ADD_MEMBERSHIP`
 
-Joins a multicast group:
+Rejoint un groupe multicast :
 ```c noexec
 struct ip_mreq {
     struct in_addr imr_multiaddr;  // Multicast group address
@@ -175,15 +175,15 @@ struct ip_mreq {
 
 #### `SO_REUSEADDR`
 
-Allows multiple processes to bind to same port:
+Permet a plusieurs processus de se lier au meme port :
 ```c noexec
 int opt = 1;
 setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 ```
 
-Essential for multicast - all receivers need same port.
+Essentiel pour le multicast - tous les recepteurs ont besoin du meme port.
 
-#### Other Useful Options
+#### Autres options utiles
 
 ```c noexec
 // Set TTL (Time To Live) - how many router hops
@@ -200,9 +200,9 @@ interface_addr.s_addr = inet_addr("192.168.1.100");
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_IF, &interface_addr, sizeof(interface_addr));
 ```
 
-### 3. Thread Structure
+### 3. Structure des threads
 
-#### Input String (Shared State)
+#### Chaine de saisie (etat partage)
 
 ```c noexec
 typedef struct {
@@ -213,7 +213,7 @@ typedef struct {
 } InputString;
 ```
 
-**Operations:**
+**Operations :**
 ```c noexec
 // Initialize
 InputString *input_string_init(void) {
@@ -249,7 +249,7 @@ void input_string_draw(InputString *self) {
 }
 ```
 
-#### Send Thread
+#### Thread d'envoi
 
 ```c noexec
 typedef struct {
@@ -334,7 +334,7 @@ static void *send_messages_thread(void *data) {
 }
 ```
 
-#### Receive Thread
+#### Thread de reception
 
 ```c noexec
 typedef struct {
@@ -362,7 +362,7 @@ static void *receive_messages_thread(void *data) {
 }
 ```
 
-#### Message Display
+#### Affichage des messages
 
 ```c noexec
 static void print_message(char *message, const size_t message_length,
@@ -399,11 +399,11 @@ static void print_message(char *message, const size_t message_length,
 }
 ```
 
-### 4. Terminal Raw Mode
+### 4. Mode raw du terminal
 
-Normal terminal is **line-buffered** - input not available until Enter pressed.
+Le terminal normal est en **mode ligne** - la saisie n'est disponible qu'apres avoir appuye sur Entree.
 
-**Raw mode** allows character-by-character input:
+Le **mode raw** permet la saisie caractere par caractere :
 
 ```c noexec
 static void terminal_enable_raw_mode() {
@@ -427,9 +427,9 @@ static void terminal_disable_raw_mode() {
 }
 ```
 
-**Why needed:** To show prompt with user typing in real-time while receiving messages.
+**Pourquoi c'est necessaire :** Pour afficher le prompt avec le texte en cours de saisie en temps reel tout en recevant des messages.
 
-### 5. Thread Management
+### 5. Gestion des threads
 
 ```c noexec
 int main(const int argc, char *argv[]) {
@@ -475,16 +475,16 @@ int main(const int argc, char *argv[]) {
 
 ---
 
-## Compilation & Running
+## Compilation et execution
 
-### Compile
+### Compiler
 
 ```bash
 gcc -pthread -o chat main.c
 # -pthread: Link pthread library
 ```
 
-### Run Multiple Instances
+### Lancer plusieurs instances
 
 ```bash
 # Terminal 1
@@ -497,16 +497,16 @@ gcc -pthread -o chat main.c
 ./chat 224.0.0.10 10000 Charlie
 ```
 
-### Usage
+### Utilisation
 
-Type message and press Enter to send.
+Taper un message et appuyer sur Entree pour envoyer.
 
-**Special keys:**
-- `Ctrl+D` or `Ctrl+C` - Exit
-- `Backspace` / `Delete` - Delete character
-- `Ctrl+L` - Clear screen
+**Touches speciales :**
+- `Ctrl+D` ou `Ctrl+C` - Quitter
+- `Backspace` / `Delete` - Supprimer un caractere
+- `Ctrl+L` - Effacer l'ecran
 
-**Example chat:**
+**Exemple de chat :**
 ```
 ❯ Hello everyone!
 10:30: Alice: Hello everyone!
@@ -518,7 +518,7 @@ Type message and press Enter to send.
 
 ---
 
-## Message Protocol
+## Protocole de messages
 
 ### Format
 
@@ -526,7 +526,7 @@ Type message and press Enter to send.
 <username>@<message content>
 ```
 
-### Examples
+### Exemples
 
 ```
 Alice@Hello world
@@ -534,15 +534,15 @@ Bob@How is everyone?
 Charlie@I'm good!
 ```
 
-### Why @ Separator?
+### Pourquoi le separateur @ ?
 
-- Simple to parse with `strchr()`
-- Unlikely in usernames
-- Clear delimiter in debugging
+- Simple a parser avec `strchr()`
+- Peu probable dans les noms d'utilisateur
+- Delimiteur clair pour le debugging
 
-### Improvements
+### Ameliorations
 
-**JSON format:**
+**Format JSON :**
 ```json
 {
   "user": "Alice",
@@ -551,7 +551,7 @@ Charlie@I'm good!
 }
 ```
 
-**Binary format:**
+**Format binaire :**
 ```c noexec
 struct Message {
     uint32_t timestamp;
@@ -564,9 +564,9 @@ struct Message {
 
 ---
 
-## Multicast vs Other Approaches
+## Multicast vs autres approches
 
-### Unicast (One-to-One)
+### Unicast (un-a-un)
 
 ```
 Sender → Receiver 1
@@ -574,39 +574,39 @@ Sender → Receiver 2
 Sender → Receiver 3
 ```
 
-**Cost:** N messages for N receivers
+**Cout :** N messages pour N recepteurs
 
-### Broadcast (One-to-All)
+### Broadcast (un-a-tous)
 
 ```
 Sender → [All hosts on network]
 ```
 
-**Issues:**
-- Floods network
-- All hosts process packet (even if not interested)
-- Not routable
+**Problemes :**
+- Inonde le reseau
+- Tous les hotes traitent le paquet (meme ceux qui ne sont pas interesses)
+- Non routable
 
-### Multicast (One-to-Many)
+### Multicast (un-a-plusieurs)
 
 ```
 Sender → [Multicast Group] → Receivers (who joined group)
 ```
 
-**Benefits:**
-- Single packet to multiple receivers
-- Only interested hosts receive
-- Routable (with proper configuration)
+**Avantages :**
+- Un seul paquet pour plusieurs recepteurs
+- Seuls les hotes interesses recoivent
+- Routable (avec la bonne configuration)
 
 ---
 
-## Network Analysis
+## Analyse reseau
 
-### Wireshark Capture
+### Capture Wireshark
 
-**Filter:** `ip.dst == 224.0.0.10`
+**Filtre :** `ip.dst == 224.0.0.10`
 
-**Packet structure:**
+**Structure du paquet :**
 ```
 Ethernet Header
 ├─ Destination MAC: 01:00:5E:00:00:0A (multicast MAC)
@@ -626,29 +626,29 @@ Data
 └─ "Alice@Hello world"
 ```
 
-### Multicast MAC Address
+### Adresse MAC multicast
 
-Multicast IP maps to Ethernet multicast MAC:
+L'IP multicast correspond a une adresse MAC Ethernet multicast :
 ```
 224.0.0.10
 → 01:00:5E:00:00:0A
 ```
 
-Formula: `01:00:5E:<last 23 bits of IP>`
+Formule : `01:00:5E:<23 bits de poids faible de l'IP>`
 
 ---
 
-## Synchronization with Mutexes
+## Synchronisation avec les mutex
 
-### Why Needed?
+### Pourquoi c'est necessaire ?
 
-**Problem:** Both threads access `input_string`:
-- Send thread reads/modifies (user typing)
-- Receive thread displays messages → redraws prompt → reads `input_string`
+**Probleme :** Les deux threads accedent a `input_string` :
+- Le thread d'envoi lit/modifie (saisie utilisateur)
+- Le thread de reception affiche les messages -> redessine le prompt -> lit `input_string`
 
-Without synchronization: **race condition** → corruption/crashes.
+Sans synchronisation : **race condition** -> corruption/crash.
 
-### Solution: Mutex
+### Solution : Mutex
 
 ```c noexec
 pthread_mutex_t mutex;
@@ -665,9 +665,9 @@ pthread_mutex_unlock(&mutex);
 pthread_mutex_destroy(&mutex);
 ```
 
-### In Our Code
+### Dans notre code
 
-Every `input_string` access is protected:
+Chaque acces a `input_string` est protege :
 
 ```c noexec
 // Append character
@@ -684,43 +684,43 @@ unlock_mutex(&self->mutex);
 
 ---
 
-## Advanced Features
+## Fonctionnalites avancees
 
-### 1. Private Messages
+### 1. Messages prives
 
 ```
 /msg Bob Hello Bob!
 ```
 
-Implementation:
-- Parse `/msg <user> <message>`
-- Send unicast UDP to specific user
-- Requires tracking user IPs (discovery protocol needed)
+Implementation :
+- Parser `/msg <utilisateur> <message>`
+- Envoyer un datagramme UDP unicast a l'utilisateur specifique
+- Necessite de suivre les IPs des utilisateurs (protocole de decouverte necessaire)
 
-### 2. User Join/Leave Notifications
+### 2. Notifications d'arrivee/depart
 
 ```
 Charlie joined the chat
 Bob left the chat
 ```
 
-Implementation:
-- Send special message on join: `@JOIN@Charlie`
-- Send on leave: `@LEAVE@Bob`
-- Track active users in each client
+Implementation :
+- Envoyer un message special a l'arrivee : `@JOIN@Charlie`
+- Envoyer au depart : `@LEAVE@Bob`
+- Suivre les utilisateurs actifs dans chaque client
 
-### 3. Message History
+### 3. Historique des messages
 
-Save messages to file:
+Sauvegarder les messages dans un fichier :
 ```c noexec
 FILE *log = fopen("chat.log", "a");
 fprintf(log, "[%s] %s: %s\n", timestamp, username, message);
 fclose(log);
 ```
 
-### 4. Encryption
+### 4. Chiffrement
 
-Encrypt messages with symmetric key:
+Chiffrer les messages avec une cle symetrique :
 ```c noexec
 // Pseudo-code
 encrypted = encrypt_aes(message, shared_key);
@@ -729,9 +729,9 @@ sendto(sock, encrypted, len, ...);
 decrypted = decrypt_aes(received, shared_key);
 ```
 
-### 5. File Transfer
+### 5. Transfert de fichiers
 
-Send file through multicast:
+Envoyer un fichier via multicast :
 ```
 Alice@FILE:image.jpg:12345  (announce file, size)
 Alice@CHUNK:0:...binary...  (send chunks)
@@ -740,19 +740,19 @@ Alice@CHUNK:1:...binary...
 Alice@DONE:image.jpg        (transfer complete)
 ```
 
-Receivers reassemble chunks.
+Les recepteurs reassemblent les morceaux.
 
 ---
 
-## Troubleshooting
+## Depannage
 
-### Messages not received
+### Messages non recus
 
-**Check:**
-1. Multicast address correct? (224.0.0.x)
-2. Port correct on all instances?
-3. Firewall blocking?
-4. Joined multicast group?
+**Verifier :**
+1. Adresse multicast correcte ? (224.0.0.x)
+2. Port correct sur toutes les instances ?
+3. Pare-feu bloquant ?
+4. Groupe multicast rejoint ?
 
 ```bash
 # Check multicast membership (Linux)
@@ -762,63 +762,63 @@ netstat -g
 nc -u 224.0.0.10 10000
 ```
 
-### Own messages not visible
+### Ses propres messages ne sont pas visibles
 
-**Cause:** Multicast loopback disabled
+**Cause :** Loopback multicast desactive
 
-**Solution:** Enable loopback:
+**Solution :** Activer le loopback :
 ```c noexec
 unsigned char loop = 1;
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP, &loop, sizeof(loop));
 ```
 
-### Messages only on local machine
+### Messages uniquement sur la machine locale
 
-**Cause:** TTL = 0 (default)
+**Cause :** TTL = 0 (par defaut)
 
-**Solution:** Increase TTL:
+**Solution :** Augmenter le TTL :
 ```c noexec
 unsigned char ttl = 5;  // Up to 5 router hops
 setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl, sizeof(ttl));
 ```
 
-### Terminal messed up after exit
+### Terminal casse apres la sortie
 
-**Cause:** Raw mode not restored
+**Cause :** Mode raw non restaure
 
-**Solution:** Ensure cleanup with `atexit()`:
+**Solution :** Assurer le nettoyage avec `atexit()` :
 ```c noexec
 atexit(terminal_disable_raw_mode);
 ```
 
-Or manually:
+Ou manuellement :
 ```bash
 reset  # Reset terminal
 ```
 
 ---
 
-## Key Takeaways
+## Points a retenir
 
-1. **Multicast = efficient one-to-many** communication
-2. **IP_ADD_MEMBERSHIP** joins multicast group
-3. **SO_REUSEADDR** allows multiple receivers on same port
-4. **Pthreads** enable concurrent operations
-5. **Mutexes** protect shared data from race conditions
-6. **Raw terminal mode** for character-by-character input
-7. **Message protocol** defines application behavior
-8. **sendto()** for multicast (destination = group address)
-9. **recv()** receives from any group member
+1. **Multicast = communication un-vers-plusieurs** efficace
+2. **IP_ADD_MEMBERSHIP** rejoint un groupe multicast
+3. **SO_REUSEADDR** permet plusieurs recepteurs sur le meme port
+4. **pthreads** permettent les operations concurrentes
+5. **Les mutex** protegent les donnees partagees des race conditions
+6. **Le mode raw du terminal** pour la saisie caractere par caractere
+7. **Le protocole de messages** definit le comportement de l'application
+8. **sendto()** pour le multicast (destination = adresse du groupe)
+9. **recv()** recoit de n'importe quel membre du groupe
 
 ---
 
-## Files in This Directory
+## Fichiers dans ce repertoire
 
-### Source Code (`src/`)
-- `main.c` - Complete multicast chat implementation
+### Code source (`src/`)
+- `main.c` - Implementation complete du chat multicast
 
 ### Documentation
-- `tp5.pdf` - Assignment instructions
+- `tp5.pdf` - Enonce du TP
 
 ### Compilation
 
@@ -829,30 +829,30 @@ gcc -pthread -o chat main.c -Wall -Wextra
 
 ---
 
-## Further Reading
+## Pour aller plus loin
 
 - RFC 1112 (IP Multicast)
 - RFC 2236 (IGMP v2)
 - RFC 3376 (IGMP v3)
-- POSIX Threads Programming (pthreads)
-- `man 7 ip` - IP socket options
+- Programmation POSIX Threads (pthreads)
+- `man 7 ip` - Options socket IP
 - `man pthread_create`, `man pthread_mutex_lock`
-- Terminal control (`man termios`)
+- Controle du terminal (`man termios`)
 
 ---
 
-## Comparison with Modern Chat Apps
+## Comparaison avec les applications de chat modernes
 
-This TP demonstrates core concepts used in real-time applications:
+Ce TP demontre les concepts fondamentaux utilises dans les applications temps reel :
 
-| Concept | Our Implementation | Industry (e.g., Slack, Discord) |
-|---------|-------------------|-------------------------------|
-| Group communication | IP multicast | Pub/Sub (Redis, Kafka) |
-| Real-time | UDP multicast | WebSocket over TCP |
-| Message format | Text: `user@msg` | JSON or Protocol Buffers |
-| Delivery | Best-effort UDP | Reliable (TCP + ACKs) |
-| Persistence | None | Database storage |
-| Scalability | Local network | Cloud infrastructure |
-| Security | None | TLS, authentication, encryption |
+| Concept | Notre implementation | Industrie (ex: Slack, Discord) |
+|---------|---------------------|-------------------------------|
+| Communication de groupe | Multicast IP | Pub/Sub (Redis, Kafka) |
+| Temps reel | Multicast UDP | WebSocket sur TCP |
+| Format des messages | Texte : `user@msg` | JSON ou Protocol Buffers |
+| Livraison | Best-effort UDP | Fiable (TCP + ACK) |
+| Persistance | Aucune | Stockage en base de donnees |
+| Scalabilite | Reseau local | Infrastructure cloud |
+| Securite | Aucune | TLS, authentification, chiffrement |
 
-Despite simplicity, our chat demonstrates fundamental principles applicable to production systems.
+Malgre sa simplicite, notre chat demontre les principes fondamentaux applicables aux systemes de production.

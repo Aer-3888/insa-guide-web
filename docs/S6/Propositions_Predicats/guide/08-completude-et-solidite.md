@@ -9,7 +9,7 @@ sidebar_position: 8
 
 ---
 
-## 1. Solidite (soundness)
+## 1. Solidite (correction)
 
 ### Definition
 
@@ -46,7 +46,7 @@ La methode de resolution est **solide** :
 
 ---
 
-## 2. Completude (completeness)
+## 2. Completude
 
 ### Definition
 

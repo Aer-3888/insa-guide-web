@@ -9,7 +9,7 @@ sidebar_position: 11
 
 ---
 
-## 11.1 Packet Sniffing (ecoute passive)
+## 11.1 Ecoute de paquets (ecoute passive)
 
 ### Concept
 
@@ -76,7 +76,7 @@ L'attaquant est en position de Man-in-the-Middle : il peut lire, modifier, bloqu
 
 ---
 
-## 11.3 DNS Poisoning
+## 11.3 Empoisonnement DNS
 
 ### Concept
 
@@ -86,9 +86,9 @@ Corrompre les enregistrements DNS pour rediriger un nom de domaine vers une adre
 
 | Type | Description |
 |------|------------|
-| **Cache poisoning** | Injecter de fausses reponses dans le cache du resolveur DNS |
-| **DNS hijacking** | Modifier les enregistrements au niveau du registrar |
-| **DNS spoofing** | Repondre avant le vrai serveur DNS |
+| **Empoisonnement du cache** | Injecter de fausses reponses dans le cache du resolveur DNS |
+| **Detournement DNS** | Modifier les enregistrements au niveau du registrar |
+| **Usurpation DNS** | Repondre avant le vrai serveur DNS |
 
 ### Impact
 
@@ -111,7 +111,7 @@ La victime tape `www.banque.fr` mais se retrouve sur le site de l'attaquant. Si 
 
 TLS (Transport Layer Security) fournit confidentialite, integrite et authentification pour les communications reseau.
 
-### Handshake simplifie
+### Poignee de main simplifiee
 
 ```
 Client                                  Serveur
@@ -150,7 +150,7 @@ Client                                  Serveur
 - **Ignorer les erreurs de certificat** : annule l'authentification
 - **TLS 1.0/1.1** : versions obsoletes avec des vulnerabilites connues
 - **Suites de chiffrement faibles** : RC4, DES, export ciphers
-- **Mixed content** : page HTTPS qui charge des ressources en HTTP
+- **Contenu mixte** : page HTTPS qui charge des ressources en HTTP
 
 ---
 
@@ -210,7 +210,7 @@ DNS POISONING :
 TLS :
   Confidentialite (AES) + Integrite (HMAC) + Authentification (PKI)
   Versions actuelles : TLS 1.2 minimum, TLS 1.3 recommande
-  Erreurs : ignorer erreurs certificat, mixed content, TLS 1.0/1.1
+  Erreurs : ignorer erreurs certificat, contenu mixte, TLS 1.0/1.1
 
 PKI :
   CA signe les certificats

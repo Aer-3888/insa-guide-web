@@ -14,7 +14,7 @@ sidebar_position: 6
 5. [Java vers JSON : du diagramme UML au JSON](#5-java-vers-json--du-diagramme-uml-au-json)
 6. [Bien forme vs valide](#6-bien-forme-vs-valide)
 7. [Exercices types du DS](#7-exercices-types-du-ds)
-8. [Cheat Sheet](#8-cheat-sheet)
+8. [Aide-memoire](#8-aide-memoire)
 
 ---
 
@@ -203,7 +203,7 @@ Un Examen avec deux etudiants, sans copie :
 
 | Terme | Signification |
 |-------|---------------|
-| **Bien forme** (well-formed) | La syntaxe est correcte |
+| **Bien forme** | La syntaxe est correcte |
 | **Valide** | Bien forme ET conforme a un schema (DTD/XSD) |
 | **Pas bien forme** | Erreur de syntaxe -> automatiquement pas valide |
 
@@ -264,7 +264,7 @@ Pour XML, verifier :
 
 ---
 
-## 8. Cheat Sheet
+## 8. Aide-memoire
 
 ```
 XML :

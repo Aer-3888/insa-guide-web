@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # TP2-3 - Parallelisation avec OpenMP : Chaleur, Crible, Jacobi
 
-> Following teacher instructions from: `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP2et3_OpenMP.pdf`
+> D'apres les consignes de l'enseignant : `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP2et3_OpenMP.pdf`
 
 ---
 
@@ -31,7 +31,7 @@ sidebar_position: 2
 >
 > Comparez la duree d'execution de la version sequentielle et de la version parallele pour differents nombres de threads. Quel est le facteur d'acceleration (speed-up) ?
 
-**Answer:**
+**Reponse :**
 
 ### Principe
 
@@ -166,7 +166,7 @@ int main(void)
 - `machin`, `j` sont declarees dans le bloc du `parallel for`, donc automatiquement `private`
 - La barriere implicite a la fin du `parallel for` garantit que tous les threads ont termine avant le swap
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc -fopenmp exo1.c -o exo1 -Wall -Wextra -lm
@@ -184,7 +184,7 @@ export OMP_NUM_THREADS=8
 ./exo1
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 | Threads | Temps (s) | Speedup | Efficacite |
 |---------|-----------|---------|------------|
@@ -204,28 +204,28 @@ Le speedup plafonne car ce probleme est **memory-bound** : chaque point du stenc
 > Le crible d'Eratosthene (IIIe av. JC) est un algorithme qui permet de trouver tous les nombres premiers inferieurs a un certain entier donne n. L'algorithme procede par elimination : il supprime d'une table tous les multiples d'un entier. Voici le pseudo code d'une variation possible :
 >
 > ```
-> for i <- 0 to n-1 do
+> pour i <- 0 a n-1 faire
 >     a[i] = i
-> end for
-> for i <- 2 to sqrt(n) do
->     if a[i] > 0 then
->         for j = i^2 to n-1 step i do
+> fin pour
+> pour i <- 2 a sqrt(n) faire
+>     si a[i] > 0 alors
+>         pour j = i^2 a n-1 pas i faire
 >             a[j] = 0
->         end for
->     end if
-> end for
+>         fin pour
+>     fin si
+> fin pour
 > p <- 0
-> for j <- 0 to n-1 do
->     if a[j] > 0 then
+> pour j <- 0 a n-1 faire
+>     si a[j] > 0 alors
 >         a[p] <- a[j]
 >         p <- p + 1
->     end if
-> end for
+>     fin si
+> fin pour
 > ```
 >
 > Ecrivez et testez une implementation sequentielle de l'algorithme. Parallelisez ce code avec OpenMP et mesurez les performances de votre code.
 
-**Answer:**
+**Reponse :**
 
 ### Version sequentielle
 
@@ -344,7 +344,7 @@ A premiere vue, la boucle externe a des dependances : le thread qui traite `i=6`
 
 Le code du TP affiche un avertissement : "C'est normal que les temps augmentent, c'est le but de l'exercice, montrer que la parallelisation ne fonctionne pas tout le temps."
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc -fopenmp exo2.c -o exo2 -Wall -Wextra -lm
@@ -359,7 +359,7 @@ export OMP_NUM_THREADS=8
 ./exo2
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 | Threads | Temps (s) | Speedup | Observation |
 |---------|-----------|---------|-------------|
@@ -383,19 +383,19 @@ Trois facteurs expliquent ce comportement :
 > La methode de Jacobi est une methode iterative de resolution d'un systeme matriciel de la forme Ax=b. La matrice A est diagonale strictement dominante sur les lignes (c.-a-d. le module de chaque terme diagonal est superieur ou egal a la somme des modules des autres termes de sa ligne). La methode utilise une suite de vecteurs x^(k) qui converge vers un point fixe x. Voici le pseudo code pour la methode :
 >
 > ```
-> Choose an initial guess x0 to the solution
-> while (convergence not reached) do
->     for i := 1 to n do
+> Choisir une estimation initiale x0 de la solution
+> tant que (convergence non atteinte) faire
+>     pour i := 1 a n faire
 >         sigma = 0
->         for j := 1 to n do
->             if j != i then
+>         pour j := 1 a n faire
+>             si j != i alors
 >                 sigma = sigma + a_ij * x_j^(k-1)
->             end if
->         end for
+>             fin si
+>         fin pour
 >         x_i^(k) = (b_i - sigma) / a_ii
->     end for
->     check if convergence is reached
-> end while
+>     fin pour
+>     verifier si la convergence est atteinte
+> fin tant que
 > ```
 >
 > Pour le test de convergence, on peut utiliser la formule suivante :
@@ -403,7 +403,7 @@ Trois facteurs expliquent ce comportement :
 >
 > Ecrivez une implementation sequentielle de la methode. Parallelisez le code avec OpenMP et mesurez les performances.
 
-**Answer:**
+**Reponse :**
 
 ### Version sequentielle
 
@@ -573,7 +573,7 @@ int main(void)
 
 Le pattern est identique a la propagation de la chaleur : double buffering (`x_old` en lecture, `x_new` en ecriture), swap des pointeurs, reduction pour la convergence.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc -fopenmp jacobi.c -o jacobi -Wall -Wextra -lm -O2
@@ -591,7 +591,7 @@ export OMP_NUM_THREADS=8
 ./jacobi
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 | Threads | Temps (s) | Speedup | Efficacite |
 |---------|-----------|---------|------------|

@@ -186,31 +186,31 @@ n types --> 2n + 1 etiquettes
 
 ## AIDE-MEMOIRE SIGLES
 
-| Sigle | Signification |
-|-------|---------------|
-| TAL/NLP | Traitement Automatique des Langues |
-| RI/IR | Recherche d'Information |
-| BoW | Bag of Words |
-| TF-IDF | Term Frequency - Inverse Document Frequency |
-| HMM | Hidden Markov Model |
-| CRF | Conditional Random Field |
-| RNN | Recurrent Neural Network |
-| LSTM | Long Short-Term Memory |
-| GRU | Gated Recurrent Unit |
-| CFG | Context-Free Grammar |
-| PCFG | Probabilistic CFG |
-| CKY | Cocke-Kasami-Younger |
-| CNF | Chomsky Normal Form |
-| POS | Part of Speech |
-| NER | Named Entity Recognition |
-| BIO | Begin-Inside-Outside |
-| UAS | Unlabeled Attachment Score |
-| LAS | Labeled Attachment Score |
-| MAP | Mean Average Precision |
-| nDCG | Normalized Discounted Cumulative Gain |
-| BM25 | Best Matching 25 |
-| BPE | Byte Pair Encoding |
-| PP | Perplexite |
+| Sigle | Denomination anglaise | Equivalent francais |
+|-------|------------------------|---------------------|
+| TAL/NLP | Natural Language Processing | Traitement Automatique des Langues |
+| RI/IR | Information Retrieval | Recherche d'Information |
+| BoW | Bag of Words | Sac de mots |
+| TF-IDF | Term Frequency - Inverse Document Frequency | Frequence du terme - Frequence inverse de document |
+| HMM | Hidden Markov Model | Modele de Markov cache |
+| CRF | Conditional Random Field | Champ aleatoire conditionnel |
+| RNN | Recurrent Neural Network | Reseau de neurones recurrent |
+| LSTM | Long Short-Term Memory | Memoire a long et court terme |
+| GRU | Gated Recurrent Unit | Unite recurrente a portes |
+| CFG | Context-Free Grammar | Grammaire hors-contexte |
+| PCFG | Probabilistic CFG | Grammaire hors-contexte probabiliste |
+| CKY | Cocke-Kasami-Younger | (algorithme de) Cocke-Kasami-Younger |
+| CNF | Chomsky Normal Form | Forme normale de Chomsky |
+| POS | Part of Speech | Categorie grammaticale |
+| NER | Named Entity Recognition | Reconnaissance d'entites nommees |
+| BIO | Begin-Inside-Outside | Debut-Interieur-Exterieur |
+| UAS | Unlabeled Attachment Score | Score d'attachement non etiquete |
+| LAS | Labeled Attachment Score | Score d'attachement etiquete |
+| MAP | Mean Average Precision | Precision moyenne |
+| nDCG | Normalized Discounted Cumulative Gain | Gain cumulatif reduit normalise |
+| BM25 | Best Matching 25 | Meilleure correspondance 25 |
+| BPE | Byte Pair Encoding | Encodage par paires d'octets |
+| PP | Perplexity | Perplexite |
 
 ---
 

@@ -1,149 +1,149 @@
 ---
-title: "TP3: Confidence Intervals"
+title: "TP3 : Intervalles de confiance"
 sidebar_position: 3
 ---
 
-# TP3: Confidence Intervals
+# TP3 : Intervalles de confiance
 
-## Overview
-This lab covers confidence interval construction for means and variances using real-world data. Students learn to work with normal, Student's t, and Chi-squared distributions.
+## Presentation
+Ce TP traite de la construction d'intervalles de confiance pour les moyennes et les variances a partir de donnees reelles. Les etudiants apprennent a travailler avec les distributions normale, de Student et du chi-deux.
 
-## Learning Objectives
-- Calculate confidence intervals for population mean (σ known and unknown)
-- Calculate confidence intervals for population variance
-- Work with quantiles and critical values
-- Apply Student's t-distribution
-- Use Chi-squared distribution for variance inference
-- Validate theoretical intervals with simulations
+## Objectifs pedagogiques
+- Calculer des intervalles de confiance pour la moyenne (sigma connu et inconnu)
+- Calculer des intervalles de confiance pour la variance
+- Travailler avec les quantiles et les valeurs critiques
+- Appliquer la loi de Student
+- Utiliser la distribution du chi-deux pour l'inference sur la variance
+- Valider les intervalles theoriques par des simulations
 
-## Key Concepts
+## Concepts cles
 
-### 1. Confidence Interval for Mean (σ² Known)
+### 1. Intervalle de confiance pour la moyenne (sigma^2 connu)
 
-When population variance σ² is known, use standard normal distribution:
+Lorsque la variance sigma^2 de la population est connue, utiliser la loi normale :
 
-**Formula**: X̄ ± z_(α/2) × (σ/√n)
+**Formule** : X_bar +/- z_(alpha/2) x (sigma/sqrt(n))
 
-Where:
-- X̄ = sample mean
-- z_(α/2) = quantile of N(0,1), e.g., qnorm(1-α/2)
-- σ = known population standard deviation
-- n = sample size
-- α = significance level (e.g., 0.05 for 95% CI)
+Ou :
+- X_bar = moyenne empirique
+- z_(alpha/2) = quantile de N(0,1), ex. qnorm(1-alpha/2)
+- sigma = ecart-type connu de la population
+- n = taille de l'echantillon
+- alpha = niveau de signification (ex. 0.05 pour un IC a 95%)
 
-### 2. Confidence Interval for Mean (σ² Unknown)
+### 2. Intervalle de confiance pour la moyenne (sigma^2 inconnu)
 
-When population variance is unknown, use Student's t-distribution:
+Lorsque la variance est inconnue, utiliser la loi de Student :
 
-**Formula**: X̄ ± t_(n-1, α/2) × (S'/√n)
+**Formule** : X_bar +/- t_(n-1, alpha/2) x (S'/sqrt(n))
 
-Where:
-- S' = sample standard deviation (unbiased estimator)
-- t_(n-1, α/2) = quantile of t-distribution with n-1 degrees of freedom
-- Use `qt(1-α/2, df=n-1)` in R
+Ou :
+- S' = ecart-type empirique (estimateur non biaise)
+- t_(n-1, alpha/2) = quantile de la loi de Student a n-1 degres de liberte
+- Utiliser `qt(1-alpha/2, df=n-1)` en R
 
-### 3. Confidence Interval for Variance
+### 3. Intervalle de confiance pour la variance
 
-Based on Chi-squared distribution:
+Base sur la distribution du chi-deux :
 
-**Formula**: [(n-1)S'² / χ²_(n-1, α/2), (n-1)S'² / χ²_(n-1, 1-α/2)]
+**Formule** : [(n-1)S'^2 / chi^2_(n-1, alpha/2), (n-1)S'^2 / chi^2_(n-1, 1-alpha/2)]
 
-Where:
-- (n-1)S'²/σ² ~ χ²_(n-1)
-- χ²_(n-1, α/2) = `qchisq(1-α/2, df=n-1)`
-- χ²_(n-1, 1-α/2) = `qchisq(α/2, df=n-1)`
+Ou :
+- (n-1)S'^2/sigma^2 ~ chi^2_(n-1)
+- chi^2_(n-1, alpha/2) = `qchisq(1-alpha/2, df=n-1)`
+- chi^2_(n-1, 1-alpha/2) = `qchisq(alpha/2, df=n-1)`
 
-Note: Lower bound uses upper quantile, upper bound uses lower quantile (inverted)
+Remarque : La borne inferieure utilise le quantile superieur, la borne superieure utilise le quantile inferieur (inversion)
 
-### 4. Key Distributions
+### 4. Distributions cles
 
-| Distribution | Use Case | R Functions |
+| Distribution | Cas d'utilisation | Fonctions R |
 |--------------|----------|-------------|
-| N(0, 1) | Mean CI, σ known | `qnorm()`, `pnorm()` |
-| t(df) | Mean CI, σ unknown | `qt()`, `pt()` |
-| χ²(df) | Variance CI | `qchisq()`, `pchisq()` |
+| N(0, 1) | IC pour la moyenne, sigma connu | `qnorm()`, `pnorm()` |
+| t(ddl) | IC pour la moyenne, sigma inconnu | `qt()`, `pt()` |
+| chi^2(ddl) | IC pour la variance | `qchisq()`, `pchisq()` |
 
-## Exercises
+## Exercices
 
-### Exercise 1: Airline Overbooking (Quantiles)
+### Exercice 1 : Surreservation aerienne (quantiles)
 
-Calculate how many tickets to sell while managing risk:
-- Binomial distribution for passenger show-ups
-- Use quantiles to find capacity limits
-- Balance revenue vs refund costs
+Calculer combien de billets vendre tout en gerant le risque :
+- Distribution binomiale pour les passagers presents
+- Utiliser les quantiles pour trouver les limites de capacite
+- Equilibrer revenus et couts de remboursement
 
-### Exercise 2: Software Execution Time (Mean CI, σ Known)
+### Exercice 2 : Temps d'execution d'un logiciel (IC pour la moyenne, sigma connu)
 
-Dataset: `vitesse.csv` - 1000 weeks × 6 daily measurements
-- Known: μ = 120s, σ² = 100
-- Calculate weekly mean CIs
-- Verify coverage rate (should be ~95% for α=0.05)
+Jeu de donnees : `vitesse.csv` - 1000 semaines x 6 mesures quotidiennes
+- Connu : mu = 120s, sigma^2 = 100
+- Calculer les IC hebdomadaires pour la moyenne
+- Verifier le taux de couverture (devrait etre ~95% pour alpha=0.05)
 
-### Exercise 3: Variance Estimation (Chi-squared)
+### Exercice 3 : Estimation de la variance (chi-deux)
 
-- Calculate variance for each week
-- Build CI for variance using χ² distribution
-- Compare with known variance (σ² = 100)
+- Calculer la variance pour chaque semaine
+- Construire l'IC pour la variance avec la distribution chi^2
+- Comparer avec la variance connue (sigma^2 = 100)
 
-### Exercise 4: Student's t-distribution Application
+### Exercice 4 : Application de la loi de Student
 
-When σ is estimated from data (not given), use t instead of normal.
+Quand sigma est estime a partir des donnees (non donne), utiliser t au lieu de la loi normale.
 
-## R Functions Reference
+## Reference des fonctions R
 
-| Function | Purpose | Example |
+| Fonction | Objectif | Exemple |
 |----------|---------|---------|
-| `qnorm(p, mean, sd)` | Normal quantile | `qnorm(0.975, 0, 1)` → 1.96 |
-| `qt(p, df)` | t quantile | `qt(0.975, df=5)` → 2.571 |
-| `qchisq(p, df)` | Chi-squared quantile | `qchisq(0.975, df=5)` → 12.83 |
-| `qbinom(p, size, prob)` | Binomial quantile | `qbinom(0.95, 150, 0.75)` |
-| `pbinom(q, size, prob)` | Binomial CDF | `pbinom(120, 150, 0.75)` |
-| `tapply(X, INDEX, FUN)` | Group apply | `tapply(time, week, mean)` |
-| `read.table()` / `read.csv2()` | Load data | `read.csv2("data.csv")` |
+| `qnorm(p, mean, sd)` | Quantile normal | `qnorm(0.975, 0, 1)` -> 1.96 |
+| `qt(p, df)` | Quantile de Student | `qt(0.975, df=5)` -> 2.571 |
+| `qchisq(p, df)` | Quantile du chi-deux | `qchisq(0.975, df=5)` -> 12.83 |
+| `qbinom(p, size, prob)` | Quantile binomial | `qbinom(0.95, 150, 0.75)` |
+| `pbinom(q, size, prob)` | CDF binomiale | `pbinom(120, 150, 0.75)` |
+| `tapply(X, INDEX, FUN)` | Appliquer par groupe | `tapply(time, week, mean)` |
+| `read.table()` / `read.csv2()` | Charger des donnees | `read.csv2("data.csv")` |
 
-## Interpretation Guidelines
+## Guides d'interpretation
 
-### Coverage Rate
-For 95% confidence intervals:
-- Theoretical: 95% of intervals contain true parameter
-- Empirical check: ~95% of computed intervals should contain known value
-- Small deviations expected due to sampling variability
+### Taux de couverture
+Pour des intervalles de confiance a 95% :
+- Theorique : 95% des intervalles contiennent le vrai parametre
+- Verification empirique : ~95% des intervalles calcules devraient contenir la valeur connue
+- De petites deviations sont attendues en raison de la variabilite d'echantillonnage
 
-### Interval Width
-- Larger n → narrower intervals → more precision
-- Higher confidence level → wider intervals
-- Variance CI wider than mean CI (more variable)
+### Largeur de l'intervalle
+- Plus grand n -> intervalles plus etroits -> plus de precision
+- Niveau de confiance plus eleve -> intervalles plus larges
+- L'IC de la variance est plus large que l'IC de la moyenne (plus variable)
 
-### When to Use Which Distribution
+### Quand utiliser quelle distribution
 
 ```
-Confidence Interval for Mean:
-├── σ known? → Use Normal N(0,1)
-└── σ unknown? → Use Student t(n-1)
+Intervalle de confiance pour la moyenne :
++-- sigma connu ? -> Utiliser la loi normale N(0,1)
++-- sigma inconnu ? -> Utiliser la loi de Student t(n-1)
 
-Confidence Interval for Variance:
-└── Always use Chi-squared χ²(n-1)
+Intervalle de confiance pour la variance :
++-- Toujours utiliser le chi-deux chi^2(n-1)
 ```
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Chi-squared bounds**: Upper CI bound uses LOWER quantile (inverted)
-2. **Degrees of freedom**: n-1, not n
-3. **Standard error**: σ/√n for mean, not just σ
-4. **Unbiased estimator**: R's `var()` and `sd()` use n-1 denominator
-5. **CSV delimiters**: Use `read.csv2()` for semicolon-separated files
+1. **Bornes du chi-deux** : La borne superieure de l'IC utilise le quantile INFERIEUR (inversion)
+2. **Degres de liberte** : n-1, pas n
+3. **Erreur standard** : sigma/sqrt(n) pour la moyenne, pas simplement sigma
+4. **Estimateur non biaise** : Les fonctions R `var()` et `sd()` utilisent n-1 au denominateur
+5. **Delimiteurs CSV** : Utiliser `read.csv2()` pour les fichiers separes par des points-virgules
 
-## Key Insights
+## Points cles
 
-1. Confidence intervals quantify estimation uncertainty
-2. Width decreases with √n (diminishing returns)
-3. t-distribution accounts for estimating σ from data
-4. Variance intervals are asymmetric (Chi-squared is skewed)
-5. Coverage rate validates theoretical calculations
+1. Les intervalles de confiance quantifient l'incertitude de l'estimation
+2. La largeur diminue en sqrt(n) (rendements decroissants)
+3. La loi de Student tient compte de l'estimation de sigma a partir des donnees
+4. Les intervalles de variance sont asymetriques (le chi-deux est asymetrique)
+5. Le taux de couverture valide les calculs theoriques
 
 ## Extensions
 
-- Compare different confidence levels (90%, 95%, 99%)
-- Bootstrap confidence intervals (non-parametric)
-- One-sided vs two-sided intervals
-- Prediction intervals vs confidence intervals
+- Comparer differents niveaux de confiance (90%, 95%, 99%)
+- Intervalles de confiance par bootstrap (non parametrique)
+- Intervalles unilateraux vs bilateraux
+- Intervalles de prediction vs intervalles de confiance

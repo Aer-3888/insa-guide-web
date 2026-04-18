@@ -1,16 +1,16 @@
 ---
-title: "TP Legacy 2022"
+title: "TP anciens (2022)"
 sidebar_position: 7
 ---
 
-# TP Legacy 2022
+# TP anciens (2022)
 
-Legacy web engineering lab materials from 2022.
+Anciens supports de TP d'ingenierie Web de 2022.
 
-## Directories
+## Repertoires
 
-- `js/` — JavaScript exercises
-- `json/` — JSON exercises
-- `orm/` — ORM exercises
-- `rest/` — REST API exercises
-- `tp-spring/` — Spring framework project
+- `js/` -- Exercices JavaScript
+- `json/` -- Exercices JSON
+- `orm/` -- Exercices ORM
+- `rest/` -- Exercices API REST
+- `tp-spring/` -- Projet Spring framework

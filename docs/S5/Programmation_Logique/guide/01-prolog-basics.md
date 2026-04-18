@@ -177,7 +177,7 @@ grand_pere(G, E) :-
 
 ---
 
-## CHEAT SHEET -- Bases de Prolog
+## AIDE-MEMOIRE -- Bases de Prolog
 
 ```
 FAIT        predicat(args).                     % assertion vraie

@@ -1,59 +1,59 @@
 ---
-title: "Heaps & Priority Queues (Tas et Files de Priorite)"
+title: "Tas et Files de Priorite"
 sidebar_position: 6
 ---
 
-# Heaps & Priority Queues (Tas et Files de Priorite)
+# Tas et Files de Priorite
 
-## Theory
+## Theorie
 
-### Priority Queue (File de Priorite)
+### File de Priorite
 
-A **priority queue** is an abstract data type where each element has a priority. The element with highest priority (smallest value for min-heap) is dequeued first.
+Une **file de priorite** est un type abstrait de donnees ou chaque element a une priorite. L'element de plus haute priorite (plus petite valeur pour un tas min) est defile en premier.
 
-Operations:
-- `add(e)` -- insert element with its priority
-- `poll()` -- remove and return element with highest priority
-- `peek()` -- return highest priority element without removing
+Operations :
+- `add(e)` -- inserer un element avec sa priorite
+- `poll()` -- retirer et retourner l'element de plus haute priorite
+- `peek()` -- retourner l'element de plus haute priorite sans le retirer
 - `isEmpty()` / `size()`
 
-### Binary Heap (Tas Binaire)
+### Tas Binaire
 
-A **binary heap** is the standard implementation of a priority queue.
+Un **tas binaire** est l'implementation standard d'une file de priorite.
 
-Properties:
-1. **Complete binary tree**: all levels full except possibly the last, filled left to right
-2. **Heap property**:
-   - **Min-heap**: parent <= children (root is minimum)
-   - **Max-heap**: parent >= children (root is maximum)
+Proprietes :
+1. **Arbre binaire complet** : tous les niveaux sont pleins sauf possiblement le dernier, rempli de gauche a droite
+2. **Propriete de tas** :
+   - **Tas min** : parent <= enfants (la racine est le minimum)
+   - **Tas max** : parent >= enfants (la racine est le maximum)
 
 ```
-Min-heap:
-           [1]              Index mapping (0-based):
+Tas min :
+           [1]              Correspondance des indices (base 0) :
           /   \             parent(i) = (i-1)/2
-        [3]   [2]           left(i)   = 2*i + 1
-        / \   /             right(i)  = 2*i + 2
+        [3]   [2]           gauche(i) = 2*i + 1
+        / \   /             droit(i)  = 2*i + 2
       [5] [4][6]
 
-Array representation: [1, 3, 2, 5, 4, 6]
-Index:                 0  1  2  3  4  5
+Representation tableau : [1, 3, 2, 5, 4, 6]
+Index :                    0  1  2  3  4  5
 ```
 
-### Array Representation
+### Representation par Tableau
 
-A complete binary tree maps perfectly to an array:
+Un arbre binaire complet se projette parfaitement dans un tableau :
 
 ```
-Tree:          [10]                Array: [10, 20, 30, 40, 50]
-              /    \               Index:  0   1   2   3   4
+Arbre :        [10]                Tableau : [10, 20, 30, 40, 50]
+              /    \               Index :    0   1   2   3   4
            [20]    [30]
            /  \
         [40]  [50]
 
-parent(1) = (1-1)/2 = 0  -> array[0] = 10  (correct)
-left(0)   = 2*0+1   = 1  -> array[1] = 20  (correct)
-right(0)  = 2*0+2   = 2  -> array[2] = 30  (correct)
-left(1)   = 2*1+1   = 3  -> array[3] = 40  (correct)
+parent(1) = (1-1)/2 = 0  -> tableau[0] = 10  (correct)
+gauche(0) = 2*0+1   = 1  -> tableau[1] = 20  (correct)
+droit(0)  = 2*0+2   = 2  -> tableau[2] = 30  (correct)
+gauche(1) = 2*1+1   = 3  -> tableau[3] = 40  (correct)
 ```
 
 
@@ -61,17 +61,17 @@ left(1)   = 2*1+1   = 3  -> array[3] = 40  (correct)
 
 ### ShiftUp (Percolation vers le haut)
 
-After inserting at the end, bubble up to restore heap property.
+Apres insertion a la fin, remonter pour restaurer la propriete de tas.
 
 ```
-Insert 1 into min-heap:
+Insertion de 1 dans un tas min :
 
-Step 0: [3, 5, 4, 7, 6, 8, 1]    1 inserted at end
-                                    parent(6) = 2, array[2]=4 > 1 -> swap
+Etape 0 : [3, 5, 4, 7, 6, 8, 1]    1 insere a la fin
+                                      parent(6) = 2, tableau[2]=4 > 1 -> echanger
 
-Step 1: [3, 5, 1, 7, 6, 8, 4]    parent(2) = 0, array[0]=3 > 1 -> swap
+Etape 1 : [3, 5, 1, 7, 6, 8, 4]    parent(2) = 0, tableau[0]=3 > 1 -> echanger
 
-Step 2: [1, 5, 3, 7, 6, 8, 4]    at root, done!
+Etape 2 : [1, 5, 3, 7, 6, 8, 4]    a la racine, termine !
 ```
 
 ```java
@@ -85,19 +85,19 @@ private void shiftUp(int i) {
 
 ### ShiftDown (Percolation vers le bas)
 
-After removing root (replaced by last element), bubble down.
+Apres suppression de la racine (remplacee par le dernier element), descendre.
 
 ```
-Poll from min-heap [1, 3, 2, 5, 4, 6]:
+Poll depuis le tas min [1, 3, 2, 5, 4, 6] :
 
-Step 0: Remove 1, replace with last:
-        [6, 3, 2, 5, 4]          6 at root
-        left(0)=1 (val 3), right(0)=2 (val 2)
-        min child = 2, 6 > 2 -> swap
+Etape 0 : Retirer 1, remplacer par le dernier :
+          [6, 3, 2, 5, 4]          6 a la racine
+          gauche(0)=1 (val 3), droit(0)=2 (val 2)
+          enfant min = 2, 6 > 2 -> echanger
 
-Step 1: [2, 3, 6, 5, 4]          6 at index 2
-        left(2)=5 (val ?), right(2)=6 (val ?)
-        no more children below -> done!
+Etape 1 : [2, 3, 6, 5, 4]          6 a l'index 2
+          gauche(2)=5 (val ?), droit(2)=6 (val ?)
+          plus d'enfants en dessous -> termine !
 ```
 
 ```java
@@ -121,10 +121,10 @@ private void shiftDown(int i) {
 }
 ```
 
-Note: The condition `compare_at(index, rightChild(k)) > 0` checks if leftChild > rightChild. The guard `index < size` should technically be `rightChild(k) < size` to verify the right child exists. In the actual TP8 source code, this boundary check is `index < size` which may access `heap[rightChild(k)]` even when rightChild(k) >= size. This works only because Java arrays are zero-initialized and the comparator handles null, but it is a latent boundary issue.
+Note : La condition `compare_at(index, rightChild(k)) > 0` verifie si enfantGauche > enfantDroit. La garde `index < size` devrait techniquement etre `rightChild(k) < size` pour verifier l'existence de l'enfant droit. Dans le code source du TP8, cette verification est `index < size` ce qui peut acceder a `heap[rightChild(k)]` meme quand rightChild(k) >= size. Cela fonctionne car les tableaux Java sont initialises a zero et le comparateur gere null, mais c'est un probleme de bornes latent.
 
 
-## Java Implementation (from TP8)
+## Implementation Java (du TP8)
 
 ### Interface
 
@@ -138,7 +138,7 @@ public interface PriorityQueue<T> {
 }
 ```
 
-### HeapPQ -- Heap-based Priority Queue
+### HeapPQ -- File de Priorite basee sur un Tas
 
 ```java
 public class HeapPQ<T> implements PriorityQueue<T> {
@@ -185,7 +185,7 @@ public class HeapPQ<T> implements PriorityQueue<T> {
 }
 ```
 
-### OrderedArrayPQ -- Sorted Array Alternative
+### OrderedArrayPQ -- Alternative avec Tableau Trie
 
 ```java
 public class OrderedArrayPQ<T> implements PriorityQueue<T> {
@@ -197,7 +197,7 @@ public class OrderedArrayPQ<T> implements PriorityQueue<T> {
 ```
 
 
-## Comparison: Heap vs. Sorted Array
+## Comparaison : Tas vs. Tableau Trie
 
 | Operation | HeapPQ | OrderedArrayPQ |
 |-----------|--------|----------------|
@@ -205,41 +205,41 @@ public class OrderedArrayPQ<T> implements PriorityQueue<T> {
 | poll | **O(log n)** | O(n) |
 | peek | O(1) | O(1) |
 | isEmpty | O(1) | O(1) |
-| Build from n elements | **O(n)** | O(n log n) |
+| Construction depuis n elements | **O(n)** | O(n log n) |
 
-The heap is dramatically faster for Dijkstra's algorithm.
+Le tas est nettement plus rapide pour l'algorithme de Dijkstra.
 
 
-## Heap Sort
+## Tri par Tas
 
-1. Build a max-heap from the array: O(n)
-2. Repeatedly extract max and place at end: O(n log n)
+1. Construire un tas max a partir du tableau : O(n)
+2. Extraire le max de maniere repetee et le placer a la fin : O(n log n)
 
 ```
-Array: [4, 1, 3, 2, 5]
+Tableau : [4, 1, 3, 2, 5]
 
-Build max-heap: [5, 4, 3, 2, 1]
+Construction du tas max : [5, 4, 3, 2, 1]
 
-Extract max:
-  [5, 4, 3, 2, 1] -> swap 5 with 1 -> [1, 4, 3, 2 | 5]
+Extraction du max :
+  [5, 4, 3, 2, 1] -> echanger 5 avec 1 -> [1, 4, 3, 2 | 5]
   heapify -> [4, 2, 3, 1 | 5]
-  swap 4 with 1 -> [1, 2, 3 | 4, 5]
+  echanger 4 avec 1 -> [1, 2, 3 | 4, 5]
   heapify -> [3, 2, 1 | 4, 5]
-  swap 3 with 1 -> [1, 2 | 3, 4, 5]
+  echanger 3 avec 1 -> [1, 2 | 3, 4, 5]
   heapify -> [2, 1 | 3, 4, 5]
-  swap 2 with 1 -> [1 | 2, 3, 4, 5]
+  echanger 2 avec 1 -> [1 | 2, 3, 4, 5]
 
-Result: [1, 2, 3, 4, 5]
+Resultat : [1, 2, 3, 4, 5]
 ```
 
-**Complexity**: O(n log n) time, O(1) extra space (in-place).
+**Complexite** : O(n log n) en temps, O(1) en espace supplementaire (en place).
 
 
-## Heapify (Build Heap)
+## Heapify (Construction du Tas)
 
-To build a heap from an unsorted array in O(n):
-- Start from the last internal node (index n/2 - 1)
-- Apply shiftDown to each node going up to the root
+Pour construire un tas a partir d'un tableau non trie en O(n) :
+- Commencer depuis le dernier noeud interne (index n/2 - 1)
+- Appliquer shiftDown a chaque noeud en remontant vers la racine
 
 ```java
 for (int i = size / 2 - 1; i >= 0; i--) {
@@ -247,35 +247,35 @@ for (int i = size / 2 - 1; i >= 0; i--) {
 }
 ```
 
-Why O(n) and not O(n log n)?
-- Most nodes are near the bottom and need few swaps
-- Sum: n/4 * 1 + n/8 * 2 + n/16 * 3 + ... = O(n)
+Pourquoi O(n) et non O(n log n) ?
+- La plupart des noeuds sont pres du bas et necessitent peu d'echanges
+- Somme : n/4 * 1 + n/8 * 2 + n/16 * 3 + ... = O(n)
 
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-BINARY HEAP (MIN-HEAP)
+TAS BINAIRE (TAS MIN)
 ======================
-Array:  [min, ..., ..., ...]
-Index:   0    1    2    3   4   5   6
+Tableau :  [min, ..., ..., ...]
+Index :     0    1    2    3   4   5   6
 
 PARENT(i) = (i-1)/2
-LEFT(i)   = 2*i + 1
-RIGHT(i)  = 2*i + 2
+GAUCHE(i) = 2*i + 1
+DROIT(i)  = 2*i + 2
 
-ADD:   place at end, shiftUp      -> O(log n)
-POLL:  swap root with last, shiftDown -> O(log n)
-PEEK:  return root                -> O(1)
-BUILD: shiftDown from n/2-1 to 0 -> O(n)
+ADD :   placer a la fin, shiftUp         -> O(log n)
+POLL :  echanger racine avec dernier, shiftDown -> O(log n)
+PEEK :  retourner la racine              -> O(1)
+BUILD : shiftDown de n/2-1 a 0           -> O(n)
 
-SHIFT UP:   while parent > current: swap, go to parent
-SHIFT DOWN: while current > min child: swap, go to min child
+SHIFT UP :   tant que parent > courant : echanger, aller au parent
+SHIFT DOWN : tant que courant > enfant min : echanger, aller a l'enfant min
 
-HEAP SORT: build max-heap O(n), extract n times O(n log n)
-           Total: O(n log n), in-place
+TRI PAR TAS : construire tas max O(n), extraire n fois O(n log n)
+              Total : O(n log n), en place
 
-JAVA:
-  PriorityQueue<Integer> pq = new PriorityQueue<>();  // min-heap
+JAVA :
+  PriorityQueue<Integer> pq = new PriorityQueue<>();  // tas min
   PriorityQueue<Integer> maxPQ = new PriorityQueue<>(Comparator.reverseOrder());
 ```

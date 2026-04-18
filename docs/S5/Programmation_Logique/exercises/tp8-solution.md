@@ -5,7 +5,7 @@ sidebar_position: 8
 
 # TP8 - Puzzle des dominos
 
-> Following teacher instructions from: `S5/Programmation_Logique/data/moodle/tp/tp8/README.md`
+> D'apres les consignes de l'enseignant : `S5/Programmation_Logique/data/moodle/tp/tp8/README.md`
 
 ---
 
@@ -70,11 +70,11 @@ print1domino(A, B) :-
 
 ---
 
-## Exercise 1
+## Exercice 1
 
 ### choose(+List, -Elt, -Rest) : Choisit un element dans une liste et retourne le reste
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 choose([E | R], E, R).
@@ -84,7 +84,7 @@ choose([E1 | R], E, [E1 | L]) :-
 
 `choose` est non-deterministe : il produit autant de solutions qu'il y a d'elements dans la liste. La clause 1 choisit la tete, la clause 2 garde la tete et choisit dans le reste.
 
-**Query test:**
+**Test :**
 
 ```
 ?- choose([1, 2, 3], E, R).
@@ -99,11 +99,11 @@ false.    % liste vide, aucun choix possible
 
 ---
 
-## Exercise 2
+## Exercice 2
 
 ### chains(+Stones, +Partial, -Chains) : Construit les chaines a partir des dominos restants
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 chains([], Acc, Acc).
@@ -115,7 +115,7 @@ chains(Stones, Acc, Res) :-
 
 Quand il n'y a plus de dominos, l'accumulateur est la solution. Sinon, on choisit un domino avec `choose`, on l'ajoute a une chaine existante avec `chainsAux`, puis on continue recursivement. Le backtracking de Prolog explore toutes les possibilites.
 
-**Query test:**
+**Test :**
 
 ```
 % chains est utilise en interne par domino/2, pas directement
@@ -123,11 +123,11 @@ Quand il n'y a plus de dominos, l'accumulateur est la solution. Sinon, on choisi
 
 ---
 
-## Exercise 3
+## Exercice 3
 
 ### chainsAux(+Stone, +Chains, -NewChains) : Ajoute un domino a une chaine existante
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 % Connecter stone(E,F) a gauche : F = debut de la chaine gauche
@@ -161,7 +161,7 @@ chainsAux(S, [D | R], [D | Res]) :-
 
 Un domino `stone(E,F)` peut se connecter a gauche ou a droite d'une chaine, dans un sens ou l'autre. Les dominos doubles (`stone(E,E)`) creent aussi une chaine `[double]` supplementaire. Si le domino ne se connecte pas a la chaine courante, on passe a la suivante.
 
-**Query test:**
+**Test :**
 
 ```
 % chainsAux est utilise en interne par chains/3
@@ -169,11 +169,11 @@ Un domino `stone(E,F)` peut se connecter a gauche ou a droite d'une chaine, dans
 
 ---
 
-## Exercise 4
+## Exercice 4
 
 ### domino(+Stones, -Chains) : Point d'entree -- resout le puzzle
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 domino([stone(A, A) | R], Res) :-
@@ -189,7 +189,7 @@ Le premier domino initialise les chaines partielles :
 
 Ensuite `chains/3` construit la solution incrementalement par generer-et-tester avec backtracking.
 
-**Query test:**
+**Test :**
 
 ```
 % Resoudre pour stones1 (5 dominos)

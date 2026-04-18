@@ -183,7 +183,7 @@ La communication (Scatter de N^2 doubles) devient non-negligeable pour P > 8.
 
 ---
 
-## CHEAT SHEET -- Performance
+## AIDE-MEMOIRE -- Performance
 
 ```
 Speedup :     S(p) = T(1) / T(p)

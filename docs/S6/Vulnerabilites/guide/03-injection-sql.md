@@ -107,7 +107,7 @@ xp_cmdshell 'whoami'
 
 ```
 Injection SQL
-    +-- Login bypass : se connecter sans mot de passe
+    +-- Contournement de login : se connecter sans mot de passe
     +-- Vol de donnees : UNION SELECT pour d'autres tables
     +-- Modification : INSERT, UPDATE, DELETE via stacking
     +-- Execution de commandes : xp_cmdshell (MS-SQL)
@@ -120,7 +120,7 @@ Injection SQL
 
 ### Principe fondamental
 
-> **Never trust an input!** Ne jamais faire confiance a une entree utilisateur.
+> **Ne jamais faire confiance a une entree !** Ne jamais faire confiance a une entree utilisateur.
 
 ### TOUTES les entrees a verifier
 
@@ -178,8 +178,8 @@ En clair (pas de hachage) -- mauvaise pratique majeure.
 
 ```
 PAYLOADS CLASSIQUES :
-  Login bypass (connu)    : admin'--
-  Login bypass (inconnu)  : ' OR 1=1--
+  Contournement login (connu)    : admin'--
+  Contournement login (inconnu)  : ' OR 1=1--
   Sans commentaire        : ' OR 'a'='a
   Champ numerique         : 0 OR 1=1
   Extraction              : 0' UNION SELECT col1,col2 FROM table--

@@ -241,12 +241,12 @@ SYNTAXE
   match expr with
   | pattern1 -> result1
   | pattern2 -> result2
-  | _ -> default                 Wildcard (attrape tout)
+  | _ -> default                 Joker (attrape tout)
 
-PATTERNS COURANTS
+MOTIFS COURANTS
   42                              Constante
   x                               Variable (lie la valeur)
-  _                               Wildcard (ignore la valeur)
+  _                               Joker (ignore la valeur)
   (a, b)                          Tuple
   (a, b, c)                       Triplet
   {champ = valeur}                Record
@@ -261,17 +261,17 @@ PATTERNS COURANTS
   None                            Option vide
 
 REGLES
-  - Les patterns sont testes de haut en bas
-  - Le premier qui matche est choisi
-  - _ matche tout sans lier de variable
-  - Le compilateur verifie l'exhaustivite (warning si incomplet)
+  - Les motifs sont testes de haut en bas
+  - Le premier qui correspond est choisi
+  - _ correspond a tout sans lier de variable
+  - Le compilateur verifie l'exhaustivite (avertissement si incomplet)
   - when permet d'ajouter des gardes
 
 ERREURS COURANTES
   | n -> ...     capture tout (comme _) car n est une nouvelle variable
-  | 0 -> ...     matche seulement 0 (constante)
+  | 0 -> ...     correspond seulement a 0 (constante)
 
-IDENTIKIT D'UN MATCH SUR LISTE
+SCHEMA TYPE D'UN MATCH SUR LISTE
   let rec f l = match l with
   | [] -> cas_de_base
   | e :: rest -> ... f rest ...

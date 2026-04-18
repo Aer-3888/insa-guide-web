@@ -1,140 +1,140 @@
 ---
-title: "Chapter 6: Hypothesis Testing"
+title: "Chapitre 6 : Tests d'hypotheses"
 sidebar_position: 6
 ---
 
-# Chapter 6: Hypothesis Testing
+# Chapitre 6 : Tests d'hypotheses
 
 ## 6.1 Introduction
 
-A **hypothesis test** is a statistical method that allows making decisions from data -- it determines whether observed results are **statistically significant** or could be due to chance.
+Un **test d'hypothese** est une methode statistique permettant de prendre des decisions a partir de donnees -- il determine si les resultats observes sont **statistiquement significatifs** ou s'ils pourraient etre dus au hasard.
 
-**Warning**: A test is NOT a proof. It quantifies evidence against a null hypothesis.
+**Attention** : Un test n'est PAS une preuve. Il quantifie les preuves contre une hypothese nulle.
 
 ---
 
-## 6.2 Framework
+## 6.2 Cadre general
 
 ### Hypotheses
 
 | | Description |
 |---|---|
-| $H_0$ (null hypothesis) | Default assumption; what we assume is true |
-| $H_1$ (alternative hypothesis) | What we want to show / detect |
+| $H_0$ (hypothese nulle) | Hypothese par defaut ; ce que l'on suppose vrai |
+| $H_1$ (hypothese alternative) | Ce que l'on cherche a montrer / detecter |
 
-**Convention**:
-- **Ethical**: $H_1$ = what we hope to demonstrate
-- **Practical**: $H_0$ = a well-defined, testable statement (e.g., $\mu = \mu_0$)
+**Convention** :
+- **Ethique** : $H_1$ = ce que l'on espere demontrer
+- **Pratique** : $H_0$ = un enonce bien defini et testable (ex. $\mu = \mu_0$)
 
-### Errors
+### Erreurs
 
-| | $H_0$ is true | $H_1$ is true |
+| | $H_0$ est vraie | $H_1$ est vraie |
 |---|---|---|
-| **Accept $H_0$** | Correct | Type II error ($\beta$) |
-| **Reject $H_0$** | Type I error ($\alpha$) | Correct (Power = $1-\beta$) |
+| **Accepter $H_0$** | Correct | Erreur de type II ($\beta$) |
+| **Rejeter $H_0$** | Erreur de type I ($\alpha$) | Correct (Puissance = $1-\beta$) |
 
-- $\alpha = P(\text{reject } H_0 \mid H_0 \text{ true})$ -- **significance level**, set in advance (typically 0.05)
-- $\beta = P(\text{accept } H_0 \mid H_1 \text{ true})$ -- depends on the true parameter value
-- **Power** $= 1 - \beta = P(\text{reject } H_0 \mid H_1 \text{ true})$
+- $\alpha = P(\text{rejeter } H_0 \mid H_0 \text{ vraie})$ -- **niveau de signification**, fixe a l'avance (typiquement 0.05)
+- $\beta = P(\text{accepter } H_0 \mid H_1 \text{ vraie})$ -- depend de la vraie valeur du parametre
+- **Puissance** $= 1 - \beta = P(\text{rejeter } H_0 \mid H_1 \text{ vraie})$
 
 ---
 
-## 6.3 Test Methodology
+## 6.3 Methodologie des tests
 
-### General Procedure
+### Procedure generale
 
-1. **Define** $H_0$ and $H_1$
-2. **Choose** the test statistic $S$ and determine its distribution under $H_0$
-3. **Set** the significance level $\alpha$
-4. **Compute** $s$ (the observed value of $S$ from data)
-5. **Decide**: Is $s$ in the acceptance region (high probability zone) or rejection region?
+1. **Definir** $H_0$ et $H_1$
+2. **Choisir** la statistique de test $S$ et determiner sa distribution sous $H_0$
+3. **Fixer** le niveau de signification $\alpha$
+4. **Calculer** $s$ (la valeur observee de $S$ a partir des donnees)
+5. **Decider** : $s$ est-il dans la zone d'acceptation (zone de forte probabilite) ou dans la zone de rejet ?
 
-### Two Resolution Methods
+### Deux methodes de resolution
 
-**Method 1: Confidence Interval Approach**
-- Compute the acceptance region (interval of high probability under $H_0$)
-- If observed statistic falls inside: accept $H_0$
-- If outside: reject $H_0$
+**Methode 1 : Approche par intervalle de confiance**
+- Calculer la region d'acceptation (intervalle de forte probabilite sous $H_0$)
+- Si la statistique observee tombe a l'interieur : accepter $H_0$
+- Si a l'exterieur : rejeter $H_0$
 
-**Method 2: p-value Approach**
-- Compute the p-value: the smallest $\alpha$ for which $H_0$ would be rejected
-- If p-value $< \alpha$: reject $H_0$
-- If p-value $> \alpha$: accept $H_0$
+**Methode 2 : Approche par la p-valeur**
+- Calculer la p-valeur : le plus petit $\alpha$ pour lequel $H_0$ serait rejetee
+- Si p-valeur $< \alpha$ : rejeter $H_0$
+- Si p-valeur $> \alpha$ : accepter $H_0$
 
-### p-value Interpretation
+### Interpretation de la p-valeur
 
-| p-value range | Strength of evidence against $H_0$ |
+| Plage de p-valeur | Force de la preuve contre $H_0$ |
 |---|---|
-| $> 0.05$ | Not significant (accept $H_0$) |
-| $[0.01, 0.05]$ | Significant |
-| $[0.001, 0.01]$ | Very significant |
-| $< 0.001$ | Highly significant |
+| $> 0.05$ | Non significatif (accepter $H_0$) |
+| $[0.01, 0.05]$ | Significatif |
+| $[0.001, 0.01]$ | Tres significatif |
+| $< 0.001$ | Hautement significatif |
 
-For a two-tailed test with statistic $s$:
+Pour un test bilatere avec la statistique $s$ :
 
-$$\text{p-value} = P(|S| \geq |s|) = 2 \cdot P(S \leq -|s|)$$
+$$\text{p-valeur} = P(|S| \geq |s|) = 2 \cdot P(S \leq -|s|)$$
 
 ---
 
-## 6.4 Conformity Tests (One-Sample)
+## 6.4 Tests de conformite (un echantillon)
 
-Test whether a sample is consistent with a hypothesized parameter value.
+Tester si un echantillon est compatible avec une valeur hypothetique du parametre.
 
-### Conformity Test for Mean -- $\sigma$ Known
-
-$$H_0: \mu = \mu_0 \qquad H_1: \mu \neq \mu_0$$
-
-**Test statistic**: $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1)$ under $H_0$
-
-**Decision**: Reject $H_0$ if $|z| > u_{1-\alpha/2}$ (i.e., if $z \notin [-1.96, 1.96]$ for $\alpha = 0.05$).
-
-**p-value**: $2 \cdot \text{pnorm}(-|z|)$
-
-### Conformity Test for Mean -- $\sigma$ Unknown
+### Test de conformite pour la moyenne -- $\sigma$ connu
 
 $$H_0: \mu = \mu_0 \qquad H_1: \mu \neq \mu_0$$
 
-**Test statistic**: $T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}} \sim t_{n-1}$ under $H_0$
+**Statistique de test** : $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1)$ sous $H_0$
 
-**Decision**: Reject $H_0$ if $|t| > t_{n-1}(1-\alpha/2)$.
+**Decision** : Rejeter $H_0$ si $|z| > u_{1-\alpha/2}$ (c.-a-d. si $z \notin [-1.96, 1.96]$ pour $\alpha = 0.05$).
 
-**p-value**: $2 \cdot \text{pt}(-|t|, \text{df}=n-1)$
+**p-valeur** : $2 \cdot \text{pnorm}(-|z|)$
 
-### Worked Example: Insulating Pieces
+### Test de conformite pour la moyenne -- $\sigma$ inconnu
 
-> Supplier claims mean thickness = 7.3mm. Sample of 24 pieces: $\bar{x} = 7.126$, $\sigma = 0.38$ (known). Test at $\alpha = 0.05$.
+$$H_0: \mu = \mu_0 \qquad H_1: \mu \neq \mu_0$$
+
+**Statistique de test** : $T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}} \sim t_{n-1}$ sous $H_0$
+
+**Decision** : Rejeter $H_0$ si $|t| > t_{n-1}(1-\alpha/2)$.
+
+**p-valeur** : $2 \cdot \text{pt}(-|t|, \text{df}=n-1)$
+
+### Exemple corrige : Pieces isolantes
+
+> Un fournisseur affirme que l'epaisseur moyenne = 7.3mm. Echantillon de 24 pieces : $\bar{x} = 7.126$, $\sigma = 0.38$ (connu). Tester a $\alpha = 0.05$.
 
 $$z = \frac{7.126 - 7.3}{0.38/\sqrt{24}} = \frac{-0.174}{0.0776} = -2.24$$
 
-Acceptance region: $[-1.96, 1.96]$. Since $-2.24 \notin [-1.96, 1.96]$, **reject $H_0$**.
+Zone d'acceptation : $[-1.96, 1.96]$. Comme $-2.24 \notin [-1.96, 1.96]$, **rejeter $H_0$**.
 
-p-value: $2 \times \text{pnorm}(-2.24) = 0.025 < 0.05$.
+p-valeur : $2 \times \text{pnorm}(-2.24) = 0.025 < 0.05$.
 
-With $\sigma$ unknown ($s' = 0.395$): $t = \frac{7.126 - 7.3}{0.395/\sqrt{24}} = -2.157$. The acceptance region for $t_{23}$ at $\alpha = 0.05$ is $[-2.069, 2.069]$. Since $|-2.157| > 2.069$, still **reject $H_0$**.
+Avec $\sigma$ inconnu ($s' = 0.395$) : $t = \frac{7.126 - 7.3}{0.395/\sqrt{24}} = -2.157$. La zone d'acceptation pour $t_{23}$ a $\alpha = 0.05$ est $[-2.069, 2.069]$. Comme $|-2.157| > 2.069$, on **rejette $H_0$** egalement.
 
 ---
 
-## 6.5 Homogeneity Tests (Two-Sample)
+## 6.5 Tests d'homogeneite (deux echantillons)
 
-Test whether two populations have the same mean.
+Tester si deux populations ont la meme moyenne.
 
-### Setup
+### Mise en place
 
-Two independent samples from $X_1 \sim \mathcal{N}(\mu_1, \sigma_1)$ and $X_2 \sim \mathcal{N}(\mu_2, \sigma_2)$.
+Deux echantillons independants de $X_1 \sim \mathcal{N}(\mu_1, \sigma_1)$ et $X_2 \sim \mathcal{N}(\mu_2, \sigma_2)$.
 
 $$H_0: \mu_1 = \mu_2 \qquad H_1: \mu_1 \neq \mu_2$$
 
-Let $D = \bar{X}_1 - \bar{X}_2$. Under $H_0$: $E[D] = 0$.
+Soit $D = \bar{X}_1 - \bar{X}_2$. Sous $H_0$ : $E[D] = 0$.
 
-### Case 1: $\sigma_1 = \sigma_2 = \sigma$ Known
+### Cas 1 : $\sigma_1 = \sigma_2 = \sigma$ connu
 
 $$\sigma_D^2 = \sigma^2\left(\frac{1}{n_1} + \frac{1}{n_2}\right)$$
 
 $$Z = \frac{D}{\sigma_D} \sim \mathcal{N}(0,1)$$
 
-### Case 2: $\sigma_1 = \sigma_2$ Unknown (Pooled t-Test)
+### Cas 2 : $\sigma_1 = \sigma_2$ inconnu (test t groupe)
 
-Estimate $\sigma$ using the pooled variance:
+Estimer $\sigma$ par la variance combinee :
 
 $$\hat{\sigma}^2 = \frac{(n_1 - 1)s_1'^2 + (n_2 - 1)s_2'^2}{n_1 + n_2 - 2}$$
 
@@ -142,112 +142,112 @@ $$\hat{\sigma}_D^2 = \hat{\sigma}^2\left(\frac{1}{n_1} + \frac{1}{n_2}\right)$$
 
 $$T = \frac{D}{\hat{\sigma}_D} \sim t_{n_1+n_2-2}$$
 
-### Case 3: $\sigma_1 \neq \sigma_2$ Unknown (Welch's Test / Aspin-Welch)
+### Cas 3 : $\sigma_1 \neq \sigma_2$ inconnus (test de Welch / Aspin-Welch)
 
 $$\hat{\sigma}_D^2 = \frac{s_1'^2}{n_1} + \frac{s_2'^2}{n_2}$$
 
 $$T = \frac{D}{\hat{\sigma}_D} \sim t_\nu$$
 
-where degrees of freedom $\nu$ is computed by Satterthwaite's formula:
+ou les degres de liberte $\nu$ sont calcules par la formule de Satterthwaite :
 
 $$\frac{1}{\nu} = \frac{1}{n_1-1}\left(\frac{s_1'^2/n_1}{\hat{\sigma}_D^2}\right)^2 + \frac{1}{n_2-1}\left(\frac{s_2'^2/n_2}{\hat{\sigma}_D^2}\right)^2$$
 
-### R Functions
+### Fonctions R
 
 ```r noexec
-# One-sample t-test (conformity)
+# Test t a un echantillon (conformite)
 t.test(x, mu=mu_0, conf.level=0.95)
 
-# Two-sample t-test (homogeneity)
-t.test(x, y, var.equal=TRUE)   # Equal variances (pooled)
-t.test(x, y, var.equal=FALSE)  # Unequal variances (Welch)
+# Test t a deux echantillons (homogeneite)
+t.test(x, y, var.equal=TRUE)   # Variances egales (groupe)
+t.test(x, y, var.equal=FALSE)  # Variances inegales (Welch)
 
-# z-test (sigma known) -- requires TeachingDemos package
+# Test z (sigma connu) -- necessite le package TeachingDemos
 library(TeachingDemos)
 z.test(x, mu=mu_0, stdev=sigma)
 ```
 
 ---
 
-## 6.6 Power Analysis
+## 6.6 Analyse de puissance
 
 ### Concept
 
-**Power** = $1 - \beta$ = probability of correctly rejecting $H_0$ when it is false.
+**Puissance** = $1 - \beta$ = probabilite de rejeter correctement $H_0$ lorsqu'elle est fausse.
 
-Power depends on:
-1. **Effect size**: how different the true parameter is from $H_0$
-2. **Sample size** $n$: larger $n$ = higher power
-3. **Significance level** $\alpha$: larger $\alpha$ = higher power (but more Type I errors)
-4. **Variability** $\sigma$: smaller $\sigma$ = higher power
+La puissance depend de :
+1. **Taille de l'effet** : a quel point le vrai parametre differe de $H_0$
+2. **Taille de l'echantillon** $n$ : plus grand $n$ = plus grande puissance
+3. **Niveau de signification** $\alpha$ : plus grand $\alpha$ = plus grande puissance (mais plus d'erreurs de type I)
+4. **Variabilite** $\sigma$ : plus petit $\sigma$ = plus grande puissance
 
-### Computing Power (Conformity, $\sigma$ Known)
+### Calcul de la puissance (conformite, $\sigma$ connu)
 
-Under $H_0$: $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1)$.
+Sous $H_0$ : $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1)$.
 
-Under $H_1$ ($\mu = \mu_1$): $Z \sim \mathcal{N}\left(\frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}}, 1\right)$.
+Sous $H_1$ ($\mu = \mu_1$) : $Z \sim \mathcal{N}\left(\frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}}, 1\right)$.
 
-$$\text{Power} = 1 - \text{pnorm}\left(u_{1-\alpha/2}, \text{mean} = \frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}}\right)$$
+$$\text{Puissance} = 1 - \text{pnorm}\left(u_{1-\alpha/2}, \text{mean} = \frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}}\right)$$
 
-### Worked Example
+### Exemple corrige
 
-> Milk bottles: $\sigma = 1$ml, $\mu_0 = 1000$ml, $n = 40$. Detect shift of 0.2ml.
+> Bouteilles de lait : $\sigma = 1$ml, $\mu_0 = 1000$ml, $n = 40$. Detecter un ecart de 0.2ml.
 
-Standardized effect: $\Delta = 0.2 / (1/\sqrt{40}) = 0.2 \times \sqrt{40} = 1.265$.
+Effet standardise : $\Delta = 0.2 / (1/\sqrt{40}) = 0.2 \times \sqrt{40} = 1.265$.
 
-Power $= 1 - \text{pnorm}(1.96, \text{mean}=1.265) = 1 - 0.756 = 0.244$.
+Puissance $= 1 - \text{pnorm}(1.96, \text{mean}=1.265) = 1 - 0.756 = 0.244$.
 
-Only 24.4% power -- insufficient. For 90% power, need $n \approx 263$ bottles.
+Seulement 24.4% de puissance -- insuffisant. Pour 90% de puissance, il faut $n \approx 263$ bouteilles.
 
 ---
 
-## 6.7 Normality Tests
+## 6.7 Tests de normalite
 
-Before applying parametric tests, verify that data is approximately normal.
+Avant d'appliquer des tests parametriques, verifier que les donnees sont approximativement normales.
 
-### Graphical Methods
+### Methodes graphiques
 
-1. **Histogram vs normal curve**: visual overlay comparison
-2. **Box plot**: check symmetry (median centered, equal whiskers)
-3. **QQ-plot**: quantile-quantile plot against theoretical normal; points should fall on a straight line
+1. **Histogramme vs courbe normale** : comparaison visuelle par superposition
+2. **Boite a moustaches** : verifier la symetrie (mediane centree, moustaches egales)
+3. **QQ-plot** : graphique quantile-quantile par rapport a la loi normale theorique ; les points doivent etre sur une droite
 
-### Formal Tests
+### Tests formels
 
-| Test | R Function | Best for |
+| Test | Fonction R | Meilleur pour |
 |------|-----------|----------|
 | Shapiro-Wilk | `shapiro.test(x)` | $n \leq 50$ |
-| Kolmogorov-Smirnov | `ks.test(x, "pnorm", mean, sd)` | Large samples |
+| Kolmogorov-Smirnov | `ks.test(x, "pnorm", mean, sd)` | Grands echantillons |
 
-Both test $H_0$: data is normally distributed. Reject if p-value $< \alpha$.
-
----
-
-## 6.8 Complete Methodology Checklist
-
-1. Define test type: **conformity** or **homogeneity**?
-2. Define $H_0$ and $H_1$
-3. Identify the test statistic and its distribution:
-   - Conformity, $\sigma$ known: $Z \sim \mathcal{N}(0,1)$
-   - Conformity, $\sigma$ unknown: $T \sim t_{n-1}$
-   - Homogeneity, $\sigma$ known/equal: $Z \sim \mathcal{N}(0,1)$
-   - Homogeneity, $\sigma$ equal unknown: $T \sim t_{n_1+n_2-2}$
-   - Homogeneity, $\sigma$ unequal unknown: $T \sim t_\nu$ (Welch)
-4. Compute the statistic from data
-5. Determine acceptance region or p-value
-6. Make decision and state conclusion
+Les deux testent $H_0$ : les donnees suivent une loi normale. Rejeter si p-valeur $< \alpha$.
 
 ---
 
-## CHEAT SHEET -- Hypothesis Testing
+## 6.8 Liste de controle methodologique complete
 
-| Test | Statistic | Distribution under $H_0$ | Reject $H_0$ if |
+1. Definir le type de test : **conformite** ou **homogeneite** ?
+2. Definir $H_0$ et $H_1$
+3. Identifier la statistique de test et sa distribution :
+   - Conformite, $\sigma$ connu : $Z \sim \mathcal{N}(0,1)$
+   - Conformite, $\sigma$ inconnu : $T \sim t_{n-1}$
+   - Homogeneite, $\sigma$ connu/egal : $Z \sim \mathcal{N}(0,1)$
+   - Homogeneite, $\sigma$ egal inconnu : $T \sim t_{n_1+n_2-2}$
+   - Homogeneite, $\sigma$ inegal inconnu : $T \sim t_\nu$ (Welch)
+4. Calculer la statistique a partir des donnees
+5. Determiner la zone d'acceptation ou la p-valeur
+6. Prendre la decision et enoncer la conclusion
+
+---
+
+## AIDE-MEMOIRE -- Tests d'hypotheses
+
+| Test | Statistique | Distribution sous $H_0$ | Rejeter $H_0$ si |
 |---|---|---|---|
-| Conformity, $\sigma$ known | $Z = \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$ | $\mathcal{N}(0,1)$ | $\|Z\| > u_{1-\alpha/2}$ |
-| Conformity, $\sigma$ unknown | $T = \frac{\bar{X}-\mu_0}{S'/\sqrt{n}}$ | $t_{n-1}$ | $\|T\| > t_{n-1}(1-\alpha/2)$ |
-| Homogeneity, $\sigma$ known | $Z = D/\sigma_D$ | $\mathcal{N}(0,1)$ | $\|Z\| > u_{1-\alpha/2}$ |
-| Homogeneity, $\sigma_1=\sigma_2$ unknown | $T = D/\hat{\sigma}_D$ | $t_{n_1+n_2-2}$ | $\|T\| > t_{df}(1-\alpha/2)$ |
-| Homogeneity, $\sigma_1 \neq \sigma_2$ | $T = D/\hat{\sigma}_D$ | $t_\nu$ (Welch) | $\|T\| > t_\nu(1-\alpha/2)$ |
+| Conformite, $\sigma$ connu | $Z = \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$ | $\mathcal{N}(0,1)$ | $\|Z\| > u_{1-\alpha/2}$ |
+| Conformite, $\sigma$ inconnu | $T = \frac{\bar{X}-\mu_0}{S'/\sqrt{n}}$ | $t_{n-1}$ | $\|T\| > t_{n-1}(1-\alpha/2)$ |
+| Homogeneite, $\sigma$ connu | $Z = D/\sigma_D$ | $\mathcal{N}(0,1)$ | $\|Z\| > u_{1-\alpha/2}$ |
+| Homogeneite, $\sigma_1=\sigma_2$ inconnu | $T = D/\hat{\sigma}_D$ | $t_{n_1+n_2-2}$ | $\|T\| > t_{df}(1-\alpha/2)$ |
+| Homogeneite, $\sigma_1 \neq \sigma_2$ | $T = D/\hat{\sigma}_D$ | $t_\nu$ (Welch) | $\|T\| > t_\nu(1-\alpha/2)$ |
 
-**p-value rule**: Reject $H_0$ if p-value $< \alpha$.
+**Regle de la p-valeur** : Rejeter $H_0$ si p-valeur $< \alpha$.
 
-**Power**: $1 - \beta$. Increases with $n$, effect size, and $\alpha$. Decreases with $\sigma$.
+**Puissance** : $1 - \beta$. Augmente avec $n$, la taille de l'effet et $\alpha$. Diminue avec $\sigma$.

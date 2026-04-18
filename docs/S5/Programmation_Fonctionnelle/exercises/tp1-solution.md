@@ -1,24 +1,24 @@
 ---
-title: "TP1 - Introduction to OCaml"
+title: "TP1 - Introduction a OCaml"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction to OCaml
+# TP1 - Introduction a OCaml
 
-> Following teacher instructions from: `data/moodle/tp/tp1/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp1/README.md`
 
 ---
 
-## Exercise 1
+## Exercice 1
 
-### Multiply a number by 2 (`mul2`)
+### Multiplier un nombre par 2 (`mul2`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let mul2 n = 2 * n
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # mul2 21;;
 - : int = 42
@@ -30,16 +30,16 @@ let mul2 n = 2 * n
 
 ---
 
-## Exercise 2
+## Exercice 2
 
-### Calculate the absolute value of an integer (`vabs`)
+### Calculer la valeur absolue d'un entier (`vabs`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let vabs n = if n > 0 then n else -n
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # vabs (-5);;
 - : int = 5
@@ -51,16 +51,16 @@ let vabs n = if n > 0 then n else -n
 
 ---
 
-## Exercise 3
+## Exercice 3
 
-### `test1`: Check if a number is in range [12, 29]
+### `test1` : Verifier si un nombre est dans l'intervalle [12, 29]
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let test1 n = n >= 12 && n <= 29
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # test1 25;;
 - : bool = true
@@ -72,14 +72,14 @@ let test1 n = n >= 12 && n <= 29
 - : bool = true
 ```
 
-### `test2`: Check if a number equals 2, 5, 9, or 23
+### `test2` : Verifier si un nombre vaut 2, 5, 9 ou 23
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let test2 n = n = 2 || n = 5 || n = 9 || n = 23
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # test2 5;;
 - : bool = true
@@ -89,16 +89,16 @@ let test2 n = n = 2 || n = 5 || n = 9 || n = 23
 
 ---
 
-## Exercise 4
+## Exercice 4
 
-### Test if the first element of a pair equals 12 (`test3`)
+### Tester si le premier element d'une paire vaut 12 (`test3`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let test3 p = fst p = 12
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # test3 (12, "foo");;
 - : bool = true
@@ -110,13 +110,13 @@ let test3 p = fst p = 12
 
 ---
 
-## Exercise 5
+## Exercice 5
 
-### Determine if a year is a leap year (`bissext`)
+### Determiner si une annee est bissextile (`bissext`)
 
-Leap year rules: divisible by 400, OR divisible by 4 but not by 100.
+Regles des annees bissextiles : divisible par 400, OU divisible par 4 mais pas par 100.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let bissext y =
   if y mod 400 = 0 then true
@@ -125,7 +125,7 @@ let bissext y =
   else false
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # bissext 2000;;
 - : bool = true
@@ -139,20 +139,20 @@ let bissext y =
 
 ---
 
-## Exercise 6
+## Exercice 6
 
-### Extract elements from 3-tuples (`proj1`, `proj23`)
+### Extraire des elements de triplets (`proj1`, `proj23`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* proj1: first element of a 3-tuple *)
+(* proj1 : premier element d'un triplet *)
 let proj1 (a, b, c) = a
 
-(* proj23: second and third elements as a pair *)
+(* proj23 : deuxieme et troisieme elements sous forme de paire *)
 let proj23 (a, b, c) = (b, c)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # proj1 (1, "foo", true);;
 - : int = 1
@@ -162,16 +162,16 @@ let proj23 (a, b, c) = (b, c)
 
 ---
 
-## Exercise 7
+## Exercice 7
 
-### Extract and swap elements from nested pairs (`inv2`)
+### Extraire et permuter des elements de paires imbriquees (`inv2`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let inv2 ((a, b), (c, d)) = (d, c)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # inv2 ((true, 'a'), (1, "un"));;
 - : string * int = ("un", 1)
@@ -179,16 +179,16 @@ let inv2 ((a, b), (c, d)) = (d, c)
 
 ---
 
-## Exercise 8
+## Exercice 8
 
-### Increment both elements of a pair (`incrpaire`)
+### Incrementer les deux elements d'une paire (`incrpaire`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let incrpaire p = (fst p + 1, snd p + 1)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # incrpaire (12, 42);;
 - : int * int = (13, 43)
@@ -196,20 +196,20 @@ let incrpaire p = (fst p + 1, snd p + 1)
 
 ---
 
-## Exercise 9
+## Exercice 9
 
-### Apply a function to both elements of a pair (`appliquepaire`, `incrpaire2`)
+### Appliquer une fonction aux deux elements d'une paire (`appliquepaire`, `incrpaire2`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* appliquepaire: apply f to both elements of a pair *)
+(* appliquepaire : appliquer f aux deux elements d'une paire *)
 let appliquepaire f p = (f (fst p), f (snd p))
 
-(* incrpaire2: increment using appliquepaire *)
+(* incrpaire2 : incrementer en utilisant appliquepaire *)
 let incrpaire2 p = appliquepaire (fun x -> x + 1) p
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # appliquepaire (fun x -> not x) (false, true);;
 - : bool * bool = (true, false)
@@ -221,20 +221,20 @@ let incrpaire2 p = appliquepaire (fun x -> x + 1) p
 
 ---
 
-## Exercise 10
+## Exercice 10
 
-### Compute the ratio of two functions and implement tangent (`rapport`, `mytan`)
+### Calculer le rapport de deux fonctions et implementer la tangente (`rapport`, `mytan`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* rapport: f(x) / g(x) *)
+(* rapport : f(x) / g(x) *)
 let rapport (f, g) x = f x /. g x
 
-(* mytan: tangent using sin and cos *)
+(* mytan : tangente en utilisant sin et cos *)
 let mytan x = rapport (sin, cos) x
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # rapport ((fun x -> x +. 1.), (fun x -> x -. 1.)) 2.;;
 - : float = 3.
@@ -244,13 +244,13 @@ let mytan x = rapport (sin, cos) x
 
 ---
 
-## Exercise 11
+## Exercice 11
 
-### Check if a number is prime (`premier`)
+### Verifier si un nombre est premier (`premier`)
 
-Uses trial division up to sqrt(n). Nested recursive local function with `let rec ... in`.
+Utilise la division par essai jusqu'a sqrt(n). Fonction locale recursive imbriquee avec `let rec ... in`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let premier n =
   if n = 1 then false
@@ -263,7 +263,7 @@ let premier n =
     estpremier 2 n
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # premier 1;;
 - : bool = false
@@ -279,13 +279,13 @@ let premier n =
 
 ---
 
-## Exercise 12
+## Exercice 12
 
-### Find the nth prime number (`n_premier`)
+### Trouver le n-ieme nombre premier (`n_premier`)
 
-Combines `premier` with a counting auxiliary function.
+Combine `premier` avec une fonction auxiliaire de comptage.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let n_premier n =
   let rec xnpremier n x i =
@@ -296,7 +296,7 @@ let n_premier n =
   xnpremier n 2 1
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # n_premier 1;;
 - : int = 2

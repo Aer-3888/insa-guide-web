@@ -1,19 +1,19 @@
 ---
-title: "TP6 - Binary Trees"
+title: "TP6 - Arbres binaires"
 sidebar_position: 6
 ---
 
-# TP6 - Binary Trees
+# TP6 - Arbres binaires
 
-## Overview
+## Vue d'ensemble
 
-Binary tree data structures and operations:
-- Tree definition and construction
-- Tree traversals
-- Binary search trees
-- Tree positioning for graphical display
+Structures de donnees et operations sur les arbres binaires :
+- Definition et construction d'arbres
+- Parcours d'arbres
+- Arbres binaires de recherche
+- Positionnement d'arbres pour l'affichage graphique
 
-## Data Type
+## Type de donnees
 
 ```ocaml
 type 'a arbin = 
@@ -21,45 +21,45 @@ type 'a arbin =
   | Noeud of 'a arbin * 'a * 'a arbin
 ```
 
-## Exercises
+## Exercices
 
-### 1. Tree Construction
-- `feuille v`: Create a leaf node
-- `noeud v g d`: Create a node with left and right children
+### 1. Construction d'arbres
+- `feuille v` : Creer un noeud feuille
+- `noeud v g d` : Creer un noeud avec fils gauche et droit
 
-**Concepts**: Algebraic data types, tree constructors
+**Concepts** : Types algebriques de donnees, constructeurs d'arbres
 
-### 2. Tree Counting (`compter`)
-Count the number of nodes in a tree.
+### 2. Comptage de noeuds (`compter`)
+Compter le nombre de noeuds dans un arbre.
 
-**Concepts**: Structural recursion on trees
+**Concepts** : Recursion structurelle sur les arbres
 
-### 3. Tree to List (`to_list`)
-Convert tree to list using inorder traversal.
+### 3. Arbre vers liste (`to_list`)
+Convertir un arbre en liste par parcours infixe.
 
-**Concepts**: Tree traversal (left-root-right)
+**Concepts** : Parcours d'arbre (gauche-racine-droite)
 
-### 4. Binary Search Tree (`ajoutArbre`, `constr`)
-- Insert elements maintaining BST property
-- Construct BST from list
+### 4. Arbre binaire de recherche (`ajoutArbre`, `constr`)
+- Inserer des elements en maintenant la propriete d'ABR
+- Construire un ABR a partir d'une liste
 
-**Concepts**: Binary search tree invariants
+**Concepts** : Invariants des arbres binaires de recherche
 
-### 5. Tree Positioning (`placer`)
-Assign (x, y) coordinates to each node for graphical display.
+### 5. Positionnement d'arbre (`placer`)
+Assigner des coordonnees (x, y) a chaque noeud pour l'affichage graphique.
 
-**Concepts**: Tree layout algorithms, accumulator pattern
+**Concepts** : Algorithmes de mise en page d'arbres, pattern accumulateur
 
-## Key Algorithms
+## Algorithmes cles
 
-### Inorder Traversal
+### Parcours infixe
 ```ocaml
 let rec to_list a = match a with
   | Feuille b -> [b]
   | Noeud (g, c, d) -> to_list g @ [c] @ to_list d
 ```
 
-### BST Insertion
+### Insertion dans un ABR
 ```ocaml
 let rec ajoutArbre e a = match a with
   | Noeud (g, c, d) ->
@@ -68,20 +68,20 @@ let rec ajoutArbre e a = match a with
   | Feuille _ -> Noeud (Feuille "Nil", e, Feuille "Nil")
 ```
 
-### Tree Positioning
-Computes (x, y) coordinates for each node:
-- Inorder traversal determines x-coordinates
-- Depth determines y-coordinates
+### Positionnement d'arbre
+Calcule les coordonnees (x, y) pour chaque noeud :
+- Le parcours infixe determine les coordonnees x
+- La profondeur determine les coordonnees y
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp6.ml";;
 ```
 
-## Expected Results
+## Resultats attendus
 
-For tree: `noeud 12 (feuille 5) (noeud 7 (feuille 6) (feuille 8))`
-- `compter` → 3 (leaf nodes)
+Pour l'arbre : `noeud 12 (feuille 5) (noeud 7 (feuille 6) (feuille 8))`
+- `compter` → 3 (noeuds feuilles)
 - `to_list` → [5; 12; 6; 7; 8]

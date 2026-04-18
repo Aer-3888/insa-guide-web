@@ -5,14 +5,14 @@ sidebar_position: 8
 
 # TP4 - MongoDB
 
-> Following teacher instructions from: S6/Bases_de_Donnees/data/moodle/tp/tp4_mongodb/sujet.pdf
-> (Auteur original: Nicolas Travers, CNAM)
+> D'apres les instructions du sujet : S6/Bases_de_Donnees/data/moodle/tp/tp4_mongodb/sujet.pdf
+> (Auteur original : Nicolas Travers, CNAM)
 
 ---
 
-## Section 2: Visualisation du contenu
+## Section 2 : Visualisation du contenu
 
-La collection `paris` contient des lieux parisiens agreges sur tourPedia. Document type:
+La collection `paris` contient des lieux parisiens agreges sur tourPedia. Document type :
 
 ```json
 {
@@ -38,36 +38,36 @@ La collection `paris` contient des lieux parisiens agreges sur tourPedia. Docume
 }
 ```
 
-Categories: poi (points d'interet), restaurant, accommodation (logements), attraction.
+Categories : poi (points d'interet), restaurant, accommodation (logements), attraction.
 
 ---
 
-## Section 3: Quelques requetes de recherche pour demarrer
+## Section 3 : Quelques requetes de recherche pour demarrer
 
 ---
 
-### Exercise 1
+### Exercice 1
 
 ### Recherchez toutes les informations a propos des lieux dont la categorie est "accommodation".
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.find({"category": "accommodation"});
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Tous les documents avec category = "accommodation".
 
-**Explanation:**
+**Explication :**
 `find()` avec un seul argument (le filtre) retourne tous les champs de chaque document correspondant.
 
 ---
 
-### Exercise 2
+### Exercice 2
 
 ### Donner juste le nom des lieux dont la categorie est "accommodation"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.find({"category": "accommodation"}, {name: 1});
 ```
@@ -80,66 +80,66 @@ project = {name: 1};
 db.paris.find(match, project).pretty();
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": 123, "name": "Hotel de Ville" }
 { "_id": 456, "name": "Auberge de Jeunesse" }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 Le second argument de `find()` est la projection. `{name: 1}` = inclure le champ name. `_id` est inclus par defaut (il faut explicitement `{_id: 0}` pour l'exclure).
 
 ---
 
-### Exercise 3
+### Exercice 3
 
 ### Affichez toutes les informations sur les lieux dont la categorie est "accommodation" mais en n'affichant ni le champ "_id" ni "contact"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"category": "accommodation"};
 project = {_id: 0, contact: 0};
 db.paris.find(match, project).pretty();
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Documents accommodation sans les champs _id et contact.
 
-**Explanation:**
+**Explication :**
 `{_id: 0, contact: 0}` = exclure ces champs. On ne peut pas melanger inclusion (1) et exclusion (0) dans la meme projection, sauf pour `_id`.
 
 ---
 
-### Exercise 4
+### Exercice 4
 
-### Donner le nom et numero de telephone des lieux ayant un numero de telephone renseigne. Utilisez ($exists, $ne) et ne signifie not-equal.
+### Donner le nom et numero de telephone des lieux ayant un numero de telephone renseigne. Utilisez ($exists, $ne) ou ne signifie "different de".
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"contact.phone": {$exists: 1, $ne: ""}};
 project = {"contact.phone": 1, name: 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": 455674, "name": "Bibliotheque du Cnam", "contact": { "phone": "+33 1 40 27 27 03" } }
 ...
 ```
 
-**Explanation:**
-- `"contact.phone"`: dot notation pour acceder au champ phone du sous-document contact
+**Explication :**
+- `"contact.phone"`: notation pointee pour acceder au champ phone du sous-document contact
 - `$exists: 1`: le champ existe
 - `$ne: ""`: la valeur n'est pas vide (ne = not equal)
 
 ---
 
-### Exercise 5
+### Exercice 5
 
 ### Nom et contacts des lieux ayant "website" et "Foursquare" renseignes
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {
     "contact.Foursquare": {$ne: "", $exists: 1},
@@ -149,19 +149,19 @@ project = {"name": 1, "contact.Foursquare": 1, "contact.website": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux avec website et Foursquare non vides.
 
-**Explanation:**
-Plusieurs conditions dans le meme objet match agissent comme un AND implicite. La dot notation permet de filtrer sur des sous-champs.
+**Explication :**
+Plusieurs conditions dans le meme objet match agissent comme un AND implicite. La notation pointee permet de filtrer sur des sous-champs.
 
 ---
 
-### Exercise 6
+### Exercice 6
 
 ### Nom des lieux dont le nom contient le mot "hotel" (quelle que soit la casse)
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"name": {$regex: "Hotel", $options: "i"}};
 project = {name: 1};
@@ -175,7 +175,7 @@ match = {"name": /Hotel/i};
 db.paris.find(match, {name: 1});
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": ..., "name": "Hotel Lutecia" }
 { "_id": ..., "name": "Grand Hotel du Louvre" }
@@ -183,52 +183,52 @@ db.paris.find(match, {name: 1});
 ...
 ```
 
-**Explanation:**
-L'option `"i"` rend la recherche **case-insensitive** (insensible a la casse). `Hotel`, `hotel`, `HOTEL` sont tous trouves.
+**Explication :**
+L'option `"i"` rend la recherche **insensible a la casse**. `Hotel`, `hotel`, `HOTEL` sont tous trouves.
 
 ---
 
-### Exercise 7
+### Exercice 7
 
 ### Nom et services des lieux ayant un service "chambres non-fumeurs"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"services": "chambres non-fumeurs"};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux ayant "chambres non-fumeurs" dans leur tableau services.
 
-**Explanation:**
+**Explication :**
 Quand on filtre un tableau avec une valeur simple, MongoDB cherche si cette valeur est l'un des elements du tableau. Pas besoin de `$in` ou `$elemMatch` pour un test simple.
 
 ---
 
-### Exercise 8
+### Exercice 8
 
 ### Nom et services des lieux dont le premier service est "chambres non-fumeurs"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"services.0": "chambres non-fumeurs"};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux dont le premier element du tableau services est "chambres non-fumeurs".
 
-**Explanation:**
-`services.0` accede au premier element du tableau (index 0). C'est la dot notation appliquee aux tableaux. Ref: https://docs.mongodb.com/manual/tutorial/query-arrays/
+**Explication :**
+`services.0` accede au premier element du tableau (index 0). C'est la notation pointee appliquee aux tableaux. Ref : https://docs.mongodb.com/manual/tutorial/query-arrays/
 
 ---
 
-### Exercise 9
+### Exercice 9
 
 ### Nom et services des lieux n'ayant qu'un seul service "chambres non-fumeurs"
 
-**Answer:**
+**Reponse :**
 
 Methode 1: tester que le second service n'existe pas
 
@@ -251,52 +251,52 @@ match = {"services": ["chambres non-fumeurs"]};
 db.paris.find(match, {"name": 1, "services": 1});
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux avec exactement un seul service et ce service est "chambres non-fumeurs".
 
-**Explanation:**
+**Explication :**
 S'il n'y a qu'un seul service, le second service n'existe pas. On teste l'existence du service en position 1 du tableau. La methode 3 fait une correspondance exacte sur le tableau entier (ordre et contenu).
 
 ---
 
-### Exercise 10
+### Exercice 10
 
 ### Nom et services des lieux proposant 5 services
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"services": {$size: 5}};
 project = {"name": 1, "services": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux avec exactement 5 services dans le tableau.
 
-**Explanation:**
+**Explication :**
 `$size: 5` teste la taille exacte du tableau. Attention: `$size` ne supporte PAS les operateurs de comparaison comme `$gte`.
 
 ---
 
-## Section 4: A vous de jouer pour quelques requetes simples
+## Section 4 : A vous de jouer pour quelques requetes simples
 
 ---
 
-### Exercise 11
+### Exercice 11
 
 ### Nom et services des lieux proposant au moins 5 services
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"services.4": {$exists: 1}};
 project = {"name": 1, "services": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux avec 5 services ou plus.
 
-**Explanation:**
+**Explication :**
 `services.4` est l'element a l'index 4 (le 5eme). S'il existe, le tableau a au moins 5 elements. C'est l'astuce car `$size` ne supporte pas `$gte`. Alternative avec aggregate:
 
 ```javascript noexec
@@ -308,103 +308,103 @@ db.paris.aggregate([
 
 ---
 
-### Exercise 12
+### Exercice 12
 
 ### Donner les adresses des lieux de categorie "accommodation" avec un service "blanchisserie"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"category": "accommodation", "services": "blanchisserie"};
 project = {"name": 1, "location.address": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": ..., "name": "Hotel Concorde", "location": { "address": "2 Rue Scribe, Paris" } }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 Deux conditions dans le match (AND implicite): la categorie doit etre accommodation ET le tableau services doit contenir "blanchisserie".
 
 ---
 
-### Exercise 13
+### Exercice 13
 
 ### Categories des lieux ayant au moins une note (reviews.rating) de 4 ou plus
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"reviews.rating": {$gte: 4}};
 project = {"category": 1, "name": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Noms et categories des lieux avec au moins un review ayant rating >= 4.
 
-**Explanation:**
-`"reviews.rating"` utilise la dot notation pour acceder au champ rating a l'interieur des elements du tableau reviews. MongoDB cherche si AU MOINS UN element du tableau a un rating >= 4.
+**Explication :**
+`"reviews.rating"` utilise la notation pointee pour acceder au champ rating a l'interieur des elements du tableau reviews. MongoDB cherche si AU MOINS UN element du tableau a un rating >= 4.
 
 ---
 
-### Exercise 14
+### Exercice 14
 
 ### Affiche les sources des commentaires des lieux avec au moins un commentaire "Facebook" (source)
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"reviews.source": "Facebook"};
 project = {"name": 1, "reviews.source": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Lieux avec au moins un commentaire de source "Facebook", affichant le nom et les sources des reviews.
 
-**Explanation:**
-Meme principe que l'exercice 13: la dot notation sur un tableau filtre sur les sous-champs des elements.
+**Explication :**
+Meme principe que l'exercice 13: la notation pointee sur un tableau filtre sur les sous-champs des elements.
 
 ---
 
-### Exercise 16
+### Exercice 16
 
 ### Coordonnees GPS des lieux dont l'adresse contient "rue de rome"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 match = {"location.address": {$regex: "rue de rome", $options: "i"}};
 project = {"name": 1, "location.coord.coordinates": 1};
 db.paris.find(match, project);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": ..., "name": "Hotel Rome", "location": { "coord": { "coordinates": [2.3245, 48.8812] } } }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 `$regex` avec `$options: "i"` fait une recherche insensible a la casse sur l'adresse. La projection cible les coordonnees GPS imbriquees.
 
 ---
 
-## Section 5: API Mongo - Requetes 'aggregate'
+## Section 5 : API Mongo - Requetes 'aggregate'
 
-L'operateur `aggregate` est une sequence d'operations representant une chaine de pipeline: `aggregate([{$op1}, {$op2}, {$op3}])`. Le resultat d'un operateur est donne a l'operateur suivant.
+L'operateur `aggregate` est une sequence d'operations representant une chaine de pipeline : `aggregate([{$op1}, {$op2}, {$op3}])`. Le resultat d'un operateur est donne a l'operateur suivant.
 
-Doc: https://docs.mongodb.com/manual/aggregation/
+Doc : https://docs.mongodb.com/manual/aggregation/
 
-**Important:** supprimer `db.paris.find(match, project).pretty();` de la console avant d'utiliser aggregate, sinon les resultats seront incorrects.
+**Important :** supprimer `db.paris.find(match, project).pretty();` de la console avant d'utiliser aggregate, sinon les resultats seront incorrects.
 
 ---
 
-### Exercise 20
+### Exercice 20
 
 ### Pour les lieux de categorie "accommodation" avec un service "blanchisserie", projeter le resultat sur le nom et numero de telephone (seulement si elle existe), et trier sur le nom
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 opMatch = {$match: {
     "services": "blanchisserie",
@@ -417,14 +417,14 @@ opSort = {$sort: {"name": 1}};
 db.paris.aggregate([opMatch, opProject, opSort]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": ..., "name": "Best Western", "contact": { "phone": "+33 1 ..." } }
 { "_id": ..., "name": "Hotel Concorde", "contact": { "phone": "+33 1 ..." } }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 Pipeline en 3 etapes:
 1. `$match`: filtre les documents (equivalent WHERE)
 2. `$project`: choisit les champs a retourner (equivalent SELECT)
@@ -432,11 +432,11 @@ Pipeline en 3 etapes:
 
 ---
 
-### Exercise 21
+### Exercice 21
 
 ### Nombre de lieux de categorie "accommodation" et ayant un service "chambres non-fumeurs"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "accommodation", "services": "chambres non-fumeurs"}},
@@ -444,21 +444,21 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "nb_lieux": 847 }
 ```
 
-**Explanation:**
+**Explication :**
 `$count` est un raccourci pour compter les documents en sortie du pipeline. Alternative: `{$group: {_id: null, nb_lieux: {$sum: 1}}}`.
 
 ---
 
-### Exercise 22
+### Exercice 22
 
 ### Donner le nombre de lieux par categorie
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$group: {_id: "$category", nb_lieux: {$sum: 1}}},
@@ -466,7 +466,7 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": "poi", "nb_lieux": 5234 }
 { "_id": "restaurant", "nb_lieux": 4182 }
@@ -474,16 +474,16 @@ db.paris.aggregate([
 { "_id": "attraction", "nb_lieux": 1243 }
 ```
 
-**Explanation:**
+**Explication :**
 `_id: "$category"` groupe les documents par la valeur du champ category. `$sum: 1` compte le nombre de documents dans chaque groupe. C'est l'equivalent de `GROUP BY category` en SQL.
 
 ---
 
-### Exercise 23
+### Exercice 23
 
 ### Pour les lieux de categorie "accommodation", donner le nombre de lieux pour chaque service
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 opMatch = {$match: {"category": "accommodation"}};
 opUnwind = {$unwind: "$services"};
@@ -492,7 +492,7 @@ opGroup = {$group: {_id: "$services", "tot": {$sum: 1}}};
 db.paris.aggregate([opMatch, opUnwind, opGroup]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": "chambres non-fumeurs", "tot": 847 }
 { "_id": "wifi", "tot": 712 }
@@ -500,7 +500,7 @@ db.paris.aggregate([opMatch, opUnwind, opGroup]);
 ...
 ```
 
-**Explanation:**
+**Explication :**
 `$unwind` decompose le contenu d'un tableau en autant de nouveaux documents. Par exemple:
 
 Avant: `{ "_id": 123, "nom": "GM", "etudiants": ["Jeanne", "Pierre", "Zoe"] }`
@@ -516,11 +516,11 @@ Il est donc ensuite facile de travailler sur chaque element avec `$group`.
 
 ---
 
-### Exercise 24
+### Exercice 24
 
 ### Trier le resultat precedent par ordre decroissant
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "accommodation"}},
@@ -530,21 +530,21 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Meme resultat que l'exercice 23 mais trie par tot decroissant.
 
-**Explanation:**
+**Explication :**
 `{$sort: {tot: -1}}` ajoute un tri decroissant a la fin du pipeline. -1 = descendant, 1 = ascendant.
 
-Note du sujet: Passez a l'exercice 7 (section geospatiale) si vous le desirez.
+Note du sujet : passez a l'exercice 7 (section geospatiale) si vous le desirez.
 
 ---
 
-### Exercise 25
+### Exercice 25
 
-### Du resultat precedent, n'afficher que les services presents dans plus de 1000 lieux ($gt, greater than)
+### Du resultat precedent, n'afficher que les services presents dans plus de 1000 lieux ($gt, strictement superieur)
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "accommodation"}},
@@ -555,19 +555,19 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Uniquement les services avec tot > 1000.
 
-**Explanation:**
+**Explication :**
 Le second `$match` agit comme un HAVING en SQL: il filtre les GROUPES apres l'agregation. `$gt: 1000` signifie "strictement superieur a 1000".
 
 ---
 
-### Exercise 26
+### Exercice 26
 
 ### Pour chaque nom de lieu de categorie "poi", donner le nombre de commentaires dont la source (reviews.source) est "Facebook". Trier par ordre decroissant
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "poi"}},
@@ -578,23 +578,23 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": "Tour Eiffel Paris France", "nb_commentaires": 234 }
 { "_id": "Musee du Louvre", "nb_commentaires": 189 }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 Pipeline: filtrer par categorie poi -> decomposer les reviews -> filtrer par source Facebook -> grouper par nom et compter -> trier. Le double `$match` (avant et apres `$unwind`) est une technique courante.
 
 ---
 
-### Exercise 27
+### Exercice 27
 
 ### Pour chaque langue d'un commentaire (reviews.language), donner le nombre de commentaires de lieux ayant un service "chambres non-fumeurs"
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$match: {"services": "chambres non-fumeurs"}},
@@ -604,7 +604,7 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": "en", "nb": 3456 }
 { "_id": "fr", "nb": 1234 }
@@ -612,16 +612,16 @@ db.paris.aggregate([
 ...
 ```
 
-**Explanation:**
+**Explication :**
 On filtre d'abord les lieux avec le service specifique, puis on decompose leurs reviews pour grouper par langue.
 
 ---
 
-### Exercise 28
+### Exercice 28
 
 ### Pour chaque nom de lieu de categorie "restaurant", donner la note moyenne et le nombre de commentaires. Trier le resultat par ordre decroissant de moyenne, puis de nombre
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$match: {"category": "restaurant"}},
@@ -635,23 +635,23 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": "Le Jules Verne", "note_moyenne": 4.8, "nb_commentaires": 156 }
 { "_id": "L'Ambroisie", "note_moyenne": 4.7, "nb_commentaires": 89 }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 `$avg` calcule la moyenne du champ rating. Le tri se fait sur deux criteres: d'abord la moyenne decroissante, puis le nombre de commentaires decroissant pour departager les ex-aequo.
 
 ---
 
-### Exercise 29
+### Exercice 29
 
 ### Pour chaque categorie de lieux et langue de commentaire, donner le nombre de commentaires correspondants
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$unwind: "$reviews"},
@@ -663,7 +663,7 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": { "category": "accommodation", "language": "en" }, "nb": 5678 }
 { "_id": { "category": "accommodation", "language": "fr" }, "nb": 2345 }
@@ -671,16 +671,16 @@ db.paris.aggregate([
 ...
 ```
 
-**Explanation:**
+**Explication :**
 `_id: {category: ..., language: ...}` groupe sur DEUX dimensions a la fois. Equivalent de `GROUP BY category, language` en SQL.
 
 ---
 
-### Exercise 30
+### Exercice 30
 
 ### Pour chaque categorie de lieux, donner le nombre moyen de commentaires par langue (reutiliser le resultat precedent)
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$unwind: "$reviews"},
@@ -696,19 +696,19 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 Le nombre moyen de commentaires par langue, pour chaque categorie.
 
-**Explanation:**
+**Explication :**
 Double `$group`: le premier groupe par (categorie, langue), le second re-groupe par categorie et fait la moyenne des comptes. C'est l'equivalent d'une sous-requete agregee en SQL.
 
 ---
 
-### Exercise 31
+### Exercice 31
 
 ### Donner le nombre moyen de commentaires par lieu
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 db.paris.aggregate([
     {$project: {nb_reviews: {$size: "$reviews"}}},
@@ -716,23 +716,23 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": null, "moyenne": 3.42 }
 ```
 
-**Explanation:**
+**Explication :**
 `{$size: "$reviews"}` calcule la taille du tableau reviews pour chaque document. Puis on fait la moyenne de toutes ces tailles avec `$avg`. `_id: null` signifie qu'on ne groupe pas -- on agrege sur toute la collection.
 
 ---
 
-## Section 7: Indexation 2D avec 2DSphere
+## Section 7 : Indexation 2D avec 2DSphere
 
-Doc: http://docs.mongodb.org/manual/applications/geospatial-indexes/
+Doc : http://docs.mongodb.org/manual/applications/geospatial-indexes/
 
 ---
 
-### Setup: Creation de l'index et recuperation des coordonnees
+### Preparation : Creation de l'index et recuperation des coordonnees
 
 ```javascript noexec
 // Creer l'index spatial
@@ -769,11 +769,11 @@ saintMichel = [2.3421263694763, 48.849368645992];
 
 ---
 
-### Exercise 32
+### Exercice 32
 
 ### Afficher les noms et adresses des restaurants autour de Saint-Michel dans un rayon de 200m.
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 dist = 200;
 near = {$near: {
@@ -787,14 +787,14 @@ db.paris.find(
 );
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "name": "Le Petit Chatelet", "location": { "address": "39 Rue de la Bucherie, Paris" } }
 { "name": "Bouillon Racine", "location": { "address": "3 Rue Racine, Paris" } }
 ...
 ```
 
-**Explanation:**
+**Explication :**
 - `$near`: trouve les documents les plus proches d'un point
 - `$geometry`: definit le point de reference en format GeoJSON
 - `$maxDistance`: distance maximale en metres
@@ -803,11 +803,11 @@ db.paris.find(
 
 ---
 
-### Exercise 33
+### Exercice 33
 
 ### Afficher le nom des points d'interets (poi) compris dans le triangle "tour Eiffel - Louvre - Saint-Michel" avec l'operateur $geoWithin
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 triangle = [[tourEiffel, louvre, saintMichel, tourEiffel]];
 
@@ -827,7 +827,7 @@ db.paris.find(
 );
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "name": "Musee d'Orsay" }
 { "name": "Assemblee Nationale" }
@@ -835,7 +835,7 @@ db.paris.find(
 ...
 ```
 
-**Explanation:**
+**Explication :**
 - `$geoWithin`: trouve les documents contenus dans une zone geographique
 - Le triangle est une liste de points avec retour au point de depart (polygone ferme)
 - La requete est une liste de polygones (d'ou le double crochet `[[...]]`)
@@ -843,11 +843,11 @@ db.paris.find(
 
 ---
 
-### Exercise 34
+### Exercice 34
 
 ### Calculer le nombre de lieux par categorie dans cette zone
 
-**Answer:**
+**Reponse :**
 ```javascript noexec
 triangle = [[tourEiffel, louvre, saintMichel, tourEiffel]];
 
@@ -867,7 +867,7 @@ db.paris.aggregate([
 ]);
 ```
 
-**Expected result:**
+**Resultat attendu :**
 ```json
 { "_id": "poi", "nb": 45 }
 { "_id": "restaurant", "nb": 38 }
@@ -875,5 +875,5 @@ db.paris.aggregate([
 { "_id": "attraction", "nb": 8 }
 ```
 
-**Explanation:**
+**Explication :**
 On combine le filtre geospatial `$geoWithin` dans un pipeline aggregate avec `$group` pour compter par categorie. Le `$match` filtre d'abord les lieux dans le triangle, puis `$group` agrege par categorie.

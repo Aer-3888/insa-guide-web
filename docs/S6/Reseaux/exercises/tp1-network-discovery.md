@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # TP1 - Decouverte reseau
 
-> Following teacher instructions from: S6/Reseaux/data/moodle/tp/TP1/README.md
+> D'apres les instructions de l'enseignant : S6/Reseaux/data/moodle/tp/TP1/README.md
 
 Ce TP explore les couches reseau avec des outils en ligne de commande Linux et Wireshark. Aucun code a ecrire : on observe et analyse les protocoles en action.
 
@@ -17,7 +17,7 @@ Ce TP explore les couches reseau avec des outils en ligne de commande Linux et W
 
 ### Q1. Quel est le hostname de votre machine ? Quelles sont ses interfaces reseau, leurs adresses IP (v4 et v6) ?
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ hostname
@@ -41,7 +41,7 @@ Le hostname est `awoobis`. L'IP de l'interface WiFi `wlp3s0` est 192.168.43.251 
 
 ### Q2. Quels sont les MTU de chaque interface ?
 
-**Answer:**
+**Reponse :**
 
 | Interface | MTU | Explication |
 |-----------|-----|-------------|
@@ -55,7 +55,7 @@ Les MTU different car chaque interface a des contraintes physiques et d'encapsul
 
 ### Q3. Afficher la table de routage IPv4 et IPv6. Expliquer le role de chaque route.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ ip route show
@@ -82,7 +82,7 @@ En IPv6, la route par defaut passe par le tunnel VPN (`default dev tun1`).
 
 ### Q4. Se connecter sur une machine distante. Comparer la configuration reseau.
 
-**Answer:**
+**Reponse :**
 
 Connexion sur un VPS (vulpinecitrus.info) :
 
@@ -115,7 +115,7 @@ Differences avec la machine locale : le VPS a une adresse IP publique (51.91.58.
 
 ### Q5. Afficher la table ARP de votre machine.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ arp -a
@@ -130,7 +130,7 @@ ARP (Address Resolution Protocol) associe une adresse IP (couche 3) a une adress
 
 ### Q6. Capturer un echange ping dans Wireshark. Identifier les champs du paquet ICMP.
 
-**Answer:**
+**Reponse :**
 
 Pour avoir une capture du trafic plus claire (au vu des programmes qui tournent), on utilise le tunnel VPN (interface `tun1`) :
 
@@ -177,7 +177,7 @@ Le RTT (Round-Trip Time) est calcule comme la difference entre le timestamp de r
 
 ### Q7. Capturer un echange ARP. Decrire la requete et la reponse.
 
-**Answer:**
+**Reponse :**
 
 On purge le cache ARP en deconnectant puis reconnectant le WiFi, puis on capture sur l'interface `wlp3s0` avec le filtre Wireshark `arp`.
 
@@ -236,11 +236,11 @@ Points cles :
 
 ---
 
-## Section 3 : IP Fragmentation
+## Section 3 : Fragmentation IP
 
 ### Q14. Envoyer un ping dont la taille depasse le MTU. Observer la fragmentation.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ ping -s 2000 -c 1 1.1.1.1
@@ -254,7 +254,7 @@ Dans l'en-tete IP du premier fragment, le 3e bit de poids fort du 7e byte (Flags
 
 ### Q15. Analyser le deuxieme fragment dans Wireshark.
 
-**Answer:**
+**Reponse :**
 
 Filtre Wireshark : `ip.flags.mf == 1 || ip.frag_offset > 0`
 
@@ -286,7 +286,7 @@ Verification : 1400 + 608 = 2008 octets = 2000 (data) + 8 (ICMP header). Correct
 
 ### Q16. Quelles sont les differences entre les deux fragments ?
 
-**Answer:**
+**Reponse :**
 
 | Champ | Fragment 1 | Fragment 2 |
 |-------|-----------|-----------|
@@ -305,7 +305,7 @@ Le reassemblage est fait par le destinataire : il collecte tous les fragments av
 
 ### Q17. Quel fichier contient la correspondance entre les noms de service et les numeros de port ?
 
-**Answer:**
+**Reponse :**
 
 C'est le fichier `/etc/services` :
 
@@ -329,7 +329,7 @@ Quelques services notables : `doom` (666/tcp, legacy serveur Doom), `irc` (en pr
 
 ### Q18. Afficher les connexions actives avec netstat.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ netstat -tun
@@ -362,7 +362,7 @@ La plupart des connexions sont en HTTPS (port 443) vers divers services (GitHub,
 
 ### Q19. Lancer des pings vers des serveurs geographiquement differents.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ ping -c 20 google.com         # ~142ms en moyenne, ~0.8% packet loss
@@ -378,7 +378,7 @@ $ ping -c 20 www.victoria.ac.nz # ~135ms en moyenne, ~1.2% packet loss
 
 ### Q20. Lancer des traceroutes vers les memes destinations. Analyser.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ traceroute google.com          # 11 sauts
@@ -420,7 +420,7 @@ Observations cles :
 
 ### Q21. Faire des lookups DNS.
 
-**Answer:**
+**Reponse :**
 
 ```bash
 $ nslookup www.free.fr
@@ -446,31 +446,31 @@ On peut capturer les requetes DNS dans Wireshark avec le filtre `dns` ou `udp.po
 
 ### Q22. Quel port est utilise par HTTPS ?
 
-**Answer:**
+**Reponse :**
 
 Le port utilise est TCP 443, qui correspond au service HTTPS (HTTP sur TLS/SSL).
 
 ### Q23. Quelle est la taille de l'en-tete TCP ?
 
-**Answer:**
+**Reponse :**
 
 L'en-tete TCP fait 32 octets (20 octets de base + 12 octets d'options : MSS, SACK Permitted, Timestamps, Window Scale).
 
 ### Q24. Quelle est la segment length des trois paquets du handshake ?
 
-**Answer:**
+**Reponse :**
 
 La Segment Length est mise a 0 pour les trois paquets du handshake. Aucune donnee applicative n'est echangee durant le handshake : ce sont uniquement des paquets de controle (SYN, SYN-ACK, ACK).
 
 ### Q25. Quel est le numero de sequence initial du client ?
 
-**Answer:**
+**Reponse :**
 
 Wireshark affiche un numero de sequence relatif a 0 pour la lisibilite. En realite, le numero de sequence initial (ISN) choisi aleatoirement par le noyau est 238730258. La window length (taille du nombre d'octets pouvant etre envoyes sans ACK immediat) est 64860.
 
 ### Q26. Analyser le deuxieme paquet (SYN-ACK) : en-tete Ethernet, en-tete IP, champs TCP.
 
-**Answer:**
+**Reponse :**
 
 En-tete Ethernet (dans un tunnel VPN, on ne voit pas la trame Ethernet, mais sur une interface WiFi on aurait) :
 ```
@@ -498,13 +498,13 @@ Segment Length: 0
 
 ### Q27. Quel est le MSS negocie ?
 
-**Answer:**
+**Reponse :**
 
 Le MSS (Maximum Segment Size) est le minimum des fenetres annoncees : min(64860, 64296) = 64296 octets.
 
 ### Q28. Analyser le troisieme paquet (ACK final du handshake).
 
-**Answer:**
+**Reponse :**
 
 ```
 Sequence Number: 238730259
@@ -518,13 +518,13 @@ Ce troisieme paquet complete le handshake TCP a 3 voies. La connexion est desorm
 
 ### Q29. La connexion est-elle etablie ?
 
-**Answer:**
+**Reponse :**
 
 Oui. Apres le troisieme paquet ACK, la connexion TCP est pleinement etablie (etat ESTABLISHED des deux cotes). Les deux parties peuvent maintenant echanger des donnees applicatives.
 
 ### Q30. Comment TCP assure la fiabilite du transfert ?
 
-**Answer:**
+**Reponse :**
 
 TCP assure une livraison fiable et ordonnee grace a :
 - **Numeros de sequence** : chaque octet est numerote, permettant de reconstituer l'ordre.

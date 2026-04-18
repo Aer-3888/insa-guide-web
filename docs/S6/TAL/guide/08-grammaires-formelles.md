@@ -123,7 +123,7 @@ Un arbre de derivation montre comment une phrase est generee :
 
 Une grammaire est ambigue si certaines phrases ont **plusieurs arbres de derivation**.
 
-Exemple classique : "I saw the man with the telescope"
+Exemple classique : "I saw the man with the telescope" (J'ai vu l'homme avec le telescope)
 - Interpretation 1 : J'ai vu l'homme EN UTILISANT le telescope
 - Interpretation 2 : J'ai vu l'homme QUI AVAIT le telescope
 
@@ -218,7 +218,7 @@ REGULIERES :
 
 CFG :
   Peut : structures recursives, syntaxe naturelle
-  Ne peut PAS (bien) : accord a distance, cross-serial deps
+  Ne peut PAS (bien) : accord a distance, dependances croisees
 
 PIEGES :
   - CFG = Type 2 de Chomsky

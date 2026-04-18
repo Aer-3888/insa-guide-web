@@ -1,19 +1,19 @@
 ---
-title: "TP7 - N-ary Trees"
+title: "TP7 - Arbres n-aires"
 sidebar_position: 7
 ---
 
-# TP7 - N-ary Trees
+# TP7 - Arbres n-aires
 
-## Overview
+## Vue d'ensemble
 
-N-ary tree data structures (trees where each node can have any number of children):
-- Tree construction and accessors
-- Tree traversals
-- Path enumeration
-- Tree equality and replacement
+Structures de donnees d'arbres n-aires (arbres ou chaque noeud peut avoir un nombre quelconque d'enfants) :
+- Construction d'arbres et accesseurs
+- Parcours d'arbres
+- Enumeration de chemins
+- Egalite et remplacement d'arbres
 
-## Data Type
+## Type de donnees
 
 ```ocaml
 type 'a narbr = 
@@ -21,49 +21,49 @@ type 'a narbr =
   | Noeud of 'a * 'a narbr list
 ```
 
-## Exercises
+## Exercices
 
-### 1. Tree Construction
-- `feuille v`: Create a leaf
-- `noeud v l`: Create a node with value and list of children
-- `valeur a`: Get node value
-- `sous_arbres a`: Get list of children
+### 1. Construction d'arbres
+- `feuille v` : Creer une feuille
+- `noeud v l` : Creer un noeud avec valeur et liste d'enfants
+- `valeur a` : Obtenir la valeur du noeud
+- `sous_arbres a` : Obtenir la liste des enfants
 
-**Concepts**: N-ary tree structure, polymorphic types
+**Concepts** : Structure d'arbre n-aire, types polymorphes
 
-### 2. Node Counting (`compter`)
-Count total nodes in the tree.
+### 2. Comptage de noeuds (`compter`)
+Compter le nombre total de noeuds dans l'arbre.
 
-**Concepts**: Mutual recursion for tree and list traversal
+**Concepts** : Recursion mutuelle pour le parcours d'arbre et de liste
 
-### 3. Longest Path (`pluslongue`)
-Find the length of the longest path from root to leaf.
+### 3. Plus long chemin (`pluslongue`)
+Trouver la longueur du plus long chemin de la racine a une feuille.
 
-**Concepts**: Tree height, maximum computation
+**Concepts** : Hauteur d'arbre, calcul de maximum
 
-### 4. Node Enumeration (`listsa`)
-List all nodes (subtrees) in the tree.
+### 4. Enumeration des noeuds (`listsa`)
+Lister tous les noeuds (sous-arbres) de l'arbre.
 
-**Concepts**: Collecting all subtrees
+**Concepts** : Collecte de tous les sous-arbres
 
-### 5. Branch Enumeration (`listbr`)
-List all root-to-leaf paths as lists.
+### 5. Enumeration des branches (`listbr`)
+Lister tous les chemins de la racine aux feuilles sous forme de listes.
 
-**Concepts**: Path generation, list accumulation
+**Concepts** : Generation de chemins, accumulation dans des listes
 
-### 6. Tree Equality (`egal`)
-Check if two trees are structurally equal.
+### 6. Egalite d'arbres (`egal`)
+Verifier si deux arbres sont structurellement egaux.
 
-**Concepts**: Structural equality, mutual recursion
+**Concepts** : Egalite structurelle, recursion mutuelle
 
-### 7. Subtree Replacement (`remplace`)
-Replace all occurrences of one subtree with another.
+### 7. Remplacement de sous-arbre (`remplace`)
+Remplacer toutes les occurrences d'un sous-arbre par un autre.
 
-**Concepts**: Tree transformation, List.map
+**Concepts** : Transformation d'arbres, List.map
 
-## Key Algorithms
+## Algorithmes cles
 
-### Mutual Recursion
+### Recursion mutuelle
 ```ocaml
 let rec compter a =
   let rec compteur a acc = match a with
@@ -76,7 +76,7 @@ let rec compter a =
   compteur a 0
 ```
 
-### Path Generation
+### Generation de chemins
 ```ocaml noexec
 let rec ajout n l = match l with
   | [] -> []
@@ -87,7 +87,7 @@ let rec listbr a = match a with
   | Noeud (v, j) -> ajout v (listeu j)
 ```
 
-### Tree Equality
+### Egalite d'arbres
 ```ocaml noexec
 let rec egal a b = match (a, b) with
   | Feuille f, Feuille slim -> f = slim
@@ -96,16 +96,16 @@ let rec egal a b = match (a, b) with
   | _ -> false
 ```
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp7.ml";;
 ```
 
-## Expected Results
+## Resultats attendus
 
-For a test tree with nodes 5 at root, children 3 and 21:
-- `compter` → total node count
-- `pluslongue` → longest root-to-leaf distance
-- `listbr` → all paths as nested lists
+Pour un arbre de test avec le noeud 5 en racine, enfants 3 et 21 :
+- `compter` → nombre total de noeuds
+- `pluslongue` → distance maximale de la racine a une feuille
+- `listbr` → tous les chemins sous forme de listes imbriquees

@@ -1,27 +1,27 @@
 ---
-title: "Chapter 5: Pandas & Data Manipulation"
+title: "Chapitre 5 : Pandas et manipulation de donnees"
 sidebar_position: 5
 ---
 
-# Chapter 5: Pandas & Data Manipulation
+# Chapitre 5 : Pandas et manipulation de donnees
 
-## Overview
+## Presentation
 
-Pandas is the Python library used throughout the ADFD course for data loading, exploration, cleaning, and transformation. Mastery of Pandas is essential for all TPs and for understanding the code in exam solutions.
+Pandas est la bibliotheque Python utilisee tout au long du cours ADFD pour le chargement, l'exploration, le nettoyage et la transformation des donnees. La maitrise de Pandas est indispensable pour tous les TP et pour comprendre le code des solutions d'examen.
 
-This chapter is based on the `pandas_intro.ipynb` notebook provided in the course.
+Ce chapitre est base sur le notebook `pandas_intro.ipynb` fourni dans le cours.
 
-## 1. Core Data Structures
+## 1. Structures de donnees fondamentales
 
 ### DataFrame
 
-A 2D tabular data structure with labeled rows (index) and columns.
+Structure de donnees tabulaire 2D avec des lignes (index) et des colonnes etiquetees.
 
 ```python noexec
 import pandas as pd
 import numpy as np
 
-# Create from dictionary
+# Creation a partir d'un dictionnaire
 df = pd.DataFrame({
     'Region': ['core worlds', 'mid rim', 'outer rim'],
     'Moons': [4, 3, 0],
@@ -31,75 +31,75 @@ df = pd.DataFrame({
 
 ### Series
 
-A 1D labeled array (equivalent to a single column of a DataFrame).
+Tableau 1D etiquete (equivalent a une seule colonne d'un DataFrame).
 
 ```python noexec
 s = pd.Series([1, 2, 3], index=['a', 'b', 'c'])
 ```
 
-### Key Attributes
+### Attributs cles
 
 ```python noexec
-df.index        # Row labels
-df.columns      # Column names
-df.shape        # (n_rows, n_columns)
-df.dtypes       # Data types per column
-len(df)         # Number of rows
+df.index        # Etiquettes des lignes
+df.columns      # Noms des colonnes
+df.shape        # (n_lignes, n_colonnes)
+df.dtypes       # Types de donnees par colonne
+len(df)         # Nombre de lignes
 ```
 
-## 2. Loading Data
+## 2. Chargement des donnees
 
-### From CSV (the most common case in the course)
+### Depuis un CSV (le cas le plus courant dans le cours)
 
 ```python noexec
-# Basic load
+# Chargement basique
 df = pd.read_csv("flickrRennes.csv")
 
-# With index column
+# Avec colonne d'index
 df = pd.read_csv("temperatures.csv", index_col=0)
 
-# Specifying separator
+# En specifiant le separateur
 df = pd.read_csv("data.csv", sep=";")
 ```
 
 ### Exploration
 
 ```python noexec
-df.head()           # First 5 rows
-df.head(10)         # First 10 rows
-df.tail()           # Last 5 rows
-df.info()           # Column types, non-null counts, memory usage
-df.describe()       # Statistics for numerical columns (mean, std, min, max, quartiles)
-df.shape            # (rows, columns)
+df.head()           # 5 premieres lignes
+df.head(10)         # 10 premieres lignes
+df.tail()           # 5 dernieres lignes
+df.info()           # Types de colonnes, comptage des non-null, memoire
+df.describe()       # Statistiques pour les colonnes numeriques (moyenne, ecart-type, min, max, quartiles)
+df.shape            # (lignes, colonnes)
 ```
 
-## 3. Selecting Data
+## 3. Selection des donnees
 
-### Column Selection (Projection)
+### Selection de colonnes (projection)
 
 ```python noexec
-# Single column --> returns Series
+# Colonne unique --> retourne une Series
 df["Region"]
-df.Region          # Alternative syntax (only for simple column names)
+df.Region          # Syntaxe alternative (uniquement pour les noms de colonnes simples)
 
-# Multiple columns --> returns DataFrame
+# Colonnes multiples --> retourne un DataFrame
 df[["Moons", "Diameter"]]
 ```
 
-### Row Selection (Filtering)
+### Selection de lignes (filtrage)
 
 ```python noexec
-# Boolean mask
+# Masque booleen
 mask = df["Region"] == "outer rim"
 df_outer = df[mask]
 
-# Combined in one line
+# Combine en une seule ligne
 df_outer = df[df["Region"] == "outer rim"]
 
-# Multiple conditions (use & for AND, | for OR, ~ for NOT)
+# Conditions multiples (utiliser & pour ET, | pour OU, ~ pour NON)
 df_filtered = df[(df["Moons"] > 2) & (df["Diameter"] < 15)]
 
-# Complex predicates with apply
+# Predicats complexes avec apply
 def keep(row):
     return row["Region"].endswith("rim")
 
@@ -107,92 +107,92 @@ mask = df.apply(keep, axis=1)
 df_filtered = df[mask]
 ```
 
-### Selecting by Position
+### Selection par position
 
 ```python noexec
-df.iloc[0]          # First row (by position)
-df.iloc[0:3]        # First 3 rows
-df.iloc[0, 1]       # Row 0, Column 1
-df.loc["Coruscant"] # By label
+df.iloc[0]          # Premiere ligne (par position)
+df.iloc[0:3]        # 3 premieres lignes
+df.iloc[0, 1]       # Ligne 0, Colonne 1
+df.loc["Coruscant"] # Par etiquette
 ```
 
-## 4. Modifying Data
+## 4. Modification des donnees
 
-### Adding/Modifying Columns
+### Ajout/Modification de colonnes
 
 ```python noexec
-# Add new column
+# Ajouter une nouvelle colonne
 df["Random"] = np.random.randn(len(df))
 
-# Modify existing column
+# Modifier une colonne existante
 df["Moons"] = df["Moons"] * 2
 
-# Apply function to column
+# Appliquer une fonction a une colonne
 df["Log_Diameter"] = np.log1p(df["Diameter"])
 ```
 
-### Handling Missing Values
+### Gestion des valeurs manquantes
 
 ```python noexec
-# Detect
-df.isnull()                    # Boolean mask
-df.isnull().sum()              # Count per column
-df.isnull().sum() / len(df)    # Percentage per column
+# Detecter
+df.isnull()                    # Masque booleen
+df.isnull().sum()              # Comptage par colonne
+df.isnull().sum() / len(df)    # Pourcentage par colonne
 
-# Drop
-df.dropna()                    # Drop rows with any NaN
-df.dropna(subset=['lat'])      # Drop rows where 'lat' is NaN
+# Supprimer
+df.dropna()                    # Supprimer les lignes avec NaN
+df.dropna(subset=['lat'])      # Supprimer les lignes ou 'lat' est NaN
 
-# Fill
-df.fillna(0)                   # Replace NaN with 0
-df.fillna(df.mean())           # Replace with column mean
-df["tags"].fillna("")          # Replace NaN in specific column
+# Remplir
+df.fillna(0)                   # Remplacer NaN par 0
+df.fillna(df.mean())           # Remplacer par la moyenne de la colonne
+df["tags"].fillna("")          # Remplacer NaN dans une colonne specifique
 ```
 
-### Removing Duplicates
+### Suppression des doublons
 
 ```python noexec
-# Remove exact duplicate rows
+# Supprimer les lignes en double exactes
 df = df.drop_duplicates()
 
-# Remove duplicates based on specific columns
+# Supprimer les doublons bases sur des colonnes specifiques
 df = df.drop_duplicates(subset=['id_photo'])
 
-# Keep first/last occurrence
+# Garder la premiere/derniere occurrence
 df = df.drop_duplicates(subset=['user_id', 'date'], keep='first')
 ```
 
-## 5. Aggregation and Grouping
+## 5. Agregation et regroupement
 
-### Unique Values and Counts
+### Valeurs uniques et comptages
 
 ```python noexec
-# Number of unique values per column
+# Nombre de valeurs uniques par colonne
 df.nunique()
 
-# Unique values in a column
+# Valeurs uniques d'une colonne
 df["Region"].unique()
 
-# Count occurrences of each value
+# Compter les occurrences de chaque valeur
 df["Region"].value_counts()
 ```
 
 ### GroupBy
 
-The SQL-equivalent GROUP BY operation: split data into groups, apply a function, combine results.
+L'equivalent SQL de GROUP BY : decouper les donnees en groupes, appliquer une fonction, combiner les resultats.
 
 ```python noexec
 groups = df.groupby("Region")
 
-# Aggregation functions
-groups.size()          # Number of rows per group
-groups.mean()          # Mean of each numeric column per group
-groups.first()         # First row of each group
-groups.count()         # Count non-null values per group
-groups.sum()           # Sum per group
-groups.agg(['mean', 'std'])  # Multiple aggregations
+# Fonctions d'agregation
+groups.size()          # Nombre de lignes par groupe
+groups.mean()          # Moyenne de chaque colonne numerique par groupe
+groups.first()         # Premiere ligne de chaque groupe
+groups.count()         # Compter les valeurs non-null par groupe
+groups.sum()           # Somme par groupe
+groups.agg(['mean', 'std'])  # Agregations multiples
 
-# Multiple grouping columns
+# Colonnes de regroupement multiples
 photos.groupby(
     ['id_photographer', 'date_taken_year', 'date_taken_month',
      'date_taken_day', 'date_taken_hour'],
@@ -200,60 +200,60 @@ photos.groupby(
 ).first()
 ```
 
-**The `as_index=False` parameter**: Prevents grouped columns from becoming the index (keeps them as regular columns).
+**Le parametre `as_index=False`** : Empeche les colonnes regroupees de devenir l'index (les conserve comme colonnes normales).
 
 ## 6. Iteration
 
 ```python noexec
-# Iterate over column names
+# Iterer sur les noms de colonnes
 for col_name in df:
     print(col_name)
 
-# Iterate over rows (slow -- use vectorized operations when possible)
+# Iterer sur les lignes (lent -- utiliser les operations vectorisees quand c'est possible)
 for index, row in df.iterrows():
     print(index, row["Region"])
 
-# Apply function to each row (faster than iterrows)
+# Appliquer une fonction a chaque ligne (plus rapide que iterrows)
 df.apply(lambda row: row["Moons"] * 2, axis=1)
 ```
 
-## 7. Data Types
+## 7. Types de donnees
 
-### Checking Types
+### Verification des types
 
 ```python noexec
-df.dtypes                          # Type of each column
-df.select_dtypes(include=["object"])   # Only object (string) columns
-df.select_dtypes(exclude=["object"])   # Only numeric columns
-(df.dtypes != "object").sum()          # Count non-object columns
+df.dtypes                          # Type de chaque colonne
+df.select_dtypes(include=["object"])   # Colonnes de type object (chaines) uniquement
+df.select_dtypes(exclude=["object"])   # Colonnes numeriques uniquement
+(df.dtypes != "object").sum()          # Compter les colonnes non-object
 ```
 
-### Type Conversion
+### Conversion de types
 
 ```python noexec
 df["Moons"] = df["Moons"].astype(float)
 df["date"] = pd.to_datetime(df["date_taken"])
 ```
 
-## 8. Visualization with Pandas
+## 8. Visualisation avec Pandas
 
 ```python noexec
-# Histogram
+# Histogramme
 df["Diameter"].hist(bins=30)
 
-# Scatter plot
+# Nuage de points
 df.plot.scatter(x="GrLivArea", y="SalePrice")
 
-# Box plot
+# Boite a moustaches
 df.boxplot(column="Diameter", by="Region")
 
-# Bar chart
+# Diagramme en barres
 df["Region"].value_counts().plot.bar()
 ```
 
-## 9. Common Patterns from the Course
+## 9. Motifs courants du cours
 
-### Pattern 1: Missing Value Analysis Table
+### Motif 1 : Tableau d'analyse des valeurs manquantes
 
 ```python noexec
 table_na = pd.DataFrame({
@@ -264,7 +264,7 @@ table_na = table_na.sort_values('pct_na', ascending=False)
 table_na.head(10)
 ```
 
-### Pattern 2: Select Numeric Columns for PCA
+### Motif 2 : Selectionner les colonnes numeriques pour l'ACP
 
 ```python noexec
 cols_numeric = ["LotArea", "MasVnrArea", "BsmtFinSF1", "TotalBsmtSF",
@@ -272,10 +272,10 @@ cols_numeric = ["LotArea", "MasVnrArea", "BsmtFinSF1", "TotalBsmtSF",
 df_num = df[cols_numeric].copy()
 ```
 
-### Pattern 3: Photo Album Effect Removal
+### Motif 3 : Suppression de l'effet album photo
 
 ```python noexec
-# Group by user + time, keep first photo per group
+# Regrouper par utilisateur + heure, garder la premiere photo par groupe
 photos = photos.groupby(
     ['id_photographer', 'date_taken_year', 'date_taken_month',
      'date_taken_day', 'date_taken_hour'],
@@ -283,7 +283,7 @@ photos = photos.groupby(
 ).first()
 ```
 
-### Pattern 4: Add Cluster Labels to DataFrame
+### Motif 4 : Ajouter les labels de cluster au DataFrame
 
 ```python noexec
 from sklearn.cluster import DBSCAN
@@ -292,7 +292,7 @@ dbscan = DBSCAN(eps=0.00030, min_samples=7)
 photos["cluster"] = dbscan.fit_predict(photos[["lat", "long"]])
 ```
 
-### Pattern 5: Analyze Clusters
+### Motif 5 : Analyser les clusters
 
 ```python noexec
 for cluster_id in sorted(photos["cluster"].unique()):
@@ -300,84 +300,84 @@ for cluster_id in sorted(photos["cluster"].unique()):
         continue
     cluster_photos = photos[photos["cluster"] == cluster_id]
     print(f"Cluster {cluster_id}: {len(cluster_photos)} photos, "
-          f"{cluster_photos['id_photographer'].nunique()} users")
+          f"{cluster_photos['id_photographer'].nunique()} utilisateurs")
 ```
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Modifying a slice vs. a copy**: `df[mask]["col"] = value` does NOT modify df. Use `df.loc[mask, "col"] = value` instead.
-2. **Chained indexing warning**: `df["col1"]["col2"]` may produce SettingWithCopyWarning. Use `df.loc[:, "col"]` or `.copy()`.
-3. **forgetting `as_index=False`** in groupby: Creates a MultiIndex that can be confusing.
-4. **Using `==` with NaN**: `NaN == NaN` is False. Use `df.isnull()` or `pd.isna()`.
-5. **Iterating with for loops** when vectorized operations exist: `df["col"] * 2` is 100x faster than a loop.
+1. **Modifier une tranche vs une copie** : `df[mask]["col"] = value` ne modifie PAS df. Utilisez `df.loc[mask, "col"] = value` a la place.
+2. **Alerte d'indexation en chaine** : `df["col1"]["col2"]` peut produire un SettingWithCopyWarning. Utilisez `df.loc[:, "col"]` ou `.copy()`.
+3. **Oublier `as_index=False`** dans groupby : Cree un MultiIndex qui peut etre deroutant.
+4. **Utiliser `==` avec NaN** : `NaN == NaN` est False. Utilisez `df.isnull()` ou `pd.isna()`.
+5. **Iterer avec des boucles for** quand des operations vectorisees existent : `df["col"] * 2` est 100x plus rapide qu'une boucle.
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### Loading and Exploring
+### Chargement et exploration
 
 ```python noexec
-df = pd.read_csv("file.csv")          # Load
-df.head()                               # First rows
+df = pd.read_csv("file.csv")          # Charger
+df.head()                               # Premieres lignes
 df.info()                               # Structure
-df.describe()                           # Statistics
-df.shape                                # (rows, cols)
+df.describe()                           # Statistiques
+df.shape                                # (lignes, colonnes)
 ```
 
-### Selecting
+### Selection
 
 ```python noexec
-df["col"]                    # Single column (Series)
-df[["col1", "col2"]]        # Multiple columns (DataFrame)
-df[df["col"] > 5]           # Filter rows
-df.loc["label"]              # By row label
-df.iloc[0]                   # By row position
+df["col"]                    # Colonne unique (Series)
+df[["col1", "col2"]]        # Colonnes multiples (DataFrame)
+df[df["col"] > 5]           # Filtrer les lignes
+df.loc["label"]              # Par etiquette de ligne
+df.iloc[0]                   # Par position de ligne
 ```
 
-### Cleaning
+### Nettoyage
 
 ```python noexec
-df.isnull().sum()            # Count NaN
-df.dropna()                  # Drop NaN rows
-df.fillna(value)             # Fill NaN
-df.drop_duplicates()         # Remove duplicates
-df.drop(columns=["col"])     # Drop column
+df.isnull().sum()            # Compter les NaN
+df.dropna()                  # Supprimer les lignes NaN
+df.fillna(value)             # Remplir les NaN
+df.drop_duplicates()         # Supprimer les doublons
+df.drop(columns=["col"])     # Supprimer une colonne
 ```
 
-### Aggregating
+### Agregation
 
 ```python noexec
-df.groupby("col").mean()     # Group and aggregate
-df["col"].value_counts()     # Count values
-df["col"].nunique()          # Count unique
-df["col"].unique()           # List unique values
+df.groupby("col").mean()     # Regrouper et agreger
+df["col"].value_counts()     # Compter les valeurs
+df["col"].nunique()          # Compter les uniques
+df["col"].unique()           # Lister les valeurs uniques
 ```
 
-### Transforming
+### Transformation
 
 ```python noexec
-df["new"] = df["old"] * 2               # New column
-df["col"] = df["col"].astype(float)     # Type conversion
-df["col"] = np.log1p(df["col"])         # Log transform
-df.apply(func, axis=1)                  # Apply to rows
+df["new"] = df["old"] * 2               # Nouvelle colonne
+df["col"] = df["col"].astype(float)     # Conversion de type
+df["col"] = np.log1p(df["col"])         # Transformation log
+df.apply(func, axis=1)                  # Appliquer aux lignes
 ```
 
-### Key Methods Reference
+### Reference des methodes cles
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `head(n)` | DataFrame | First n rows |
-| `describe()` | DataFrame | Summary statistics |
-| `info()` | None (prints) | Column types and non-null counts |
-| `isnull()` | DataFrame (bool) | NaN mask |
-| `dropna()` | DataFrame | Without NaN rows |
-| `fillna(v)` | DataFrame | NaN replaced by v |
-| `drop_duplicates()` | DataFrame | Without duplicates |
-| `groupby(col)` | GroupBy object | Grouped data |
-| `value_counts()` | Series | Frequency of each value |
-| `nunique()` | int or Series | Count of unique values |
-| `unique()` | array | Unique values |
-| `apply(f)` | Series/DataFrame | Apply function |
-| `merge(df2)` | DataFrame | SQL-like join |
-| `sort_values(col)` | DataFrame | Sorted by column |
+| Methode | Retour | Description |
+|---------|--------|-------------|
+| `head(n)` | DataFrame | n premieres lignes |
+| `describe()` | DataFrame | Statistiques descriptives |
+| `info()` | None (affiche) | Types de colonnes et comptage non-null |
+| `isnull()` | DataFrame (bool) | Masque NaN |
+| `dropna()` | DataFrame | Sans les lignes NaN |
+| `fillna(v)` | DataFrame | NaN remplaces par v |
+| `drop_duplicates()` | DataFrame | Sans les doublons |
+| `groupby(col)` | Objet GroupBy | Donnees regroupees |
+| `value_counts()` | Series | Frequence de chaque valeur |
+| `nunique()` | int ou Series | Nombre de valeurs uniques |
+| `unique()` | array | Valeurs uniques |
+| `apply(f)` | Series/DataFrame | Appliquer une fonction |
+| `merge(df2)` | DataFrame | Jointure de type SQL |
+| `sort_values(col)` | DataFrame | Trie par colonne |

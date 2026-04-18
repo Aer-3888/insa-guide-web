@@ -5,8 +5,8 @@ sidebar_position: 4
 
 # TP 4 — MongoDB
 
-Document-oriented database with MongoDB.
+Introduction a la base de donnees orientee documents MongoDB.
 
-## Files
+## Fichiers
 
-- `sujet.pdf` — Lab instructions for MongoDB TP
+- `sujet.pdf` — Enonce du TP MongoDB

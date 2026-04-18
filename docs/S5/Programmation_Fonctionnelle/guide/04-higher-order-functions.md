@@ -235,7 +235,7 @@ let int_of_bint l =
 (* = 5                           *)
 ```
 
-### Insert dans chaque sous-liste
+### Insertion dans chaque sous-liste
 
 ```ocaml
 let rec insert j ll = match ll with
@@ -264,7 +264,7 @@ APPLICATION PARTIELLE
   let f x y = x + y
   let g = f 3                 g : int -> int, g y = 3 + y
 
-CURRYING
+CURRYFICATION
   f : 'a -> 'b -> 'c         est en fait  f : 'a -> ('b -> 'c)
   f x : 'b -> 'c             application partielle
 
@@ -273,7 +273,7 @@ LIST.MAP
   Type : ('a -> 'b) -> 'a list -> 'b list
 
 LIST.FILTER
-  List.filter p [a; b; c] = elements ou p est true
+  List.filter p [a; b; c] = elements ou p est vrai
   Type : ('a -> bool) -> 'a list -> 'a list
 
 LIST.FOLD_RIGHT
@@ -289,5 +289,5 @@ LIST.FOLD_LEFT
 PIPE ET APPLICATION
   x |> f        = f x          Pipe (gauche a droite)
   f @@ x        = f x          Application (droite a gauche)
-  x |> f |> g   = g (f x)      Chainee
+  x |> f |> g   = g (f x)      Enchainement
 ```

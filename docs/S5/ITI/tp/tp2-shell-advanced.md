@@ -1,25 +1,25 @@
 ---
-title: "FUS2 - Advanced Shell Scripting"
+title: "FUS2 - Scripting shell avance"
 sidebar_position: 2
 ---
 
-# FUS2 - Advanced Shell Scripting
+# FUS2 - Scripting shell avance
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-This TP builds upon FUS1 with more advanced shell scripting concepts:
+Ce TP s'appuie sur FUS1 with more advanced shell scripting concepts:
 
-- Work with command-line arguments and parameters
-- Implement conditional logic and loops
-- Handle file operations programmatically
-- Use advanced text processing with grep patterns
-- Understand script debugging techniques
+- Travailler avec les arguments et parametres en ligne de commande
+- Implementer la logique conditionnelle et les boucles
+- Gerer les operations sur les fichiers de maniere programmatique
+- Utiliser le traitement de texte avance avec les motifs grep
+- Comprendre les techniques de debogage de scripts
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. Command-Line Arguments
+### 1. Arguments en ligne de commande
 
-Shell scripts can accept arguments passed from the command line:
+Les scripts shell peuvent accepter des arguments passes en ligne de commande :
 
 ```bash
 #!/bin/bash
@@ -35,7 +35,7 @@ echo "First arg: $1"
 echo "Total args: $#"
 ```
 
-### 2. Conditional Statements
+### 2. Instructions conditionnelles
 
 ```bash
 # if-then-else structure
@@ -57,7 +57,7 @@ fi
 # [ -n "$str" ]  # String is not empty
 ```
 
-### 3. Loops
+### 3. Boucles
 
 ```bash
 # For loop over items
@@ -76,7 +76,7 @@ while [ condition ]; do
 done
 ```
 
-### 4. Functions
+### 4. Fonctions
 
 ```bash
 # Define a function
@@ -90,7 +90,7 @@ function_name() {
 function_name argument1 argument2
 ```
 
-### 5. Advanced Text Processing
+### 5. Traitement de texte avance
 
 ```bash
 # grep with patterns
@@ -110,40 +110,40 @@ awk '{print $1}' file     # Print first column
 awk -F: '{print $1}' file # Use : as delimiter
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Variable Scripts
+### Exercice 1 : Scripts avec variables
 Create scripts that use variables and demonstrate variable expansion.
 
-**Files**: `exo01`
+**Fichiers** : `exo01`
 - Simple variable assignment and echo
 - Understanding variable scope
 
-### Exercise 2: File Processing Loop
+### Exercice 2 : Boucle de traitement de fichiers
 Write a script that processes multiple files, counting specific patterns.
 
-**Files**: `exo02`
+**Fichiers** : `exo02`
 - Loop through files
 - Use conditionals to test file types
 - Accumulate counts
 
 ## Solutions
 
-See `src/` directory for cleaned, commented implementations:
-- `simple_variable.sh` - Basic variable usage
-- `file_processor.sh` - Advanced file processing with loops
+Voir le repertoire `src/` pour les implementations commentees :
+- `simple_variable.sh` - Utilisation basique des variables
+- `file_processor.sh` - Traitement avance de fichiers avec boucles
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Always quote variables** - `"$var"` prevents word splitting issues
-2. **Test for argument count** - Check `$#` before using `$1`, `$2`, etc.
-3. **Use local variables in functions** - Prevents namespace pollution
-4. **Exit codes matter** - `exit 0` for success, non-zero for errors
-5. **Debugging**: Use `set -x` to trace execution, `set -e` to exit on errors
+1. **Toujours proteger les variables** - `"$var"` evite les problemes de decoupage de mots
+2. **Tester le nombre d'arguments** - Verifier `$#` avant d'utiliser `$1`, `$2`, etc.
+3. **Utiliser des variables locales dans les fonctions** - Evite la pollution de l'espace de noms
+4. **Les codes de retour comptent** - `exit 0` pour le succes, non-zero pour les erreurs
+5. **Debogage** : utiliser `set -x` pour tracer l'execution, `set -e` pour quitter en cas d'erreur
 
-## Common Patterns
+## Motifs courants
 
-### Argument Validation
+### Validation des arguments
 ```bash
 if [ $# -lt 2 ]; then
     echo "Usage: $0 <arg1> <arg2>"
@@ -151,7 +151,7 @@ if [ $# -lt 2 ]; then
 fi
 ```
 
-### Safe File Operations
+### Operations securisees sur les fichiers
 ```bash
 if [ ! -f "$filename" ]; then
     echo "Error: File $filename not found"
@@ -159,23 +159,23 @@ if [ ! -f "$filename" ]; then
 fi
 ```
 
-### Default Values
+### Valeurs par defaut
 ```bash
 # Use default if variable is unset or empty
 name=${name:-"default_value"}
 ```
 
-## Further Reading
+## Pour aller plus loin
 
 - Advanced bash scripting guide: https://tldp.org/LDP/abs/html/
 - Shell parameter expansion: `man bash` (search for "Parameter Expansion")
 - Regular expressions: `man grep`, `man regex`
 - Best practices: ShellCheck (shellcheck.net)
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Not quoting variables with spaces** - Always use `"$var"`
-2. **Using `[ ]` vs `[[ ]]`** - `[[ ]]` is bash-specific but more powerful
-3. **Forgetting semicolons** - `if [ test ]; then` needs semicolon before `then`
-4. **Using `=` in `[ ]` tests** - Should be `[ "$a" = "$b" ]`, not `==` in sh
-5. **Not checking exit codes** - Use `$?` to check previous command status
+1. **Ne pas proteger les variables avec espaces** - Toujours utiliser `"$var"`
+2. **Utiliser `[ ]` vs `[[ ]]`** - `[[ ]]` est specifique a bash mais plus puissant
+3. **Oublier les points-virgules** - `if [ test ]; then` necessite un point-virgule avant `then`
+4. **Utiliser `=` dans les tests `[ ]`** - Doit etre `[ "$a" = "$b" ]`, pas `==` en sh
+5. **Ne pas verifier les codes de retour** - Utiliser `$?` pour verifier le statut de la commande precedente

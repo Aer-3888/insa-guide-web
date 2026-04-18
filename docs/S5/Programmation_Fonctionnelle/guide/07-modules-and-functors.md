@@ -176,7 +176,7 @@ MODULE
     type t = ...
   end
   M.x                        Acces qualifie
-  open M                     Ouvrir (importer tout)
+  open M                     Ouvrir (tout importer)
 
 SIGNATURE
   module type S = sig        Interface
@@ -192,7 +192,7 @@ FONCTEUR
   module F (X : S) = struct  Foncteur
     ...utilise X.t, X.f...
   end
-  module M = F(MonModule)    Instantiation
+  module M = F(MonModule)    Instanciation
 
 INCLUDE
   include M                  Importer tout un module
@@ -202,7 +202,7 @@ ALTERNATIVE AUX FONCTEURS
     zero : 'a;
     add : 'a -> 'a -> 'a;
   }
-  Plus simple, suffit souvent
+  Plus simple, souvent suffisant
 
 MODULES STANDARD
   List     : map, filter, fold, sort, mem, assoc

@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # TP1 - Interrogation style base de donnees
 
-> Following teacher instructions from: `S5/Programmation_Logique/data/moodle/tp/tp1/README.md`
+> D'apres les consignes de l'enseignant : `S5/Programmation_Logique/data/moodle/tp/tp1/README.md`
 
 ---
 
@@ -42,11 +42,11 @@ calories(melon_en_surprise, 122).
 
 ---
 
-## Exercise 1
+## Exercice 1
 
 ### plat/1 : un plat de resistance est une viande ou un poisson
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 plat(P) :- poisson(P).
@@ -55,7 +55,7 @@ plat(P) :- viande(P).
 
 Un plat est defini par deux clauses : P est un plat s'il est un poisson, ou s'il est une viande. Le "ou" logique se traduit par deux clauses distinctes.
 
-**Query test:**
+**Test :**
 
 ```
 ?- plat(grillade_de_boeuf).
@@ -73,11 +73,11 @@ X = poulet_au_tilleul.
 
 ---
 
-## Exercise 2
+## Exercice 2
 
 ### repas/3 : un repas = hors d'oeuvre + plat + dessert
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 repas(HorsOeuvre, Plat, Dessert) :-
@@ -88,7 +88,7 @@ repas(HorsOeuvre, Plat, Dessert) :-
 
 Un repas est la conjonction de trois proprietes : un hors d'oeuvre valide, un plat valide et un dessert valide. Prolog genere toutes les combinaisons par backtracking (3 x 4 x 3 = 36 repas).
 
-**Query test:**
+**Test :**
 
 ```
 ?- repas(cresson_oeuf_poche, poulet_au_tilleul, fraises_chantilly).
@@ -106,11 +106,11 @@ H = artichauts_Melanie, P = bar_aux_algues, D = melon_en_surprise ;
 
 ---
 
-## Exercise 3
+## Exercice 3
 
 ### plat200_400/1 : plats entre 200 et 400 calories
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 plat200_400(Plat) :-
@@ -122,7 +122,7 @@ plat200_400(Plat) :-
 
 On filtre les plats par une condition arithmetique. Les comparaisons `>=` et `=<` evaluent leurs operandes. Attention : c'est `=<` et non `<=` en Prolog.
 
-**Query test:**
+**Test :**
 
 ```
 ?- plat200_400(X).
@@ -133,11 +133,11 @@ X = poulet_au_tilleul.     % 400 cal
 
 ---
 
-## Exercise 4
+## Exercice 4
 
 ### plat_bar/1 : plats plus caloriques que le bar aux algues
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 plat_bar(Plat) :-
@@ -149,7 +149,7 @@ plat_bar(Plat) :-
 
 On interroge la base pour obtenir la valeur calorique du bar (292), puis on compare chaque plat a cette valeur avec une comparaison stricte `>`.
 
-**Query test:**
+**Test :**
 
 ```
 ?- plat_bar(X).
@@ -159,11 +159,11 @@ X = poulet_au_tilleul.     % 400 > 292
 
 ---
 
-## Exercise 5
+## Exercice 5
 
 ### val_cal/4 : valeur calorique totale d'un repas
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 val_cal(HorsOeuvre, Plat, Dessert, TotalCal) :-
@@ -176,7 +176,7 @@ val_cal(HorsOeuvre, Plat, Dessert, TotalCal) :-
 
 On reutilise `repas/3` pour valider la combinaison, puis on recupere les calories de chaque element et on calcule le total avec `is`. Note : `is` evalue l'expression a droite, contrairement a `=` qui unifierait avec le terme compose `+(+(CalH,CalP),CalD)`.
 
-**Query test:**
+**Test :**
 
 ```
 ?- val_cal(cresson_oeuf_poche, poulet_au_tilleul, fraises_chantilly, T).
@@ -188,11 +188,11 @@ T = 526.
 
 ---
 
-## Exercise 6
+## Exercice 6
 
 ### repas_eq/3 : repas equilibre (total <= 800 cal)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 repas_eq(HorsOeuvre, Plat, Dessert) :-
@@ -202,7 +202,7 @@ repas_eq(HorsOeuvre, Plat, Dessert) :-
 
 On compose `val_cal/4` avec un filtrage sur le total calorique.
 
-**Query test:**
+**Test :**
 
 ```
 ?- repas_eq(artichauts_Melanie, saumon_oseille, fraises_chantilly).
@@ -296,11 +296,11 @@ roi(philippe_VI, de_valois, 1328, 1350).
 
 ---
 
-## Exercise 1
+## Exercice 1
 
 ### enfant/2 : E est enfant de P (via `pere` ou `mere`)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 enfant(Enfant, Parent) :- pere(Parent, Enfant).
@@ -309,7 +309,7 @@ enfant(Enfant, Parent) :- mere(Parent, Enfant).
 
 La relation "etre enfant de" est l'inverse de "etre pere de" et "etre mere de". Deux clauses couvrent les deux cas.
 
-**Query test:**
+**Test :**
 
 ```
 ?- enfant(claude_de_france, louis_XII).
@@ -329,17 +329,17 @@ false.
 
 ---
 
-## Exercise 2
+## Exercice 2
 
 ### parent/2 : inverse de `enfant`
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 parent(Parent, Enfant) :- enfant(Enfant, Parent).
 ```
 
-**Query test:**
+**Test :**
 
 ```
 ?- parent(louis_XII, claude_de_france).
@@ -356,11 +356,11 @@ false.
 
 ---
 
-## Exercise 3
+## Exercice 3
 
 ### grand_pere/2 : G est un homme, parent d'un parent de E
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 grand_pere(GrandPere, Enfant) :-
@@ -371,7 +371,7 @@ grand_pere(GrandPere, Enfant) :-
 
 Un grand-pere est un homme qui est parent d'un parent de E. On enchaine deux applications de `parent/2` via un intermediaire. Le test `homme(G)` garantit que G est un homme.
 
-**Query test:**
+**Test :**
 
 ```
 ?- grand_pere(louis_d_Orleans, charles_d_angouleme).
@@ -388,11 +388,11 @@ false.
 
 ---
 
-## Exercise 4
+## Exercice 4
 
 ### frere/2 : meme pere et meme mere, personnes differentes
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 frere(Frere, Enfant) :-
@@ -406,7 +406,7 @@ frere(Frere, Enfant) :-
 
 Deux individus sont freres s'ils sont des hommes differents partageant le meme pere ET la meme mere. Le `\==` verifie la non-identite structurelle. La verification de la mere empeche que des demi-freres soient consideres comme freres.
 
-**Query test:**
+**Test :**
 
 ```
 ?- frere(francois_II, charles_IX).
@@ -420,11 +420,11 @@ false.
 
 ---
 
-## Exercise 5
+## Exercice 5
 
 ### oncle/2 : frere du pere
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 oncle(Oncle, Neveu) :-
@@ -433,7 +433,7 @@ oncle(Oncle, Neveu) :-
     frere(Oncle, P).
 ```
 
-**Query test:**
+**Test :**
 
 ```
 ?- oncle(charles_VI, jean_d_angouleme).
@@ -450,11 +450,11 @@ false.
 
 ---
 
-## Exercise 6
+## Exercice 6
 
 ### cousin/2 : fils d'un oncle
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 cousin(Cousin, Enfant) :-
@@ -463,7 +463,7 @@ cousin(Cousin, Enfant) :-
     parent(Oncle, Cousin).
 ```
 
-**Query test:**
+**Test :**
 
 ```
 ?- cousin(charles_VII, C).
@@ -480,11 +480,11 @@ false.    % ils sont freres
 
 ---
 
-## Exercise 7
+## Exercice 7
 
 ### le_roi_est_mort_vive_le_roi/3 : succession royale a une date
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 le_roi_est_mort_vive_le_roi(Roi1, Date, Roi2) :-
@@ -494,7 +494,7 @@ le_roi_est_mort_vive_le_roi(Roi1, Date, Roi2) :-
 
 On cherche un roi dont le regne finit a la date D, et un autre dont le regne commence a cette meme date. C'est une jointure sur la date.
 
-**Query test:**
+**Test :**
 
 ```
 ?- le_roi_est_mort_vive_le_roi(charles_VI, 1422, charles_VII).
@@ -509,11 +509,11 @@ R = louis_XII, Succ = francois_I.
 
 ---
 
-## Exercise 8
+## Exercice 8
 
 ### ancetre/2 : relation transitive de parente (recursif)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 ancetre(X, Y) :- parent(X, Y).
@@ -524,7 +524,7 @@ ancetre(X, Y) :-
 
 Cas de base : X est un parent direct de Y. Cas recursif : X est un ancetre d'un parent de Y. L'ordre est crucial : le cas de base doit etre avant le cas recursif pour garantir la terminaison. Le sous-but `parent(P, Y)` instancie P avant l'appel recursif, ce qui evite une recursion infinie.
 
-**Query test:**
+**Test :**
 
 ```
 ?- ancetre(jean_II, louis_d_Orleans).

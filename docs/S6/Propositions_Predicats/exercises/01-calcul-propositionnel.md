@@ -411,7 +411,7 @@ a NAND a = ~(a /\ a) = ~a      [idempotence : a /\ a = a]
 = a /\ b                           [double negation]
 ```
 
-*Autrement dit :* NAND de quelque chose avec lui-meme donne sa negation. Donc on nie le NAND pour retrouver le AND.
+*Autrement dit :* NAND de quelque chose avec lui-meme donne sa negation. Donc on nie le NAND pour retrouver le ET (conjonction).
 
 **3. Disjonction : a \/ b = (a NAND a) NAND (b NAND b)**
 

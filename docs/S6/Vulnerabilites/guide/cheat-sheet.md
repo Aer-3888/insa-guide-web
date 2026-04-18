@@ -37,8 +37,8 @@ URL d'action sur un param sans token/nonce        --> CSRF
 
 | Objectif | Payload |
 |----------|---------|
-| Bypass login (connu) | `admin'--` |
-| Bypass login (inconnu) | `' OR 1=1--` |
+| Contournement login (connu) | `admin'--` |
+| Contournement login (inconnu) | `' OR 1=1--` |
 | Sans commentaire | `' OR 'a'='a` |
 | Champ numerique | `0 OR 1=1` |
 | Extraction | `0' UNION SELECT col1,col2,... FROM table--` |
@@ -46,7 +46,7 @@ URL d'action sur un param sans token/nonce        --> CSRF
 
 **Protections** : 1. ORM 2. Requetes preparees 3. Echapper 4. Forcer type 5. Whitelist
 
-**Phrase** : "Never trust an input!"
+**Phrase** : "Ne jamais faire confiance a une entree !"
 
 ---
 
@@ -62,7 +62,7 @@ URL d'action sur un param sans token/nonce        --> CSRF
 
 **Protections** : CSP > htmlspecialchars(ENT_QUOTES) > HttpOnly > SameSite
 
-**Phrase** : "Never trust an output!"
+**Phrase** : "Ne jamais faire confiance a une sortie !"
 
 ---
 
@@ -186,11 +186,11 @@ Weak aliveness < Correct role < Agreement < Synchronization
 ## 14. OWASP Top 10 (2021)
 
 ```
-A01 Broken Access Control    A06 Vulnerable Components
-A02 Cryptographic Failures   A07 Auth Failures
-A03 Injection                A08 Data Integrity Failures
-A04 Insecure Design          A09 Logging Failures
-A05 Security Misconfiguration A10 SSRF
+A01 Controle d'acces defaillant      A06 Composants vulnerables
+A02 Defaillances cryptographiques    A07 Defaillances d'authentification
+A03 Injection                        A08 Defaillances d'integrite
+A04 Conception non securisee         A09 Defaillances de journalisation
+A05 Mauvaise configuration           A10 SSRF
 ```
 
 ---

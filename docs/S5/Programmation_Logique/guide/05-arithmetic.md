@@ -250,7 +250,7 @@ bon4 :- a @< b.                    % @< pour l'ordre des termes
 
 ---
 
-## CHEAT SHEET -- Arithmetique
+## AIDE-MEMOIRE -- Arithmetique
 
 ```
 EVALUATION

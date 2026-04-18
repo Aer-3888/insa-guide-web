@@ -1,17 +1,17 @@
 ---
-title: "Patterns d'examen et walkthroughs"
+title: "Types de questions d'examen et corrections detaillees"
 sidebar_position: 2
 ---
 
-# Patterns d'examen et walkthroughs
+# Types de questions d'examen et corrections detaillees
 
 ## Type 1 : Calcul d'entropie et construction d'arbre (quasi-systematique)
 
-### Enonce type
+### Enonce typique
 
 "On dispose du dataset suivant avec 4 attributs et une classe binaire. Calculer l'entropie initiale, le gain d'information pour chaque attribut, et construire l'arbre de decision complet."
 
-### Walkthrough
+### Correction detaillee
 
 **Donnees :** 10 exemples, 3 attributs (A, B, C), 2 classes (+, -)
 
@@ -75,11 +75,11 @@ Valeurs de $-p\log_2(p)$ a connaitre :
 
 ## Type 2 : Classification Naive Bayes (tres frequent)
 
-### Enonce type
+### Enonce typique
 
 "Calculer la classification d'un nouvel exemple par Naive Bayes. Donner les probabilites a posteriori de chaque classe."
 
-### Walkthrough
+### Correction detaillee
 
 **Donnees d'entrainement :** 14 exemples, 4 attributs, 2 classes (play=oui/non).
 
@@ -121,11 +121,11 @@ $$P(\text{non} | x) = \frac{0.02057}{0.00529 + 0.02057} = 0.795 = 79.5\%$$
 
 ## Type 3 : KNN -- classification et influence de K (frequent)
 
-### Enonce type
+### Enonce typique
 
 "On donne les 8 exemples suivants en 2D. Classifier le point (3, 4) avec K=1, K=3 et K=5."
 
-### Walkthrough
+### Correction detaillee
 
 **Etape 1 : Calculer les distances euclidiennes**
 
@@ -158,11 +158,11 @@ Ordre : {2, 3, 5} (d=1.00), {1, 7, 8} (d=1.41), {6} (d=2.24), {4} (d=3.61)
 
 ## Type 4 : AdaBoost -- calcul d'une iteration (occasionnel)
 
-### Enonce type
+### Enonce typique
 
 "Effectuer une iteration d'AdaBoost sur les donnees suivantes avec le stump sur l'attribut X."
 
-### Walkthrough
+### Correction detaillee
 
 **Donnees :** 6 exemples, poids uniformes $w_i = 1/6$.
 
@@ -195,20 +195,20 @@ Verification : $4 \times 0.125 + 2 \times 0.250 = 0.500 + 0.500 = 1.0$ (OK)
 
 ### Questions recurrentes et reponses attendues
 
-**Q: Expliquer la difference entre biais et variance.**
-R: Le biais est l'erreur systematique due aux hypotheses du modele (trop simple = underfitting). La variance est la sensibilite du modele aux fluctuations du jeu d'entrainement (trop complexe = overfitting). Le compromis biais-variance est central en ML.
+**Q : Expliquer la difference entre biais et variance.**
+R : Le biais est l'erreur systematique due aux hypotheses du modele (trop simple = sous-apprentissage). La variance est la sensibilite du modele aux fluctuations du jeu d'entrainement (trop complexe = sur-apprentissage). Le compromis biais-variance est central en apprentissage automatique.
 
-**Q: Pourquoi ne doit-on pas evaluer sur le jeu d'entrainement ?**
-R: Parce que le modele a deja vu ces donnees. Il peut les avoir memorisees (surtout si modele complexe) et donner une estimation trop optimiste de sa performance. L'erreur d'entrainement sous-estime l'erreur de generalisation.
+**Q : Pourquoi ne doit-on pas evaluer sur le jeu d'entrainement ?**
+R : Parce que le modele a deja vu ces donnees. Il peut les avoir memorisees (surtout si modele complexe) et donner une estimation trop optimiste de sa performance. L'erreur d'entrainement sous-estime l'erreur de generalisation.
 
-**Q: Quelle est l'hypothese du Naive Bayes ?**
-R: L'independance conditionnelle des features sachant la classe : $P(x_1, ..., x_n | c) = \prod_i P(x_i | c)$. Cette hypothese est presque toujours fausse mais le modele fonctionne quand meme car on cherche l'argmax, pas les probabilites exactes.
+**Q : Quelle est l'hypothese du Naive Bayes ?**
+R : L'independance conditionnelle des features sachant la classe : $P(x_1, ..., x_n | c) = \prod_i P(x_i | c)$. Cette hypothese est presque toujours fausse mais le modele fonctionne quand meme car on cherche l'argmax, pas les probabilites exactes.
 
-**Q: Pourquoi K=1 donne 100% sur le train en KNN ?**
-R: Car chaque point est son propre voisin le plus proche. Il se classe donc toujours correctement. C'est de l'overfitting pur.
+**Q : Pourquoi K=1 donne 100% sur le train en KNN ?**
+R : Car chaque point est son propre voisin le plus proche. Il se classe donc toujours correctement. C'est du sur-apprentissage pur.
 
-**Q: Expliquer la difference entre bagging et boosting.**
-R: Le bagging (ex: Random Forest) construit les classifieurs en parallele sur des sous-echantillons aleatoires. Le boosting (ex: AdaBoost) les construit sequentiellement, chaque nouveau classifieur corrigeant les erreurs du precedent via un systeme de poids.
+**Q : Expliquer la difference entre bagging et boosting.**
+R : Le bagging (ex : Random Forest) construit les classifieurs en parallele sur des sous-echantillons aleatoires. Le boosting (ex : AdaBoost) les construit sequentiellement, chaque nouveau classifieur corrigeant les erreurs du precedent via un systeme de poids.
 
 ---
 

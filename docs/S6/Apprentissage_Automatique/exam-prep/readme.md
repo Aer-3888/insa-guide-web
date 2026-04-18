@@ -1,9 +1,9 @@
 ---
-title: "Exam Prep -- Apprentissage Automatique"
+title: "Preparation a l'examen -- Apprentissage Automatique"
 sidebar_position: 0
 ---
 
-# Exam Prep -- Apprentissage Automatique
+# Preparation a l'examen -- Apprentissage Automatique
 
 ## Analyse des 39 annales (2013-2023)
 
@@ -68,4 +68,4 @@ Les examens sont generalement donnes par deux enseignants (Christian Raymond et 
 
 | Fichier | Contenu |
 |---------|---------|
-| [exam_patterns.md](/S6/Apprentissage_Automatique/exam-prep/exam-patterns) | Analyse detaillee des types de questions et walkthroughs |
+| [exam_patterns.md](/S6/Apprentissage_Automatique/exam-prep/exam-patterns) | Analyse detaillee des types de questions et corrections |

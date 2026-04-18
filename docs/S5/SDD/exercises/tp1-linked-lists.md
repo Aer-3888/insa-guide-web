@@ -1,11 +1,11 @@
 ---
-title: "TP1 - Listes Chainees (Linked Lists)"
+title: "TP1 - Listes Chainees"
 sidebar_position: 1
 ---
 
-# TP1 - Listes Chainees (Linked Lists)
+# TP1 - Listes Chainees
 
-> Following teacher instructions from: `S5/SDD/data/moodle/tp/tp1_linked_lists/README.md`
+> D'apres les consignes de l'enseignant : `S5/SDD/data/moodle/tp/tp1_linked_lists/README.md`
 
 ## Objectif
 
@@ -44,7 +44,7 @@ public interface MyList<T> {
 
 La liste doublement chainee utilise deux noeuds sentinelles (`head` et `tail`) qui ne contiennent pas de donnees reelles. Le curseur pointe sur l'element courant.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -70,7 +70,7 @@ public class ListeDoubleChainage implements MyList<Object> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - `head` et `tail` sont des noeuds sentinelles permanents qui encadrent les elements reels.
 - Le constructeur cree une liste vide : `head <-> tail`, avec le curseur sur `head`.
 - `head.successor = tail` etablit le lien initial. Les elements seront inseres entre `head` et `tail`.
@@ -83,7 +83,7 @@ public class ListeDoubleChainage implements MyList<Object> {
 
 Determiner si la liste est vide (rien entre les sentinelles) et si le curseur est sur une position valide.
 
-**Answer:**
+**Reponse :**
 
 ```java
 public boolean estVide() {
@@ -95,7 +95,7 @@ public boolean estSorti() {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - `estVide()` : la liste est vide quand `head` pointe directement sur `tail` sans element intermediaire.
 - `estSorti()` : le curseur est hors-limites quand il se trouve sur l'une des sentinelles. La comparaison par identite (`==`) est correcte car les sentinelles sont des instances fixes.
 
@@ -105,7 +105,7 @@ public boolean estSorti() {
 
 ### Implementer entete() -- positionner le curseur sur le premier element
 
-**Answer:**
+**Reponse :**
 
 ```java
 public void entete() {
@@ -113,7 +113,7 @@ public void entete() {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Le premier element reel est `head.successor`. Si la liste est vide, `head.successor == tail`, donc `estSorti()` retournera `true` apres l'appel.
 
 ---
@@ -124,7 +124,7 @@ Le premier element reel est `head.successor`. Si la liste est vide, `head.succes
 
 Avancer ou reculer le curseur. Si le curseur est deja hors-limites, lancer une exception.
 
-**Answer:**
+**Reponse :**
 
 ```java
 public void succ() {
@@ -142,7 +142,7 @@ public void pred() {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - On verifie d'abord que le curseur est sur un element valide (pas sur une sentinelle).
 - Apres `succ()` ou `pred()`, le curseur peut atterrir sur une sentinelle -- c'est normal, cela signifie simplement que `estSorti()` retournera `true`.
 - L'exception n'est lancee que si on essaie de se deplacer *alors qu'on est deja* sur une sentinelle.
@@ -153,7 +153,7 @@ public void pred() {
 
 ### Implementer valec() -- obtenir la valeur au curseur
 
-**Answer:**
+**Reponse :**
 
 ```java
 public Object valec() {
@@ -164,7 +164,7 @@ public Object valec() {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Verification des bornes, puis retour de la valeur du noeud courant. Simple et O(1).
 
 ---
@@ -175,7 +175,7 @@ Verification des bornes, puis retour de la valeur du noeud courant. Simple et O(
 
 Ajouter un nouvel element a droite du curseur, puis deplacer le curseur sur le nouvel element. Cas special : si la liste est vide, on ancre le curseur sur `head` avant l'insertion.
 
-**Answer:**
+**Reponse :**
 
 ```java
 public void ajouterD(Object o) {
@@ -200,7 +200,7 @@ public void ajouterD(Object o) {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 L'ordre de chainage est critique :
 1. `nn.predecessor = cursor` -- le nouveau noeud pointe en arriere vers le curseur
 2. `cursor.successor.predecessor = nn` -- l'ancien successeur pointe en arriere vers le nouveau noeud
@@ -223,7 +223,7 @@ Apres :  head <-> [A] <-> [B] <-> tail     curseur sur B
 
 Supprimer l'element courant et deplacer le curseur sur le successeur.
 
-**Answer:**
+**Reponse :**
 
 ```java
 public void oterec() {
@@ -240,7 +240,7 @@ public void oterec() {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 On fait pointer le predecesseur et le successeur du noeud courant directement l'un vers l'autre, en sautant le noeud a supprimer. Le curseur se deplace ensuite sur le successeur.
 
 Illustration :

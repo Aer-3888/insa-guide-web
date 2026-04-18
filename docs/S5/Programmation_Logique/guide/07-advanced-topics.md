@@ -36,7 +36,7 @@ count(Goal, N) :-
 
 `bagof` est comme findall mais :
 - **Echoue** s'il n'y a aucune solution (au lieu de retourner [])
-- **Groupe** par les variables non-mentionnees dans le Template
+- **Groupe** par les variables non-mentionnees dans le modele (Template)
 
 `setof` est comme bagof mais **trie** et **elimine les doublons**.
 
@@ -197,7 +197,7 @@ nb_voitures_par_piece(NbPoss) :-
     NbPoss is QteDispo // QteNecessaire.
 ```
 
-## 7.4 Generer et tester (Generate & Test)
+## 7.4 Generer et tester
 
 Schema tres courant en Prolog : generer toutes les possibilites, puis filtrer.
 
@@ -245,7 +245,7 @@ min_liste([X, Y | R], Min) :- X > Y, min_liste([Y | R], Min).
 
 ---
 
-## CHEAT SHEET -- Sujets avances
+## AIDE-MEMOIRE -- Sujets avances
 
 ```
 COLLECTE DE SOLUTIONS
@@ -267,7 +267,7 @@ BDD DEDUCTIVES (SQL -> Prolog)
   NOT EXISTS               \+(Goal)  ou  cut-fail
   DIVISION (pour tout)     double negation : \+( ... \+(...) )
 
-GENERATE & TEST
+GENERER ET TESTER
   solution(X) :- generer(X), tester(X).
 
 CHOOSE (selection non-deterministe)

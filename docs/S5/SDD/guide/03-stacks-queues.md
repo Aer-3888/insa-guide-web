@@ -1,17 +1,17 @@
 ---
-title: "Stacks & Queues"
+title: "Piles et Files"
 sidebar_position: 3
 ---
 
-# Stacks & Queues
+# Piles et Files
 
-## Theory
+## Theorie
 
-Stacks and queues are **restricted-access** data structures. They are used extensively in the SDD course as building blocks for algorithms (expression evaluation, BFS, Dijkstra, reverse Polish notation).
+Les piles et files sont des structures de donnees a **acces restreint**. Elles sont utilisees intensivement dans le cours SDD comme briques de base pour les algorithmes (evaluation d'expressions, BFS, Dijkstra, notation polonaise inverse).
 
-### Stack (Pile) -- LIFO
+### Pile -- LIFO
 
-**Last In, First Out.** Think of a stack of plates.
+**Dernier Entre, Premier Sorti.** Imaginez une pile d'assiettes.
 
 ```
   push(C)    push(D)    pop() -> D    pop() -> C
@@ -26,15 +26,15 @@ Stacks and queues are **restricted-access** data structures. They are used exten
              +---+
 ```
 
-Operations:
-- `push(x)` -- add to top: O(1)
-- `pop()` -- remove from top: O(1)
-- `peek()` -- see top without removing: O(1)
-- `isEmpty()` -- check if empty: O(1)
+Operations :
+- `push(x)` -- ajouter au sommet : O(1)
+- `pop()` -- retirer du sommet : O(1)
+- `peek()` -- voir le sommet sans retirer : O(1)
+- `isEmpty()` -- verifier si vide : O(1)
 
-### Queue (File) -- FIFO
+### File -- FIFO
 
-**First In, First Out.** Think of a queue at a shop.
+**Premier Entre, Premier Sorti.** Imaginez une file d'attente dans un magasin.
 
 ```
   enqueue(A)  enqueue(B)  enqueue(C)  dequeue() -> A
@@ -43,16 +43,16 @@ Operations:
   [A]        [A][B]      [A][B][C]     [B][C]
 ```
 
-Operations:
-- `enqueue(x)` -- add to back: O(1)
-- `dequeue()` -- remove from front: O(1)
-- `peek()` -- see front without removing: O(1)
-- `isEmpty()` -- check if empty: O(1)
+Operations :
+- `enqueue(x)` -- ajouter a l'arriere : O(1)
+- `dequeue()` -- retirer de l'avant : O(1)
+- `peek()` -- voir l'avant sans retirer : O(1)
+- `isEmpty()` -- verifier si vide : O(1)
 
 
 ## Implementations
 
-### Array-Based Stack
+### Pile sur Tableau
 
 ```java
 public class StackArray<T> {
@@ -86,7 +86,7 @@ public class StackArray<T> {
 }
 ```
 
-### Linked-List-Based Stack
+### Pile sur Liste Chainee
 
 ```java
 public class StackLinked<T> {
@@ -118,7 +118,7 @@ public class StackLinked<T> {
 }
 ```
 
-### Queue with Circular Array
+### File avec Tableau Circulaire
 
 ```java
 public class QueueCircular<T> {
@@ -151,28 +151,28 @@ public class QueueCircular<T> {
 ```
 
 
-## Applications in SDD
+## Applications en SDD
 
-### 1. Reverse Polish Notation (Notation Polonaise Inverse)
+### 1. Notation Polonaise Inverse (NPI)
 
-Used in TP6 (ExprArith) and TP8 (Le Compte est Bon). A stack evaluates postfix expressions.
+Utilisee dans le TP6 (ExprArith) et le TP8 (Le Compte est Bon). Une pile evalue les expressions postfixes.
 
 ```
-Expression: (3 + 4) * 2
-Postfix:     3 4 + 2 *
+Expression : (3 + 4) * 2
+Postfixe :    3 4 + 2 *
 
-Evaluation with stack:
-  Read 3  -> push 3        Stack: [3]
-  Read 4  -> push 4        Stack: [3, 4]
-  Read +  -> pop 4, pop 3  Stack: []
-             push 3+4=7    Stack: [7]
-  Read 2  -> push 2        Stack: [7, 2]
-  Read *  -> pop 2, pop 7  Stack: []
-             push 7*2=14   Stack: [14]
-  Result: 14
+Evaluation avec une pile :
+  Lire 3  -> empiler 3       Pile : [3]
+  Lire 4  -> empiler 4       Pile : [3, 4]
+  Lire +  -> depiler 4, depiler 3  Pile : []
+             empiler 3+4=7   Pile : [7]
+  Lire 2  -> empiler 2       Pile : [7, 2]
+  Lire *  -> depiler 2, depiler 7  Pile : []
+             empiler 7*2=14  Pile : [14]
+  Resultat : 14
 ```
 
-From ExprArith.evaluer() (TP6) -- recursive tree evaluation, not stack-based RPN:
+Depuis ExprArith.evaluer() (TP6) -- evaluation recursive de l'arbre, pas NPI avec pile :
 ```java
 private double recursiveEvaluation(Arbre root) {
     Arbre gauche = root.arbreG();
@@ -198,59 +198,59 @@ private double recursiveEvaluation(Arbre root) {
 }
 ```
 
-### 2. BFS (Breadth-First Search) -- Queue
+### 2. BFS (Parcours en Largeur) -- File
 
 ```
-Graph:  A --- B --- D
-        |         |
-        C --- E ---
+Graphe :  A --- B --- D
+          |         |
+          C --- E ---
 
-BFS from A using a queue:
-  Queue: [A]           Visited: {A}
-  Dequeue A, enqueue B,C
-  Queue: [B, C]        Visited: {A, B, C}
-  Dequeue B, enqueue D
-  Queue: [C, D]        Visited: {A, B, C, D}
-  Dequeue C, enqueue E
-  Queue: [D, E]        Visited: {A, B, C, D, E}
+BFS depuis A avec une file :
+  File : [A]           Visites : {A}
+  Defiler A, enfiler B,C
+  File : [B, C]        Visites : {A, B, C}
+  Defiler B, enfiler D
+  File : [C, D]        Visites : {A, B, C, D}
+  Defiler C, enfiler E
+  File : [D, E]        Visites : {A, B, C, D, E}
   ...
 
-Order: A, B, C, D, E  (level by level)
+Ordre : A, B, C, D, E  (niveau par niveau)
 ```
 
-### 3. DFS (Depth-First Search) -- Stack
+### 3. DFS (Parcours en Profondeur) -- Pile
 
 ```
-DFS from A using a stack:
-  Stack: [A]           Visited: {A}
-  Pop A, push C, B
-  Stack: [C, B]        Visited: {A}  -> visit A
-  Pop B, push D
-  Stack: [C, D]        Visited: {A, B}
-  Pop D, push E
-  Stack: [C, E]        Visited: {A, B, D}
-  Pop E
-  Stack: [C]           Visited: {A, B, D, E}
-  Pop C
-  Stack: []            Visited: {A, B, D, E, C}
+DFS depuis A avec une pile :
+  Pile : [A]           Visites : {A}
+  Depiler A, empiler C, B
+  Pile : [C, B]        Visites : {A}  -> visiter A
+  Depiler B, empiler D
+  Pile : [C, D]        Visites : {A, B}
+  Depiler D, empiler E
+  Pile : [C, E]        Visites : {A, B, D}
+  Depiler E
+  Pile : [C]           Visites : {A, B, D, E}
+  Depiler C
+  Pile : []            Visites : {A, B, D, E, C}
 
-Order: A, B, D, E, C  (goes deep first)
+Ordre : A, B, D, E, C  (va en profondeur d'abord)
 ```
 
-### 4. Dijkstra -- Priority Queue (see Chapter 6-7)
+### 4. Dijkstra -- File de Priorite (voir Chapitres 6-7)
 
-Dijkstra uses a **priority queue** (min-heap) which is a specialized queue where dequeue always returns the minimum element.
+Dijkstra utilise une **file de priorite** (tas min) qui est une file specialisee ou le defiler retourne toujours l'element minimum.
 
 
-## Java Standard Library
+## Bibliotheque Standard Java
 
-| Structure | Java Class | Key Methods |
+| Structure | Classe Java | Methodes clefs |
 |-----------|-----------|-------------|
-| Stack | `java.util.ArrayDeque` | `push()`, `pop()`, `peek()` |
-| Queue | `java.util.ArrayDeque` | `offer()`, `poll()`, `peek()` |
-| Priority Queue | `java.util.PriorityQueue` | `add()`, `poll()`, `peek()` |
+| Pile | `java.util.ArrayDeque` | `push()`, `pop()`, `peek()` |
+| File | `java.util.ArrayDeque` | `offer()`, `poll()`, `peek()` |
+| File de Priorite | `java.util.PriorityQueue` | `add()`, `poll()`, `peek()` |
 
-Note: `java.util.Stack` exists but is legacy. Prefer `ArrayDeque`.
+Note : `java.util.Stack` existe mais est obsolete. Preferer `ArrayDeque`.
 
 ```java
 Deque<Integer> stack = new ArrayDeque<>();
@@ -265,40 +265,40 @@ int front = queue.poll();  // 1
 ```
 
 
-## Complexity
+## Complexite
 
-| Operation | Array Stack | Linked Stack | Circular Queue | Linked Queue |
+| Operation | Pile Tableau | Pile Chainee | File Circulaire | File Chainee |
 |-----------|------------|--------------|---------------|--------------|
 | push/enqueue | O(1)* | O(1) | O(1) | O(1) |
 | pop/dequeue | O(1) | O(1) | O(1) | O(1) |
 | peek | O(1) | O(1) | O(1) | O(1) |
 | isEmpty | O(1) | O(1) | O(1) | O(1) |
-| Space | O(n) | O(n) | O(n) | O(n) |
+| Espace | O(n) | O(n) | O(n) | O(n) |
 
-*Amortized O(1) if array needs resizing.
+*O(1) amorti si le tableau doit etre redimensionne.
 
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-STACK (LIFO)                         QUEUE (FIFO)
+PILE (LIFO)                          FILE (FIFO)
 ============                         ============
-push(x): add to top                  enqueue(x): add to back
-pop():   remove from top             dequeue():  remove from front
-peek():  see top                     peek():     see front
+push(x) : ajouter au sommet         enqueue(x) : ajouter a l'arriere
+pop() :   retirer du sommet          dequeue() :  retirer de l'avant
+peek() :  voir le sommet             peek() :     voir l'avant
 
-APPLICATIONS:
-  Stack: DFS, expression eval, undo, recursion simulation
-  Queue: BFS, scheduling, buffering
-  PriorityQueue: Dijkstra, heap sort, task scheduling
+APPLICATIONS :
+  Pile : DFS, evaluation d'expressions, undo, simulation de recursion
+  File : BFS, ordonnancement, mise en tampon
+  File de Priorite : Dijkstra, tri par tas, ordonnancement de taches
 
-POSTFIX EVALUATION (stack):
-  For each token:
-    number -> push
-    operator -> pop 2, compute, push result
-  Final answer = pop
+EVALUATION POSTFIXE (pile) :
+  Pour chaque token :
+    nombre -> empiler
+    operateur -> depiler 2, calculer, empiler le resultat
+  Reponse finale = depiler
 
-JAVA:
+JAVA :
   Deque<T> stack = new ArrayDeque<>();   // push, pop, peek
   Deque<T> queue = new ArrayDeque<>();   // offer, poll, peek
 ```

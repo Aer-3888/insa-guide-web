@@ -1,94 +1,94 @@
 ---
-title: "TP4: Hypothesis Testing"
+title: "TP4 : Tests d'hypotheses"
 sidebar_position: 4
 ---
 
-# TP4: Hypothesis Testing
+# TP4 : Tests d'hypotheses
 
-## Overview
-Statistical hypothesis testing to make decisions about population parameters based on sample data.
+## Presentation
+Tests d'hypotheses statistiques pour prendre des decisions sur les parametres de la population a partir de donnees d'echantillons.
 
-## Topics Covered
-1. **Conformity tests** (one-sample tests)
-2. **Homogeneity tests** (two-sample comparisons)
-3. **Test power** and sample size calculations
+## Sujets abordes
+1. **Tests de conformite** (tests a un echantillon)
+2. **Tests d'homogeneite** (comparaison de deux echantillons)
+3. **Puissance du test** et calculs de taille d'echantillon
 
-## Key Concepts
+## Concepts cles
 
-### Hypothesis Test Framework
+### Cadre des tests d'hypotheses
 
-**Null hypothesis (H₀)**: Default assumption (e.g., μ = μ₀)
-**Alternative hypothesis (H₁)**: What we're testing for (e.g., μ ≠ μ₀)
+**Hypothese nulle (H_0)** : Hypothese par defaut (ex. mu = mu_0)
+**Hypothese alternative (H_1)** : Ce que l'on cherche a tester (ex. mu != mu_0)
 
-**Test statistic**: Computed from data, follows known distribution under H₀
-**p-value**: P(observing data as extreme | H₀ is true)
-**Significance level (α)**: Threshold for rejection (typically 0.05)
+**Statistique de test** : Calculee a partir des donnees, suit une distribution connue sous H_0
+**p-valeur** : P(observer des donnees aussi extremes | H_0 vraie)
+**Niveau de signification (alpha)** : Seuil de rejet (typiquement 0.05)
 
-**Decision**: Reject H₀ if p-value < α or test statistic in rejection region
+**Decision** : Rejeter H_0 si p-valeur < alpha ou si la statistique de test est dans la zone de rejet
 
-### One-Sample t-Test (Conformity)
+### Test t a un echantillon (conformite)
 
-Test if population mean equals hypothesized value:
-- H₀: μ = μ₀ vs H₁: μ ≠ μ₀
-- Test statistic: T = (X̄ - μ₀)/(S'/√n) ~ t(n-1)
-- R function: `t.test(x, mu=μ₀)`
+Tester si la moyenne de la population est egale a une valeur hypothetique :
+- H_0 : mu = mu_0 vs H_1 : mu != mu_0
+- Statistique de test : T = (X_bar - mu_0)/(S'/sqrt(n)) ~ t(n-1)
+- Fonction R : `t.test(x, mu=mu_0)`
 
-### Two-Sample t-Test (Homogeneity)
+### Test t a deux echantillons (homogeneite)
 
-Compare means of two populations:
-- H₀: μ₁ = μ₂ vs H₁: μ₁ ≠ μ₂
-- Equal variances: pooled t-test
-- Unequal variances: Welch's t-test
-- R function: `t.test(x, y, var.equal=TRUE/FALSE)`
+Comparer les moyennes de deux populations :
+- H_0 : mu_1 = mu_2 vs H_1 : mu_1 != mu_2
+- Variances egales : test t groupe
+- Variances inegales : test de Welch
+- Fonction R : `t.test(x, y, var.equal=TRUE/FALSE)`
 
-### Test Power
+### Puissance du test
 
-**Power = 1 - β** = P(reject H₀ | H₁ is true)
-- β = Type II error (false negative)
-- Larger sample → higher power
-- Effect size impacts power
+**Puissance = 1 - beta** = P(rejeter H_0 | H_1 vraie)
+- beta = erreur de type II (faux negatif)
+- Plus grand echantillon -> plus grande puissance
+- La taille de l'effet influence la puissance
 
-## Exercises
+## Exercices
 
-### Ex 1: Octopus Weights (One-Sample t-Test)
-15 octopuses weighed. Is mean 3000g?
-- Calculate CI for mean
-- Perform conformity test
-- Use both manual and `t.test()` approaches
+### Ex 1 : Poids de poulpes (test t a un echantillon)
+15 poulpes peses. La moyenne est-elle de 3000g ?
+- Calculer l'IC pour la moyenne
+- Effectuer le test de conformite
+- Utiliser les approches manuelle et `t.test()`
 
-### Ex 2: Treatment Comparison (Two-Sample t-Test)
-Two groups (n=12, n=8) with different treatments.
-- Test if means differ
-- Assumes equal variances (pooled t-test)
-- Examine effect of sample size
+### Ex 2 : Comparaison de traitements (test t a deux echantillons)
+Deux groupes (n=12, n=8) avec differents traitements.
+- Tester si les moyennes different
+- Hypothese de variances egales (test t groupe)
+- Examiner l'effet de la taille d'echantillon
 
-### Ex 3: Milk Bottle Filling (Power Analysis)
-Known σ = 1ml, target μ = 1000ml, n = 40 bottles.
-- Test for calibration drift
-- Calculate power for detecting 0.2ml shift
-- Determine n needed for 90% power
+### Ex 3 : Remplissage de bouteilles de lait (analyse de puissance)
+sigma connu = 1ml, mu cible = 1000ml, n = 40 bouteilles.
+- Tester la derive de calibrage
+- Calculer la puissance pour detecter un ecart de 0.2ml
+- Determiner le n necessaire pour 90% de puissance
 
-## R Functions
+## Fonctions R
 
 ```r noexec
-t.test(x, mu=μ₀, conf.level=0.95)              # One-sample
-t.test(x, y, var.equal=TRUE, conf.level=0.95)  # Two-sample
-qt(p, df)                                        # t quantile
-pt(q, df)                                        # t CDF
-pnorm(q, mean, sd)                              # Normal CDF
+t.test(x, mu=μ₀, conf.level=0.95)              # Un echantillon
+t.test(x, y, var.equal=TRUE, conf.level=0.95)  # Deux echantillons
+qt(p, df)                                        # Quantile de Student
+pt(q, df)                                        # CDF de Student
+pnorm(q, mean, sd)                              # CDF normale
 ```
 
-## Test Decision Rules
+## Regles de decision
 
-**Two-tailed test** (H₁: μ ≠ μ₀):
-- Reject H₀ if |T| > t_(α/2, df)
-- Or if p-value < α
+**Test bilatere** (H_1 : mu != mu_0) :
+- Rejeter H_0 si |T| > t_(alpha/2, ddl)
+- Ou si p-valeur < alpha
 
-**One-tailed test** (H₁: μ > μ₀):
-- Reject H₀ if T > t_(α, df)
+**Test unilateral** (H_1 : mu > mu_0) :
+- Rejeter H_0 si T > t_(alpha, ddl)
 
-## Key Insights
-1. p-value > α → fail to reject H₀ (not "accept")
-2. Larger n → more power, narrower CI
-3. Practical vs statistical significance
-4. Equal variance assumption affects test choice
+## Points cles
+1. p-valeur > alpha -> ne pas rejeter H_0 (et non « accepter »)
+2. Plus grand n -> plus de puissance, IC plus etroit
+3. Significativite pratique vs significativite statistique
+4. L'hypothese d'egalite des variances influence le choix du test

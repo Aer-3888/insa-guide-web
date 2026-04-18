@@ -1,9 +1,9 @@
 ---
-title: "CHEAT SHEET -- Propositions et Predicats"
+title: "AIDE-MEMOIRE -- Propositions et Predicats"
 sidebar_position: 10
 ---
 
-# CHEAT SHEET -- Propositions et Predicats
+# AIDE-MEMOIRE -- Propositions et Predicats
 
 > Toutes les regles, equivalences et procedures en un seul endroit.
 
@@ -184,7 +184,7 @@ Res(C1, C2) = (C1 \ {p}) ∪ (C2 \ {¬p})
 ```
 1. E1 = E2 ?  → retourner {}
 2. E1 est variable x ?
-   - x ∈ E2 → ECHEC (occur check)
+   - x ∈ E2 → ECHEC (test d'occurrence)
    - sinon → {x ← E2}
 3. E2 est variable x ?  (symetrique)
 4. Meme symbole et arite ?
@@ -258,7 +258,7 @@ Res(C1, C2) = (C1 \ {p}) ∪ (C2 \ {¬p})
 
 ---
 
-## 11. Checklist avant de rendre
+## 11. Liste de verification avant de rendre
 
 ```
 [ ] Tables de verite : 2^n lignes pour n variables
@@ -268,7 +268,7 @@ Res(C1, C2) = (C1 \ {p}) ∪ (C2 \ {¬p})
 [ ] Un seul litteral par resolution
 [ ] "Tous les A sont B" utilise →
 [ ] "Certains A sont B" utilise ∧
-[ ] Occur check verifie pour chaque unification
+[ ] Test d'occurrence verifie pour chaque unification
 [ ] Substitutions appliquees progressivement
 [ ] Hypotheses temporaires dechargees en deduction naturelle
 [ ] Variables fraiches dans ∀-I et ∃-E

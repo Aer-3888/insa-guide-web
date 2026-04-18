@@ -326,10 +326,10 @@ end
 
 ---
 
-## Key Concepts
+## Concepts cles
 
-1. **Stack for nested structures**: Push when opening a container tag (`INDI`, `FAM`, `EVEN`), pop when level decreases
-2. **Level tracking**: Compare `last_tag_level` with current level to decide whether to close tags
-3. **Regex capture groups**: `$1`, `$2` for positional captures; `(?<name>...)` for named captures
-4. **Priority matching**: Check more specific patterns (identifiers with `@ID@`) before less specific ones
-5. **EOF handling**: After the main loop, empty the stack to close all remaining open tags
+1. **Pile pour les structures imbriquees** : empiler lors de l'ouverture d'une balise conteneur (`INDI`, `FAM`, `EVEN`), depiler quand le niveau diminue
+2. **Suivi du niveau** : comparer `last_tag_level` avec le niveau courant pour decider s'il faut fermer des balises
+3. **Groupes de capture regex** : `$1`, `$2` pour les captures positionnelles ; `(?<name>...)` pour les captures nommees
+4. **Correspondance par priorite** : verifier les motifs les plus specifiques (identifiants avec `@ID@`) avant les moins specifiques
+5. **Gestion de fin de fichier** : apres la boucle principale, vider la pile pour fermer toutes les balises ouvertes restantes

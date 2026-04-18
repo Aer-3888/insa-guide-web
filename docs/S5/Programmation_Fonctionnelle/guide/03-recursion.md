@@ -291,6 +291,6 @@ POINT FIXE
     if f x = x then x else jqastable (f x) f
 
 PIEGE CLASSIQUE
-  let rec f n = f (n-1) + 1   -- boucle infinie si pas de cas de base!
-  Toujours verifier : le cas de base est-il atteignable?
+  let rec f n = f (n-1) + 1   -- boucle infinie si pas de cas de base !
+  Toujours verifier : le cas de base est-il atteignable ?
 ```

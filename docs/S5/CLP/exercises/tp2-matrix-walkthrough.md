@@ -1,17 +1,17 @@
 ---
-title: "TP2 - Matrix Multiplication in ARM Assembly"
+title: "TP2 - Multiplication matricielle en assembleur ARM"
 sidebar_position: 2
 ---
 
-# TP2 - Matrix Multiplication in ARM Assembly
+# TP2 - Multiplication matricielle en assembleur ARM
 
-> Following teacher instructions from: S5/CLP/data/moodle/tp/tp2/README.md
+> D'apres les consignes enseignants : S5/CLP/data/moodle/tp/tp2/README.md
 
-This TP implements 3x3 matrix multiplication in ARM assembly. Two implementations are provided: `matrix.s` (English-style, passes matrix addresses as parameters) and `produitMatrices.s` (French-style, passes result address too). Both compute RES = M1 x M2 using three nested loops.
+Ce TP implemente la multiplication de matrices 3x3 en assembleur ARM. Deux implementations sont fournies : `matrix.s` (style anglais, passe les adresses des matrices en parametres) et `produitMatrices.s` (style francais, passe aussi l'adresse du resultat). Les deux calculent RES = M1 x M2 en utilisant trois boucles imbriquees.
 
 ---
 
-## Exercise 1: matrix.s -- Matrix Product with Two Parameters
+## Exercice 1: matrix.s -- Matrix Product with Two Parameters
 
 ### Understand the constants, data layout, and stack frame
 
@@ -197,7 +197,7 @@ loop_k:
 
 ---
 
-## Exercise 2: produitMatrices.s -- Three-Parameter Version
+## Exercice 2: produitMatrices.s -- Three-Parameter Version
 
 ### Identify the key differences from matrix.s
 
@@ -233,7 +233,7 @@ _Start:
 
 ---
 
-## Complete Execution Trace: Computing res[1][2]
+## Trace d'execution complete: Computing res[1][2]
 
 ### RES[1][2] = M1[1][0]*M2[0][2] + M1[1][1]*M2[1][2] + M1[1][2]*M2[2][2]
 
@@ -266,7 +266,7 @@ r7 = 3 * 6 + 14 = 32
 
 ---
 
-### Complete Result Matrix
+### Matrice de resultat complete
 
 **Question:** Verify the full result matrix.
 
@@ -302,7 +302,7 @@ res + 32        50      res[2][2]
 
 ---
 
-## Key Concepts Summary
+## Resume des concepts cles
 
 ### Why loop counters live on the stack
 
@@ -320,7 +320,7 @@ In these implementations, i, j, k are stored on the stack rather than kept purel
 | Base + shifted register | `add r3, r3, r2, lsl #2` | r3 = r3 + r2*4 |
 | MLA (multiply-accumulate) | `mla r8, r7, r0, r1` | r8 = r7*r0 + r1 |
 
-### Debugging with GDB
+### Debogage with GDB
 
 ```bash
 arm-linux-gnueabi-gdb matrix

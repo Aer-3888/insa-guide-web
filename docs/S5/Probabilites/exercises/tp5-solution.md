@@ -1,13 +1,13 @@
 ---
-title: "TP5 - Random Vectors and Multivariate Distributions"
+title: "TP5 - Vecteurs aleatoires et distributions multivariees"
 sidebar_position: 5
 ---
 
-# TP5 - Random Vectors and Multivariate Distributions
+# TP5 - Vecteurs aleatoires et distributions multivariees
 
-> Following teacher instructions from: `S5/Probabilites/data/moodle/tp/tp5/README.md`
+> D'apres les instructions de l'enseignant : `S5/Probabilites/data/moodle/tp/tp5/README.md`
 
-## Setup
+## Preparation
 
 ```r noexec
 # For multinomial computations, base R is sufficient
@@ -18,21 +18,21 @@ sidebar_position: 5
 
 ---
 
-## Exercise 1: Discrete Joint Distribution
+## Exercice 1 : Distribution jointe discrete
 
-### Given a joint probability table for $(X, Y)$, calculate marginal $P(X)$ and $P(Y)$, calculate conditional $P(X \mid Y = 5)$, and use `apply()` / `margin.table()`
+### Etant donne un tableau de probabilite jointe pour $(X, Y)$, calculer les marginales $P(X)$ et $P(Y)$, calculer la conditionnelle $P(X \mid Y = 5)$, et utiliser `apply()` / `margin.table()`
 
-**Theory:**
+**Theorie :**
 
-- **Joint distribution:** $P(X = x_i, Y = y_j)$ for all pairs, summing to 1
-- **Marginal of $X$:** $P(X = x_i) = \sum_j P(X = x_i, Y = y_j)$ (sum across rows)
-- **Marginal of $Y$:** $P(Y = y_j) = \sum_i P(X = x_i, Y = y_j)$ (sum down columns)
-- **Conditional:** $P(X = x_i \mid Y = y_j) = \frac{P(X = x_i, Y = y_j)}{P(Y = y_j)}$
-- **Independence:** $X \perp Y$ iff $P(X = x, Y = y) = P(X = x) \cdot P(Y = y)$ for all $(x, y)$
+- **Distribution jointe :** $P(X = x_i, Y = y_j)$ pour toutes les paires, de somme 1
+- **Marginale de $X$ :** $P(X = x_i) = \sum_j P(X = x_i, Y = y_j)$ (somme sur les lignes)
+- **Marginale de $Y$ :** $P(Y = y_j) = \sum_i P(X = x_i, Y = y_j)$ (somme sur les colonnes)
+- **Conditionnelle :** $P(X = x_i \mid Y = y_j) = \frac{P(X = x_i, Y = y_j)}{P(Y = y_j)}$
+- **Independance :** $X \perp Y$ ssi $P(X = x, Y = y) = P(X = x) \cdot P(Y = y)$ pour tout $(x, y)$
 
-### Step 1: Define the joint probability table
+### Etape 1 : Definir le tableau de probabilite jointe
 
-**Answer:**
+**Reponse :**
 ```r
 prob_matrix <- matrix(c(0.02, 0.06, 0.02, 0.10,
                         0.04, 0.15, 0.20, 0.10,
@@ -47,7 +47,7 @@ print(prob_matrix)
 cat("\nSum of all probabilities:", sum(prob_matrix), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Joint probability distribution:
      Y=0  Y=5 Y=10 Y=15
@@ -58,14 +58,14 @@ X=10 0.01 0.15 0.14 0.01
 Sum of all probabilities: 1
 ```
 
-**Explanation:**
-This is a valid probability distribution: all values are non-negative and sum to 1. The table has $3 \times 4 = 12$ cells. `matrix(..., byrow = TRUE)` fills row by row; without this flag R fills column by column.
+**Explication :**
+C'est une distribution de probabilite valide : toutes les valeurs sont non negatives et leur somme vaut 1. Le tableau comporte $3 \times 4 = 12$ cellules. `matrix(..., byrow = TRUE)` remplit ligne par ligne ; sans ce parametre, R remplit colonne par colonne.
 
 ---
 
-### Step 2: Calculate marginal distribution $P(X)$
+### Etape 2 : Calculer la distribution marginale $P(X)$
 
-**Answer:**
+**Reponse :**
 ```r
 px <- apply(prob_matrix, 1, sum)
 cat("Marginal distribution P(X):\n")
@@ -73,7 +73,7 @@ print(px)
 cat("\nVerification: sum =", sum(px), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Marginal distribution P(X):
  X=0  X=5 X=10
@@ -82,20 +82,20 @@ Marginal distribution P(X):
 Verification: sum = 1
 ```
 
-**Mathematical explanation:**
-`apply(prob_matrix, 1, sum)` applies `sum` to each row (margin 1):
+**Explication mathematique :**
+`apply(prob_matrix, 1, sum)` applique `sum` a chaque ligne (marge 1) :
 
 $$P(X = 0) = 0.02 + 0.06 + 0.02 + 0.10 = 0.20$$
 $$P(X = 5) = 0.04 + 0.15 + 0.20 + 0.10 = 0.49$$
 $$P(X = 10) = 0.01 + 0.15 + 0.14 + 0.01 = 0.31$$
 
-$X = 5$ is the most likely value (49% probability).
+$X = 5$ est la valeur la plus probable (49% de probabilite).
 
 ---
 
-### Step 3: Calculate marginal distribution $P(Y)$
+### Etape 3 : Calculer la distribution marginale $P(Y)$
 
-**Answer:**
+**Reponse :**
 ```r
 py <- apply(prob_matrix, 2, sum)
 cat("Marginal distribution P(Y):\n")
@@ -103,7 +103,7 @@ print(py)
 cat("\nVerification: sum =", sum(py), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Marginal distribution P(Y):
  Y=0  Y=5 Y=10 Y=15
@@ -112,8 +112,8 @@ Marginal distribution P(Y):
 Verification: sum = 1
 ```
 
-**Mathematical explanation:**
-`apply(prob_matrix, 2, sum)` applies `sum` to each column (margin 2):
+**Explication mathematique :**
+`apply(prob_matrix, 2, sum)` applique `sum` a chaque colonne (marge 2) :
 
 $$P(Y = 0) = 0.02 + 0.04 + 0.01 = 0.07$$
 $$P(Y = 5) = 0.06 + 0.15 + 0.15 = 0.36$$
@@ -122,9 +122,9 @@ $$P(Y = 15) = 0.10 + 0.10 + 0.01 = 0.21$$
 
 ---
 
-### Step 4: Calculate conditional distribution $P(X \mid Y = 5)$
+### Etape 4 : Calculer la distribution conditionnelle $P(X \mid Y = 5)$
 
-**Answer:**
+**Reponse :**
 ```r
 y5_col <- 2  # Second column corresponds to Y=5
 px_given_y5 <- prob_matrix[, y5_col] / sum(prob_matrix[, y5_col])
@@ -134,7 +134,7 @@ print(round(px_given_y5, 4))
 cat("\nVerification: sum =", sum(px_given_y5), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Conditional distribution P(X | Y=5):
    X=0    X=5   X=10
@@ -143,18 +143,18 @@ Conditional distribution P(X | Y=5):
 Verification: sum = 1
 ```
 
-**Mathematical explanation:**
+**Explication mathematique :**
 $$P(X = 0 \mid Y = 5) = \frac{P(X = 0, Y = 5)}{P(Y = 5)} = \frac{0.06}{0.36} = 0.1667$$
 $$P(X = 5 \mid Y = 5) = \frac{P(X = 5, Y = 5)}{P(Y = 5)} = \frac{0.15}{0.36} = 0.4167$$
 $$P(X = 10 \mid Y = 5) = \frac{P(X = 10, Y = 5)}{P(Y = 5)} = \frac{0.15}{0.36} = 0.4167$$
 
-Compare with the marginals: $P(X = 0) = 0.20$ but $P(X = 0 \mid Y = 5) = 0.1667$. Knowing $Y = 5$ changes our belief about $X$, which means $X$ and $Y$ are NOT independent.
+Comparaison avec les marginales : $P(X = 0) = 0.20$ mais $P(X = 0 \mid Y = 5) = 0.1667$. Savoir que $Y = 5$ modifie notre croyance sur $X$, ce qui signifie que $X$ et $Y$ ne sont PAS independantes.
 
 ---
 
-### Step 5: All conditional distributions and independence test
+### Etape 5 : Toutes les distributions conditionnelles et test d'independance
 
-**Answer:**
+**Reponse :**
 ```r
 cat("All conditional distributions P(X | Y = y):\n\n")
 
@@ -169,7 +169,7 @@ for (j in 1:ncol(prob_matrix)) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 P(X | Y=0 ) -- P( Y=0 ) = 0.07 :
    X=0    X=5   X=10
@@ -208,7 +208,7 @@ if (max(abs(prob_matrix - independence_table)) < 1e-10) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Actual joint probabilities:
      Y=0  Y=5 Y=10 Y=15
@@ -232,27 +232,27 @@ Maximum deviation: 0.058
 Conclusion: X and Y are NOT independent
 ```
 
-**Mathematical explanation:**
-`outer(px, py)` computes the outer product: entry $(i,j) = P(X = x_i) \times P(Y = y_j)$. If $X$ and $Y$ were independent, the joint table would exactly equal this product. The deviations are substantial (up to 0.058). For example, $P(X = 0, Y = 15) = 0.10$ but $P(X = 0) \times P(Y = 15) = 0.20 \times 0.21 = 0.042$. Given $Y = 15$, $X = 0$ is much more likely than the marginal suggests.
+**Explication mathematique :**
+`outer(px, py)` calcule le produit exterieur : l'entree $(i,j) = P(X = x_i) \times P(Y = y_j)$. Si $X$ et $Y$ etaient independantes, le tableau joint serait exactement egal a ce produit. Les ecarts sont substantiels (jusqu'a 0,058). Par exemple, $P(X = 0, Y = 15) = 0.10$ mais $P(X = 0) \times P(Y = 15) = 0.20 \times 0.21 = 0.042$. Sachant que $Y = 15$, $X = 0$ est beaucoup plus probable que ce que la marginale suggere.
 
 ---
 
-## Exercise 2: Roulette Multinomial Model
+## Exercice 2 : Modele multinomial de la roulette
 
-### 12 spins, outcomes: red (18/38), black (18/38), green (2/38). Model as Multinomial, generate outcomes, calculate probabilities, visualize.
+### 12 tours, resultats : rouge (18/38), noir (18/38), vert (2/38). Modeliser par la loi multinomiale, generer les resultats, calculer les probabilites, visualiser.
 
-**Theory:** The multinomial distribution generalizes the binomial to $k > 2$ categories. For $n$ trials with probabilities $p_1, \ldots, p_k$ (where $\sum p_i = 1$):
+**Theorie :** La loi multinomiale generalise la loi binomiale a $k > 2$ categories. Pour $n$ epreuves avec probabilites $p_1, \ldots, p_k$ (ou $\sum p_i = 1$) :
 
 $$P(X_1 = x_1, \ldots, X_k = x_k) = \frac{n!}{x_1! \cdots x_k!} \prod_{i=1}^{k} p_i^{x_i}$$
 
-**Properties:**
+**Proprietes :**
 - $E[X_i] = n \cdot p_i$
-- $\text{Var}(X_i) = n \cdot p_i(1 - p_i)$ (each marginal is binomial)
-- $\text{Cov}(X_i, X_j) = -n \cdot p_i \cdot p_j$ (always negative)
+- $\text{Var}(X_i) = n \cdot p_i(1 - p_i)$ (chaque marginale est binomiale)
+- $\text{Cov}(X_i, X_j) = -n \cdot p_i \cdot p_j$ (toujours negative)
 
-### Step 1: Define the model
+### Etape 1 : Definir le modele
 
-**Answer:**
+**Reponse :**
 ```r
 n_spins <- 12
 probs <- c(18/38, 18/38, 2/38)  # Red, Black, Green
@@ -280,7 +280,7 @@ cat("  Cov(Red, Green) =", round(-n_spins * probs[1] * probs[3], 3), "\n")
 cat("  Cov(Black, Green) =", round(-n_spins * probs[2] * probs[3], 3), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Roulette multinomial model:
 Number of spins: 12
@@ -305,14 +305,14 @@ Covariances Cov(X_i, X_j) = -n * p_i * p_j:
   Cov(Black, Green) = -0.299
 ```
 
-**Mathematical explanation:**
-Covariances are negative because categories compete: more red necessarily means fewer black and green (since $\sum X_i = n = 12$). Each marginal $X_i \sim B(n, p_i)$, but the $X_i$ are NOT independent.
+**Explication mathematique :**
+Les covariances sont negatives car les categories sont en competition : plus de rouge implique necessairement moins de noir et de vert (puisque $\sum X_i = n = 12$). Chaque marginale $X_i \sim B(n, p_i)$, mais les $X_i$ ne sont PAS independantes.
 
 ---
 
-### Step 2: Generate all possible outcomes and calculate probabilities
+### Etape 2 : Generer tous les resultats possibles et calculer les probabilites
 
-**Answer:**
+**Reponse :**
 ```r
 outcomes <- expand.grid(red = 0:n_spins, black = 0:n_spins)
 outcomes$green <- n_spins - outcomes$red - outcomes$black
@@ -332,7 +332,7 @@ p_specific <- dmultinom(c(5, 5, 2), prob = probs)
 cat("P(5 red, 5 black, 2 green) =", round(p_specific, 6), "\n\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Number of possible outcomes: 91
 Sum of all probabilities: 1
@@ -340,16 +340,16 @@ Sum of all probabilities: 1
 P(5 red, 5 black, 2 green) = 0.036266
 ```
 
-**Mathematical explanation:**
-The number of ways to partition $n = 12$ into 3 non-negative integers is $\binom{14}{2} = 91$ (stars and bars). For the specific outcome:
+**Explication mathematique :**
+Le nombre de facons de repartir $n = 12$ en 3 entiers non negatifs est $\binom{14}{2} = 91$ (methode des etoiles et barres). Pour le resultat specifique :
 
 $$P(5, 5, 2) = \frac{12!}{5! \cdot 5! \cdot 2!} \times \left(\frac{18}{38}\right)^5 \times \left(\frac{18}{38}\right)^5 \times \left(\frac{2}{38}\right)^2 = 0.03627$$
 
 ---
 
-### Step 3: Find the most likely outcome
+### Etape 3 : Trouver le resultat le plus probable
 
-**Answer:**
+**Reponse :**
 ```r
 max_idx <- which.max(outcomes$prob)
 cat("Most likely outcome:\n")
@@ -376,7 +376,7 @@ for (i in 1:10) {
 cat("\nTop 10 cumulative probability:", round(sum(sorted_outcomes$prob[1:10]), 4), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Most likely outcome:
   Red: 6
@@ -385,14 +385,14 @@ Most likely outcome:
   Probability: 0.1046
 ```
 
-**Explanation:**
-The mode is $(6, 6, 0)$, close to the expected values (5.68, 5.68, 0.63) rounded to integers. Despite being the most likely single outcome, it only occurs ~10.5% of the time -- the remaining probability is spread across 90 other outcomes.
+**Explication :**
+Le mode est $(6, 6, 0)$, proche des valeurs attendues (5,68 ; 5,68 ; 0,63) arrondies a l'entier. Bien qu'etant le resultat individuel le plus probable, il ne se produit que ~10,5% du temps -- la probabilite restante est repartie sur les 90 autres resultats.
 
 ---
 
-### Step 4: Simulation verification
+### Etape 4 : Verification par simulation
 
-**Answer:**
+**Reponse :**
 ```r
 n_simulations <- 10000
 set.seed(42)
@@ -428,7 +428,7 @@ cat("  Cov(Red,Green): empirical =", round(cov(simulated[1, ], simulated[3, ]), 
     ", theoretical =", round(-n_spins * probs[1] * probs[3], 3), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Simulation results (n = 10000 ):
   Average red:   5.680  (expected: 5.684 )
@@ -445,14 +445,14 @@ Covariance comparison:
   Cov(Red,Green): empirical = -0.289 , theoretical = -0.299
 ```
 
-**Mathematical explanation:**
-All empirical values closely match the theory. The negative covariance between Red and Black is clearly visible: when one gets more outcomes, the other gets fewer (fixed total of 12).
+**Explication mathematique :**
+Toutes les valeurs empiriques correspondent etroitement a la theorie. La covariance negative entre rouge et noir est clairement visible : quand l'un obtient plus de resultats, l'autre en obtient moins (total fixe de 12).
 
 ---
 
-### Step 5: Distribution of green outcomes (marginal is binomial)
+### Etape 5 : Distribution des resultats verts (la marginale est binomiale)
 
-**Answer:**
+**Reponse :**
 ```r
 green_counts <- simulated[3, ]
 green_table <- table(green_counts)
@@ -470,7 +470,7 @@ for (g in 0:max(as.numeric(names(green_table)))) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Distribution of green outcomes (n = 12 spins):
 Green    Empirical    Theoretical
@@ -483,26 +483,26 @@ Green    Empirical    Theoretical
        5       0.0004       0.0003
 ```
 
-**Mathematical explanation:**
-Each marginal of the multinomial is binomial: Green $\sim B(12, 2/38) = B(12, 0.0526)$. About 51% of the time, no green appears at all (since each spin has only 5.26% chance of green).
+**Explication mathematique :**
+Chaque marginale de la multinomiale est binomiale : Vert $\sim B(12, 2/38) = B(12, 0.0526)$. Environ 51% du temps, aucun vert n'apparait (puisque chaque tour n'a que 5,26% de chances de donner vert).
 
 ---
 
-## Exercise 3: Covariance Matrix and Linear Combinations
+## Exercice 3 : Matrice de covariance et combinaisons lineaires
 
-### For a random vector $\mathbf{X} = (X_1, X_2)$ with covariance matrix $\Sigma$, compute $\text{Var}(Y)$ where $Y = aX_1 + bX_2$
+### Pour un vecteur aleatoire $\mathbf{X} = (X_1, X_2)$ avec matrice de covariance $\Sigma$, calculer $\text{Var}(Y)$ ou $Y = aX_1 + bX_2$
 
-**Theory:** For random vector $\mathbf{X}$ with covariance matrix $\Sigma$ and coefficient vector $\mathbf{a}$:
+**Theorie :** Pour un vecteur aleatoire $\mathbf{X}$ de matrice de covariance $\Sigma$ et un vecteur de coefficients $\mathbf{a}$ :
 
 $$\text{Var}(\mathbf{a}^T \mathbf{X}) = \mathbf{a}^T \Sigma \mathbf{a}$$
 
-Expanded for two variables:
+En developpant pour deux variables :
 
 $$\text{Var}(aX_1 + bX_2) = a^2 \text{Var}(X_1) + b^2 \text{Var}(X_2) + 2ab \text{Cov}(X_1, X_2)$$
 
-### Example: $Y = 3X_1 + 4X_2$
+### Exemple : $Y = 3X_1 + 4X_2$
 
-**Answer:**
+**Reponse :**
 ```r
 Sigma <- matrix(c(4, 1, 1, 2), nrow = 2)
 a <- c(3, 4)
@@ -524,7 +524,7 @@ cat("  2 * 3 * 4 * Cov(X1,X2) = 24 * 1 = 24\n")
 cat("  Total: 36 + 32 + 24 =", var_Y_manual, "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Covariance matrix Sigma:
      [,1] [,2]
@@ -542,22 +542,22 @@ Manual computation:
   Total: 36 + 32 + 24 = 92
 ```
 
-**Mathematical explanation:**
-In R, `%*%` performs matrix multiplication and `t()` transposes. If we ignored the covariance (assumed independence), we would get $\text{Var}(Y) = 36 + 32 = 68$. The positive covariance $\text{Cov}(X_1, X_2) = 1$ adds 24, because $X_1$ and $X_2$ tend to increase together, amplifying the variability of their sum.
+**Explication mathematique :**
+En R, `%*%` effectue la multiplication matricielle et `t()` transpose. Si on ignorait la covariance (hypothese d'independance), on obtiendrait $\text{Var}(Y) = 36 + 32 = 68$. La covariance positive $\text{Cov}(X_1, X_2) = 1$ ajoute 24, car $X_1$ et $X_2$ tendent a augmenter ensemble, amplifiant la variabilite de leur somme.
 
 ---
 
-## Summary
+## Resume
 
-| Concept | Formula | R Function |
+| Concept | Formule | Fonction R |
 |---------|---------|------------|
-| Joint PMF | $P(X = x, Y = y)$ | Direct matrix entry |
-| Marginal of $X$ | $\sum_y P(X = x, Y = y)$ | `apply(mat, 1, sum)` |
-| Marginal of $Y$ | $\sum_x P(X = x, Y = y)$ | `apply(mat, 2, sum)` |
-| Conditional | $P(X = x \mid Y = y) = \frac{P(X = x, Y = y)}{P(Y = y)}$ | Column / column sum |
-| Independence test | $P(X, Y) = P(X) \cdot P(Y)$ for all? | `outer(px, py)` vs `prob_matrix` |
-| Multinomial PMF | $\frac{n!}{x_1! \cdots x_k!} \prod p_i^{x_i}$ | `dmultinom(x, prob)` |
-| $E[X_i]$ (multinomial) | $n \cdot p_i$ | Direct computation |
-| $\text{Var}(X_i)$ (multinomial) | $n \cdot p_i(1 - p_i)$ | Each marginal is binomial |
-| $\text{Cov}(X_i, X_j)$ | $-n \cdot p_i \cdot p_j$ | Always negative |
-| Var(linear combo) | $\mathbf{a}^T \Sigma \mathbf{a}$ | `t(a) %*% Sigma %*% a` |
+| Loi jointe | $P(X = x, Y = y)$ | Entree directe de la matrice |
+| Marginale de $X$ | $\sum_y P(X = x, Y = y)$ | `apply(mat, 1, sum)` |
+| Marginale de $Y$ | $\sum_x P(X = x, Y = y)$ | `apply(mat, 2, sum)` |
+| Conditionnelle | $P(X = x \mid Y = y) = \frac{P(X = x, Y = y)}{P(Y = y)}$ | Colonne / somme de la colonne |
+| Test d'independance | $P(X, Y) = P(X) \cdot P(Y)$ pour tout ? | `outer(px, py)` vs `prob_matrix` |
+| Loi multinomiale | $\frac{n!}{x_1! \cdots x_k!} \prod p_i^{x_i}$ | `dmultinom(x, prob)` |
+| $E[X_i]$ (multinomiale) | $n \cdot p_i$ | Calcul direct |
+| $\text{Var}(X_i)$ (multinomiale) | $n \cdot p_i(1 - p_i)$ | Chaque marginale est binomiale |
+| $\text{Cov}(X_i, X_j)$ | $-n \cdot p_i \cdot p_j$ | Toujours negative |
+| Var(combinaison lin.) | $\mathbf{a}^T \Sigma \mathbf{a}$ | `t(a) %*% Sigma %*% a` |

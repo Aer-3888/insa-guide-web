@@ -1,13 +1,13 @@
 ---
-title: "TP4 - Raspberry Pi GPIO Control"
+title: "TP4 - Controle GPIO sur Raspberry Pi"
 sidebar_position: 4
 ---
 
-# TP4 - Raspberry Pi GPIO Control
+# TP4 - Controle GPIO sur Raspberry Pi
 
-## Overview
+## Presentation
 
-This lab demonstrates bare-metal programming on Raspberry Pi, focusing on GPIO (General Purpose Input/Output) control. The exercise programs the Raspberry Pi to blink the ACT (Activity) LED in an SOS Morse code pattern.
+Ce TP illustre la programmation bare metal sur Raspberry Pi, en se concentrant sur le controle GPIO (General Purpose Input/Output). L'exercice programme le Raspberry Pi pour faire clignoter la LED ACT (Activite) selon un patron de code Morse SOS.
 
 ## Exercise
 
@@ -18,7 +18,7 @@ Programs the Raspberry Pi's ACT LED (GPIO pin 47) to blink in Morse code SOS pat
 - **O**: 3 long blinks  
 - **S**: 3 short blinks
 
-## Raspberry Pi Hardware Concepts
+## Concepts materiels du Raspberry Pi
 
 ### GPIO (General Purpose Input/Output)
 
@@ -49,7 +49,7 @@ The green Activity LED on Raspberry Pi is connected to GPIO pin 47.
 - Set register: `GPSET1` (handles pins 32-53)
 - Clear register: `GPCLR1` (handles pins 32-53)
 
-## Key ARM Concepts Demonstrated
+## Concepts ARM cles illustres
 
 ### 1. Memory-Mapped I/O
 
@@ -189,7 +189,7 @@ begin:
     b begin                 /* Repeat forever */
 ```
 
-## GPIO Register Details
+## Details des registres GPIO
 
 ### GPFSEL (Function Select)
 
@@ -242,9 +242,9 @@ Mask = 0b001 << 21 = 0b00000000001000000000000000000000
 - Pin 47 → bit 15
 - Mask = 1 << 15 = 0x8000
 
-## Building and Running
+## Compilation et execution
 
-### Prerequisites
+### Prerequis
 
 - ARM cross-compiler: `arm-none-eabi-gcc` toolchain
 - Raspberry Pi (any model with ACT LED)
@@ -267,7 +267,7 @@ arm-none-eabi-objcopy kernel.elf -O binary kernel.img
 - Raspberry Pi boot loader loads kernel at address 0x8000
 - First 32KB reserved for GPU and boot code
 
-### Deploying to Raspberry Pi
+### Deploiement sur Raspberry Pi
 
 1. **Format SD card** as FAT32
 
@@ -280,7 +280,7 @@ arm-none-eabi-objcopy kernel.elf -O binary kernel.img
 
 4. **Power on** - LED should blink SOS pattern
 
-### Debugging
+### Debogage
 
 **No output?** Check:
 1. LED pin number (varies by Pi model)
@@ -291,7 +291,7 @@ arm-none-eabi-objcopy kernel.elf -O binary kernel.img
 1. Bit positions in GPFSEL, GPSET, GPCLR
 2. Function select configuration
 
-## Raspberry Pi Model Differences
+## Differences entre modeles de Raspberry Pi
 
 ### GPIO Base Addresses
 
@@ -307,7 +307,7 @@ arm-none-eabi-objcopy kernel.elf -O binary kernel.img
 
 **Portability**: Adjust base address and pin number for your model.
 
-## Study Exercises
+## Exercices d'entrainement
 
 1. **Change Pattern**: Modify to blink "HI" in Morse code (···· ··)
 
@@ -319,7 +319,7 @@ arm-none-eabi-objcopy kernel.elf -O binary kernel.img
 
 5. **Timer**: Use system timer instead of busy-wait loops
 
-## Advanced Topics
+## Sujets avances
 
 ### Hardware Timers
 
@@ -342,7 +342,7 @@ Use DMA (Direct Memory Access) for:
 - CPU-free operations
 - Complex LED patterns
 
-## Common Errors
+## Erreurs courantes
 
 ### Wrong Address
 **Problem**: LED doesn't respond

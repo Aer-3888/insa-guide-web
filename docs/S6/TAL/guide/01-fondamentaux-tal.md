@@ -7,7 +7,7 @@ sidebar_position: 1
 
 ## 1.1 Qu'est-ce que le TAL ?
 
-Le TAL (Traitement Automatique des Langues), ou NLP (Natural Language Processing), est le domaine qui vise a faire comprendre et produire du langage humain par des machines. C'est un domaine interdisciplinaire : linguistique + informatique + IA.
+Le TAL (Traitement Automatique des Langues), aussi appele NLP en anglais, est le domaine qui vise a faire comprendre et produire du langage humain par des machines. C'est un domaine interdisciplinaire : linguistique + informatique + IA.
 
 ### Applications
 

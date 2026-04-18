@@ -310,10 +310,10 @@ LISTES
   l1 @ l2            Concatenation (O(n) sur l1)
   List.length l      Longueur
   List.mem e l       Appartenance
-  List.nth l i       i-eme element (0-indexe)
+  List.nth l i       i-eme element (indexe a 0)
   List.rev l         Inverser
   List.sort cmp l    Trier
-  List.assoc k l     Chercher dans liste d'association
+  List.assoc k l     Chercher dans une liste d'association
 
 SCHEMA RECURSIF SUR LISTE
   let rec f l = match l with
@@ -325,9 +325,9 @@ ARBRE BINAIRE
     | Feuille of 'a
     | Noeud of 'a arbin * 'a * 'a arbin
 
-  Parcours infixe  : gauche, racine, droite
-  Parcours prefixe : racine, gauche, droite
-  Parcours postfixe: gauche, droite, racine
+  Parcours infixe   : gauche, racine, droite
+  Parcours prefixe  : racine, gauche, droite
+  Parcours postfixe : gauche, droite, racine
 
 ABR (ARBRE BINAIRE DE RECHERCHE)
   - Gauche < Racine < Droite

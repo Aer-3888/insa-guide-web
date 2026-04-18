@@ -192,13 +192,13 @@ let rec eprog st p = match p with
 | Situation | Fonctionnel | Imperatif |
 |-----------|-------------|-----------|
 | Transformation de donnees | map, filter, fold | Non necessaire |
-| Compteur/accumulateur | Accumulateur dans recursion | ref |
+| Compteur/accumulateur | Accumulateur dans la recursion | ref |
 | Affichage | Printf a la fin | Printf au fur et a mesure |
 | Aleatoire | Random.int | Random.int (identique) |
 | Performance critique | Parfois insuffisant | Tableaux mutables |
-| Graphics | Non applicable | Necessaire |
+| Graphisme | Non applicable | Necessaire |
 
-En general : **preferer le fonctionnel** sauf pour les E/S et les cas ou la performance l'exige.
+En general : **preferer le fonctionnel** sauf pour les entrees/sorties et les cas ou la performance l'exige.
 
 ---
 
@@ -217,7 +217,7 @@ RECORDS MUTABLES
 
 SEQUENCES
   e1; e2                 Executer e1, retourner e2
-  begin e1; e2 end       Bloc de sequence
+  begin e1; e2 end       Bloc de sequences
 
 BOUCLES
   for i = a to b do ... done     Boucle for croissante
@@ -226,10 +226,10 @@ BOUCLES
 
 TABLEAUX
   [|1; 2; 3|]           Creation litterale
-  Array.make n v         Creation (n elements a v)
+  Array.make n v         Creation (n elements valant v)
   Array.init n f         Creation (f(0), f(1), ..., f(n-1))
-  a.(i)                  Acces O(1)
-  a.(i) <- v             Modification O(1)
+  a.(i)                  Acces en O(1)
+  a.(i) <- v             Modification en O(1)
   Array.length a         Longueur
 
 EXCEPTIONS
@@ -240,7 +240,7 @@ EXCEPTIONS
   try ... with E -> ...  Attraper
   failwith "msg"         Raccourci pour raise (Failure "msg")
 
-IMPRESSION
+AFFICHAGE
   print_int n            Afficher un entier
   print_string s         Afficher une chaine
   print_newline ()       Saut de ligne

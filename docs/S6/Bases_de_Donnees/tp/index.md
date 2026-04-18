@@ -5,7 +5,7 @@ sidebar_position: 0
 
 # TP (Enonces)
 
-- [tp1 query evaluation](tp1-query-evaluation)
-- [tp2 cassandra](tp2-cassandra)
-- [tp3 neo4j](tp3-neo4j)
-- [tp4 mongodb](tp4-mongodb)
+- [TP1 -- Evaluation de requetes](tp1-query-evaluation)
+- [TP2 -- Cassandra](tp2-cassandra)
+- [TP3 -- Neo4j](tp3-neo4j)
+- [TP4 -- MongoDB](tp4-mongodb)

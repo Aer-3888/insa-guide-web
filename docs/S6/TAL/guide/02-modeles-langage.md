@@ -156,13 +156,13 @@ P_bo[w | h_n] = | C*(h_n w) / C(h_n)           si C(h_n w) > 0
 
 ## 2.6 Modeles de langage neuronaux
 
-### Modele Feed-Forward (Bengio, 2003)
+### Modele a propagation avant (Feed-Forward, Bengio, 2003)
 
 ```
 w_{i-n+1},...,w_{i-1}  --> [embedding] --> [MLP + tanh] --> [softmax] --> P[w_i]
 ```
 
-Premier modele neuronal pour le langage. Ameliore les n-grammes car les embeddings partagent de l'information entre mots similaires.
+Premier modele neuronal pour le langage. Ameliore les n-grammes car les plongements lexicaux (embeddings) partagent de l'information entre mots similaires.
 
 ### Modele RNN
 

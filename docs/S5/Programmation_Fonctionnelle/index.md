@@ -7,5 +7,5 @@ sidebar_position: 0
 
 - [Guide](guide/)
 - [Exercices](exercises/)
-- [Preparation Examen](exam-prep/)
+- [Preparation a l'examen](exam-prep/)
 - [TP (Enonces)](tp/)

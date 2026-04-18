@@ -107,7 +107,7 @@ do {
 ### Concepts parallèles
 
 **Calcul stencil** : Chaque point dépend de ses voisins
-- Lecture de T : accès concurrent sûr (read-only)
+- Lecture de T : acces concurrent sur (lecture seule)
 - Écriture dans T1 : pas de conflits (indices distincts)
 - Barrière implicite à la fin du `for` : tous les threads terminent avant le swap
 
@@ -166,8 +166,8 @@ fprintf(stderr, "%f\n", omp_get_wtime() - prev);
    - Grilles grandes : meilleure utilisation des caches
 
 2. **Localité des données** :
-   - Accès par lignes (row-major order) → bon
-   - Accès par colonnes → mauvais (cache misses)
+   - Acces par lignes (ordre row-major) -> bon
+   - Acces par colonnes -> mauvais (defauts de cache)
 
 3. **False sharing** :
    - Si deux threads écrivent dans la même ligne de cache
@@ -195,26 +195,26 @@ Algorithme ancien (IIIe siècle av. J.-C.) pour trouver tous les nombres premier
 
 ```c noexec
 // Initialisation
-for i ← 0 to N-1 do
+pour i <- 0 a N-1 faire
     a[i] = i
 
-// Élimination des multiples
-for i ← 2 to √N do
-    if a[i] > 0 then
-        for j = i² to N-1 step i do
+// Elimination des multiples
+pour i <- 2 a sqrt(N) faire
+    si a[i] > 0 alors
+        pour j = i^2 a N-1 pas i faire
             a[j] = 0
-        end for
-    end if
-end for
+        fin pour
+    fin si
+fin pour
 
 // Compaction (optionnel)
-p ← 0
-for j ← 0 to N-1 do
-    if a[j] > 0 then
-        a[p] ← a[j]
-        p ← p + 1
-    end if
-end for
+p <- 0
+pour j <- 0 a N-1 faire
+    si a[j] > 0 alors
+        a[p] <- a[j]
+        p <- p + 1
+    fin si
+fin pour
 ```
 
 ### Parallélisation
@@ -287,7 +287,7 @@ x[k+1][i] = (b[i] - Σ A[i][j] × x[k][j] pour j≠i) / A[i][i]
 
 ```c noexec
 // Initialisation
-x = guess initial
+x = estimation initiale
 
 while (non convergé) {
     for i = 1 to n {
@@ -404,6 +404,6 @@ tp2/
 
 ## Ressources
 
-- Équation de la chaleur : https://en.wikipedia.org/wiki/Heat_equation
-- Crible d'Ératosthène : https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-- Méthode de Jacobi : https://en.wikipedia.org/wiki/Jacobi_method
+- Equation de la chaleur : https://fr.wikipedia.org/wiki/%C3%89quation_de_la_chaleur
+- Crible d'Eratosthene : https://fr.wikipedia.org/wiki/Crible_d%27%C3%89ratosth%C3%A8ne
+- Methode de Jacobi : https://fr.wikipedia.org/wiki/M%C3%A9thode_de_Jacobi

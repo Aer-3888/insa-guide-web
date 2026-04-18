@@ -1,9 +1,9 @@
 ---
-title: "Exam Prep -- Programmation Fonctionnelle"
+title: "Preparation a l'examen -- Programmation Fonctionnelle"
 sidebar_position: 0
 ---
 
-# Exam Prep -- Programmation Fonctionnelle
+# Preparation a l'examen -- Programmation Fonctionnelle
 
 ## Format des examens
 
@@ -40,7 +40,7 @@ Listes, arbres, ensembles, formules logiques.
 | 2020 | Representation binaire, ensembles | bit/bint, intset (arbre), fold_right |
 | 2019 | Expressions lineaires, anneaux | Records, expressions, simplification |
 
-## Walkthroughs des examens
+## Corrections detaillees des examens
 
 - [exam-2019.md](/S5/Programmation_Fonctionnelle/exam-prep/exam-2019) -- Expressions lineaires et anneaux
 - [exam-2020.md](/S5/Programmation_Fonctionnelle/exam-prep/exam-2020) -- Representation binaire et ensembles

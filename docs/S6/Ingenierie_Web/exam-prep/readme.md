@@ -126,7 +126,7 @@ public interface ExamenRepository extends CrudRepository<Examen, Long> { }
 **Ce qui est demande** : concevoir les routes REST (verbe, URI, entree, sortie, codes retour) puis ecrire le code Java Spring Boot.
 
 **Methode pour chaque route** :
-1. Identifier l'operation CRUD : Create/Read/Update/Delete
+1. Identifier l'operation CRUD : Creer/Lire/Modifier/Supprimer
 2. Choisir le verbe HTTP : POST/GET/PATCH-PUT/DELETE
 3. Definir l'URI (avec `{id}` pour les parametres)
 4. Definir la donnee d'entree (DTO ou entite)
@@ -261,7 +261,7 @@ public List<CopieDTO> mesCopies(Principal user) {
 
 ---
 
-## Checklist avant le DS
+## Liste de verification avant le DS
 
 ### JSON/XML (Exercice 1)
 - [ ] Je sais convertir un objet Java en JSON

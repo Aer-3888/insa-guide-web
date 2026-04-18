@@ -1,23 +1,23 @@
 ---
-title: "TP3-4: Detection et Caracterisation de POI a Rennes - Solution"
+title: "TP3-4 : Detection et Caracterisation de POI a Rennes - Solution"
 sidebar_position: 3
 ---
 
-# TP3-4: Detection et Caracterisation de POI a Rennes - Solution
+# TP3-4 : Detection et Caracterisation de POI a Rennes - Solution
 
-> Following teacher instructions from: `TP-23-24-etud_without_NLP_task_todo.ipynb`
+> Conforme aux instructions de l'enseignant dans : `TP-23-24-etud_without_NLP_task_todo.ipynb`
 
-**Technique**: Spatial clustering with DBSCAN on geolocated photo data, followed by cluster characterization using Apriori frequent itemset mining on photo tags.
+**Technique** : Clustering spatial avec DBSCAN sur des donnees de photos geolocalisees, suivi de la caracterisation des clusters par extraction d'itemsets frequents avec Apriori sur les tags des photos.
 
-**Goal**: Identify Points of Interest (POI) in Rennes from geolocated Flickr photos using unsupervised spatial analysis. A POI is defined as the location of photographs by a large number of distinct users.
+**Objectif** : Identifier les points d'interet (POI) de Rennes a partir de photos Flickr geolocalisees en utilisant l'analyse spatiale non supervisee. Un POI est defini comme le lieu de photographies prises par un grand nombre d'utilisateurs distincts.
 
-**Dataset**: `flickrRennes.csv` -- geolocated photos from the Flickr API, centered on Rennes, France.
+**Jeu de donnees** : `flickrRennes.csv` -- photos geolocalisees issues de l'API Flickr, centrees sur Rennes, France.
 
-**Duration**: Double session (TP3 + TP4).
+**Duree** : Double seance (TP3 + TP4).
 
 ---
 
-## Setup: Imports and Constants
+## Preparation : Imports et constantes
 
 ```python noexec
 import sys
@@ -43,7 +43,7 @@ stopwordslist.append("NaN")
 LATITUDE, LONGITUDE = 48.117266, -1.6777926  # Centre de Rennes
 ```
 
-## Data Loading
+## Chargement des donnees
 
 ```python noexec
 photos_orig = pd.read_csv("flickrRennes.csv")
@@ -51,7 +51,7 @@ photos = photos_orig.copy()
 photos.head()
 ```
 
-**Dataset columns:**
+**Colonnes du jeu de donnees :**
 - **id_photo** = identifiant de la photo
 - **title** = titre de la photo
 - **id_photographer** = identifiant du proprietaire (utilisateur)
@@ -63,27 +63,27 @@ photos.head()
 
 ---
 
-# Etape 1: Preparation des donnees
+# Etape 1 : Preparation des donnees
 
 ## Prise en main du jeu de donnees
 
-### Question: Affichez le nombre de photos contenues dans le DataFrame.
+### Question : Affichez le nombre de photos contenues dans le DataFrame.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 len(photos)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 29541
 ```
 
 ---
 
-### Question: Affichez les valeurs moyennes et medianes de la latitude et longitude. Cela vous parait-il coherent ?
+### Question : Affichez les valeurs moyennes et medianes de la latitude et longitude. Cela vous parait-il coherent ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 print(photos["lat"].mean())
 print(photos["long"].mean())
@@ -91,7 +91,7 @@ print(photos["lat"].median())
 print(photos["long"].median())
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 48.108595345892155
 -1.680869942554416
@@ -99,55 +99,55 @@ print(photos["long"].median())
 -1.678194
 ```
 
-**Interpretation:** Both mean and median are very close to the Rennes city center (48.117, -1.678). This is coherent -- the data is geolocated around Rennes. The small mean-median gap indicates a roughly symmetric distribution centered on the city.
+**Interpretation :** La moyenne et la mediane sont tres proches du centre-ville de Rennes (48.117, -1.678). C'est coherent -- les donnees sont geolocalisees autour de Rennes. Le faible ecart moyenne-mediane indique une distribution a peu pres symetrique centree sur la ville.
 
 ---
 
-### Question: De quelle annee date la photo la plus ancienne ? Et la plus recente ?
+### Question : De quelle annee date la photo la plus ancienne ? Et la plus recente ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 print(photos["date_taken_year"].min())
 print(photos["date_taken_year"].max())
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 2004
 2019
 ```
 
-**Interpretation:** The photos span 15 years. Despite the TP saying "photos geolocalisees autour de Rennes en 2019," the "2019" refers to when the data was extracted from the API, not when all photos were taken.
+**Interpretation :** Les photos couvrent 15 ans. Malgre l'enonce du TP disant "photos geolocalisees autour de Rennes en 2019", le "2019" fait reference a la date d'extraction des donnees de l'API, pas a la date de prise de toutes les photos.
 
 ---
 
-### Question: Affichez le nombre d'utilisateurs distincts.
+### Question : Affichez le nombre d'utilisateurs distincts.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos["id_photographer"].nunique()
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 213
 ```
 
 ---
 
-### Question: Affichez le nombre de valeurs distinctes de id_photo.
+### Question : Affichez le nombre de valeurs distinctes de id_photo.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos["id_photo"].nunique()
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 4148
 ```
 
-**Key insight:** 29,541 rows but only 4,148 unique photo IDs means each photo appears ~7.1 times on average. The CSV contains exact duplicate rows.
+**Observation cle :** 29 541 lignes mais seulement 4 148 identifiants de photos uniques signifie que chaque photo apparait ~7.1 fois en moyenne. Le CSV contient des lignes exactement en double.
 
 ---
 
@@ -155,44 +155,44 @@ photos["id_photo"].nunique()
 
 > Les identifiants des photos sont censes etre uniques, pourtant la question precedente affiche un nombre d'identifiants bien inferieur au nombre de lignes du DataFrame. Il est fort possible qu'il y ait des doublons.
 
-### Question: Supprimez les lignes en double.
+### Question : Supprimez les lignes en double.
 
-> Indication: la documentation de la classe DataFrame se trouve ici: https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
+> Indication : la documentation de la classe DataFrame se trouve ici : https://pandas.pydata.org/pandas-docs/stable/reference/frame.html
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos = photos.drop_duplicates()
 ```
 
 ---
 
-### Question: Affichez la nouvelle taille du jeu de donnees.
+### Question : Affichez la nouvelle taille du jeu de donnees.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 len(photos)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 4148
 ```
 
-**Interpretation:** `drop_duplicates()` removes rows identical across ALL columns. The reduction from 29,541 to 4,148 confirms that ~86% of rows were exact duplicates.
+**Interpretation :** `drop_duplicates()` supprime les lignes identiques sur TOUTES les colonnes. La reduction de 29 541 a 4 148 confirme qu'environ 86% des lignes etaient des doublons exacts.
 
 ---
 
 ## Analyse des donnees
 
-### Question: Afficher le nombre de photos par utilisateurs distincts.
+### Question : Afficher le nombre de photos par utilisateurs distincts.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos_per_user = photos.groupby("id_photographer").size()
 print(photos_per_user)
 ```
 
-**Expected output (truncated):**
+**Resultat attendu (tronque) :**
 ```
 id_photographer
 100074746@N06    21
@@ -211,65 +211,65 @@ Length: 213, dtype: int64
 
 ---
 
-### Question: Affichez le nombre d'utilisateurs n'ayant poste qu'une seule photo.
+### Question : Affichez le nombre d'utilisateurs n'ayant poste qu'une seule photo.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 single_photo_users = (photos_per_user == 1).sum()
 print(single_photo_users)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 74
 ```
 
-**Interpretation:** 74 out of 213 users (35%) posted only one photo. These are likely casual tourists or one-time visitors.
+**Interpretation :** 74 des 213 utilisateurs (35%) n'ont poste qu'une seule photo. Ce sont probablement des touristes occasionnels ou des visiteurs ponctuels.
 
 ---
 
-### Question: Combien de photos prennent les photographes de ce jeu de donnees ? Afficher la distribution du nombre de photographes par nombre de photos.
+### Question : Combien de photos prennent les photographes de ce jeu de donnees ? Afficher la distribution du nombre de photographes par nombre de photos.
 
 > Le resultat devrait ressembler a l'image `photographes_par_photo.png`.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photo_counts = photos_per_user.value_counts().sort_index()
 plt.figure(figsize=(10, 6))
 plt.bar(photo_counts.index, photo_counts.values)
-plt.xlabel('Nombre de Photos')
-plt.ylabel('Nombre de Photographes')
+plt.xlabel('Nombre de photos')
+plt.ylabel('Nombre de photographes')
 plt.title('Distribution des photographes par nombre de photos')
 plt.show()
 ```
 
-**Expected output/plot:** A heavily right-skewed histogram. Very tall bar at x=1 (74 photographers), then rapidly decreasing. Most photographers have fewer than 20 photos, but a few have hundreds.
+**Resultat attendu :** Un histogramme fortement asymetrique a droite. Tres grande barre a x=1 (74 photographes), puis decroissance rapide. La plupart des photographes ont moins de 20 photos, mais quelques-uns en ont des centaines.
 
 ---
 
-### Question: Afficher un diagramme a barres de la distribution des photos sur les mois de l'annee.
+### Question : Afficher un diagramme a barres de la distribution des photos sur les mois de l'annee.
 
-> Indication: la fonction matplotlib a utiliser est `bar`, la fonction `hist` n'est pas ce que vous cherchez.
+> Indication : la fonction matplotlib a utiliser est `bar`, la fonction `hist` n'est pas ce que vous cherchez.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 month_counts = photos.groupby("date_taken_month").size()
 plt.figure(figsize=(10, 6))
 plt.bar(month_counts.index, month_counts.values)
 plt.xlabel('Mois')
-plt.ylabel('Nombre de Photos')
+plt.ylabel('Nombre de photos')
 plt.title('Distribution des photos par mois')
 plt.xticks(range(1, 13))
 plt.show()
 ```
 
-**Expected output/plot:** Seasonal pattern with more photos in spring/summer (April-September) and fewer in winter (November-February). Peak is typically around July-September (tourist season).
+**Resultat attendu :** Pattern saisonnier avec plus de photos au printemps/ete (avril-septembre) et moins en hiver (novembre-fevrier). Le pic est generalement autour de juillet-septembre (saison touristique).
 
 ---
 
 ## Affichage des donnees sur une carte
 
-The notebook provides the following code to display photos on a map:
+Le notebook fournit le code suivant pour afficher les photos sur une carte :
 
 ```python noexec
 rennes_map = folium.Map(
@@ -284,7 +284,7 @@ for row_nb, row in photos.iterrows():
 rennes_map
 ```
 
-**Expected output/map:** Blue dots scattered across Rennes. Dense clusters visible in the city center (historic core, Thabor park area). Scattered dots in peripheral areas.
+**Resultat attendu :** Des points bleus disperses sur Rennes. Des clusters denses visibles dans le centre-ville (coeur historique, quartier du parc du Thabor). Des points eparpilles en peripherie.
 
 ---
 
@@ -293,12 +293,12 @@ rennes_map
 > Certains utilisateurs publient des series de photos, generalement prises au meme endroit, dans un court laps de temps. Un centre d'interet doit etre le lieu de photographies d'un grand nombre d'utilisateurs distincts et non pas d'une personne isolee.
 > Une solution simpliste est de ne garder qu'une photo par utilisateur par heure de temps.
 
-### Question: Donnez l'instruction pandas correspondante et critiquez-la. Mettez ensuite a jour le DataFrame photos en gardant une seule photo par groupe.
+### Question : Donnez l'instruction pandas correspondante et critiquez-la. Mettez ensuite a jour le DataFrame photos en gardant une seule photo par groupe.
 
-> Indication: utiliser la methode `groupby` avec plusieurs groupements.
-> Note: passer le parametre `as_index = False` pour eviter la creation d'un index multiple.
+> Indication : utiliser la methode `groupby` avec plusieurs groupements.
+> Note : passer le parametre `as_index = False` pour eviter la creation d'un index multiple.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos = photos.groupby(
     ['id_photographer', 'date_taken_year', 'date_taken_month',
@@ -307,43 +307,43 @@ photos = photos.groupby(
 ).first()
 ```
 
-**Critique de cette approche:**
-1. **Trop agressive:** Un utilisateur visitant deux endroits differents dans la meme heure perd un endroit
-2. **Pas assez agressive:** Un utilisateur prenant une photo par heure au meme endroit cree quand meme plusieurs entrees
-3. **Meilleure alternative:** Deduplication spatiale -- grouper par (utilisateur, latitude arrondie, longitude arrondie)
+**Critique de cette approche :**
+1. **Trop agressive :** Un utilisateur visitant deux endroits differents dans la meme heure perd un endroit
+2. **Pas assez agressive :** Un utilisateur prenant une photo par heure au meme endroit cree quand meme plusieurs entrees
+3. **Meilleure alternative :** Deduplication spatiale -- grouper par (utilisateur, latitude arrondie, longitude arrondie)
 
 ---
 
-### Question: Affichez le DataFrame modifie.
+### Question : Affichez le DataFrame modifie.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos
 ```
 
-**Expected output:** A DataFrame with 1,232 rows and 19 columns.
+**Resultat attendu :** Un DataFrame avec 1 232 lignes et 19 colonnes.
 
 ---
 
-### Question: Affichez le nombre de photos contenues dans le DataFrame.
+### Question : Affichez le nombre de photos contenues dans le DataFrame.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 len(photos)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 1232
 ```
 
-**Interpretation:** The groupby keeps only the first photo per (user, year, month, day, hour). This reduces the dataset by ~70%, meaning most photos were part of rapid-fire sequences.
+**Interpretation :** Le groupby ne garde que la premiere photo par (utilisateur, annee, mois, jour, heure). Cela reduit le jeu de donnees d'environ 70%, ce qui signifie que la plupart des photos faisaient partie de series rapides.
 
 ---
 
-### Question: Affichez les photos du DataFrame sur une carte.
+### Question : Affichez les photos du DataFrame sur une carte.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
@@ -357,93 +357,93 @@ for row_nb, row in photos.iterrows():
 rennes_map
 ```
 
-**Expected output/map:** Sparser than before, but main concentration areas remain visible in central Rennes.
+**Resultat attendu :** Plus eparpille qu'avant, mais les zones de concentration principales restent visibles dans le centre de Rennes.
 
 ---
 
-# Etape 2: Clustering des photos
+# Etape 2 : Clustering des photos
 
 ## Identification des points d'interet
 
-### Question: Choisissez un algorithme pour notre probleme parmi KMeans et DBSCAN en justifiant votre choix.
+### Question : Choisissez un algorithme pour notre probleme parmi KMeans et DBSCAN en justifiant votre choix.
 
-**Answer:** DBSCAN est le meilleur choix pour quatre raisons:
-1. **On ne connait pas K:** Le nombre de POI a Rennes est inconnu. DBSCAN le decouvre automatiquement.
-2. **Formes arbitraires:** Un POI le long d'une riviere ou d'une rue n'est pas spherique. DBSCAN gere les formes arbitraires; KMeans suppose des clusters spheriques.
-3. **Gestion du bruit:** Beaucoup de photos sont a des endroits aleatoires (hotel, parking). DBSCAN les etiquette comme bruit (-1); KMeans forcerait chaque photo dans un cluster.
-4. **Definition basee sur la densite:** Notre definition de POI est "zone dense de photos" -- cela correspond directement a l'approche de DBSCAN.
+**Reponse :** DBSCAN est le meilleur choix pour quatre raisons :
+1. **On ne connait pas K :** Le nombre de POI a Rennes est inconnu. DBSCAN le decouvre automatiquement.
+2. **Formes arbitraires :** Un POI le long d'une riviere ou d'une rue n'est pas spherique. DBSCAN gere les formes arbitraires ; KMeans suppose des clusters spheriques.
+3. **Gestion du bruit :** Beaucoup de photos sont a des endroits aleatoires (hotel, parking). DBSCAN les etiquette comme bruit (-1) ; KMeans forcerait chaque photo dans un cluster.
+4. **Definition basee sur la densite :** Notre definition de POI est "zone dense de photos" -- cela correspond directement a l'approche de DBSCAN.
 
 ---
 
-### Question: Appliquez l'algorithme sur les donnees en utilisant soit `sklearn.cluster.KMeans` ou `sklearn.cluster.DBSCAN`.
+### Question : Appliquez l'algorithme sur les donnees en utilisant soit `sklearn.cluster.KMeans` ou `sklearn.cluster.DBSCAN`.
 
-> Parametres conseilles pour DBSCAN: eps=0.00030, min_samples=7
+> Parametres conseilles pour DBSCAN : eps=0.00030, min_samples=7
 
-**Answer:**
+**Reponse :**
 ```python noexec
 clustering = sklearn.cluster.DBSCAN(eps=0.00030, min_samples=7)
 labels = clustering.fit_predict(photos[["lat", "long"]].values)
 ```
 
-**Parameter analysis:**
-- `eps=0.00030` degrees: At latitude 48 N, 0.0003 degrees of latitude = ~33 meters, 0.0003 degrees of longitude = ~22 meters
-- `min_samples=7`: A point needs at least 7 neighbors within eps to be a core point, filtering out small personal clusters
+**Analyse des parametres :**
+- `eps=0.00030` degres : A la latitude 48 N, 0.0003 degre de latitude = ~33 metres, 0.0003 degre de longitude = ~22 metres
+- `min_samples=7` : Un point a besoin d'au moins 7 voisins dans le rayon eps pour etre un point noyau, filtrant les petits clusters personnels
 
 ---
 
-### Question: Affichez la liste des labels des clusters crees.
+### Question : Affichez la liste des labels des clusters crees.
 
-> Vous devez obtenir un tableau qui indique le numero de cluster de chaque photo, comme celui-ci: array([-1, -1, -1, ..., -1, -1, -1])
+> Vous devez obtenir un tableau qui indique le numero de cluster de chaque photo, comme celui-ci : array([-1, -1, -1, ..., -1, -1, -1])
 
-**Answer:**
+**Reponse :**
 ```python noexec
 print(labels)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 array([-1, -1, -1, ..., -1, -1, -1])
 ```
 
 ---
 
-### Question: Ajoutez ces informations au DataFrame, dans une nouvelle colonne "cluster". Affichez le DataFrame.
+### Question : Ajoutez ces informations au DataFrame, dans une nouvelle colonne "cluster". Affichez le DataFrame.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos["cluster"] = labels
 photos
 ```
 
-**Expected output:** The DataFrame now has 20 columns (19 original + 1 "cluster" column). The cluster column contains integer labels from -1 (noise) to 19.
+**Resultat attendu :** Le DataFrame a maintenant 20 colonnes (19 originales + 1 colonne "cluster"). La colonne cluster contient des etiquettes entieres de -1 (bruit) a 19.
 
 ---
 
-### Question: Affichez la liste des labels de cluster du DataFrame, sans les doublons. Quel label est utilise pour marquer une photo qui n'appartient pas a un cluster ?
+### Question : Affichez la liste des labels de cluster du DataFrame, sans les doublons. Quel label est utilise pour marquer une photo qui n'appartient pas a un cluster ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos["cluster"].unique()
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 array([-1,  0, 14,  1,  6,  2,  3,  7,  4,  5,  8,  9, 10, 11, 12, 13, 15,
        16, 17, 18, 19])
 ```
 
-**Interpretation:** Label **-1** marks noise (photos not belonging to any cluster). There are 20 clusters (0 through 19) plus noise. The numbering is arbitrary, determined by the order DBSCAN discovers them.
+**Interpretation :** Le label **-1** marque le bruit (photos n'appartenant a aucun cluster). Il y a 20 clusters (0 a 19) plus le bruit. La numerotation est arbitraire, determinee par l'ordre de decouverte de DBSCAN.
 
 ---
 
-### Question: Affichez les url de toutes les photos appartenant au cluster de label 2.
+### Question : Affichez les url de toutes les photos appartenant au cluster de label 2.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 photos[photos["cluster"] == 2]["url"].values
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 array(['https://www.flickr.com/photos/119588793@N07/36609063310/',
        'https://www.flickr.com/photos/nathph/44843668934/',
@@ -466,7 +466,7 @@ array(['https://www.flickr.com/photos/119588793@N07/36609063310/',
 
 ## Affichage sur une carte
 
-The notebook provides a color function:
+Le notebook fournit une fonction de couleur :
 
 ```python noexec
 COLORS = ['darkpurple', 'cadetblue', 'orange', 'purple', 'lightred',
@@ -481,9 +481,9 @@ def get_color(label):
         return COLORS[label % len(COLORS)]
 ```
 
-### Question: Affichez les photos sur une carte, avec pour chaque photo une couleur correspondante au cluster dont elle fait partie.
+### Question : Affichez les photos sur une carte, avec pour chaque photo une couleur correspondante au cluster dont elle fait partie.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
@@ -502,13 +502,13 @@ for _, row in photos.iterrows():
 rennes_map
 ```
 
-**Expected output/map:** A map of Rennes with colored dot clusters in the city center. Light gray dots (noise) are scattered everywhere. Colored clusters are concentrated in the historic center, parks, and major landmarks.
+**Resultat attendu :** Une carte de Rennes avec des points colores regroupes en clusters dans le centre-ville. Des points gris clair (bruit) sont disperses partout. Les clusters colores sont concentres dans le centre historique, les parcs et les monuments principaux.
 
 ---
 
-### Question: Modifiez la question precedente pour ajouter un marqueur par cluster (au milieu de preference), de la bonne couleur et avec un texte indiquant le label du cluster.
+### Question : Modifiez la question precedente pour ajouter un marqueur par cluster (au milieu de preference), de la bonne couleur et avec un texte indiquant le label du cluster.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
@@ -535,7 +535,7 @@ for cluster in sorted(photos["cluster"].unique()):
     n_photos = len(cluster_photos)
     n_users = cluster_photos["id_photographer"].nunique()
 
-    popupText = f"Cluster {cluster}<br>{n_photos} photos<br>{n_users} users"
+    popupText = f"Cluster {cluster}<br>{n_photos} photos<br>{n_users} utilisateurs"
     folium.Marker(
         [center_lat, center_lon],
         icon=folium.Icon(color=get_color(cluster)),
@@ -545,33 +545,33 @@ for cluster in sorted(photos["cluster"].unique()):
 rennes_map
 ```
 
-**Expected output/map:** Same as above but with tall pin markers at each cluster center. Clicking a marker shows a popup with cluster number, photo count, and unique user count.
+**Resultat attendu :** Meme carte mais avec des marqueurs epingle au centre de chaque cluster. Un clic sur un marqueur affiche un popup avec le numero du cluster, le nombre de photos et le nombre d'utilisateurs uniques.
 
-**Note:** The color 'lightgrayblack' in COLORS will trigger a UserWarning because it is not a valid folium color. This is present in the original TP source code and does not prevent rendering.
+**Note :** La couleur 'lightgrayblack' dans COLORS declenchera un UserWarning car ce n'est pas une couleur valide pour folium. Cela est present dans le code source original du TP et n'empeche pas le rendu.
 
 ---
 
-# Etape 3: Caracterisation des clusters
+# Etape 3 : Caracterisation des clusters
 
 ## Pretraitement et nettoyage des tags
 
 > La fonction magic nettoie les tags des photos. Cette fonction "masquee" vous est donnee.
 
 ```python noexec
-# Obfuscated tag cleaning function (provided by the teacher)
+# Fonction de nettoyage de tags obfusquee (fournie par l'enseignant)
 O00OOOOOO0OO0O0OO = {
     'a': 'a', 'a': 'a', 'a': 'a', 'a': 'a',
     'e': 'e', 'e': 'e', 'e': 'e', 'e': 'e',
     'i': 'i', 'i': 'i', 'o': 'o', 'o': 'o',
     'u': 'u', 'u': 'u', 'u': 'u',
 }
-# ... (obfuscated code provided by the TP)
+# ... (code obfusque fourni par le TP)
 
-# Apply the magic function
+# Appliquer la fonction magic
 magic(photos, stopwordslist)
 ```
 
-The magic function performs: lowercase, accent removal, stopword removal, IMG/DSC prefix removal, and special character filtering.
+La fonction magic effectue : passage en minuscules, suppression des accents, suppression des mots vides, suppression des prefixes IMG/DSC et filtrage des caracteres speciaux.
 
 ---
 
@@ -579,30 +579,30 @@ The magic function performs: lowercase, accent removal, stopword removal, IMG/DS
 
 ### Exemple d'utilisation de l'algorithme Apriori
 
-The TP provides a complete example:
+Le TP fournit un exemple complet :
 
 ```python noexec
-# Example dataset
+# Jeu de donnees exemple
 dataset = [['Milk', 'Onion', 'Nutmeg', 'Kidney Beans', 'Eggs', 'Yogurt'],
            ['Dill', 'Onion', 'Nutmeg', 'Kidney Beans', 'Eggs', 'Yogurt'],
            ['Milk', 'Apple', 'Kidney Beans', 'Eggs'],
            ['Milk', 'Unicorn', 'Corn', 'Kidney Beans', 'Yogurt'],
            ['Corn', 'Onion', 'Onion', 'Kidney Beans', 'Ice cream', 'Eggs']]
 
-# Transform to boolean matrix
+# Transformer en matrice booleenne
 t_encoder = TransactionEncoder()
 t_array = t_encoder.fit(dataset).transform(dataset)
 df = pd.DataFrame(t_array, columns=t_encoder.columns_)
 
-# Apply Apriori with minsup=60%
+# Appliquer Apriori avec minsup=60%
 frequent_itemsets = apriori(df, min_support=0.6, use_colnames=True)
 
-# Add length column
+# Ajouter une colonne longueur
 frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
 print(frequent_itemsets)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
     support                     itemsets  length
 0       0.8                       (Eggs)       1
@@ -622,7 +622,7 @@ print(frequent_itemsets)
 
 ## Extraction des mots frequents par cluster
 
-### Initialize cluster labels
+### Initialisation des etiquettes de cluster
 
 ```python noexec
 cluster_labels = {}
@@ -631,7 +631,7 @@ for cluster in photos["cluster"].unique():
 print(cluster_labels)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 {-1: 'no label', 0: 'no label', 14: 'no label', 1: 'no label', 6: 'no label',
  2: 'no label', 3: 'no label', 7: 'no label', 4: 'no label', 5: 'no label',
@@ -642,22 +642,22 @@ print(cluster_labels)
 
 ---
 
-### Question: Pour chaque cluster extraire les itemsets frequents afin de determiner une etiquette par cluster.
+### Question : Pour chaque cluster extraire les itemsets frequents afin de determiner une etiquette par cluster.
 
-> Indication: Pour chaque cluster:
+> Indication : Pour chaque cluster :
 > 1. calculer les motifs frequents de longueur (nombre d'items) au moins 2,
 > 2. les trier par support puis par longueur,
 > 3. ne garder que le plus frequent,
 > 4. associer ce motif comme etiquette au cluster dans la table de hachage.
 >
-> Note: C'est a vous de jouer sur le seuil de support (minsup) pour observer a quel moment vous obtenez quelque chose d'interessant.
+> Note : C'est a vous de jouer sur le seuil de support (minsup) pour observer a quel moment vous obtenez quelque chose d'interessant.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 def identify_cluster(cluster_nb):
     cluster_photos = photos[photos["cluster"] == cluster_nb]
 
-    # Build transactions from tag strings
+    # Construire les transactions a partir des chaines de tags
     transactions = []
     for tags in cluster_photos["tags"]:
         if tags and str(tags).strip():
@@ -666,9 +666,9 @@ def identify_cluster(cluster_nb):
                 transactions.append(words)
 
     if len(transactions) < 3:
-        return  # Not enough data
+        return  # Pas assez de donnees
 
-    # Encode as boolean matrix
+    # Encoder en matrice booleenne
     te = TransactionEncoder()
     try:
         te_array = te.fit(transactions).transform(transactions)
@@ -677,41 +677,41 @@ def identify_cluster(cluster_nb):
 
     df_tags = pd.DataFrame(te_array, columns=te.columns_)
 
-    # Try different min_support values (from strict to permissive)
+    # Essayer differentes valeurs de min_support (du plus strict au plus permissif)
     for minsup in [0.5, 0.4, 0.3, 0.2]:
         freq = apriori(df_tags, min_support=minsup, use_colnames=True)
 
         if freq.empty:
             continue
 
-        # Add length column
+        # Ajouter une colonne longueur
         freq['length'] = freq['itemsets'].apply(len)
 
-        # Keep only itemsets of length >= 2
+        # Garder uniquement les itemsets de longueur >= 2
         freq_long = freq[freq['length'] >= 2]
 
         if not freq_long.empty:
-            # Sort by support (desc), then length (desc)
+            # Trier par support (decroissant), puis longueur (decroissant)
             freq_long = freq_long.sort_values(
                 ['support', 'length'],
                 ascending=[False, False]
             )
 
-            # Take the top itemset
+            # Prendre le meilleur itemset
             best = freq_long.iloc[0]['itemsets']
             cluster_labels[cluster_nb] = ', '.join(sorted(best))
             return
 
-# Apply to all clusters
+# Appliquer a tous les clusters
 for cluster_nb in cluster_labels:
     identify_cluster(cluster_nb)
 
 print(cluster_labels)
 ```
 
-**Why progressive minsup (0.5 -> 0.4 -> 0.3 -> 0.2)?** Starting strict (50%) ensures labels are meaningful and widely shared. If no itemset of length >= 2 is found, we relax progressively. This avoids labeling clusters with rare, noise-driven tag combinations.
+**Pourquoi un minsup progressif (0.5 -> 0.4 -> 0.3 -> 0.2) ?** Commencer strict (50%) assure que les etiquettes sont significatives et largement partagees. Si aucun itemset de longueur >= 2 n'est trouve, on relache progressivement. Cela evite d'etiqueter les clusters avec des combinaisons de tags rares et bruitees.
 
-**Expected output (depends on actual data):**
+**Resultat attendu (depend des donnees reelles) :**
 ```
 {-1: 'no label',
  0: 'bretagne, rennes',
@@ -721,13 +721,13 @@ print(cluster_labels)
  ...}
 ```
 
-**Interpretation:** Many clusters get labeled "bretagne, rennes" because these are the two most common tags across all Rennes photos. More specific labels like "thabor" or "parlement" appear for clusters near those landmarks.
+**Interpretation :** Beaucoup de clusters recoivent l'etiquette "bretagne, rennes" car ce sont les deux tags les plus courants dans toutes les photos de Rennes. Des etiquettes plus specifiques comme "thabor" ou "parlement" apparaissent pour les clusters proches de ces monuments.
 
 ---
 
-### Question: Associer le cluster et son etiquette dans l'affichage avec la carte.
+### Question : Associer le cluster et son etiquette dans l'affichage avec la carte.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 rennes_map = folium.Map(
     location=[LATITUDE, LONGITUDE],
@@ -754,7 +754,7 @@ for cluster in sorted(photos["cluster"].unique()):
     label = cluster_labels.get(cluster, "no label")
     n_photos = len(cluster_photos)
 
-    popupText = f"Cluster {cluster}<br>Label: {label}<br>{n_photos} photos"
+    popupText = f"Cluster {cluster}<br>Etiquette : {label}<br>{n_photos} photos"
     folium.Marker(
         [center_lat, center_lon],
         icon=folium.Icon(color=get_color(cluster)),
@@ -764,10 +764,10 @@ for cluster in sorted(photos["cluster"].unique()):
 rennes_map
 ```
 
-**Expected output/map:** Map of Rennes with colored clusters and pin markers. Each marker's popup shows the cluster number, its Apriori-derived label, and the photo count. The markers should roughly correspond to known Rennes landmarks:
+**Resultat attendu :** Carte de Rennes avec des clusters colores et des marqueurs epingle. Le popup de chaque marqueur affiche le numero du cluster, son etiquette derivee d'Apriori et le nombre de photos. Les marqueurs devraient correspondre approximativement aux monuments connus de Rennes :
 
-| Cluster | Approx. Location | Expected Tags | Real Place |
-|---------|-------------------|---------------|------------|
+| Cluster | Localisation approx. | Tags attendus | Lieu reel |
+|---------|---------------------|---------------|-----------|
 | 0 | 48.111, -1.679 | rennes, bretagne | Centre historique |
 | 1 | 48.114, -1.673 | thabor, parc, jardin | Parc du Thabor |
 | 2 | 48.109, -1.682 | parlement, bretagne | Parlement de Bretagne |
@@ -780,38 +780,38 @@ rennes_map
 
 > S'il vous reste du temps, vous pouvez essayer de jouer sur les parametres de clustering pour avoir des clusters qui correspondent a votre idee de point d'interet de Rennes, ajouter un lien vers une photo du cluster dans les popups, etc.
 
-### DBSCAN Parameter Sensitivity
+### Sensibilite des parametres DBSCAN
 
-| eps | Approx. meters | Clusters | Noise % | Character |
-|-----|---------------|----------|---------|-----------|
-| 0.00010 | ~11m | 30-40 | 60-70% | Very small clusters, many fragments |
-| 0.00030 | ~33m | ~20 | 40-50% | Good balance (TP default) |
-| 0.00100 | ~111m | 5-8 | 10-20% | Large clusters, merges distinct POI |
-| 0.00300 | ~333m | 2-3 | 5% | Nearly everything in one cluster |
+| eps | Metres approx. | Clusters | Bruit % | Caractere |
+|-----|----------------|----------|---------|-----------|
+| 0.00010 | ~11m | 30-40 | 60-70% | Tres petits clusters, beaucoup de fragments |
+| 0.00030 | ~33m | ~20 | 40-50% | Bon equilibre (defaut du TP) |
+| 0.00100 | ~111m | 5-8 | 10-20% | Grands clusters, fusionne des POI distincts |
+| 0.00300 | ~333m | 2-3 | 5% | Presque tout dans un seul cluster |
 
-### Effect of min_samples
+### Effet de min_samples
 
-| min_samples | With eps=0.00030 | Character |
+| min_samples | Avec eps=0.00030 | Caractere |
 |-------------|-----------------|-----------|
-| 3 | ~30 clusters | Too permissive, includes personal spots |
-| 7 | ~20 clusters | Good balance (TP default) |
-| 15 | ~10 clusters | Only major POI survive |
-| 30 | ~3-5 clusters | Only the biggest tourist spots |
+| 3 | ~30 clusters | Trop permissif, inclut des lieux personnels |
+| 7 | ~20 clusters | Bon equilibre (defaut du TP) |
+| 15 | ~10 clusters | Seuls les POI majeurs survivent |
+| 30 | ~3-5 clusters | Seulement les plus grands sites touristiques |
 
 ---
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Data cleaning is critical:** 29,541 rows reduced to 1,232 after deduplication and album effect removal. Without cleaning, DBSCAN would find clusters around individual photographers' homes.
+1. **Le nettoyage des donnees est critique :** 29 541 lignes reduites a 1 232 apres deduplication et suppression de l'effet album. Sans nettoyage, DBSCAN trouverait des clusters autour des domiciles des photographes individuels.
 
-2. **The album photo effect** is the single biggest source of bias in geo-tagged photo data. A photographer taking 100 photos of their garden creates a false POI.
+2. **L'effet album photo** est la plus grande source de biais dans les donnees de photos geotaggees. Un photographe prenant 100 photos de son jardin cree un faux POI.
 
-3. **DBSCAN is ideal** for spatial POI detection because it handles noise, discovers k automatically, and finds clusters of arbitrary shapes.
+3. **DBSCAN est ideal** pour la detection spatiale de POI car il gere le bruit, decouvre k automatiquement et trouve des clusters de formes arbitraires.
 
-4. **eps on raw GPS coordinates:** Using 0.00030 degrees works as an approximation because lat/long degrees at 48 N are similar enough in scale. For higher precision, convert to projected coordinates (Lambert 93) first.
+4. **eps sur coordonnees GPS brutes :** Utiliser 0.00030 degres fonctionne en approximation car les degres lat/lon a 48 N ont des echelles suffisamment similaires. Pour plus de precision, convertir d'abord en coordonnees projetees (Lambert 93).
 
-5. **Tag preprocessing** (lowercase, accents, stopwords, special chars) is essential before Apriori. Without it, "Rennes" and "rennes" would be treated as different items.
+5. **Le pretraitement des tags** (minuscules, accents, mots vides, caracteres speciaux) est essentiel avant Apriori. Sans cela, "Rennes" et "rennes" seraient traites comme des items differents.
 
-6. **Apriori on cluster tags** provides semantic labels for otherwise anonymous spatial clusters. The progressive minsup strategy balances label quality with coverage.
+6. **Apriori sur les tags de clusters** fournit des etiquettes semantiques pour des clusters spatiaux autrement anonymes. La strategie de minsup progressif equilibre qualite des etiquettes et couverture.
 
-7. **Limitations:** Flickr data is biased toward tourists and photography enthusiasts. Residential areas and workplaces are underrepresented.
+7. **Limitations :** Les donnees Flickr sont biaisees vers les touristes et les passionnes de photographie. Les zones residentielles et les lieux de travail sont sous-representes.

@@ -1,353 +1,353 @@
 ---
-title: "Git Version Control"
+title: "Controle de version Git"
 sidebar_position: 4
 ---
 
-# Git Version Control
+# Controle de version Git
 
-## Overview
+## Apercu
 
-Git is a distributed version control system that tracks changes to files. The ITI course covers Git fundamentals through interactive exercises (Learn Git Branching) and collaborative projects (Pokemon Git with GitLab).
+Git est un systeme de controle de version distribue qui suit les modifications apportees aux fichiers. Le cours ITI couvre les fondamentaux de Git a travers des exercices interactifs (Learn Git Branching) et des projets collaboratifs (Pokemon Git avec GitLab).
 
-## Core Concepts
+## Concepts fondamentaux
 
-### Git's Data Model
+### Modele de donnees de Git
 
 ```
-Working Directory  -->  Staging Area (Index)  -->  Repository (.git/)
-   (your files)        (git add)                 (git commit)
+Repertoire de travail  -->  Zone de staging (Index)  -->  Depot (.git/)
+   (vos fichiers)          (git add)                    (git commit)
 ```
 
-- **Working Directory**: Your actual files on disk
-- **Staging Area**: Files prepared for the next commit
-- **Repository**: Complete history of all commits
+- **Repertoire de travail** : vos fichiers reels sur le disque
+- **Zone de staging** : fichiers prepares pour le prochain commit
+- **Depot** : historique complet de tous les commits
 
-### Commit = Snapshot
+### Commit = Instantane
 
-Each commit is a snapshot of all tracked files at a point in time:
-- Has a unique SHA-1 hash (e.g., `a1b2c3d`)
-- Points to its parent commit(s)
-- Contains author, date, and message
+Chaque commit est un instantane de tous les fichiers suivis a un instant donne :
+- Possede un hash SHA-1 unique (ex. `a1b2c3d`)
+- Pointe vers son ou ses commit(s) parent(s)
+- Contient l'auteur, la date et le message
 
-## Setup
+## Configuration
 
 ```bash
-# Configure identity
+# Configurer l'identite
 git config --global user.name "Your Name"
 git config --global user.email "email@insa-rennes.fr"
 
-# Useful configuration
+# Configuration utile
 git config --global core.editor "nano"
 git config --global init.defaultBranch main
 git config --global pull.rebase false
 ```
 
-## Repository Operations
+## Operations sur le depot
 
-### Creating Repositories
+### Creer des depots
 ```bash
-git init                           # Initialize new repo in current directory
-git init project-name              # Create new directory with repo
-git clone https://url/repo.git     # Clone existing remote repo
-git clone git@gitlab:user/repo.git # Clone via SSH
+git init                           # Initialiser un nouveau depot dans le repertoire courant
+git init project-name              # Creer un nouveau repertoire avec un depot
+git clone https://url/repo.git     # Cloner un depot distant existant
+git clone git@gitlab:user/repo.git # Cloner via SSH
 ```
 
-### Checking Status
+### Verifier l'etat
 ```bash
-git status                         # Show working tree status
-git status -s                      # Short format
-git log                            # Show commit history
-git log --oneline                  # Compact one-line format
-git log --oneline --graph --all    # Visual branch history
-git log -5                         # Last 5 commits
-git log --stat                     # Show files changed per commit
+git status                         # Afficher l'etat de l'arbre de travail
+git status -s                      # Format court
+git log                            # Afficher l'historique des commits
+git log --oneline                  # Format compact sur une ligne
+git log --oneline --graph --all    # Historique visuel des branches
+git log -5                         # Les 5 derniers commits
+git log --stat                     # Afficher les fichiers modifies par commit
 ```
 
-## Basic Workflow
+## Flux de travail de base
 
-### Stage and Commit
+### Indexer et valider
 ```bash
-# Stage files
-git add file.txt                   # Stage specific file
-git add file1.txt file2.txt        # Stage multiple files
-git add *.c                        # Stage by pattern
-git add .                          # Stage all changes (careful!)
+# Indexer des fichiers
+git add file.txt                   # Indexer un fichier specifique
+git add file1.txt file2.txt        # Indexer plusieurs fichiers
+git add *.c                        # Indexer par motif
+git add .                          # Indexer toutes les modifications (attention !)
 
-# Check what's staged
-git status                         # Overview
-git diff                           # Unstaged changes
-git diff --staged                  # Staged changes (what will be committed)
+# Verifier ce qui est indexe
+git status                         # Vue d'ensemble
+git diff                           # Modifications non indexees
+git diff --staged                  # Modifications indexees (ce qui sera commite)
 
-# Commit
-git commit -m "Add feature X"     # Commit with message
-git commit                         # Opens editor for message
-git commit -am "Fix bug"          # Stage tracked files and commit
+# Valider
+git commit -m "Add feature X"     # Valider avec un message
+git commit                         # Ouvre l'editeur pour le message
+git commit -am "Fix bug"          # Indexer les fichiers suivis et valider
 ```
 
-### Viewing Changes
+### Voir les modifications
 ```bash
-git diff                           # Working dir vs staging
-git diff --staged                  # Staging vs last commit
-git diff HEAD                      # Working dir vs last commit
-git diff commit1 commit2           # Between two commits
-git diff branch1..branch2          # Between two branches
-git show commit-hash               # Show specific commit details
+git diff                           # Repertoire de travail vs staging
+git diff --staged                  # Staging vs dernier commit
+git diff HEAD                      # Repertoire de travail vs dernier commit
+git diff commit1 commit2           # Entre deux commits
+git diff branch1..branch2          # Entre deux branches
+git show commit-hash               # Afficher les details d'un commit specifique
 ```
 
-## Branching
+## Branchement
 
-### Branch Operations
+### Operations sur les branches
 ```bash
-git branch                         # List local branches
-git branch -a                      # List all branches (including remote)
-git branch feature                 # Create branch
-git checkout feature               # Switch to branch
-git checkout -b feature            # Create and switch (shortcut)
-git switch feature                 # Switch (modern syntax)
-git switch -c feature              # Create and switch (modern syntax)
-git branch -d feature              # Delete branch (safe: only if merged)
-git branch -D feature              # Delete branch (force)
+git branch                         # Lister les branches locales
+git branch -a                      # Lister toutes les branches (y compris distantes)
+git branch feature                 # Creer une branche
+git checkout feature               # Basculer sur une branche
+git checkout -b feature            # Creer et basculer (raccourci)
+git switch feature                 # Basculer (syntaxe moderne)
+git switch -c feature              # Creer et basculer (syntaxe moderne)
+git branch -d feature              # Supprimer une branche (sur : seulement si fusionnee)
+git branch -D feature              # Supprimer une branche (force)
 ```
 
-### Merging
+### Fusion
 ```bash
-# Merge feature into current branch (e.g., main)
+# Fusionner feature dans la branche courante (ex. main)
 git checkout main
 git merge feature
 
-# Types of merges:
-# Fast-forward: No merge commit, just moves pointer
-# Three-way merge: Creates merge commit combining both branches
+# Types de fusions :
+# Fast-forward : pas de commit de fusion, deplace simplement le pointeur
+# Fusion a trois voies : cree un commit de fusion combinant les deux branches
 
-# Force merge commit even when fast-forward possible
+# Forcer un commit de fusion meme si le fast-forward est possible
 git merge --no-ff feature
 ```
 
-### Resolving Merge Conflicts
+### Resoudre les conflits de fusion
 
-When Git cannot auto-merge, it marks conflicts in the file:
+Quand Git ne peut pas fusionner automatiquement, il marque les conflits dans le fichier :
 ```
 <<<<<<< HEAD
-Your version of the code
+Votre version du code
 =======
-Their version of the code
+Leur version du code
 >>>>>>> feature-branch
 ```
 
-Resolution:
-1. Open conflicted file
-2. Choose which version to keep (or combine both)
-3. Remove conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
-4. Stage resolved file: `git add file.txt`
-5. Complete merge: `git commit`
+Resolution :
+1. Ouvrir le fichier en conflit
+2. Choisir quelle version garder (ou combiner les deux)
+3. Supprimer les marqueurs de conflit (`<<<<<<<`, `=======`, `>>>>>>>`)
+4. Indexer le fichier resolu : `git add file.txt`
+5. Terminer la fusion : `git commit`
 
-### Rebasing
+### Rebasage
 
 ```bash
-# Rebase current branch onto main
+# Rebaser la branche courante sur main
 git rebase main
 
-# Rebase interactively (rewrite history)
-git rebase -i HEAD~3               # Edit last 3 commits
+# Rebasage interactif (reecrire l'historique)
+git rebase -i HEAD~3               # Editer les 3 derniers commits
 ```
 
-Rebase replays your commits on top of another branch, creating a linear history.
+Le rebasage rejoue vos commits au-dessus d'une autre branche, creant un historique lineaire.
 
-**Golden rule**: Never rebase commits that have been pushed to a shared branch.
+**Regle d'or** : ne jamais rebaser des commits qui ont ete pousses sur une branche partagee.
 
-## Working with Remotes
+## Travailler avec des depots distants
 
 ```bash
-# Add remote
+# Ajouter un depot distant
 git remote add origin https://gitlab.insa-rennes.fr/user/repo.git
-git remote -v                      # List remotes
+git remote -v                      # Lister les depots distants
 
-# Push
-git push origin main               # Push main branch
-git push -u origin feature         # Push and set upstream (-u = first time)
-git push                           # Push to tracked remote
+# Pousser
+git push origin main               # Pousser la branche main
+git push -u origin feature         # Pousser et definir l'upstream (-u = premiere fois)
+git push                           # Pousser vers le distant suivi
 
-# Fetch and Pull
-git fetch origin                   # Download changes (don't merge)
+# Recuperer et tirer
+git fetch origin                   # Telecharger les modifications (sans fusionner)
 git pull origin main               # Fetch + merge
 git pull --rebase origin main      # Fetch + rebase
 
-# Tracking
-git branch -u origin/main         # Set upstream branch
-git branch -vv                     # Show tracking info
+# Suivi
+git branch -u origin/main         # Definir la branche upstream
+git branch -vv                     # Afficher les informations de suivi
 ```
 
-## Undoing Changes
+## Annuler des modifications
 
-### Working Directory
+### Repertoire de travail
 ```bash
-git checkout -- file.txt           # Discard changes to file
-git restore file.txt               # Modern equivalent
+git checkout -- file.txt           # Annuler les modifications d'un fichier
+git restore file.txt               # Equivalent moderne
 ```
 
-### Staging Area
+### Zone de staging
 ```bash
-git reset HEAD file.txt            # Unstage file (keep changes)
-git restore --staged file.txt      # Modern equivalent
+git reset HEAD file.txt            # Desindexer un fichier (garder les modifications)
+git restore --staged file.txt      # Equivalent moderne
 ```
 
 ### Commits
 ```bash
-# Amend last commit (change message or add files)
+# Modifier le dernier commit (changer le message ou ajouter des fichiers)
 git commit --amend -m "New message"
 git add forgotten-file.txt
 git commit --amend --no-edit
 
-# Undo last commit, keep changes staged
+# Annuler le dernier commit, garder les modifications indexees
 git reset --soft HEAD~1
 
-# Undo last commit, keep changes in working dir
-git reset HEAD~1                   # Same as --mixed
+# Annuler le dernier commit, garder les modifications dans le repertoire de travail
+git reset HEAD~1                   # Equivalent a --mixed
 
-# Undo last commit, discard all changes
-git reset --hard HEAD~1            # DANGEROUS: destroys changes!
+# Annuler le dernier commit, supprimer toutes les modifications
+git reset --hard HEAD~1            # DANGEREUX : detruit les modifications !
 
-# Create a new commit that undoes a previous commit (safe)
+# Creer un nouveau commit qui annule un commit precedent (sur)
 git revert commit-hash
 ```
 
-### Reset Types
+### Types de reset
 
-| Type | Working Dir | Staging | Commit |
-|------|-------------|---------|--------|
-| `--soft` | Unchanged | Unchanged | Removed |
-| `--mixed` (default) | Unchanged | Reset | Removed |
-| `--hard` | Reset | Reset | Removed |
+| Type | Repertoire de travail | Staging | Commit |
+|------|----------------------|---------|--------|
+| `--soft` | Inchange | Inchange | Supprime |
+| `--mixed` (par defaut) | Inchange | Reinitialise | Supprime |
+| `--hard` | Reinitialise | Reinitialise | Supprime |
 
-## Stashing
+## Remisage (stash)
 
 ```bash
-git stash                          # Save changes temporarily
-git stash list                     # List stashes
-git stash pop                      # Apply and remove last stash
-git stash apply                    # Apply but keep stash
-git stash drop                     # Remove last stash
+git stash                          # Sauvegarder temporairement les modifications
+git stash list                     # Lister les remises
+git stash pop                      # Appliquer et supprimer la derniere remise
+git stash apply                    # Appliquer mais garder la remise
+git stash drop                     # Supprimer la derniere remise
 ```
 
 ## .gitignore
 
-Create a `.gitignore` file to exclude files from tracking:
+Creer un fichier `.gitignore` pour exclure des fichiers du suivi :
 
 ```
-# Compiled files
+# Fichiers compiles
 *.o
 *.exe
 *.out
 
-# IDE files
+# Fichiers IDE
 .vscode/
 .idea/
 
-# Build directories
+# Repertoires de construction
 build/
 bin/
 
-# System files
+# Fichiers systeme
 .DS_Store
 Thumbs.db
 
-# Temporary files
+# Fichiers temporaires
 *.tmp
 *.log
 ```
 
-## Common Workflows
+## Flux de travail courants
 
-### Feature Branch Workflow
+### Flux de travail avec branche de fonctionnalite
 ```bash
-git checkout -b feature-x          # Create feature branch
-# ... make changes ...
+git checkout -b feature-x          # Creer la branche de fonctionnalite
+# ... faire des modifications ...
 git add .
 git commit -m "Implement feature X"
-git checkout main                  # Switch to main
-git pull origin main               # Get latest changes
-git merge feature-x                # Merge feature
-git push origin main               # Push to remote
-git branch -d feature-x            # Clean up branch
+git checkout main                  # Basculer sur main
+git pull origin main               # Recuperer les dernieres modifications
+git merge feature-x                # Fusionner la fonctionnalite
+git push origin main               # Pousser vers le distant
+git branch -d feature-x            # Nettoyer la branche
 ```
 
-### Collaborative Workflow (GitLab)
+### Flux de travail collaboratif (GitLab)
 ```bash
 git clone https://gitlab.../repo.git
 git checkout -b my-feature
-# ... make changes ...
+# ... faire des modifications ...
 git add .
 git commit -m "Add my feature"
 git push -u origin my-feature
-# Create merge request on GitLab
+# Creer une merge request sur GitLab
 ```
 
-### Fixing Mistakes
+### Corriger des erreurs
 ```bash
-# Wrong commit message
+# Mauvais message de commit
 git commit --amend -m "Correct message"
 
-# Committed to wrong branch
-git log --oneline -1                # Note the commit hash
-git reset --soft HEAD~1             # Undo commit
-git stash                           # Stash changes
+# Commit sur la mauvaise branche
+git log --oneline -1                # Noter le hash du commit
+git reset --soft HEAD~1             # Annuler le commit
+git stash                           # Remiser les modifications
 git checkout correct-branch
-git stash pop                       # Apply changes here
+git stash pop                       # Appliquer les modifications ici
 git commit -m "Message"
 
-# Accidentally deleted file
+# Fichier supprime accidentellement
 git checkout -- deleted-file.txt
 ```
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### Setup
+### Configuration
 ```
-git init                    Create repo
-git clone <url>             Clone repo
+git init                    Creer un depot
+git clone <url>             Cloner un depot
 git config --global user.name "Name"
 ```
 
-### Daily Workflow
+### Flux de travail quotidien
 ```
-git status                  Check status
-git add <file>              Stage file
-git commit -m "msg"         Commit
-git push                    Push to remote
-git pull                    Fetch + merge
-```
-
-### Branching
-```
-git branch                  List branches
-git checkout -b <name>      Create + switch
-git merge <branch>          Merge into current
-git branch -d <name>        Delete branch
+git status                  Verifier l'etat
+git add <file>              Indexer un fichier
+git commit -m "msg"         Valider
+git push                    Pousser vers le distant
+git pull                    Recuperer + fusionner
 ```
 
-### History
+### Branchement
 ```
-git log --oneline --graph   Visual history
-git diff                    Unstaged changes
-git diff --staged           Staged changes
-git show <hash>             Show commit
-```
-
-### Undo
-```
-git checkout -- <file>      Discard file changes
-git reset HEAD <file>       Unstage file
-git reset --soft HEAD~1     Undo commit (keep staged)
-git revert <hash>           Undo commit (safe, new commit)
-git stash / git stash pop   Temporary save
+git branch                  Lister les branches
+git checkout -b <name>      Creer + basculer
+git merge <branch>          Fusionner dans la branche courante
+git branch -d <name>        Supprimer une branche
 ```
 
-### Remote
+### Historique
 ```
-git remote add origin <url> Add remote
-git push -u origin <branch> First push
-git fetch                   Download only
-git pull                    Download + merge
+git log --oneline --graph   Historique visuel
+git diff                    Modifications non indexees
+git diff --staged           Modifications indexees
+git show <hash>             Afficher un commit
+```
+
+### Annuler
+```
+git checkout -- <file>      Annuler les modifications d'un fichier
+git reset HEAD <file>       Desindexer un fichier
+git reset --soft HEAD~1     Annuler le commit (garder indexe)
+git revert <hash>           Annuler le commit (sur, nouveau commit)
+git stash / git stash pop   Sauvegarde temporaire
+```
+
+### Distant
+```
+git remote add origin <url> Ajouter un distant
+git push -u origin <branch> Premier push
+git fetch                   Telecharger uniquement
+git pull                    Telecharger + fusionner
 ```

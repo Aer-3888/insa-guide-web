@@ -85,7 +85,7 @@ Present dans la majorite des annales recentes.
 
 ---
 
-## Checklist de revision
+## Liste de verification pour la revision
 
 ### Calcul propositionnel
 - [ ] Tables de verite : savoir les construire rapidement
@@ -115,7 +115,7 @@ Present dans la majorite des annales recentes.
 - [ ] ∃ precede de ∀y1,...,∀yn : fonction de Skolem f(y1,...,yn)
 
 ### Unification
-- [ ] Test d'occurrence (occur check)
+- [ ] Test d'occurrence
 - [ ] Appliquer σ entre chaque etape
 - [ ] MGU = minimum de specialisation
 

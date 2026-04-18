@@ -34,8 +34,8 @@ URL action sensible sans token       --> CSRF
 **Format** : on donne une requete PHP/SQL, on demande un payload.
 
 **Reponses standard** :
-- Bypass connu : `admin'--`
-- Bypass inconnu : `' OR 1=1--`
+- Contournement (login connu) : `admin'--`
+- Contournement (login inconnu) : `' OR 1=1--`
 - Sans commentaire : `' OR 'a'='a`
 
 **Question complementaire frequente** : "Que peut-on dire du stockage des mots de passe ?" --> En clair si la comparaison est directe dans SQL.

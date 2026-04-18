@@ -1,72 +1,71 @@
 ---
-title: "TP05 - Hash Tables and Dictionaries"
+title: "TP05 - Tables de Hachage et Dictionnaire"
 sidebar_position: 5
 ---
 
-# TP05 - Hash Tables and Dictionaries
+# TP05 - Tables de Hachage et Dictionnaire
 
-## Objective
+## Objectif
 
-Implement a **bilingual dictionary** using hash tables to achieve O(1) average lookup time.
+Implementer un **dictionnaire bilingue** en utilisant des tables de hachage pour atteindre un temps de recherche O(1) en moyenne.
 
-## Domain Model
+## Modele du domaine
 
-### `Word` - Dictionary Word
+### `Word` - Mot du dictionnaire
 
 ```java
 public class Word {
-    private String text;
-    private String language;
+    private final String word;
     
-    public Word(String text, String lang) {
-        this.text = text;
-        this.language = lang;
-    }
-    
-    @Override
-    public int hashCode() {
-        // Custom hash function (see below)
+    public Word(String s) {
+        if (s == null || s.equals(""))
+            throw new IllegalArgumentException();
+        this.word = s.toLowerCase();
     }
     
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Word)) return false;
-        Word w = (Word) o;
-        return text.equals(w.text) && language.equals(w.language);
+        if (o == null || o.getClass() != this.getClass()) return false;
+        Word wo = (Word) o;
+        return wo.word.equals(this.word);
+    }
+    
+    @Override
+    public int hashCode() {
+        if (this.word.length() > 2)
+            return this.word.charAt(0) * 26 + this.word.charAt(1);
+        else
+            return this.word.charAt(0) * 26;
     }
 }
 ```
 
-### `Couple` - Translation Pair
+### `Couple` - Paire de traduction
 
 ```java
 public class Couple {
-    private Word source;
-    private Word translation;
+    private final Word mot;
+    private final Word traduction;
     
-    public Couple(Word src, Word trans) {
-        this.source = src;
-        this.translation = trans;
+    public Couple(Word m1, Word m2) {
+        this.mot = m1;
+        this.traduction = m2;
     }
     
-    // Check if this couple contains given word, return its translation
     public Word compCoupleMot(Word w) {
-        if (source.equals(w)) return translation;
-        if (translation.equals(w)) return source;
+        if (w.equals(this.mot)) return this.traduction;
         return null;
     }
 }
 ```
 
-### `TableCouples` - Dictionary
+### `TableCouples` - Dictionnaire
 
 ```java
 public class TableCouples {
-    private List<Couple>[] lists;  // Array of collision chains
+    private final List<Couple>[] lists;
     
     public TableCouples() {
-        // Size formula: 256 * 26 + 256 = 6912 slots
-        // (covers letter combinations + single chars)
         this.lists = new ArrayList[256 * 26 + 256];
     }
     
@@ -75,385 +74,132 @@ public class TableCouples {
 }
 ```
 
-## Hash Function Design
+## Conception de la fonction de hachage
 
-### Goals of a Good Hash Function
+### Objectifs d'une bonne fonction de hachage
 
-1. **Uniform distribution**: Spread keys evenly across table
-2. **Deterministic**: Same input always gives same hash
-3. **Fast to compute**: O(1) time
-4. **Minimize collisions**: Different inputs rarely collide
+1. **Distribution uniforme** : Repartir les cles uniformement dans la table
+2. **Deterministe** : La meme entree donne toujours le meme hash
+3. **Rapide a calculer** : O(1) en temps
+4. **Minimiser les collisions** : Des entrees differentes collisionnent rarement
 
-### Implementation for `Word`
+### Implementation pour `Word`
 
-```java
-@Override
-public int hashCode() {
-    int hash = 0;
-    String key = text + language;  // Combine text and language
-    
-    for (int i = 0; i < Math.min(key.length(), 2); i++) {
-        hash = hash * 31 + key.charAt(i);
-    }
-    
-    return Math.abs(hash) % (256 * 26 + 256);
-}
-```
-
-**Explanation:**
-- Use first 2 characters of combined string
-- Multiply by prime (31) for better distribution
-- Modulo by table size to fit in array bounds
-- `Math.abs()` handles negative hashes
-
-### Alternative: Java's Default
-
-```java
-@Override
-public int hashCode() {
-    return Objects.hash(text, language);
-}
-```
-
-Java's `Objects.hash()` provides good default distribution.
+La fonction de hachage utilise `premier_char * 26 + deuxieme_char`. Cela mappe chaque prefixe de deux lettres a un bucket unique. La taille de la table est `256 * 26 + 256 = 6912`, couvrant toutes les combinaisons possibles de deux caracteres.
 
 ## Implementation
 
-### Add Translation
+### Ajouter une traduction
 
 ```java
 public boolean ajouter(Word w, Word t) {
-    if (w == null || t == null) {
-        throw new IllegalArgumentException("Words cannot be null");
-    }
-    
     int hashcode = w.hashCode();
     
-    // Initialize chain if needed
-    if (this.lists[hashcode] == null) {
+    if (this.lists[hashcode] == null)
         this.lists[hashcode] = new ArrayList<>();
-    }
     
-    Couple newCouple = new Couple(w, t);
+    Couple new_couple = new Couple(w, t);
     
-    // Check if word already exists, update translation
+    // Verifier si le mot existe deja -- mettre a jour
     for (int idx = 0; idx < this.lists[hashcode].size(); idx++) {
-        Word oldTranslation = this.lists[hashcode].get(idx).compCoupleMot(w);
-        if (oldTranslation != null) {
-            this.lists[hashcode].set(idx, newCouple);
-            return !oldTranslation.equals(t);  // true if translation changed
+        Word old = this.lists[hashcode].get(idx).compCoupleMot(w);
+        if (old != null) {
+            this.lists[hashcode].set(idx, new_couple);
+            return !old.equals(t);
         }
     }
     
-    // Word doesn't exist, add new entry
-    return this.lists[hashcode].add(newCouple);
+    return this.lists[hashcode].add(new_couple);
 }
 ```
 
-**Complexity:**
-- Hash computation: O(1)
-- Find in chain: O(k) where k = chain length (typically small)
-- **Average**: O(1) with good hash function
+**Complexite :** Calcul du hash O(1), recherche dans la chaine O(k) ou k = longueur de la chaine. **Moyenne** : O(1) avec une bonne fonction de hachage.
 
-### Translate Word
+### Traduire un mot
 
 ```java
+// Version NAIVE (O(n) -- parcourt tout) :
 public Word traduire(Word w) {
-    // Linear search through all chains (inefficient!)
     for (List<Couple> lst : this.lists) {
         if (lst == null) continue;
         for (Couple attempt : lst) {
             Word answer = attempt.compCoupleMot(w);
-            if (answer != null) {
-                return answer;
-            }
+            if (answer != null) return answer;
         }
     }
     return null;
 }
-```
 
-**Problem**: This implementation searches ALL chains, not just the correct one!
-
-**Optimized version:**
-
-```java
+// Version OPTIMISEE (O(1) en moyenne) :
 public Word traduire(Word w) {
     int hashcode = w.hashCode();
     List<Couple> chain = this.lists[hashcode];
-    
     if (chain == null) return null;
-    
     for (Couple c : chain) {
         Word translation = c.compCoupleMot(w);
-        if (translation != null) {
-            return translation;
-        }
+        if (translation != null) return translation;
     }
-    
     return null;
 }
 ```
 
-**Complexity:** O(1) average, O(k) worst case (k = chain length)
+**Probleme** : La version naive recherche dans TOUTES les chaines, pas seulement la bonne.
 
-## Collision Handling: Chaining
+## Gestion des collisions : Chainage
 
-When multiple keys hash to the same index, store them in a **linked list** (or `ArrayList`):
+Quand plusieurs cles hashent au meme index, les stocker dans une **liste chainee** :
 
 ```
-Index:  Value:
+Index :  Valeur :
 [0]  -> null
 [1]  -> [("hello","bonjour")] -> [("hi","salut")] -> null
 [2]  -> null
 [3]  -> [("bye","au revoir")] -> null
 ```
 
-### Load Factor
+### Facteur de charge
 
-**Load factor α = n / m** where:
-- n = number of entries
-- m = table size
+**Facteur de charge alpha = n / m** ou :
+- n = nombre d'entrees
+- m = taille de la table
 
-- α < 0.7: Good performance
-- α > 0.9: Many collisions, consider resizing
-- α > 1: More entries than slots (chaining required)
+- alpha < 0.7 : Bonne performance
+- alpha > 0.9 : Beaucoup de collisions, envisager le redimensionnement
 
-### Dynamic Resizing
+### Redimensionnement dynamique
 
-```java
-private void resize() {
-    List<Couple>[] oldLists = this.lists;
-    int newSize = lists.length * 2;
-    this.lists = new ArrayList[newSize];
-    
-    // Rehash all entries
-    for (List<Couple> chain : oldLists) {
-        if (chain == null) continue;
-        for (Couple c : chain) {
-            // Re-add with new hash (due to new table size)
-            ajouter(c.getSource(), c.getTranslation());
-        }
-    }
-}
+Quand le facteur de charge depasse le seuil, creer une table 2x plus grande et rehacher toutes les entrees.
 
-public boolean ajouter(Word w, Word t) {
-    // Check load factor
-    if ((double) numEntries / lists.length > 0.75) {
-        resize();
-    }
-    
-    // ... rest of add logic
-}
-```
+## Analyse de performance
 
-## Usage Example
+### Complexite temporelle
 
-```java
-TableCouples dict = new TableCouples();
+| Operation | Moyenne | Pire cas | Notes |
+|-----------|---------|----------|-------|
+| Ajouter | O(1) | O(n) | Pire : toutes les cles collisionnent |
+| Traduire | O(1) | O(n) | Pire : longue chaine |
+| Mettre a jour | O(1) | O(n) | Identique a ajouter |
 
-// Add English -> French translations
-dict.ajouter(new Word("hello", "en"), new Word("bonjour", "fr"));
-dict.ajouter(new Word("goodbye", "en"), new Word("au revoir", "fr"));
-dict.ajouter(new Word("cat", "en"), new Word("chat", "fr"));
-dict.ajouter(new Word("dog", "en"), new Word("chien", "fr"));
+### Comparaison avec d'autres structures
 
-// Translate English to French
-Word translation = dict.traduire(new Word("hello", "en"));
-System.out.println(translation.getText());  // "bonjour"
-
-// Translate French to English (bidirectional)
-Word reverse = dict.traduire(new Word("chat", "fr"));
-System.out.println(reverse.getText());  // "cat"
-
-// Update translation
-dict.ajouter(new Word("hello", "en"), new Word("salut", "fr"));
-// Now "hello" translates to "salut" instead of "bonjour"
-
-// Unknown word
-Word unknown = dict.traduire(new Word("computer", "en"));
-System.out.println(unknown);  // null
-```
-
-## Performance Analysis
-
-### Time Complexity
-
-| Operation | Average | Worst Case | Notes |
-|-----------|---------|------------|-------|
-| Add | O(1) | O(n) | Worst: all keys collide |
-| Translate | O(1) | O(n) | Worst: long chain |
-| Update | O(1) | O(n) | Same as add |
-
-### Space Complexity
-
-O(n + m) where:
-- n = number of entries
-- m = table size
-
-**Trade-off**: Larger m = fewer collisions but more memory
-
-### Comparison with Other Structures
-
-| Structure | Search | Insert | Delete | Ordered? |
+| Structure | Recherche | Insertion | Suppression | Ordonnee ? |
 |-----------|--------|--------|--------|----------|
-| Array (unsorted) | O(n) | O(1) | O(n) | No |
-| Array (sorted) | O(log n) | O(n) | O(n) | Yes |
-| Linked List | O(n) | O(1) | O(n) | No |
-| **Hash Table** | **O(1)** | **O(1)** | **O(1)** | **No** |
-| BST | O(log n) | O(log n) | O(log n) | Yes |
+| Tableau (non trie) | O(n) | O(1) | O(n) | Non |
+| Tableau (trie) | O(log n) | O(n) | O(n) | Oui |
+| Liste chainee | O(n) | O(1) | O(n) | Non |
+| **Table de hachage** | **O(1)** | **O(1)** | **O(1)** | **Non** |
+| ABR | O(log n) | O(log n) | O(log n) | Oui |
 
-Hash tables win for **fast lookup**, but don't maintain order.
+Les tables de hachage gagnent pour la **recherche rapide**, mais ne maintiennent pas d'ordre.
 
-## Testing
+## Pieges courants
 
-```java
-@Test
-public void testAddAndTranslate() {
-    TableCouples dict = new TableCouples();
-    Word en = new Word("hello", "en");
-    Word fr = new Word("bonjour", "fr");
-    
-    dict.ajouter(en, fr);
-    
-    Word translated = dict.traduire(en);
-    assertEquals("bonjour", translated.getText());
-    assertEquals("fr", translated.getLanguage());
-}
+1. **Mauvaise fonction de hachage** : Cause de nombreuses collisions
+2. **Oublier de redefinir `equals()`** : La table de hachage a besoin des deux
+3. **Ne pas gerer null** : Cause des `NullPointerException`
+4. **Chercher dans toutes les chaines** : Annule l'interet du hachage
 
-@Test
-public void testBidirectional() {
-    TableCouples dict = new TableCouples();
-    Word en = new Word("cat", "en");
-    Word fr = new Word("chat", "fr");
-    
-    dict.ajouter(en, fr);
-    
-    assertEquals("chat", dict.traduire(en).getText());
-    assertEquals("cat", dict.traduire(fr).getText());
-}
+## Voir aussi
 
-@Test
-public void testUpdateTranslation() {
-    TableCouples dict = new TableCouples();
-    Word en = new Word("hello", "en");
-    Word fr1 = new Word("bonjour", "fr");
-    Word fr2 = new Word("salut", "fr");
-    
-    dict.ajouter(en, fr1);
-    dict.ajouter(en, fr2);  // Update
-    
-    Word translated = dict.traduire(en);
-    assertEquals("salut", translated.getText());
-}
-
-@Test
-public void testCollisions() {
-    // Add words that hash to same index
-    // Verify both can be retrieved correctly
-}
-```
-
-## Extensions
-
-### 1. Multiple Translations
-
-Some words have multiple translations:
-
-```java
-public class TableCouples {
-    private Map<Word, List<Word>> translations;
-    
-    public void ajouter(Word w, Word t) {
-        translations.computeIfAbsent(w, k -> new ArrayList<>()).add(t);
-    }
-    
-    public List<Word> traduireAll(Word w) {
-        return translations.getOrDefault(w, Collections.emptyList());
-    }
-}
-```
-
-### 2. Context-Aware Translation
-
-```java
-public Word traduire(Word w, String context) {
-    List<Word> candidates = traduireAll(w);
-    return candidates.stream()
-        .filter(t -> t.getContext().equals(context))
-        .findFirst()
-        .orElse(null);
-}
-```
-
-### 3. Fuzzy Matching
-
-```java
-public List<Word> findSimilar(Word w) {
-    // Use edit distance (Levenshtein)
-    // Return words within distance threshold
-}
-```
-
-### 4. Statistics
-
-```java
-public Map<String, Integer> getLanguageStats() {
-    Map<String, Integer> stats = new HashMap<>();
-    for (List<Couple> chain : lists) {
-        if (chain == null) continue;
-        for (Couple c : chain) {
-            String lang = c.getSource().getLanguage();
-            stats.put(lang, stats.getOrDefault(lang, 0) + 1);
-        }
-    }
-    return stats;
-}
-```
-
-## Common Pitfalls
-
-1. **Poor hash function**: Causes many collisions
-   ```java
-   // BAD: Always returns same hash
-   public int hashCode() { return 0; }
-   
-   // GOOD: Distributes well
-   public int hashCode() { return Objects.hash(text, language); }
-   ```
-
-2. **Forgetting to override `equals()`**: Hash table needs both
-   ```java
-   @Override
-   public boolean equals(Object o) {
-       // Must implement!
-   }
-   ```
-
-3. **Not handling null**: Causes `NullPointerException`
-   ```java
-   public boolean ajouter(Word w, Word t) {
-       if (w == null || t == null) {
-           throw new IllegalArgumentException();
-       }
-       // ...
-   }
-   ```
-
-4. **Searching all chains**: Defeats purpose of hashing
-   ```java
-   // BAD: O(n) search
-   for (List<Couple> chain : lists) {
-       // search all...
-   }
-   
-   // GOOD: O(1) direct access
-   List<Couple> chain = lists[w.hashCode()];
-   ```
-
-## See Also
-
-- **TP04**: Hash tables for scheduling
+- **TP04** : Tables de hachage pour la planification
 - [Java HashMap](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)
-- [Hash Function Design](https://en.wikipedia.org/wiki/Hash_function)
-- [Load Factor & Rehashing](https://en.wikipedia.org/wiki/Hash_table#Key_statistics)

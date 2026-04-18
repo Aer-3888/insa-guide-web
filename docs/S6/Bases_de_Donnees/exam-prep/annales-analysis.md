@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Analyse des Annales -- Bases de Donnees (2013-2024)
 
-> Analyse de 9 annees de sujets pour identifier les patterns et exercices recurrents.
+> Analyse de 9 annees de sujets pour identifier les motifs et exercices recurrents.
 
 ---
 

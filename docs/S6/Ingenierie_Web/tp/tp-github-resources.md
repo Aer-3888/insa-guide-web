@@ -1,17 +1,17 @@
 ---
-title: "BDWEB: Web Engineering part"
+title: "BDWEB : Partie Ingenierie Web"
 sidebar_position: 6
 ---
 
 
-# BDWEB: Web Engineering part
+# BDWEB : Partie Ingenierie Web
 
-## Layout
+## Organisation
 
-[`tp-spring`](tp-spring) contains the base sources for the practical sessions. One subject for all the sessions.
+[`tp-spring`](tp-spring) contient les sources de base pour les travaux pratiques. Un seul sujet pour toutes les seances.
 
-[`rest/springboot2`](rest/springboot2) contains the source code used in the course about REST APIs using Spring Boot.
+[`rest/springboot2`](rest/springboot2) contient le code source utilise dans le cours sur les API REST avec Spring Boot.
 
-[`json`](json) contains the code used in the course to handle JSON documents in Java and JS.
+[`json`](json) contient le code utilise dans le cours pour manipuler des documents JSON en Java et JS.
 
-[`xml`](xml) contains the code used in the course to handle XML documents in Java and JS.
+[`xml`](xml) contient le code utilise dans le cours pour manipuler des documents XML en Java et JS.

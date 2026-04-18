@@ -1,105 +1,105 @@
 ---
-title: "Chapter 1 -- Combinational Logic"
+title: "Chapitre 1 -- Logique combinatoire"
 sidebar_position: 3
 ---
 
-# Chapter 1 -- Combinational Logic
+# Chapitre 1 -- Logique combinatoire
 
-## 1.1 Foundations
+## 1.1 Fondements
 
-A **combinational circuit** is one whose outputs depend only on the current inputs -- there is no memory, no clock, and no feedback. The output is a pure function of the inputs.
+Un **circuit combinatoire** est un circuit dont les sorties dependent uniquement des entrees actuelles -- il n'y a ni memoire, ni horloge, ni boucle de retour. La sortie est une fonction pure des entrees.
 
-### Logic Gates
+### Portes logiques
 
-| Gate | Symbol | Boolean | Truth Table (2 inputs) |
-|------|--------|---------|----------------------|
-| AND | A . B | A AND B | 0,0->0; 0,1->0; 1,0->0; 1,1->1 |
-| OR | A + B | A OR B | 0,0->0; 0,1->1; 1,0->1; 1,1->1 |
-| NOT | /A | NOT A | 0->1; 1->0 |
-| NAND | /(A.B) | NOT(A AND B) | 0,0->1; 0,1->1; 1,0->1; 1,1->0 |
-| NOR | /(A+B) | NOT(A OR B) | 0,0->1; 0,1->0; 1,0->0; 1,1->0 |
-| XOR | A (+) B | A XOR B | 0,0->0; 0,1->1; 1,0->1; 1,1->0 |
-| XNOR | /(A(+)B) | A XNOR B | 0,0->1; 0,1->0; 1,0->0; 1,1->1 |
+| Porte | Symbole | Booleenne | Table de verite (2 entrees) |
+|-------|---------|-----------|---------------------------|
+| ET | A . B | A AND B | 0,0->0; 0,1->0; 1,0->0; 1,1->1 |
+| OU | A + B | A OR B | 0,0->0; 0,1->1; 1,0->1; 1,1->1 |
+| NON | /A | NOT A | 0->1; 1->0 |
+| NON-ET | /(A.B) | NOT(A AND B) | 0,0->1; 0,1->1; 1,0->1; 1,1->0 |
+| NON-OU | /(A+B) | NOT(A OR B) | 0,0->1; 0,1->0; 1,0->0; 1,1->0 |
+| OU-X | A (+) B | A XOR B | 0,0->0; 0,1->1; 1,0->1; 1,1->0 |
+| NON-OU-X | /(A(+)B) | A XNOR B | 0,0->1; 0,1->0; 1,0->0; 1,1->1 |
 
-**Universality**: NAND and NOR are each functionally complete -- any Boolean function can be built using only NAND gates (or only NOR gates).
+**Universalite** : Les portes NON-ET et NON-OU sont chacune fonctionnellement completes -- toute fonction booleenne peut etre construite en utilisant uniquement des portes NON-ET (ou uniquement des portes NON-OU).
 
 ---
 
-## 1.2 Boolean Algebra
+## 1.2 Algebre de Boole
 
-### Fundamental Laws
+### Lois fondamentales
 
-| Law | AND form | OR form |
-|-----|----------|---------|
-| Identity | A . 1 = A | A + 0 = A |
-| Null | A . 0 = 0 | A + 1 = 1 |
-| Idempotent | A . A = A | A + A = A |
+| Loi | Forme ET | Forme OU |
+|-----|----------|----------|
+| Identite | A . 1 = A | A + 0 = A |
+| Element nul | A . 0 = 0 | A + 1 = 1 |
+| Idempotence | A . A = A | A + A = A |
 | Complement | A . /A = 0 | A + /A = 1 |
-| Commutative | A . B = B . A | A + B = B + A |
-| Associative | (A.B).C = A.(B.C) | (A+B)+C = A+(B+C) |
-| Distributive | A.(B+C) = A.B+A.C | A+(B.C) = (A+B).(A+C) |
+| Commutativite | A . B = B . A | A + B = B + A |
+| Associativite | (A.B).C = A.(B.C) | (A+B)+C = A+(B+C) |
+| Distributivite | A.(B+C) = A.B+A.C | A+(B.C) = (A+B).(A+C) |
 | Absorption | A.(A+B) = A | A+A.B = A |
 
-### De Morgan's Laws
+### Lois de De Morgan
 
-These are critical and used constantly:
+Ces lois sont essentielles et utilisees en permanence :
 
 ```
-/(A . B) = /A + /B        (NOT of AND = OR of NOTs)
-/(A + B) = /A . /B        (NOT of OR = AND of NOTs)
+/(A . B) = /A + /B        (NON du ET = OU des NON)
+/(A + B) = /A . /B        (NON du OU = ET des NON)
 ```
 
-**Generalized**: For n variables:
+**Generalisation** : Pour n variables :
 ```
 /(A1 . A2 . ... . An) = /A1 + /A2 + ... + /An
 /(A1 + A2 + ... + An) = /A1 . /A2 . ... . /An
 ```
 
-### Worked Example (from TD1)
+### Exemple detaille (du TD1)
 
-**Prove**: /(A./B + /A.B) = /A./B + A.B
+**Prouver** : /(A./B + /A.B) = /A./B + A.B
 
-**Solution using De Morgan**:
+**Solution avec De Morgan** :
 ```
 /(A./B + /A.B)
-= /(A./B) . /(/A.B)           -- De Morgan on OR
-= (/A + B) . (A + /B)         -- De Morgan on each AND
-= /A.A + B.A + /A./B + B./B   -- Distribute
-= 0 + A.B + /A./B + 0         -- Complement law
-= /A./B + A.B                  -- QED
+= /(A./B) . /(/A.B)           -- De Morgan sur le OU
+= (/A + B) . (A + /B)         -- De Morgan sur chaque ET
+= /A.A + B.A + /A./B + B./B   -- Distribution
+= 0 + A.B + /A./B + 0         -- Loi du complement
+= /A./B + A.B                  -- CQFD
 ```
 
-This result is important: the negation of XOR is XNOR (same values = 1).
+Ce resultat est important : la negation du XOR est le XNOR (memes valeurs = 1).
 
-### Another Example (from TD1)
+### Autre exemple (du TD1)
 
-**Prove**: A.B + A.C.D + /B.D = A.B + /B.D
+**Prouver** : A.B + A.C.D + /B.D = A.B + /B.D
 
-**Strategy**: Expand A.B to cover all cases where A.B is true regardless of C and D, show that A.C.D is already included.
+**Strategie** : Etendre A.B pour couvrir tous les cas ou A.B est vrai quelle que soit la valeur de C et D, montrer que A.C.D est deja inclus.
 
 ```
 A.B = A.B.(C+/C).(D+/D) = A.B./C./D + A.B.C./D + A.B./C.D + A.B.C.D
 ```
 
-A.C.D with A=1 expands to A./B.C.D + A.B.C.D. The A.B.C.D term is already in A.B's expansion. The A./B.C.D term is covered by /B.D. Therefore A.C.D adds nothing new, and A.B + /B.D is the minimal form.
+A.C.D avec A=1 se developpe en A./B.C.D + A.B.C.D. Le terme A.B.C.D est deja dans le developpement de A.B. Le terme A./B.C.D est couvert par /B.D. Donc A.C.D n'apporte rien de nouveau, et A.B + /B.D est la forme minimale.
 
 ---
 
-## 1.3 Truth Tables and Canonical Forms
+## 1.3 Tables de verite et formes canoniques
 
-### Minterms and Maxterms
+### Mintermes et maxtermes
 
-For n input variables, there are 2^n possible input combinations.
+Pour n variables d'entree, il y a 2^n combinaisons d'entrees possibles.
 
-- **Minterm**: A product (AND) term where every variable appears exactly once (complemented or not). Each minterm equals 1 for exactly one row of the truth table.
-- **Maxterm**: A sum (OR) term where every variable appears exactly once. Each maxterm equals 0 for exactly one row.
+- **Minterme** : Un terme produit (ET) ou chaque variable apparait exactement une fois (complementee ou non). Chaque minterme vaut 1 pour exactement une ligne de la table de verite.
+- **Maxterme** : Un terme somme (OU) ou chaque variable apparait exactement une fois. Chaque maxterme vaut 0 pour exactement une ligne.
 
-**Sum of Minterms (SOP)**: F = sum of minterms where F=1
-**Product of Maxterms (POS)**: F = product of maxterms where F=0
+**Somme de mintermes (SOP)** : F = somme des mintermes ou F=1
+**Produit de maxtermes (POS)** : F = produit des maxtermes ou F=0
 
-### Example: S = 1 if N = 0, 3, 5, or 7 (N coded on 3 bits C,B,A)
+### Exemple : S = 1 si N = 0, 3, 5 ou 7 (N code sur 3 bits C,B,A)
 
-From TD2 Exercise 6:
+Du TD2 exercice 6 :
 
 | C | B | A | S |
 |---|---|---|---|
@@ -114,24 +114,24 @@ From TD2 Exercise 6:
 
 SOP = /C./B./A + /C.B.A + C./B.A + C.B.A
 
-Simplified: S = /A./B./C + A.(B + C)
+Simplification : S = /A./B./C + A.(B + C)
 
 ---
 
-## 1.4 Karnaugh Maps
+## 1.4 Tableaux de Karnaugh
 
-Karnaugh maps are a visual method for simplifying Boolean expressions. They work best for 2, 3, or 4 variables.
+Les tableaux de Karnaugh sont une methode visuelle de simplification des expressions booleennes. Ils fonctionnent mieux pour 2, 3 ou 4 variables.
 
-### Rules
+### Regles
 
-1. **Adjacent cells differ by exactly one variable** (Gray code ordering)
-2. **Group cells containing 1** into rectangles of size 1, 2, 4, 8, 16 (powers of 2)
-3. **Groups can wrap around** edges of the map
-4. **Each group eliminates variables** that change within it
-5. **Make groups as large as possible** to maximize simplification
-6. **Every 1 must be covered** by at least one group
+1. **Les cellules adjacentes different d'exactement une variable** (ordre du code de Gray)
+2. **Regrouper les cellules contenant 1** en rectangles de taille 1, 2, 4, 8, 16 (puissances de 2)
+3. **Les groupes peuvent s'enrouler** autour des bords du tableau
+4. **Chaque groupe elimine les variables** qui changent a l'interieur
+5. **Faire des groupes aussi grands que possible** pour maximiser la simplification
+6. **Chaque 1 doit etre couvert** par au moins un groupe
 
-### 2-Variable Map
+### Tableau a 2 variables
 
 ```
       B=0   B=1
@@ -139,7 +139,7 @@ A=0 | f(0,0) | f(0,1) |
 A=1 | f(1,0) | f(1,1) |
 ```
 
-### 3-Variable Map
+### Tableau a 3 variables
 
 ```
         BC=00  BC=01  BC=11  BC=10
@@ -147,9 +147,9 @@ A=0   |      |      |      |      |
 A=1   |      |      |      |      |
 ```
 
-Note: BC ordering is 00, 01, 11, 10 (Gray code, NOT binary order).
+Attention : l'ordre de BC est 00, 01, 11, 10 (code de Gray, PAS l'ordre binaire).
 
-### 4-Variable Map
+### Tableau a 4 variables
 
 ```
         CD=00  CD=01  CD=11  CD=10
@@ -159,9 +159,9 @@ AB=11 |      |      |      |      |
 AB=10 |      |      |      |      |
 ```
 
-### Worked Example: Binary to Gray Code Transcoder (from TD1)
+### Exemple detaille : Transcodeur binaire vers code de Gray (du TD1)
 
-For output bit b (given inputs A, B, C, D):
+Pour le bit de sortie b (entrees A, B, C, D) :
 
 ```
         CD=00  CD=01  CD=11  CD=10
@@ -171,86 +171,86 @@ AB=11 |  0   |  0   |  0   |  0   |
 AB=10 |  1   |  1   |  1   |  1   |
 ```
 
-The 1s form two horizontal bands. Grouping: b = /A.B + A./B = A XOR B
+Les 1 forment deux bandes horizontales. Regroupement : b = /A.B + A./B = A XOR B
 
-Complete transcoder results:
+Resultats complets du transcodeur :
 - a = A
 - b = A XOR B (= /A.B + A./B)
 - c = B XOR C (= /B.C + B./C)
 - d = C XOR D (= /C.D + C./D)
 
-**Key insight**: Gray code is generated by XORing adjacent bits of the binary input.
+**Point cle** : Le code de Gray est genere en faisant un XOR entre les bits adjacents de l'entree binaire.
 
-### Worked Example: Transistor Classification (from TD1)
+### Exemple detaille : Classification de transistors (du TD1)
 
-Inputs: F (frequency), B (bandwidth), G (gain), Z (impedance)
+Entrees : F (frequence), B (bande passante), G (gain), Z (impedance)
 
-C1 = F . (B.Z + B.G + Z.G) -- correct frequency + at least 2 of 3 others correct
+C1 = F . (B.Z + B.G + Z.G) -- frequence correcte + au moins 2 des 3 autres parametres corrects
 
-C2 = /F.B.G.Z + F.(/B./G + /B./Z + /G./Z) -- only freq wrong, or freq right but 2+ others wrong
+C2 = /F.B.G.Z + F.(/B./G + /B./Z + /G./Z) -- seule la frequence est fausse, ou frequence correcte mais 2+ autres faux
 
-C3 = /F . (/G + /B + /Z) -- freq wrong and at least one other wrong
-
----
-
-## 1.5 Combinational Building Blocks
-
-### Multiplexer (MUX)
-
-A multiplexer selects one of 2^n inputs based on n selection bits.
-
-**2-to-1 MUX**: Output = /S.I0 + S.I1
-**4-to-1 MUX**: Output = /S1./S0.I0 + /S1.S0.I1 + S1./S0.I2 + S1.S0.I3
-
-**Key property**: A 2^n-to-1 MUX can implement ANY function of n+1 variables. This makes multiplexers extremely powerful.
-
-From TD2 Exercise 6: To implement S(C,B,A) using a MUX, use C,B as selection inputs and wire A or /A or 0 or 1 to the data inputs based on the truth table.
-
-### Decoder
-
-A decoder activates exactly one of 2^n outputs based on n inputs.
-
-**3-to-8 decoder**: Input 101 activates output line 5.
-
-**Application**: Combined with OR gates, a decoder can implement any Boolean function. From TD2 Exercise 7, a VU-meter controller uses a decoder to activate LED segments based on input level.
-
-### Encoder
-
-The inverse of a decoder: given 2^n input lines (at most one active), outputs the n-bit binary code of the active line.
-
-### Adder
-
-**Half adder**: Sum = A XOR B, Carry = A AND B
-**Full adder**: Sum = A XOR B XOR Cin, Cout = A.B + (A XOR B).Cin
-**Ripple-carry adder**: Chain n full adders for n-bit addition
-
-From TD2 Exercise 3: A circuit computing X+Y, 2X+Y, or X+2Y uses adders with shift operations (multiplying by 2 = left shift by 1).
+C3 = /F . (/G + /B + /Z) -- frequence fausse et au moins un autre parametre faux
 
 ---
 
-## 1.6 Number Systems
+## 1.5 Blocs combinatoires de base
 
-### Binary, Octal, Hexadecimal Conversions (from TD2)
+### Multiplexeur (MUX)
 
-| Binary | Decimal | Hex | Octal |
-|--------|---------|-----|-------|
+Un multiplexeur selectionne une de ses 2^n entrees en fonction de n bits de selection.
+
+**MUX 2 vers 1** : Sortie = /S.I0 + S.I1
+**MUX 4 vers 1** : Sortie = /S1./S0.I0 + /S1.S0.I1 + S1./S0.I2 + S1.S0.I3
+
+**Propriete cle** : Un MUX 2^n vers 1 peut implementer N'IMPORTE QUELLE fonction de n+1 variables. Cela rend les multiplexeurs extremement puissants.
+
+Du TD2 exercice 6 : Pour implementer S(C,B,A) avec un MUX, utiliser C,B comme entrees de selection et connecter A ou /A ou 0 ou 1 aux entrees de donnees selon la table de verite.
+
+### Decodeur
+
+Un decodeur active exactement une de ses 2^n sorties en fonction de n entrees.
+
+**Decodeur 3 vers 8** : L'entree 101 active la ligne de sortie 5.
+
+**Application** : Combine avec des portes OU, un decodeur peut implementer n'importe quelle fonction booleenne. Du TD2 exercice 7, un controleur de VU-metre utilise un decodeur pour activer des segments LED en fonction du niveau d'entree.
+
+### Encodeur
+
+L'inverse du decodeur : etant donne 2^n lignes d'entree (au plus une active), il produit le code binaire sur n bits de la ligne active.
+
+### Additionneur
+
+**Demi-additionneur** : Somme = A XOR B, Retenue = A AND B
+**Additionneur complet** : Somme = A XOR B XOR Cin, Cout = A.B + (A XOR B).Cin
+**Additionneur a propagation de retenue** : Chainer n additionneurs complets pour une addition sur n bits
+
+Du TD2 exercice 3 : Un circuit calculant X+Y, 2X+Y ou X+2Y utilise des additionneurs avec des operations de decalage (multiplier par 2 = decalage a gauche de 1).
+
+---
+
+## 1.6 Systemes de numeration
+
+### Conversions binaire, octal, hexadecimal (du TD2)
+
+| Binaire | Decimal | Hex | Octal |
+|---------|---------|-----|-------|
 | 0011001 | 25 | 19 | 31 |
 | 100001 | 33 | 21 | 41 |
 | 0101101 | 45 | 2D | 55 |
 | 11010 | 26 | 1A | 32 |
 | 1111111 | 127 | 7F | 177 |
 
-**Method**: For binary to decimal, sum powers of 2. For binary to hex, group in 4-bit chunks from the right. For binary to octal, group in 3-bit chunks.
+**Methode** : Pour le binaire vers decimal, sommer les puissances de 2. Pour le binaire vers hexadecimal, grouper par blocs de 4 bits depuis la droite. Pour le binaire vers octal, grouper par blocs de 3 bits.
 
-### Two's Complement (Signed Integers)
+### Complement a deux (entiers signes)
 
-For n bits, range is [-2^(n-1), 2^(n-1) - 1].
+Pour n bits, l'intervalle est [-2^(n-1), 2^(n-1) - 1].
 
-**To negate** a number in two's complement: invert all bits, add 1.
+**Pour nier** un nombre en complement a deux : inverser tous les bits, ajouter 1.
 
-**Example** (from TD2): +63 on 8 bits = 00111111. -63 = 11000001.
+**Exemple** (du TD2) : +63 sur 8 bits = 00111111. -63 = 11000001.
 
-**Addition** (from TD2): 30 + (-8)
+**Addition** (du TD2) : 30 + (-8)
 ```
  30 = 011110
  -8 = 111000
@@ -258,68 +258,68 @@ For n bits, range is [-2^(n-1), 2^(n-1) - 1].
  22 = 010110
 ```
 
-### Encoding Precision (from TD1)
+### Precision de codage (du TD1)
 
-- Ship heading with 1-degree precision: need 360 values -> ceil(log2(360)) = 9 bits
-- Ship heading with 0.1-degree precision: need 3600 values -> ceil(log2(3600)) = 12 bits
+- Cap d'un navire avec une precision de 1 degre : il faut 360 valeurs -> ceil(log2(360)) = 9 bits
+- Cap d'un navire avec une precision de 0.1 degre : il faut 3600 valeurs -> ceil(log2(3600)) = 12 bits
 
-### ASCII Case Conversion (from TD1)
+### Conversion de casse ASCII (du TD1)
 
-- Lowercase to uppercase: clear bit 5 -> X AND 0b01011111
-- Toggle case: flip bit 5 -> X XOR 0b00100000
-
----
-
-## 1.7 Common Pitfalls
-
-1. **Karnaugh map column ordering**: Use Gray code (00, 01, 11, 10), NOT binary (00, 01, 10, 11). Getting this wrong invalidates all groupings.
-
-2. **Don't-care conditions**: If certain input combinations cannot occur, mark them as "don't care" (X) in the Karnaugh map and group them with 1s or 0s as convenient.
-
-3. **Incomplete simplification**: Always check if groups can be made larger. A group of 2 that could be a group of 4 means you have a non-minimal expression.
-
-4. **De Morgan errors**: The most common mistake is forgetting to change AND to OR (or vice versa) when complementing. Always check: NOT(AND) = OR(NOTs), NOT(OR) = AND(NOTs).
-
-5. **Overflow in two's complement**: Adding two positive numbers can give a negative result (or vice versa) if the result exceeds the representable range.
+- Minuscule vers majuscule : mettre le bit 5 a zero -> X AND 0b01011111
+- Basculer la casse : inverser le bit 5 -> X XOR 0b00100000
 
 ---
 
-## CHEAT SHEET -- Combinational Logic
+## 1.7 Pieges courants
+
+1. **Ordre des colonnes du tableau de Karnaugh** : Utiliser le code de Gray (00, 01, 11, 10), PAS l'ordre binaire (00, 01, 10, 11). Se tromper invalide tous les regroupements.
+
+2. **Conditions indifferentes** : Si certaines combinaisons d'entrees ne peuvent pas se produire, les marquer comme "indifferent" (X) dans le tableau de Karnaugh et les grouper avec les 1 ou les 0 selon ce qui convient.
+
+3. **Simplification incomplete** : Toujours verifier si les groupes peuvent etre agrandis. Un groupe de 2 qui pourrait etre un groupe de 4 signifie que l'expression n'est pas minimale.
+
+4. **Erreurs de De Morgan** : L'erreur la plus courante est d'oublier de changer ET en OU (ou inversement) lors de la complementation. Toujours verifier : NON(ET) = OU(NON), NON(OU) = ET(NON).
+
+5. **Debordement en complement a deux** : L'addition de deux nombres positifs peut donner un resultat negatif (ou inversement) si le resultat depasse l'intervalle representable.
+
+---
+
+## AIDE-MEMOIRE -- Logique combinatoire
 
 ```
-BOOLEAN ALGEBRA IDENTITIES:
+IDENTITES DE L'ALGEBRE DE BOOLE :
   A + 0 = A          A . 1 = A
   A + 1 = 1          A . 0 = 0
   A + A = A          A . A = A
   A + /A = 1         A . /A = 0
   A + A.B = A        A.(A+B) = A        (absorption)
 
-DE MORGAN:
+DE MORGAN :
   /(A.B) = /A + /B
   /(A+B) = /A . /B
 
-XOR:
+XOR :
   A XOR B = A./B + /A.B
   /(A XOR B) = A.B + /A./B = XNOR
 
-KARNAUGH MAP ORDERING (4 variables):
-  Columns CD: 00, 01, 11, 10
-  Rows AB:    00, 01, 11, 10
-  Groups: 1, 2, 4, 8, 16 cells (powers of 2)
-  Groups CAN wrap around edges
+ORDRE DU TABLEAU DE KARNAUGH (4 variables) :
+  Colonnes CD : 00, 01, 11, 10
+  Lignes AB :   00, 01, 11, 10
+  Groupes : 1, 2, 4, 8, 16 cellules (puissances de 2)
+  Les groupes PEUVENT s'enrouler autour des bords
 
-COMMON BUILDING BLOCKS:
-  MUX 2-to-1:  out = /S.I0 + S.I1
-  Half Adder:  Sum = A XOR B, Carry = A.B
-  Full Adder:  Sum = A XOR B XOR Cin, Cout = A.B + Cin.(A XOR B)
+BLOCS COMBINATOIRES COURANTS :
+  MUX 2 vers 1 : out = /S.I0 + S.I1
+  Demi-additionneur : Somme = A XOR B, Retenue = A.B
+  Additionneur complet : Somme = A XOR B XOR Cin, Cout = A.B + Cin.(A XOR B)
 
-TWO'S COMPLEMENT (n bits):
-  Range: [-2^(n-1), 2^(n-1) - 1]
-  Negate: invert all bits, add 1
-  8 bits: [-128, 127]
-  16 bits: [-32768, 32767]
+COMPLEMENT A DEUX (n bits) :
+  Intervalle : [-2^(n-1), 2^(n-1) - 1]
+  Negation : inverser tous les bits, ajouter 1
+  8 bits : [-128, 127]
+  16 bits : [-32768, 32767]
 
-GRAY CODE CONVERSION:
+CONVERSION EN CODE DE GRAY :
   a = A
   b = A XOR B
   c = B XOR C

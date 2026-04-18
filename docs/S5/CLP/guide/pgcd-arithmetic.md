@@ -1,21 +1,21 @@
 ---
-title: "Chapter 5 -- PGCD / Arithmetic Circuits"
+title: "Chapitre 5 -- PGCD / Circuits arithmetiques"
 sidebar_position: 5
 ---
 
-# Chapter 5 -- PGCD / Arithmetic Circuits
+# Chapitre 5 -- PGCD / Circuits arithmetiques
 
-## 5.1 Overview
+## 5.1 Presentation
 
-The PGCD (Plus Grand Commun Diviseur / Greatest Common Divisor) machine is the flagship example of the CLP course. It demonstrates the complete design flow: from algorithm to hardware, integrating a Processing Unit (UT) with a Control Unit (UC).
+La machine PGCD (Plus Grand Commun Diviseur) est l'exemple phare du cours CLP. Elle illustre le flot de conception complet : de l'algorithme au materiel, en integrant une Unite de Traitement (UT) avec une Unite de Commande (UC).
 
-This is the same GCD algorithm later implemented in ARM assembly (TP1), creating a powerful bridge between hardware and software perspectives.
+C'est le meme algorithme du PGCD qui est ensuite implemente en assembleur ARM (TP1), creant un pont puissant entre les perspectives materielle et logicielle.
 
 ---
 
-## 5.2 The GCD Algorithm
+## 5.2 L'algorithme du PGCD
 
-### Euclid's Subtraction-Based Algorithm
+### Algorithme d'Euclide par soustractions
 
 ```
 function gcd(a, b):
@@ -27,7 +27,7 @@ function gcd(a, b):
     return a
 ```
 
-**Example**: gcd(24, 18)
+**Exemple** : pgcd(24, 18)
 ```
 Step 1: a=24, b=18  ->  a > b  ->  a = 24-18 = 6
 Step 2: a=6,  b=18  ->  a < b  ->  b = 18-6  = 12
@@ -35,40 +35,40 @@ Step 3: a=6,  b=12  ->  a < b  ->  b = 12-6  = 6
 Step 4: a=6,  b=6   ->  a == b ->  return 6
 ```
 
-### Why This Algorithm Works in Hardware
+### Pourquoi cet algorithme fonctionne en materiel
 
-The subtraction-based version is preferred over the modulo-based version because:
-1. Subtraction is simple to implement (just an adder with complement)
-2. No division hardware needed
-3. The comparison (a > b, a = b, a < b) naturally produces the conditions needed
+La version par soustractions est preferee a la version par modulo car :
+1. La soustraction est simple a implementer (juste un additionneur avec complement)
+2. Pas besoin de circuit de division
+3. La comparaison (a > b, a = b, a < b) produit naturellement les conditions necessaires
 
 ---
 
-## 5.3 Processing Unit (UT) Design
+## 5.3 Conception de l'Unite de Traitement (UT)
 
-### From Logisim: `9-pgcd-ut.circ`
+### Depuis Logisim : `9-pgcd-ut.circ`
 
-**Registers**:
-- **Register A**: Holds the first operand
-- **Register B**: Holds the second operand
+**Registres** :
+- **Registre A** : Contient le premier operande
+- **Registre B** : Contient le second operande
 
-**Arithmetic unit**:
-- **Subtractor**: Computes A - B (or B - A, depending on control)
-- **Comparator**: Produces conditions A > B, A = B, A < B
+**Unite arithmetique** :
+- **Soustracteur** : Calcule A - B (ou B - A, selon la commande)
+- **Comparateur** : Produit les conditions A > B, A = B, A < B
 
-**Control signals (commands from UC)**:
-- `LOAD_A`: Load a value into register A
-- `LOAD_B`: Load a value into register B
-- `A_MINUS_B`: Compute A - B and load result into A
-- `B_MINUS_A`: Compute B - A and load result into B
-- `INIT`: Load initial values from input
+**Signaux de commande (commandes venant de l'UC)** :
+- `LOAD_A` : Charger une valeur dans le registre A
+- `LOAD_B` : Charger une valeur dans le registre B
+- `A_MINUS_B` : Calculer A - B et charger le resultat dans A
+- `B_MINUS_A` : Calculer B - A et charger le resultat dans B
+- `INIT` : Charger les valeurs initiales depuis l'entree
 
-**Conditions (sent to UC)**:
-- `A_EQ_B`: A equals B (algorithm terminates)
-- `A_GT_B`: A is greater than B (subtract B from A)
-- `A_LT_B`: A is less than B (subtract A from B)
+**Conditions (envoyees a l'UC)** :
+- `A_EQ_B` : A est egal a B (l'algorithme se termine)
+- `A_GT_B` : A est superieur a B (soustraire B de A)
+- `A_LT_B` : A est inferieur a B (soustraire A de B)
 
-### Datapath Diagram
+### Schema du chemin de donnees
 
 ```
           Input A        Input B
@@ -86,32 +86,33 @@ The subtraction-based version is preferred over the modulo-based version because
              |      |      |
      Result  |      |   A>B, A=B, A<B
              v      |      v
-          (back to  |   (to UC)
+          (retour   |   (vers UC)
+           vers     |
            Reg A    |
-           or B)    |
+           ou B)    |
 ```
 
 ---
 
-## 5.4 Control Unit Design
+## 5.4 Conception de l'Unite de Commande
 
-### State Machine
+### Machine a etats
 
-The UC implements the algorithm as a finite state machine:
+L'UC implemente l'algorithme sous forme de machine a etats finis :
 
-| State | Name | Action | Conditions | Next State |
-|-------|------|--------|------------|------------|
-| S0 | INIT | Load A and B from input | -- | S1 |
-| S1 | COMPARE | Compare A and B | A=B -> S4, A>B -> S2, A<B -> S3 | Depends |
+| Etat | Nom | Action | Conditions | Etat suivant |
+|------|-----|--------|------------|--------------|
+| S0 | INIT | Charger A et B depuis l'entree | -- | S1 |
+| S1 | COMPARE | Comparer A et B | A=B -> S4, A>B -> S2, A<B -> S3 | Depend |
 | S2 | SUB_A | A = A - B | -- | S1 |
 | S3 | SUB_B | B = B - A | -- | S1 |
-| S4 | DONE | Output result (A = B = GCD) | -- | S0 or halt |
+| S4 | FIN | Sortie du resultat (A = B = PGCD) | -- | S0 ou arret |
 
-### State Diagram
+### Diagramme d'etats
 
 ```
      +-----+
-     | S0  |-----> INIT (load A, B)
+     | S0  |-----> INIT (charger A, B)
      |INIT |
      +--+--+
         |
@@ -127,7 +128,7 @@ A>B/  A=B  A<B\       |          |
  v      v      v       |          |
 +--+  +--+  +--+      |          |
 |S2|  |S4|  |S3|      |          |
-|A-B| |END| |B-A|     |          |
+|A-B| |FIN| |B-A|     |          |
 +--+  +--+  +--+      |          |
  |            |        |          |
  +------------+--------+          |
@@ -135,51 +136,51 @@ A>B/  A=B  A<B\       |          |
  +--------------------------------+
 ```
 
-### Hardwired Implementation (`10-pgcd-uc1.circ`)
+### Implementation cablee (`10-pgcd-uc1.circ`)
 
-The hardwired UC uses:
-- 3-bit state register (flip-flops encoding states S0-S4)
-- Combinational logic computing next state from current state + conditions
-- Combinational logic generating commands from current state
+L'UC cablee utilise :
+- Un registre d'etat sur 3 bits (bascules encodant les etats S0-S4)
+- De la logique combinatoire calculant l'etat suivant a partir de l'etat courant + conditions
+- De la logique combinatoire generant les commandes a partir de l'etat courant
 
-### Microprogrammed Implementation (`11-pgcd-uc2.circ`)
+### Implementation microprogrammee (`11-pgcd-uc2.circ`)
 
-The microprogrammed UC uses:
-- 3-bit counter as state register
-- ROM storing microcode words
-- Multiplexer selecting conditions
+L'UC microprogrammee utilise :
+- Un compteur sur 3 bits comme registre d'etat
+- Une ROM stockant les mots de microcode
+- Un multiplexeur selectionnant les conditions
 
-**Microcode word format**:
+**Format du mot de microcode** :
 ```
 [Jump code] [Jump address] [LOAD_A] [LOAD_B] [A_MINUS_B] [B_MINUS_A] [INIT] [OUTPUT]
 ```
 
-**ROM contents** (from `11-pgcd-uc2.mem`):
+**Contenu de la ROM** (depuis `11-pgcd-uc2.mem`) :
 ```
 v2.0 raw
 c110 10001 a112 1227 1236 52f3 2cf3 10007
 70
 ```
 
-Each hex value encodes one microinstruction. The sequencer reads these to control the UT.
+Chaque valeur hexadecimale encode une microinstruction. Le sequenceur les lit pour commander l'UT.
 
 ---
 
 ## 5.5 Integration (`12-pgcd-integration.circ`)
 
-The complete GCD machine connects:
-1. UT command inputs to UC command outputs
-2. UT condition outputs to UC condition inputs
-3. External inputs (initial A and B values) to UT
-4. Clock signal to both UC and UT
+La machine PGCD complete connecte :
+1. Les entrees de commande de l'UT aux sorties de commande de l'UC
+2. Les sorties de condition de l'UT aux entrees de condition de l'UC
+3. Les entrees externes (valeurs initiales de A et B) a l'UT
+4. Le signal d'horloge a la fois a l'UC et a l'UT
 
-**Testing**: Set input A=24, B=18. After running the clock, the result register should contain 6.
+**Test** : Fixer l'entree A=24, B=18. Apres execution de l'horloge, le registre de resultat doit contenir 6.
 
 ---
 
-## 5.6 From Hardware to Software
+## 5.6 Du materiel au logiciel
 
-The same GCD algorithm implemented in ARM assembly (from TP1):
+Le meme algorithme du PGCD implemente en assembleur ARM (extrait du TP1) :
 
 ```arm
 pgcd:
@@ -208,82 +209,82 @@ pgcd_a_gt_b:
     @ ... setup recursive call ...
 ```
 
-**Comparison**:
+**Comparaison** :
 
-| Aspect | Hardware (UT+UC) | Software (ARM) |
+| Aspect | Materiel (UT+UC) | Logiciel (ARM) |
 |--------|-----------------|----------------|
-| Subtraction | Subtractor circuit | `SUB r0, r0, r1` |
-| Comparison | Comparator circuit | `CMP r0, r1` |
-| Branching | UC state transitions | `BEQ`, `BGT` instructions |
-| Loop | UC cycles back to compare state | Recursive call or branch |
-| Storage | Registers A, B in UT | Registers r0, r1 (or stack) |
+| Soustraction | Circuit soustracteur | `SUB r0, r0, r1` |
+| Comparaison | Circuit comparateur | `CMP r0, r1` |
+| Branchement | Transitions d'etat de l'UC | Instructions `BEQ`, `BGT` |
+| Boucle | L'UC retourne a l'etat de comparaison | Appel recursif ou branchement |
+| Stockage | Registres A, B dans l'UT | Registres r0, r1 (ou pile) |
 
 ---
 
-## 5.7 Other Arithmetic Circuit Examples
+## 5.7 Autres exemples de circuits arithmetiques
 
-### Modulo-4 Adder (`1-Add-modulo4.circ`)
+### Additionneur modulo 4 (`1-Add-modulo4.circ`)
 
-A circuit that adds two 2-bit numbers modulo 4. Uses a full adder and discards the carry-out.
+Un circuit qui additionne deux nombres de 2 bits modulo 4. Utilise un additionneur complet et ignore la retenue de sortie.
 
-### Binary to BCD Converter (`binaire2bcd.circ`)
+### Convertisseur binaire vers BCD (`binaire2bcd.circ`)
 
-Converts binary representation to Binary-Coded Decimal for display on 7-segment displays. Uses the "double dabble" or shift-and-add-3 algorithm.
+Convertit la representation binaire en Decimal Code Binaire pour l'affichage sur des afficheurs 7 segments. Utilise l'algorithme "double dabble" ou decalage-et-ajout-de-3.
 
-### 8-bit Shifter (`decalage-GD-CH-8bits.circ`)
+### Decaleur 8 bits (`decalage-GD-CH-8bits.circ`)
 
-Barrel shifter that can shift an 8-bit value left or right by a variable amount. Uses multiple layers of MUXes.
-
----
-
-## 5.8 Common Pitfalls
-
-1. **Forgetting the loop-back**: After S2 (A=A-B) or S3 (B=B-A), the machine MUST return to S1 (compare), not proceed to S4.
-
-2. **Termination condition**: The algorithm terminates when A = B, not when A = 0 or B = 0. Using the wrong condition gives incorrect results for inputs that are not coprime.
-
-3. **Zero inputs**: gcd(0, n) = n by convention, but the subtraction algorithm produces 0. Decide whether your machine handles this case.
-
-4. **Microcode address alignment**: In the microprogrammed version, ensure ROM addresses correspond to the correct states. A jump to address 3 must reach state S3's microinstruction.
-
-5. **Simultaneous register updates**: In hardware, both registers can be updated in the same clock cycle. But in the GCD algorithm, only one register changes per cycle. Be careful not to accidentally overwrite both.
+Decaleur a barillet pouvant decaler une valeur de 8 bits a gauche ou a droite d'un nombre variable de positions. Utilise plusieurs couches de MUX.
 
 ---
 
-## CHEAT SHEET -- PGCD / Arithmetic Circuits
+## 5.8 Pieges courants
+
+1. **Oublier le retour en boucle** : Apres S2 (A=A-B) ou S3 (B=B-A), la machine DOIT retourner a S1 (comparaison), et non passer a S4.
+
+2. **Condition de terminaison** : L'algorithme se termine quand A = B, pas quand A = 0 ou B = 0. Utiliser la mauvaise condition donne des resultats incorrects pour des entrees qui ne sont pas premieres entre elles.
+
+3. **Entrees nulles** : pgcd(0, n) = n par convention, mais l'algorithme par soustraction produit 0. Decider si votre machine gere ce cas.
+
+4. **Alignement des adresses du microcode** : Dans la version microprogrammee, s'assurer que les adresses de la ROM correspondent aux bons etats. Un saut a l'adresse 3 doit atteindre la microinstruction de l'etat S3.
+
+5. **Mises a jour simultanees de registres** : En materiel, les deux registres peuvent etre mis a jour dans le meme cycle d'horloge. Mais dans l'algorithme du PGCD, un seul registre change par cycle. Faire attention a ne pas ecraser accidentellement les deux.
+
+---
+
+## AIDE-MEMOIRE -- PGCD / Circuits arithmetiques
 
 ```
-GCD ALGORITHM (Euclid's subtraction):
+ALGORITHME DU PGCD (soustraction d'Euclide) :
   while a != b:
       if a > b: a = a - b
       else:     b = b - a
   return a
 
-GCD MACHINE STATES:
-  S0: INIT     -- Load inputs
-  S1: COMPARE  -- Check A vs B
-  S2: A = A-B  -- When A > B
-  S3: B = B-A  -- When A < B
-  S4: DONE     -- A = B = GCD
+ETATS DE LA MACHINE PGCD :
+  S0: INIT       -- Charger les entrees
+  S1: COMPARER   -- Verifier A vs B
+  S2: A = A-B    -- Quand A > B
+  S3: B = B-A    -- Quand A < B
+  S4: FIN        -- A = B = PGCD
 
-UT COMPONENTS:
-  Registers: A, B
-  ALU: Subtractor (A-B), Comparator (A?B)
-  Commands: LOAD_A, LOAD_B, A_MINUS_B, B_MINUS_A, INIT, OUTPUT
-  Conditions: A_EQ_B, A_GT_B, A_LT_B
+COMPOSANTS DE L'UT :
+  Registres : A, B
+  UAL : Soustracteur (A-B), Comparateur (A?B)
+  Commandes : LOAD_A, LOAD_B, A_MINUS_B, B_MINUS_A, INIT, OUTPUT
+  Conditions : A_EQ_B, A_GT_B, A_LT_B
 
-UC TYPES:
-  Hardwired:        Fast, built from gates
-  Microprogrammed:  ROM + counter + MUX
+TYPES D'UC :
+  Cablee :           Rapide, construite avec des portes
+  Microprogrammee :  ROM + compteur + MUX
 
-GCD EXAMPLES:
-  gcd(24, 18) = 6     (24->6->6, 18->12->6)
-  gcd(666, 666) = 666  (equal, return immediately)
-  gcd(48, 36) = 12    (48->12->12, 36->24->12)
+EXEMPLES DE PGCD :
+  pgcd(24, 18) = 6     (24->6->6, 18->12->6)
+  pgcd(666, 666) = 666  (egaux, retour immediat)
+  pgcd(48, 36) = 12    (48->12->12, 36->24->12)
 
-LOGISIM FILES:
-  9-pgcd-ut.circ            -- Processing Unit
-  10-pgcd-uc1.circ          -- Hardwired Control Unit
-  11-pgcd-uc2.circ + .mem   -- Microprogrammed Control Unit
-  12-pgcd-integration.circ  -- Complete Machine
+FICHIERS LOGISIM :
+  9-pgcd-ut.circ            -- Unite de Traitement
+  10-pgcd-uc1.circ          -- Unite de Commande cablee
+  11-pgcd-uc2.circ + .mem   -- Unite de Commande microprogrammee
+  12-pgcd-integration.circ  -- Machine complete
 ```

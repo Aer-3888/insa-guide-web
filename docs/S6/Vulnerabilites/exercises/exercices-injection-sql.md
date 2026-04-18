@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Exercices -- Injection SQL
 
-> Following teacher instructions from: S6/Vulnerabilites/data/moodle/guide/02_injection_sql.md
+> Conforme aux consignes du cours : S6/Vulnerabilites/data/moodle/guide/02_injection_sql.md
 > Source du cours : 2026 SQL injections.pdf
 
 ---
@@ -23,7 +23,7 @@ $request = "SELECT name, forename, role
 $result = mysql_query($request, $connection);
 ```
 
-**Answer:**
+**Reponse :**
 
 Oui, injection possible. La variable `$bandname` est concatenee directement dans la requete SQL sans aucune protection.
 
@@ -62,7 +62,7 @@ Requete : SELECT name, forename, role FROM musicians
 
 Ici, la derniere apostrophe de la requete originale ferme naturellement la chaine `'a`.
 
-**Security explanation:**
+**Explication de securite :**
 
 La vulnerabilite vient de la concatenation non securisee d'entrees utilisateur dans le SQL. L'attaquant "sort" de la chaine de caracteres pour injecter du code SQL arbitraire. La correction est d'utiliser des requetes preparees :
 ```php noexec
@@ -83,7 +83,7 @@ String query = "SELECT name FROM table WHERE id="
              + request.getParameter("user_id");
 ```
 
-**Answer:**
+**Reponse :**
 
 Oui, injection possible sur un champ numerique.
 
@@ -101,7 +101,7 @@ Requete : SELECT name FROM table WHERE id=0 OR 1=1
 
 **Particularite :** pas besoin d'apostrophe car le champ est numerique. C'est un piege classique en DS -- on n'a pas besoin de "sortir" d'une chaine de caracteres.
 
-**Security explanation:**
+**Explication de securite :**
 
 La protection par echappement des apostrophes ne protege PAS les champs numeriques. Pour se proteger :
 - Forcer le type avec `settype($offset, 'integer')` ou `sprintf("%d", $id)`
@@ -119,7 +119,7 @@ $req = "SELECT * FROM users WHERE name = '" + $name
 
 ### Q2.1 : Que se passe-t-il si on met juste `'` comme nom ?
 
-**Answer:**
+**Reponse :**
 
 La requete devient :
 ```sql noexec
@@ -130,7 +130,7 @@ Erreur SQL : apostrophe non fermee. Cela revele la presence d'une injection SQL.
 
 ### Q2.2 : Quel $name pour se connecter en admin sans mot de passe ?
 
-**Answer:**
+**Reponse :**
 
 **Payload :** `$name = admin'--`, `$pass = n'importe quoi`
 
@@ -149,7 +149,7 @@ Trace d'execution :
 
 ### Q2.3 : Se connecter sans connaitre aucun login
 
-**Answer:**
+**Reponse :**
 
 **Payload :** `$name = ' OR 1=1--`, `$pass = x`
 
@@ -163,7 +163,7 @@ Retourne TOUS les utilisateurs. L'application prend generalement le premier (sou
 
 ### Q2.4 : Variante sans commentaire
 
-**Answer:**
+**Reponse :**
 
 **Payload :** `$name = ' OR 'a'='a`, `$pass = ' OR 'a'='a`
 
@@ -175,7 +175,7 @@ Chaque condition `'a'='a'` est toujours vraie. L'apostrophe fermante originale c
 
 ### Q2.5 : Que peut-on dire du stockage des mots de passe ?
 
-**Answer:**
+**Reponse :**
 
 Les mots de passe sont stockes en clair (pas de hachage) puisque la comparaison est directe dans la requete SQL : `password = '$pass'`. Un stockage securise utiliserait :
 ```sql noexec
@@ -184,7 +184,7 @@ SELECT * FROM users WHERE name = ? AND password_hash = SHA256(CONCAT(?, salt))
 
 Avec un hash sale, meme si la base est compromise, les mots de passe ne sont pas directement lisibles.
 
-**Security explanation:**
+**Explication de securite :**
 
 Le stockage en clair des mots de passe est une faute grave. Les mots de passe doivent TOUJOURS etre stockes sous forme de hash sale (bcrypt, scrypt, Argon2). La comparaison ne se fait jamais en SQL directement mais cote application apres recuperation du hash.
 
@@ -199,7 +199,7 @@ $req = "SELECT name, forename, role FROM musicians WHERE band='" . $band . "'";
 
 ### Q1 : Trouver le nombre de colonnes
 
-**Answer:**
+**Reponse :**
 
 **Methode par ORDER BY :**
 ```
@@ -218,7 +218,7 @@ $band = ' UNION SELECT null,null,null-- (OK --> 3 colonnes)
 
 ### Q2 : Extraire les logins et mots de passe de la table users
 
-**Answer:**
+**Reponse :**
 
 ```
 $band = 0' UNION SELECT login, password, 0 FROM users--
@@ -239,7 +239,7 @@ Trace d'execution :
 
 ### Q3 : Decouvrir les noms de tables (MySQL)
 
-**Answer:**
+**Reponse :**
 
 ```
 $band = ' UNION SELECT table_name, table_schema, 0 FROM information_schema.tables--
@@ -249,13 +249,13 @@ $band = ' UNION SELECT table_name, table_schema, 0 FROM information_schema.table
 
 ### Q4 : Decouvrir les colonnes d'une table
 
-**Answer:**
+**Reponse :**
 
 ```
 $band = ' UNION SELECT column_name, data_type, 0 FROM information_schema.columns WHERE table_name='users'--
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 Le UNION SELECT est l'attaque SQL la plus dangereuse car elle permet d'extraire des donnees de n'importe quelle table de la base. Conditions : le nombre de colonnes doit correspondre et les types doivent etre compatibles. La protection est l'utilisation de requetes preparees.
 
@@ -265,7 +265,7 @@ Le UNION SELECT est l'attaque SQL la plus dangereuse car elle permet d'extraire 
 
 ### Montrez comment un attaquant pourrait modifier ou detruire des donnees
 
-**Answer:**
+**Reponse :**
 
 ```
 $band = whatever';DROP TABLE users--
@@ -279,7 +279,7 @@ DROP TABLE users--'
 
 Le point-virgule termine la premiere requete et en commence une nouvelle. L'attaquant peut executer `INSERT`, `UPDATE`, `DELETE` ou meme `DROP TABLE`.
 
-**Security explanation:**
+**Explication de securite :**
 
 Le stacking est possible sur certains SGBD (MySQL avec `mysqli_multi_query`, MS-SQL) mais pas tous. Sur MS-SQL, si `xp_cmdshell` est active, l'attaquant peut meme obtenir un shell systeme :
 ```sql noexec
@@ -298,7 +298,7 @@ $stmt = $mysqli->prepare("SELECT * FROM users WHERE name=?");
 $stmt->bind_param("s", $_GET['name']);
 ```
 
-**Answer:**
+**Reponse :**
 
 Le `?` est un placeholder. La base de donnees compile d'abord le squelette de requete (la structure SQL), puis injecte le parametre comme une DONNEE, jamais comme du CODE SQL.
 
@@ -337,7 +337,7 @@ $order = in_array($_GET['order'], $allowed_columns) ? $_GET['order'] : 'date';
 
 ### Analysez chaque test. Quel type d'injection est present ? Quelle autre vulnerabilite voyez-vous ?
 
-**Answer:**
+**Reponse :**
 
 **Test 1 :** Le message `-bash: OR: command not found` vient du shell bash, PAS d'un moteur SQL. Cela signifie que le login est passe directement au shell (via `system()` ou equivalent), pas a une requete SQL.
 
@@ -354,9 +354,9 @@ system("/usr/bin/check_login '" + $login + "'");
 
 **Test 4 :** `cat /etc/shadow` echoue avec "Permission denied" car le processus web n'a pas les privileges root. Mais l'injection a bien fonctionne (la commande a ete executee).
 
-**Test 5 :** Le message d'erreur revele le mot de passe saisi en clair (`password nawak incorrect`). C'est une **fuite d'information** (information disclosure). Un message d'erreur ne doit JAMAIS afficher les credentials -- il devrait dire simplement "Login ou mot de passe incorrect".
+**Test 5 :** Le message d'erreur revele le mot de passe saisi en clair (`password nawak incorrect`). C'est une **fuite d'information**. Un message d'erreur ne doit JAMAIS afficher les identifiants -- il devrait dire simplement "Login ou mot de passe incorrect".
 
-**Security explanation:**
+**Explication de securite :**
 
 La methode pour distinguer une injection SQL d'une injection de commande est de lire le message d'erreur :
 - Erreur SQL : `You have an error in your SQL syntax`, `ORA-01756`
@@ -373,7 +373,7 @@ Protections contre l'injection de commande :
 
 ### Un utilisateur s'enregistre avec le nom `admin'--`. Ce nom est stocke en base (protege par requete preparee a l'insertion). Plus tard, le systeme lit ce nom et l'utilise dans une requete dynamique. Y a-t-il un probleme ?
 
-**Answer:**
+**Reponse :**
 
 **Etape 1 : Insertion (securisee)**
 ```php noexec
@@ -393,9 +393,9 @@ $req = "SELECT * FROM orders WHERE customer='" . $name . "'";
 // INJECTION !
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
-Meme les valeurs provenant de la base de donnees peuvent contenir du SQL malicieux. Le principe "Never trust an input" s'applique a TOUTES les sources de donnees, y compris la base elle-meme. Il faut proteger TOUTES les requetes dynamiques, pas seulement celles qui utilisent directement des parametres HTTP.
+Meme les valeurs provenant de la base de donnees peuvent contenir du SQL malicieux. Le principe "Ne jamais faire confiance a une entree" s'applique a TOUTES les sources de donnees, y compris la base elle-meme. Il faut proteger TOUTES les requetes dynamiques, pas seulement celles qui utilisent directement des parametres HTTP.
 
 ---
 
@@ -403,7 +403,7 @@ Meme les valeurs provenant de la base de donnees peuvent contenir du SQL malicie
 
 ### Classez les protections suivantes de la meilleure a la moins bonne
 
-**Answer:**
+**Reponse :**
 
 ```
 Meilleure protection
@@ -429,9 +429,9 @@ $safe = str_replace("'", "''", $_GET['name']);
 - Des conditions de longueur (troncature) peuvent casser l'echappement
 - Cela ne protege PAS les champs numeriques
 
-**Security explanation:**
+**Explication de securite :**
 
-Le principe fondamental est : **"Never trust an input!"** Verifier TOUTES les entrees signifie : `$_GET`, `$_POST`, `$_COOKIE`, `$_REQUEST`, `$_SERVER`, `$_ENV`, `$_FILES`, `$HTTP_USER_AGENT`, et meme les valeurs provenant de la base de donnees.
+Le principe fondamental est : **"Ne jamais faire confiance a une entree !"** Verifier TOUTES les entrees signifie : `$_GET`, `$_POST`, `$_COOKIE`, `$_REQUEST`, `$_SERVER`, `$_ENV`, `$_FILES`, `$HTTP_USER_AGENT`, et meme les valeurs provenant de la base de donnees.
 
 ---
 

@@ -1,25 +1,25 @@
 ---
-title: "TP4 - List Algorithms and Partitions"
+title: "TP4 - Algorithmes sur les listes et partitions"
 sidebar_position: 4
 ---
 
-# TP4 - List Algorithms and Partitions
+# TP4 - Algorithmes sur les listes et partitions
 
-> Following teacher instructions from: `data/moodle/tp/tp4/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp4/README.md`
 
 ---
 
-## Exercise 1
+## Exercice 1
 
-### Quicksort: `split` and `qs`
+### Tri rapide (quicksort) : `split` et `qs`
 
-`split v l` partitions list `l` into elements less than `v` and elements greater than or equal to `v`.
+`split v l` partitionne la liste `l` en elements inferieurs a `v` et elements superieurs ou egaux a `v`.
 
-`qs l` recursively sorts the list using quicksort (pivot = first element).
+`qs l` trie recursivement la liste par tri rapide (pivot = premier element).
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Partition list around pivot v *)
+(* Partitionner la liste autour du pivot v *)
 let rec split v l = match l with
   | [] -> ([], [])
   | e :: l' ->
@@ -28,7 +28,7 @@ let rec split v l = match l with
       else
         (fst(split v l'), e :: snd(split v l'))
 
-(* Quicksort *)
+(* Tri rapide *)
 let rec qs l = match l with
   | [] -> []
   | [e] -> [e]
@@ -36,7 +36,7 @@ let rec qs l = match l with
       (qs (fst(split e l'))) @ (e :: (qs (snd(split e l'))))
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # split 4 [12; 27; -12; 7; 8; 1; 3; 6; 12; 42];;
 - : int list * int list = ([-12; 1; 3], [12; 27; 7; 8; 6; 12; 42])
@@ -50,13 +50,13 @@ let rec qs l = match l with
 
 ---
 
-## Exercise 2
+## Exercice 2
 
-### Extract the kth element from a list (`kieme`)
+### Extraire le k-ieme element d'une liste (`kieme`)
 
-1-indexed. Raises an exception if the index is out of bounds.
+Indexe a partir de 1. Leve une exception si l'indice est hors limites.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec kieme k l = match (k, l) with
   | (1, a :: l') -> a
@@ -64,7 +64,7 @@ let rec kieme k l = match (k, l) with
   | (n, []) -> failwith "Index out of bounds"
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # kieme 7 [4; 12; 27; -12; 7; 1; 8; 3; 6; 12; 42];;
 - : int = 8
@@ -76,19 +76,19 @@ Exception: Failure "Index out of bounds".
 
 ---
 
-## Exercise 3
+## Exercice 3
 
-### Find the fixed point of a function (`jqastable`)
+### Trouver le point fixe d'une fonction (`jqastable`)
 
-Repeatedly applies `f` to `x` until `f(x) = x`.
+Applique `f` a `x` de maniere repetee jusqu'a ce que `f(x) = x`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec jqastable x f =
   if f x = x then x else jqastable (f x) f
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # jqastable 13 (fun x ->
     if x = 1 then 1
@@ -103,15 +103,15 @@ let rec jqastable x f =
 
 ---
 
-## Exercise 4
+## Exercice 4
 
-### Bubble sort: `unebulle` and `tribulle`
+### Tri a bulle : `unebulle` et `tribulle`
 
-`unebulle` performs one pass of bubble sort. `tribulle` repeats until the list is sorted (fixed point of `unebulle`).
+`unebulle` effectue une passe du tri a bulle. `tribulle` repete jusqu'a ce que la liste soit triee (point fixe de `unebulle`).
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* One pass of bubble sort *)
+(* Une passe du tri a bulle *)
 let rec unebulle l = match l with
   | [] -> l
   | [a] -> l
@@ -119,11 +119,11 @@ let rec unebulle l = match l with
       if e1 < e2 then e1 :: (unebulle (e2 :: l'))
       else e2 :: (unebulle (e1 :: l'))
 
-(* Full bubble sort = fixed point of unebulle *)
+(* Tri a bulle complet = point fixe de unebulle *)
 let tribulle l = jqastable l unebulle
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # unebulle [4; 12; 27; -12; 7; 8; 1; 3; 6; 42; 12];;
 - : int list = [4; 12; -12; 7; 8; 1; 3; 6; 27; 12; 42]
@@ -133,29 +133,29 @@ let tribulle l = jqastable l unebulle
 
 ---
 
-## Exercise 5
+## Exercice 5
 
-### List utilities: `merge`, `create`, `insert`
+### Utilitaires sur les listes : `merge`, `create`, `insert`
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Flatten a list of lists *)
+(* Aplatir une liste de listes *)
 let rec merge ll = match ll with
   | [] -> []
   | l :: ll' -> l @ (merge ll')
 
-(* Create list [f 1; f 2; ...; f k] *)
+(* Creer la liste [f 1; f 2; ...; f k] *)
 let rec create f k =
   if k = 1 then [f 1]
   else (create f (k - 1)) @ [f k]
 
-(* Insert element j at the head of each sublist *)
+(* Inserer l'element j en tete de chaque sous-liste *)
 let rec insert j ll = match ll with
   | [] -> []
   | l :: ll' -> (j :: l) :: (insert j ll')
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # merge [[1]; [2; 3]; [5]];;
 - : int list = [1; 2; 3; 5]
@@ -167,13 +167,13 @@ let rec insert j ll = match ll with
 
 ---
 
-## Exercise 6
+## Exercice 6
 
-### Generate all integer partitions (`partition`)
+### Generer toutes les partitions d'un entier (`partition`)
 
-A partition of `n` is a decomposition into a sum of positive integers in descending order. Uses an auxiliary `partition_faible m k` that generates partitions of `m` with parts <= `k`.
+Une partition de `n` est une decomposition en somme d'entiers positifs en ordre decroissant. Utilise une fonction auxiliaire `partition_faible m k` qui genere les partitions de `m` avec des parts <= `k`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let partition n =
   let rec partition_faible m k =
@@ -188,7 +188,7 @@ let partition n =
   partition_faible n n
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # partition 5;;
 - : int list list =

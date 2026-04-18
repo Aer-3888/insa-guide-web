@@ -5,13 +5,13 @@ sidebar_position: 0
 
 # Exercices
 
-- [td1 relational model sql](td1-relational-model-sql)
-- [td2 sql queries joins](td2-sql-queries-joins)
-- [td3 4 normalization](td3-4-normalization)
-- [td5 xml xquery](td5-xml-xquery)
-- [td6 olap](td6-olap)
-- [td7 nosql](td7-nosql)
-- [tp cassandra](tp-cassandra)
-- [tp mongodb](tp-mongodb)
-- [tp neo4j](tp-neo4j)
-- [tp query evaluation](tp-query-evaluation)
+- [TD1 -- Modele relationnel et SQL de base](td1-relational-model-sql)
+- [TD2 -- Requetes SQL et jointures](td2-sql-queries-joins)
+- [TD3-4 -- Normalisation](td3-4-normalization)
+- [TD5 -- XML et XQuery](td5-xml-xquery)
+- [TD6 -- OLAP](td6-olap)
+- [TD7 -- NoSQL](td7-nosql)
+- [TP Cassandra](tp-cassandra)
+- [TP MongoDB](tp-mongodb)
+- [TP Neo4j](tp-neo4j)
+- [TP Evaluation de requetes](tp-query-evaluation)

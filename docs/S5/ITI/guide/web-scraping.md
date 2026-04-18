@@ -5,13 +5,13 @@ sidebar_position: 10
 
 # Web Scraping
 
-## Overview
+## Apercu
 
-Web scraping is the automated extraction of data from web pages. The LDS course uses Python with BeautifulSoup to parse HTML and extract structured data. The course project involves building a DVD library application that scrapes data from web pages and stores it in SQLite.
+Le web scraping est l'extraction automatisee de donnees a partir de pages web. Le cours LDS utilise Python avec BeautifulSoup pour analyser le HTML et extraire des donnees structurees. Le projet du cours consiste a construire une application de DVDtheque qui recupere des donnees depuis des pages web et les stocke dans SQLite.
 
-## HTML Fundamentals
+## Fondamentaux du HTML
 
-### Document Structure
+### Structure d'un document
 
 ```html
 <!DOCTYPE html>
@@ -38,107 +38,107 @@ Web scraping is the automated extraction of data from web pages. The LDS course 
 </html>
 ```
 
-### Key HTML Concepts
+### Concepts cles du HTML
 
-- **Tags**: `<tag>content</tag>` (opening and closing)
-- **Attributes**: `<tag attribute="value">`
-- **class**: `class="name"` -- can appear on multiple elements (CSS styling)
-- **id**: `id="unique"` -- must be unique in document
-- **Nesting**: Tags inside tags form a tree (DOM tree)
-- **Self-closing**: `<img src="..." />`, `<br />`
+- **Balises** : `<tag>contenu</tag>` (ouvrante et fermante)
+- **Attributs** : `<tag attribute="value">`
+- **class** : `class="name"` -- peut apparaitre sur plusieurs elements (style CSS)
+- **id** : `id="unique"` -- doit etre unique dans le document
+- **Imbrication** : des balises dans des balises forment un arbre (arbre DOM)
+- **Auto-fermantes** : `<img src="..." />`, `<br />`
 
-### Common Tags
+### Balises courantes
 
-| Tag | Purpose |
-|-----|---------|
-| `<h1>` to `<h6>` | Headings |
-| `<p>` | Paragraph |
-| `<a href="...">` | Hyperlink |
+| Balise | Objectif |
+|--------|----------|
+| `<h1>` a `<h6>` | Titres |
+| `<p>` | Paragraphe |
+| `<a href="...">` | Lien hypertexte |
 | `<img src="...">` | Image |
-| `<div>` | Division (block container) |
-| `<span>` | Inline container |
-| `<ul>`, `<ol>`, `<li>` | Lists |
-| `<table>`, `<tr>`, `<td>` | Tables |
-| `<form>`, `<input>` | Forms |
+| `<div>` | Division (conteneur bloc) |
+| `<span>` | Conteneur en ligne |
+| `<ul>`, `<ol>`, `<li>` | Listes |
+| `<table>`, `<tr>`, `<td>` | Tableaux |
+| `<form>`, `<input>` | Formulaires |
 
 ## BeautifulSoup
 
-### Setup and Parsing
+### Installation et analyse
 
 ```python noexec
 from bs4 import BeautifulSoup
 
-# Parse HTML string
+# Analyser une chaine HTML
 html = "<html><body><h1>Title</h1></body></html>"
 soup = BeautifulSoup(html, 'html.parser')
 
-# Parse from file
+# Analyser depuis un fichier
 with open('page.html', 'r', encoding='utf-8') as f:
     soup = BeautifulSoup(f, 'html.parser')
 
-# Parse from web (see Web Requests section below)
+# Analyser depuis le web (voir la section Requetes web ci-dessous)
 ```
 
-### Finding Elements
+### Trouver des elements
 
 ```python noexec
-# find() -- returns FIRST match (or None)
+# find() -- retourne la PREMIERE correspondance (ou None)
 h1 = soup.find('h1')
 div = soup.find('div', class_='content')
 elem = soup.find(id='main')
-link = soup.find('a', href=True)          # Has href attribute
+link = soup.find('a', href=True)          # Possede l'attribut href
 
-# find_all() -- returns LIST of all matches
+# find_all() -- retourne une LISTE de toutes les correspondances
 paragraphs = soup.find_all('p')
 links = soup.find_all('a')
 divs = soup.find_all('div', class_='item')
-items = soup.find_all(['h1', 'h2', 'h3'])  # Multiple tags
+items = soup.find_all(['h1', 'h2', 'h3'])  # Plusieurs balises
 ```
 
-### CSS Selectors
+### Selecteurs CSS
 
 ```python noexec
-# select() returns list, select_one() returns first
+# select() retourne une liste, select_one() retourne le premier
 soup.select('div.item')             # <div class="item">
 soup.select('#main')                # <div id="main">
-soup.select('div > p')              # <p> directly inside <div>
-soup.select('div p')                # <p> anywhere inside <div>
-soup.select('[href]')               # Elements with href attribute
-soup.select('a[href^="https"]')     # href starting with https
-soup.select('tr:nth-child(2)')      # Second <tr>
+soup.select('div > p')              # <p> directement dans <div>
+soup.select('div p')                # <p> n'importe ou dans <div>
+soup.select('[href]')               # Elements avec l'attribut href
+soup.select('a[href^="https"]')     # href commencant par https
+soup.select('tr:nth-child(2)')      # Deuxieme <tr>
 soup.select('div.a.b')             # <div class="a b">
 ```
 
-### Extracting Data
+### Extraire des donnees
 
 ```python noexec
-# Text content
-text = elem.get_text()              # All text (including children)
-text = elem.get_text(strip=True)    # Stripped whitespace
-text = elem.string                   # Direct text (None if has children)
+# Contenu textuel
+text = elem.get_text()              # Tout le texte (enfants inclus)
+text = elem.get_text(strip=True)    # Espaces supprimes
+text = elem.string                   # Texte direct (None si a des enfants)
 
-# Attributes
-url = link['href']                   # Direct access (KeyError if missing)
-url = link.get('href')              # Safe access (None if missing)
-classes = div['class']               # Returns list of classes
-src = img.get('src', '')            # With default
+# Attributs
+url = link['href']                   # Acces direct (KeyError si absent)
+url = link.get('href')              # Acces securise (None si absent)
+classes = div['class']               # Retourne une liste de classes
+src = img.get('src', '')            # Avec valeur par defaut
 
 # Navigation
 parent = elem.parent
-children = list(elem.children)       # Direct children
-descendants = list(elem.descendants) # All descendants
+children = list(elem.children)       # Enfants directs
+descendants = list(elem.descendants) # Tous les descendants
 next_sib = elem.next_sibling
 prev_sib = elem.previous_sibling
 ```
 
-### Table Parsing
+### Analyse de tableaux
 
 ```python noexec
 def parse_table(soup):
     table = soup.find('table')
     rows = []
     
-    for tr in table.find_all('tr')[1:]:   # Skip header row
+    for tr in table.find_all('tr')[1:]:   # Sauter la ligne d'en-tete
         cells = tr.find_all('td')
         row = [cell.get_text(strip=True) for cell in cells]
         rows.append(row)
@@ -146,7 +146,7 @@ def parse_table(soup):
     return rows
 ```
 
-### Link Extraction
+### Extraction de liens
 
 ```python noexec
 def extract_links(soup, base_url=""):
@@ -162,26 +162,26 @@ def extract_links(soup, base_url=""):
     return links
 ```
 
-## Web Requests
+## Requetes web
 
-### Using urllib
+### Utilisation de urllib
 
 ```python noexec
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
-# Simple GET request
+# Requete GET simple
 try:
     response = urlopen("https://example.com")
     html = response.read().decode('utf-8')
     soup = BeautifulSoup(html, 'html.parser')
 except HTTPError as e:
-    print(f"HTTP Error {e.code}: {e.reason}")
+    print(f"Erreur HTTP {e.code}: {e.reason}")
 except URLError as e:
-    print(f"URL Error: {e.reason}")
+    print(f"Erreur URL: {e.reason}")
 ```
 
-### With Custom Headers
+### Avec des en-tetes personnalises
 
 ```python noexec
 url = "https://example.com/page"
@@ -190,41 +190,41 @@ response = urlopen(req)
 html = response.read().decode('utf-8')
 ```
 
-### Using requests (preferred for production)
+### Utilisation de requests (prefere en production)
 
 ```python noexec
 import requests
 
 response = requests.get("https://example.com")
-response.raise_for_status()         # Raise on HTTP errors
+response.raise_for_status()         # Lever une exception sur les erreurs HTTP
 soup = BeautifulSoup(response.text, 'html.parser')
 ```
 
-## Complete Scraping Example
+## Exemple complet de scraping
 
 ```python noexec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
 def scrape_dvd_info(url):
-    """Scrape DVD information from a page."""
+    """Recuperer les informations d'un DVD depuis une page."""
     try:
         response = urlopen(url)
         soup = BeautifulSoup(response, 'html.parser')
         
-        # Extract title
+        # Extraire le titre
         title_elem = soup.find('h1', class_='title')
         title = title_elem.get_text(strip=True) if title_elem else "Unknown"
         
-        # Extract director
+        # Extraire le realisateur
         director_elem = soup.find('span', class_='director')
         director = director_elem.get_text(strip=True) if director_elem else "Unknown"
         
-        # Extract year
+        # Extraire l'annee
         year_elem = soup.find('span', class_='year')
         year = int(year_elem.get_text(strip=True)) if year_elem else None
         
-        # Extract genre
+        # Extraire le genre
         genre_elem = soup.find('span', class_='genre')
         genre = genre_elem.get_text(strip=True) if genre_elem else "Unknown"
         
@@ -235,26 +235,26 @@ def scrape_dvd_info(url):
             'genre': genre
         }
     except Exception as e:
-        print(f"Error scraping {url}: {e}")
+        print(f"Erreur lors du scraping de {url}: {e}")
         return None
 ```
 
-## EAN13 Barcode Handling
+## Gestion des codes-barres EAN13
 
-EAN13 is a 13-digit barcode standard used for products (including DVDs).
+EAN13 est un standard de code-barres a 13 chiffres utilise pour les produits (y compris les DVD).
 
-### Barcode Structure
+### Structure du code-barres
 
 ```
 3 3 3 3 3 2 9 9 3 0 4 1 3
-[Country ] [Manufacturer] [Product] [Check]
+[Pays    ] [Fabricant   ] [Produit] [Controle]
 ```
 
-### Checksum Validation
+### Validation du checksum
 
 ```python
 def validate_ean13(code):
-    """Validate EAN13 barcode checksum."""
+    """Valider le checksum d'un code-barres EAN13."""
     if len(code) != 13 or not code.isdigit():
         return False
     
@@ -266,31 +266,31 @@ def validate_ean13(code):
     return checksum == int(code[12])
 ```
 
-### Checksum Calculation
+### Calcul du checksum
 
 ```python
 def calculate_ean13_checksum(code_12):
-    """Calculate checksum digit for 12-digit code."""
+    """Calculer le chiffre de controle pour un code a 12 chiffres."""
     odd_sum = sum(int(code_12[i]) for i in range(0, 12, 2))
     even_sum = sum(int(code_12[i]) for i in range(1, 12, 2))
     total = odd_sum + even_sum * 3
     return (10 - (total % 10)) % 10
 ```
 
-## File I/O for Scraping
+## Entrees/Sorties fichiers pour le scraping
 
-### Saving Scraped Data
+### Sauvegarder les donnees recuperees
 
 ```python noexec
 import json
 import csv
 
-# Save as JSON
+# Sauvegarder en JSON
 def save_json(data, filename):
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-# Save as CSV
+# Sauvegarder en CSV
 def save_csv(data, filename, headers):
     with open(filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=headers)
@@ -298,7 +298,7 @@ def save_csv(data, filename, headers):
         writer.writerows(data)
 ```
 
-### Integrating with SQLite
+### Integration avec SQLite
 
 ```python noexec
 import sqlite3
@@ -328,45 +328,45 @@ def save_to_database(dvd_data, db_file='dvds.db'):
     conn.close()
 ```
 
-## Process Automation
+## Automatisation de processus
 
-### Running System Commands
+### Executer des commandes systeme
 
 ```python noexec
 import subprocess
 
-# Run command and capture output
+# Executer une commande et capturer la sortie
 result = subprocess.run(['ls', '-l'], capture_output=True, text=True)
 print(result.stdout)
-print(result.returncode)      # 0 = success
+print(result.returncode)      # 0 = succes
 
-# Run shell command
+# Executer une commande shell
 result = subprocess.run('echo "Hello"', shell=True, capture_output=True, text=True)
 
-# Check for errors
+# Verifier les erreurs
 try:
     subprocess.run(['command'], check=True)
 except subprocess.CalledProcessError as e:
-    print(f"Failed: {e}")
+    print(f"Echec : {e}")
 ```
 
-### File Operations
+### Operations sur les fichiers
 
 ```python noexec
 import os
 import shutil
 from pathlib import Path
 
-# Directory operations
+# Operations sur les repertoires
 os.makedirs('path/to/dir', exist_ok=True)
 os.listdir('.')
 
-# File operations
+# Operations sur les fichiers
 shutil.copy('src.txt', 'dst.txt')
 shutil.move('old.txt', 'new.txt')
 os.remove('file.txt')
 
-# Path manipulation (preferred)
+# Manipulation de chemins (prefere)
 path = Path('folder/file.txt')
 path.name          # 'file.txt'
 path.stem          # 'file'
@@ -377,11 +377,11 @@ path.exists()      # True/False
 # Glob
 for file in Path('.').glob('*.txt'):
     print(file)
-for file in Path('.').rglob('*.py'):  # Recursive
+for file in Path('.').rglob('*.py'):  # Recursif
     print(file)
 ```
 
-### Batch Processing
+### Traitement par lots
 
 ```python noexec
 from pathlib import Path
@@ -394,60 +394,60 @@ def process_directory(input_dir, output_dir):
     for file in input_path.glob('*.html'):
         with open(file, 'r') as f:
             soup = BeautifulSoup(f, 'html.parser')
-        # Process...
+        # Traitement...
         output_file = output_path / f"{file.stem}.json"
         save_json(data, output_file)
 ```
 
-## Ethics and Best Practices
+## Ethique et bonnes pratiques
 
-1. **Check robots.txt** before scraping any site
-2. **Rate limit** requests -- add delays between requests
-3. **Set a User-Agent** header identifying your scraper
-4. **Cache responses** -- do not re-fetch unchanged pages
-5. **Respect terms of service** -- some sites prohibit scraping
-6. **Handle errors gracefully** -- sites change their HTML structure
+1. **Verifier robots.txt** avant de scraper un site
+2. **Limiter le debit** des requetes -- ajouter des delais entre les requetes
+3. **Definir un User-Agent** identifiant votre scraper
+4. **Mettre en cache les reponses** -- ne pas re-telecharger les pages inchangees
+5. **Respecter les conditions d'utilisation** -- certains sites interdisent le scraping
+6. **Gerer les erreurs correctement** -- les sites changent leur structure HTML
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ### BeautifulSoup
 ```python noexec
 soup = BeautifulSoup(html, 'html.parser')
 
-# Finding elements
-soup.find('tag')                     First match
-soup.find('div', class_='name')      By class
-soup.find(id='myid')                 By ID
-soup.find_all('tag')                 All matches
-soup.select('div.class > p')        CSS selector
+# Trouver des elements
+soup.find('tag')                     Premiere correspondance
+soup.find('div', class_='name')      Par classe
+soup.find(id='myid')                 Par ID
+soup.find_all('tag')                 Toutes les correspondances
+soup.select('div.class > p')        Selecteur CSS
 
-# Extracting data
-elem.get_text(strip=True)           Text content
-elem['attribute']                    Attribute value
-elem.get('attr', default)           Safe attribute access
+# Extraire des donnees
+elem.get_text(strip=True)           Contenu textuel
+elem['attribute']                    Valeur d'attribut
+elem.get('attr', default)           Acces securise aux attributs
 
 # Navigation
 elem.parent, elem.children
 elem.next_sibling, elem.previous_sibling
 ```
 
-### Web Requests
+### Requetes web
 ```python noexec
 from urllib.request import urlopen
 response = urlopen(url)
 html = response.read().decode('utf-8')
 ```
 
-### Common Patterns
+### Motifs courants
 ```python noexec
-# Check for None before accessing
+# Verifier None avant d'acceder
 elem = soup.find('div')
 if elem is not None:
     text = elem.get_text(strip=True)
 
-# Table parsing
+# Analyse de tableaux
 for tr in table.find_all('tr')[1:]:
     cells = [td.get_text(strip=True) for td in tr.find_all('td')]
 ```

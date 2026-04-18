@@ -174,7 +174,7 @@ free(ptr);
 ptr = NULL;  // Empeche toute utilisation accidentelle
 ```
 
-**CVE reference** : CVE-2022-0609 -- use-after-free dans Chrome Animation permettant l'execution de code a distance (exploitee in the wild).
+**CVE reference** : CVE-2022-0609 -- use-after-free dans Chrome Animation permettant l'execution de code a distance (exploitee activement).
 
 ---
 
@@ -183,10 +183,10 @@ ptr = NULL;  // Empeche toute utilisation accidentelle
 | Vulnerabilite | Mecanisme | Impact | Prevention |
 |--------------|-----------|--------|------------|
 | Stack overflow | Ecrire au-dela d'un buffer sur la pile | Detournement du flux d'execution | `strncpy`, verification de tailles |
-| Heap overflow | Ecrire au-dela d'un buffer sur le tas | Ecriture arbitraire | Tailles coherentes, bounds checking |
+| Heap overflow | Ecrire au-dela d'un buffer sur le tas | Ecriture arbitraire | Tailles coherentes, verification de bornes |
 | Format string | Chaine de format controlee par l'utilisateur | Lecture/ecriture memoire | `printf("%s", input)` |
 | Integer overflow | Depassement arithmetique | Allocation trop petite | Verification avant operation |
-| Use-After-Free | Utilisation apres `free()` | Corruption memoire | Mise a NULL, smart pointers |
+| Use-After-Free | Utilisation apres `free()` | Corruption memoire | Mise a NULL, pointeurs intelligents |
 
 ---
 

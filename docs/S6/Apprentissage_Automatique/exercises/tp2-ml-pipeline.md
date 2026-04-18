@@ -1,19 +1,19 @@
 ---
-title: "TP2 - Build-a-ML-Pipeline: No-Show Appointments"
+title: "TP2 - Construction d'un pipeline ML : absences aux rendez-vous"
 sidebar_position: 2
 ---
 
-# TP2 - Build-a-ML-Pipeline: No-Show Appointments
+# TP2 - Construction d'un pipeline ML : absences aux rendez-vous
 
-> Following teacher instructions from: `data/moodle/tp/tp2_ml_pipeline/TP2_complete.ipynb`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp2_ml_pipeline/TP2_complete.ipynb`
 
 ---
 
-## Exercise 1: Describing the Data
+## Exercice 1 : Description des donnees
 
-### Load the dataset and examine its structure.
+### Charger le jeu de donnees et examiner sa structure.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 import pandas as pd
@@ -25,31 +25,31 @@ print(f"Number of entries: {len(df)}")
 df.head()
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Number of entries: 110527
 ```
 
-The dataset contains 14 columns with the following attributes:
+Le jeu de donnees contient 14 colonnes avec les attributs suivants :
 
-| Attribute | Type | Meaning |
-|-----------|------|---------|
-| PatientId | Numeric | Unique patient identifier |
-| AppointmentID | Numeric | Unique appointment identifier |
-| Gender | Nominal (binary) | Gender of the individual (F/M) |
-| ScheduledDay | Datetime | Date and time when the appointment was scheduled |
-| AppointmentDay | Datetime | Date of the scheduled appointment |
-| Age | Numeric | Age of the individual |
-| Neighbourhood | Nominal | Neighbourhood of the individual (81 unique values) |
-| Scholarship | Binary | 1 if the individual received a scholarship |
-| Hipertension | Binary | 1 if the individual has hypertension |
-| Diabetes | Binary | 1 if the individual has diabetes |
-| Alcoholism | Binary | 1 if the individual has alcoholism |
-| Handcap | Binary | 1 if the individual is disabled |
-| SMS_received | Binary | 1 if the individual received a SMS reminder |
-| No-show | Binary | Whether or not the individual showed up |
+| Attribut | Type | Signification |
+|----------|------|---------------|
+| PatientId | Numerique | Identifiant unique du patient |
+| AppointmentID | Numerique | Identifiant unique du rendez-vous |
+| Gender | Nominal (binaire) | Genre de l'individu (F/M) |
+| ScheduledDay | Date/heure | Date et heure de la prise de rendez-vous |
+| AppointmentDay | Date/heure | Date du rendez-vous prevu |
+| Age | Numerique | Age de l'individu |
+| Neighbourhood | Nominal | Quartier de l'individu (81 valeurs uniques) |
+| Scholarship | Binaire | 1 si l'individu beneficie d'une bourse |
+| Hipertension | Binaire | 1 si l'individu souffre d'hypertension |
+| Diabetes | Binaire | 1 si l'individu souffre de diabete |
+| Alcoholism | Binaire | 1 si l'individu souffre d'alcoolisme |
+| Handcap | Binaire | 1 si l'individu presente un handicap |
+| SMS_received | Binaire | 1 si l'individu a recu un rappel par SMS |
+| No-show | Binaire | Si l'individu s'est presente ou non |
 
-### Observe key statistics
+### Observer les statistiques cles
 
 ```python noexec
 print("Number of individuals:", len(df['PatientId'].unique()), "unique out of", len(df))
@@ -57,49 +57,49 @@ print("Number of appointments:", len(df['AppointmentID'].unique()), "unique out 
 print("These people live in neighbourhoods such as", df['Neighbourhood'].unique())
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Number of individuals: 62299 unique out of 110527
 Number of appointments: 110527 unique out of 110527
 These people live in neighbourhoods such as ['JARDIM DA PENHA' 'MATA DA PRAIA' ... 'PARQUE INDUSTRIAL']
 ```
 
-**Explanation:** 62,299 unique patients for 110,527 appointments means some patients have multiple appointments. Each appointment has a unique ID. There are 81 distinct neighbourhoods (high cardinality feature).
+**Explication :** 62 299 patients uniques pour 110 527 rendez-vous signifie que certains patients ont plusieurs rendez-vous. Chaque rendez-vous a un identifiant unique. Il y a 81 quartiers distincts (feature a haute cardinalite).
 
 ---
 
-## Exercise 2: Formatting the Data Correctly
+## Exercice 2 : Formatage correct des donnees
 
-### Pre-process the data: encode categoricals, handle dates, create the AppointmentDelay feature.
+### Pre-traiter les donnees : encoder les variables categorielles, gerer les dates, creer la feature AppointmentDelay.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 proc_df = df.copy()
 from sklearn.preprocessing import LabelEncoder
 
 le = LabelEncoder()
-# Gender: F=0, M=1
+# Gender : F=0, M=1
 proc_df['Gender'] = le.fit_transform(df['Gender'])
-# Neighbourhood: encode to integers (0 to 80)
+# Neighbourhood : encoder en entiers (0 a 80)
 proc_df['Neighbourhood'] = le.fit_transform(df['Neighbourhood'])
-# No-show: "No"=0 (showed up), "Yes"=1 (absent)
+# No-show : "No"=0 (present), "Yes"=1 (absent)
 proc_df['No-show'] = df['No-show'].apply(lambda x: int(x == 'Yes'))
 
-# Convert dates to floating point unix timestamps
+# Convertir les dates en timestamps Unix flottants
 import time
 converter = lambda x: time.mktime(time.strptime(x, "%Y-%m-%dT%H:%M:%SZ"))
 proc_df['ScheduledDay'] = df['ScheduledDay'].apply(converter)
 proc_df['AppointmentDay'] = df['AppointmentDay'].apply(converter)
 
-# Create AppointmentDelay: number of days between scheduling and appointment
+# Creer AppointmentDelay : nombre de jours entre la prise de rendez-vous et le rendez-vous
 proc_df['AppointmentDelay'] = proc_df['AppointmentDay'] - proc_df['ScheduledDay']
-# Same-day appointments may be negative (AppointmentDay has no hour); fix that
-# Also divide by 86400 to convert seconds to days
+# Les rendez-vous le jour meme peuvent etre negatifs (AppointmentDay n'a pas d'heure) ; corriger cela
+# Diviser aussi par 86400 pour convertir les secondes en jours
 proc_df['AppointmentDelay'] = proc_df['AppointmentDelay'].apply(
     lambda x: max(x, 0) / 86400
 )
-# Convert AppointmentDay to day-of-year for readability
+# Convertir AppointmentDay en jour de l'annee pour la lisibilite
 proc_df['AppointmentDay'] = proc_df['AppointmentDay'].apply(
     lambda x: int(time.strftime("%j", time.localtime(x)))
 )
@@ -107,26 +107,26 @@ proc_df['AppointmentDay'] = proc_df['AppointmentDay'].apply(
 proc_df.head()
 ```
 
-**Expected output:** A DataFrame with all numeric columns including the new `AppointmentDelay` column showing the delay in days (0.0 for same-day appointments).
+**Sortie attendue :** Un DataFrame avec toutes les colonnes numeriques incluant la nouvelle colonne `AppointmentDelay` montrant le delai en jours (0.0 pour les rendez-vous le jour meme).
 
-**Explanation:** The `AppointmentDelay` feature is created by computing the difference between the appointment date and the scheduling date, converting to days, and clamping negatives to 0. This is the key feature engineering step of this TP -- it ends up being the most important feature.
+**Explication :** La feature `AppointmentDelay` est creee en calculant la difference entre la date du rendez-vous et la date de prise de rendez-vous, en convertissant en jours, et en mettant les valeurs negatives a 0. C'est l'etape d'ingenierie de features cle de ce TP -- elle s'avere etre la feature la plus importante.
 
 ---
 
-## Exercise 3: Isolating Testing and Training Sets
+## Exercice 3 : Isolation des jeux d'entrainement et de test
 
-### Build train/test sets that will be reused for all models.
+### Construire les jeux train/test qui seront reutilises pour tous les modeles.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 from sklearn.model_selection import train_test_split
 
-# Remove PatientId and AppointmentID: identifiers, not features
+# Supprimer PatientId et AppointmentID : identifiants, pas des features
 Xframe = proc_df.drop(columns=['No-show', 'PatientId', 'AppointmentID'])
 Yframe = proc_df['No-show']
 
-# Build training and testing sets
+# Construire les jeux d'entrainement et de test
 x_train, x_test, y_train, y_test = train_test_split(
     Xframe, Yframe,
     random_state=int(time.time()),
@@ -136,27 +136,27 @@ print(len(y_train), "entries in the training set")
 print(len(y_test), "entries in the testing set")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 82895 entries in the training set
 27632 entries in the testing set
 ```
 
-**Explanation:** The same train/test split is reused for ALL models in this TP to guarantee a fair comparison. PatientId and AppointmentID are removed because they are identifiers, not predictive features.
+**Explication :** La meme separation train/test est reutilisee pour TOUS les modeles de ce TP afin de garantir une comparaison equitable. PatientId et AppointmentID sont supprimes car ce sont des identifiants, pas des features predictives.
 
 ---
 
-## Exercise 4: Random Forest Classifier (Benchmark)
+## Exercice 4 : Classifieur Random Forest (reference)
 
-### Use a Random Forest as a benchmark with cross-validation, then analyze feature importance.
+### Utiliser un Random Forest comme reference avec validation croisee, puis analyser l'importance des features.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 
-the_rand_forest = RandomForestClassifier()  # Default: 100 trees
+the_rand_forest = RandomForestClassifier()  # Defaut : 100 arbres
 before = time.time()
 t_scores = cross_val_score(the_rand_forest, Xframe, Yframe, cv=4)
 duration = time.time() - before
@@ -164,28 +164,28 @@ print("Test Accuracy: {}%".format(round(t_scores.mean() * 100, 2)))
 print("Cross-fold validation took {} seconds".format(round(duration)))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Test Accuracy: 78.06%
 Cross-fold validation took 45 seconds
 ```
 
-### What are the most significant features?
+### Quelles sont les features les plus significatives ?
 
 ```python noexec
-# Fit once on train to get feature importances
+# Entrainer une fois sur le train pour obtenir l'importance des features
 the_rand_forest.fit(x_train, y_train)
 print("Fitted")
 print("Accuracy: {}%".format(round(the_rand_forest.score(x_test, y_test) * 100, 2)))
 
-# Feature importances
+# Importance des features
 precision = the_rand_forest.feature_importances_
 importances = sorted(zip(Xframe.columns, precision), key=lambda v: -v[1])
 for colname, prec in importances:
     print("{} : {}%".format(colname, round(prec * 100, 2)))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Accuracy: 79.8%
 AppointmentDelay : 26.32%
@@ -202,16 +202,16 @@ Handcap          : 0.52%
 Alcoholism       : 0.51%
 ```
 
-**Explanation:** The engineered feature `AppointmentDelay` (26.32%) is the most important. The longer the delay between scheduling and the appointment date, the more likely a patient is to miss it. Medical features (Hipertension, Diabetes, etc.) each contribute less than 1% -- they are poor predictors of no-shows.
+**Explication :** La feature ingenieree `AppointmentDelay` (26.32%) est la plus importante. Plus le delai entre la prise de rendez-vous et la date du rendez-vous est long, plus il est probable que le patient le manque. Les features medicales (Hipertension, Diabetes, etc.) contribuent chacune a moins de 1% -- ce sont de mauvais predicteurs d'absence.
 
-### Correlation analysis (Pairplot)
+### Analyse de correlation (Pairplot)
 
 ```python noexec
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 sns.set_style('whitegrid')
-# Get a random 5% sample for visualization speed
+# Prendre un echantillon aleatoire de 5% pour la vitesse de visualisation
 _, x, _, y = train_test_split(Xframe, Yframe, test_size=0.05, random_state=40)
 x['No-show'] = y
 sns.pairplot(
@@ -222,13 +222,13 @@ sns.pairplot(
 plt.show()
 ```
 
-**Expected output:** A matrix of scatter plots crossed for the most important features, colored by class (show vs no-show). Notable clustering appears in `AppointmentDay/AppointmentDelay` and `AppointmentDelay/Age`.
+**Sortie attendue :** Une matrice de nuages de points croises pour les features les plus importantes, colores par classe (present vs absent). Des regroupements notables apparaissent dans `AppointmentDay/AppointmentDelay` et `AppointmentDelay/Age`.
 
 ---
 
-## Exercise 5: K Nearest Neighbours
+## Exercice 5 : K plus proches voisins
 
-### 5a: First approach with a fixed K
+### 5a : Premiere approche avec un K fixe
 
 ```python noexec
 from sklearn import neighbors
@@ -239,12 +239,12 @@ clf.fit(x_train, y_train)
 print('accuracy on testing is {}%'.format(round(100 * clf.score(x_test, y_test), 2)))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 accuracy on testing is 79.76%
 ```
 
-### 5b: Visualize the two most significant features
+### 5b : Visualiser les deux features les plus significatives
 
 ```python noexec
 %matplotlib inline
@@ -269,9 +269,9 @@ plt.title(f"No Show Data Set - {xi} / {yi}")
 plt.show()
 ```
 
-**Expected output:** The "Show" (green) and "No-show" (red) points are heavily mixed. There is no clear decision boundary in 2D, confirming the difficulty of this dataset.
+**Sortie attendue :** Les points "Show" (vert) et "No-show" (rouge) sont fortement melanges. Il n'y a pas de frontiere de decision claire en 2D, ce qui confirme la difficulte de ce jeu de donnees.
 
-### 5c: Tuning the meta-parameter K
+### 5c : Reglage du meta-parametre K
 
 ```python noexec
 results = []
@@ -283,7 +283,7 @@ possible_neighbours_parameters = (
 )
 
 print("Changing meta-parameter :")
-# Split training into fit/validation (75/25)
+# Separer l'entrainement en fit/validation (75/25)
 xfit, xvalidate, yfit, yvalidate = train_test_split(
     x_train, y_train, test_size=0.25
 )
@@ -301,12 +301,12 @@ best_k = possible_neighbours_parameters[results.index(max(results))]
 print("Best performance: k={}".format(best_k))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Best performance: k=60
 ```
 
-### 5d: Plot the validation curve
+### 5d : Tracer la courbe de validation
 
 ```python noexec
 %matplotlib inline
@@ -330,9 +330,9 @@ plt.title("No Show Data Set - validation on KNN number of neighbours")
 plt.show()
 ```
 
-**Expected output:** The validation curve rises rapidly from K=1 (~72%) to K=20 (~79%), then forms a plateau around 79.7-79.8% for K between 50 and 200. The curve is smooth and well-defined thanks to the fixed fit/validation split.
+**Sortie attendue :** La courbe de validation monte rapidement de K=1 (~72%) a K=20 (~79%), puis forme un plateau autour de 79.7-79.8% pour K entre 50 et 200. La courbe est lisse et bien definie grace a la separation fit/validation fixe.
 
-### 5e: Final test with best K
+### 5e : Test final avec le meilleur K
 
 ```python noexec
 clf = neighbors.KNeighborsClassifier(best_k)
@@ -342,29 +342,29 @@ print("The final testing score for k={} is {}% .".format(
 ))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 The final testing score for k=60 is 79.77% .
 ```
 
-**Explanation:** KNN with K=60 slightly outperforms the Random Forest benchmark. The validation curve has a clear plateau, indicating robust performance. Initially, with changing train/validation splits per fit, the curves were wobbly -- using a fixed split produces much cleaner results.
+**Explication :** KNN avec K=60 surpasse legerement la reference Random Forest. La courbe de validation presente un plateau clair, indiquant une performance robuste. Initialement, avec des separations train/validation changeantes a chaque entrainement, les courbes etaient instables -- utiliser une separation fixe produit des resultats bien plus propres.
 
 ---
 
-## Exercise 6: Naive Bayesian Classification
+## Exercice 6 : Classification par Naive Bayes
 
-### 6a: Choosing the model -- the problem with mixed features
+### 6a : Choix du modele -- le probleme des features mixtes
 
-The problem with `sklearn.naive_bayes` is that it only offers models capable of handling one kind of feature, not combinations. Two strategies are explored.
+Le probleme avec `sklearn.naive_bayes` est qu'il ne propose que des modeles capables de gerer un seul type de feature, pas des combinaisons. Deux strategies sont explorees.
 
-### 6b: Approach 1 -- Removing numeric variables
+### 6b : Approche 1 -- Supprimer les variables numeriques
 
-Keep only the 8 categorical/binary features and use `CategoricalNB`.
+Garder uniquement les 8 features categorielles/binaires et utiliser `CategoricalNB`.
 
 ```python noexec
 from sklearn.naive_bayes import CategoricalNB
 
-# Restrict to categorical features only
+# Restreindre aux features categorielles uniquement
 categorical_cols = ['Gender', 'Neighbourhood', 'Scholarship', 'Hipertension',
                     'Diabetes', 'Alcoholism', 'Handcap', 'SMS_received']
 
@@ -379,37 +379,37 @@ clf.fit(x_cat_train, y_train)
 print("Test Accuracy: {}%".format(round(clf.score(x_cat_test, y_test) * 100, 2)))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Test Accuracy: 79.76%
 ```
 
-**Explanation:** Despite losing the most important features (AppointmentDelay, ScheduledDay, Age), CategoricalNB achieves 79.76% -- nearly identical to KNN. This suggests the categorical/binary features carry sufficient information for this problem.
+**Explication :** Malgre la perte des features les plus importantes (AppointmentDelay, ScheduledDay, Age), CategoricalNB atteint 79.76% -- quasiment identique a KNN. Cela suggere que les features categorielles/binaires portent suffisamment d'information pour ce probleme.
 
-### 6c: Approach 2 -- Scaling continuous features into categories
+### 6c : Approche 2 -- Discretiser les features continues en categories
 
-Scale Age, AppointmentDelay, ScheduledDay, and AppointmentDay into discrete categories.
+Transformer Age, AppointmentDelay, ScheduledDay et AppointmentDay en categories discretes.
 
-| Age | Category | Code |
-|-----|----------|------|
-| 0-12 | child | 0 |
-| 13-19 | teen | 1 |
-| 20-30 | youth | 2 |
-| 31-50 | adult | 3 |
-| 51-65 | middle-aged | 4 |
-| 66-80 | old-aged | 5 |
-| 81+ | elderly | 6 |
+| Age | Categorie | Code |
+|-----|-----------|------|
+| 0-12 | enfant | 0 |
+| 13-19 | adolescent | 1 |
+| 20-30 | jeune | 2 |
+| 31-50 | adulte | 3 |
+| 51-65 | senior | 4 |
+| 66-80 | age | 5 |
+| 81+ | tres age | 6 |
 
-| AppointmentDelay | Category | Code |
-|------------------|----------|------|
-| 0 | today | 0 |
-| 1-6 | week | 1 |
-| 7-14 | two_weeks | 2 |
-| 15-31 | month | 3 |
-| 32-62 | two_months | 4 |
-| 63+ | later | 5 |
+| AppointmentDelay | Categorie | Code |
+|------------------|-----------|------|
+| 0 | aujourd'hui | 0 |
+| 1-6 | semaine | 1 |
+| 7-14 | deux semaines | 2 |
+| 15-31 | mois | 3 |
+| 32-62 | deux mois | 4 |
+| 63+ | plus tard | 5 |
 
-For ScheduledDay and AppointmentDay: extract the day of the week (0-6).
+Pour ScheduledDay et AppointmentDay : extraire le jour de la semaine (0-6).
 
 ```python noexec
 x_scal_train = x_train.copy()
@@ -417,42 +417,42 @@ x_scal_test = x_test.copy()
 
 def select_fun_age(age):
     if age < 13:
-        return 0  # child
+        return 0  # enfant
     elif 13 <= age <= 19:
-        return 1  # teen
+        return 1  # adolescent
     elif 20 <= age <= 30:
-        return 2  # youth
+        return 2  # jeune
     elif 31 <= age <= 50:
-        return 3  # adult
+        return 3  # adulte
     elif 51 <= age <= 65:
-        return 4  # middle-aged
+        return 4  # senior
     elif 66 <= age <= 80:
-        return 5  # old-aged
+        return 5  # age
     else:
-        return 6  # elderly
+        return 6  # tres age
 
 def select_fun_apd(apd):
     if apd == 0:
-        return 0  # today
+        return 0  # aujourd'hui
     elif 1 <= apd <= 6:
-        return 1  # week
+        return 1  # semaine
     elif 7 <= apd <= 14:
-        return 2  # two_weeks
+        return 2  # deux semaines
     elif 15 <= apd <= 31:
-        return 3  # month
+        return 3  # mois
     elif 32 <= apd <= 62:
-        return 4  # two_months
+        return 4  # deux mois
     else:
-        return 5  # later
+        return 5  # plus tard
 
-# Apply transformations
+# Appliquer les transformations
 x_scal_train['Age'] = x_train['Age'].apply(select_fun_age)
 x_scal_test['Age'] = x_test['Age'].apply(select_fun_age)
 
 x_scal_train['AppointmentDelay'] = x_train['AppointmentDelay'].apply(select_fun_apd)
 x_scal_test['AppointmentDelay'] = x_test['AppointmentDelay'].apply(select_fun_apd)
 
-# ScheduledDay: day of week (%u gives 1-7, subtract 1 for 0-6)
+# ScheduledDay : jour de la semaine (%u donne 1-7, soustraire 1 pour 0-6)
 x_scal_train['ScheduledDay'] = x_train['ScheduledDay'].apply(
     lambda x: int(time.strftime("%u", time.localtime(x))) - 1
 )
@@ -460,7 +460,7 @@ x_scal_test['ScheduledDay'] = x_test['ScheduledDay'].apply(
     lambda x: int(time.strftime("%u", time.localtime(x))) - 1
 )
 
-# AppointmentDay: day of week (Jan 1 2016 was a Friday = day 5)
+# AppointmentDay : jour de la semaine (1er janvier 2016 etait un vendredi = jour 5)
 x_scal_train['AppointmentDay'] = x_train['AppointmentDay'].apply(
     lambda x: (x - 1 + 4) % 7 + 1
 )
@@ -471,7 +471,7 @@ x_scal_test['AppointmentDay'] = x_test['AppointmentDay'].apply(
 x_scal_train.head()
 ```
 
-### Train and evaluate with scaled data
+### Entrainer et evaluer avec les donnees discretisees
 
 ```python noexec
 results = []
@@ -487,18 +487,18 @@ for _ in range(fold_num):
 print("Average test Accuracy: {}%".format(round(sum(results) / fold_num, 2)))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Average test Accuracy: 79.08%
 ```
 
-**Explanation:** Discretization lets us use all features with CategoricalNB, but the score (79.08%) is slightly lower than Approach 1 (79.76%). The loss of information from binning continuous features into coarse categories is not compensated by the gain from having more features.
+**Explication :** La discretisation permet d'utiliser toutes les features avec CategoricalNB, mais le score (79.08%) est legerement inferieur a l'Approche 1 (79.76%). La perte d'information liee au regroupement des features continues en categories grossieres n'est pas compensee par le gain d'avoir plus de features.
 
 ---
 
-## Exercise 7: Stump Boosting (AdaBoost)
+## Exercice 7 : Boosting de stumps (AdaBoost)
 
-### 7a: Tuning the number of estimators
+### 7a : Reglage du nombre d'estimateurs
 
 ```python noexec
 from sklearn.ensemble import AdaBoostClassifier
@@ -520,14 +520,14 @@ best_nbe = possible_nbes[results.index(max(results))]
 print("Best performance: n={}".format(best_nbe))
 ```
 
-**Expected output (variable):**
+**Sortie attendue (variable) :**
 ```
 Best performance: n=1
 ```
 
-The best number of estimators varies across runs (1, 7, 50, 100...).
+Le meilleur nombre d'estimateurs varie d'une execution a l'autre (1, 7, 50, 100...).
 
-### 7b: Plot the validation curve
+### 7b : Tracer la courbe de validation
 
 ```python noexec
 %matplotlib inline
@@ -551,9 +551,9 @@ plt.title("No Show Data Set - validation on boost number estimators")
 plt.show()
 ```
 
-**Expected output:** Unlike the smooth KNN curve, the AdaBoost validation curve is **chaotic and erratic**. The score oscillates between 79% and 80% with no clear trend. There is no obvious optimal number of estimators.
+**Sortie attendue :** Contrairement a la courbe lisse du KNN, la courbe de validation d'AdaBoost est **chaotique et erratique**. Le score oscille entre 79% et 80% sans tendance claire. Il n'y a pas de nombre optimal evident d'estimateurs.
 
-### 7c: Final test
+### 7c : Test final
 
 ```python noexec
 clf = AdaBoostClassifier(n_estimators=best_nbe)
@@ -563,30 +563,30 @@ print("Accuracy of AdaBoostClassifier: {}%".format(
 ))
 ```
 
-**Expected output:** ~79-80%
+**Sortie attendue :** ~79-80%
 
-**Explanation:** Boosting does not offer any significant performance gain on this dataset. The validation curve is chaotic, meaning there is no stable optimal value for the number of estimators. The accuracy never consistently exceeds 80%.
+**Explication :** Le boosting n'apporte aucun gain significatif de performance sur ce jeu de donnees. La courbe de validation est chaotique, ce qui signifie qu'il n'y a pas de valeur optimale stable pour le nombre d'estimateurs. La precision ne depasse jamais 80% de maniere consistante.
 
 ---
 
-## Exercise 8: Conclusion
+## Exercice 8 : Conclusion
 
-### Final model comparison
+### Comparaison finale des modeles
 
-| Model | Configuration | Test Accuracy | Notes |
-|-------|--------------|---------------|-------|
-| Random Forest | 100 trees, CV=4 | 78.06% (CV) / 79.8% (test) | Good benchmark, feature importance |
-| KNN | K=60 | 79.77% | Best model, clear plateau |
-| Naive Bayes (categorical) | CategoricalNB | 79.76% | Surprisingly good despite missing features |
-| Naive Bayes (scaled) | CategoricalNB + binning | 79.08% | Discretization loses information |
-| AdaBoost | n_estimators variable | ~79-80% | No significant gain, chaotic curve |
+| Modele | Configuration | Precision test | Remarques |
+|--------|--------------|----------------|-----------|
+| Random Forest | 100 arbres, CV=4 | 78.06% (CV) / 79.8% (test) | Bonne reference, importance des features |
+| KNN | K=60 | 79.77% | Meilleur modele, plateau clair |
+| Naive Bayes (categoriel) | CategoricalNB | 79.76% | Etonnamment bon malgre des features manquantes |
+| Naive Bayes (discretise) | CategoricalNB + discretisation | 79.08% | La discretisation perd de l'information |
+| AdaBoost | n_estimators variable | ~79-80% | Pas de gain significatif, courbe chaotique |
 
-**Key findings:**
+**Conclusions cles :**
 
-1. **Feature engineering is critical.** The engineered feature `AppointmentDelay` is the most important predictor (26.32% importance in Random Forest). Domain knowledge improves all models.
+1. **L'ingenierie de features est cruciale.** La feature ingenieree `AppointmentDelay` est le meilleur predicteur (26.32% d'importance dans le Random Forest). La connaissance du domaine ameliore tous les modeles.
 
-2. **Simple models can outperform complex ones.** KNN with K=60 is the best model despite being one of the simplest approaches.
+2. **Les modeles simples peuvent surpasser les complexes.** KNN avec K=60 est le meilleur modele malgre sa simplicite.
 
-3. **Why no model exceeds 80%.** The no-show rate itself is about 20%, meaning a naive classifier that always predicts "show" already achieves ~80%. All models are barely beating this baseline, suggesting the available features are weakly predictive and important factors (personal motivation, emergencies, forgetfulness) are not captured in the data.
+3. **Pourquoi aucun modele ne depasse 80%.** Le taux d'absence est d'environ 20%, ce qui signifie qu'un classifieur naif qui predit toujours "present" atteint deja ~80%. Tous les modeles depassent a peine cette reference, ce qui suggere que les features disponibles sont faiblement predictives et que des facteurs importants (motivation personnelle, urgences, oubli) ne sont pas captures dans les donnees.
 
-4. **Consistent train/test splits matter.** Using the same split for all models ensures fair comparison. Using the same fit/validation split within KNN tuning produces cleaner, more reproducible validation curves.
+4. **Des separations train/test coherentes comptent.** Utiliser la meme separation pour tous les modeles garantit une comparaison equitable. Utiliser la meme separation fit/validation au sein du reglage KNN produit des courbes de validation plus propres et reproductibles.

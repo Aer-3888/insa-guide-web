@@ -1,71 +1,71 @@
 ---
-title: "ADFD -- Analyse de Donnees et Fouille de Donnees (Data Analysis & Data Mining)"
+title: "ADFD -- Analyse de Donnees et Fouille de Donnees"
 sidebar_position: 0
 ---
 
-# ADFD -- Analyse de Donnees et Fouille de Donnees (Data Analysis & Data Mining)
+# ADFD -- Analyse de Donnees et Fouille de Donnees
 
-## Course Overview
+## Presentation du cours
 
-ADFD is a 3rd-year (S5) course at INSA Rennes, Department of Computer Science. It covers the foundations of data analysis and data mining, from data preprocessing to unsupervised learning methods for dimensionality reduction, clustering, and pattern extraction.
+ADFD est un cours de 3e annee (S5) a l'INSA Rennes, departement Informatique. Il couvre les fondements de l'analyse de donnees et de la fouille de donnees, du pretraitement des donnees aux methodes d'apprentissage non supervise pour la reduction de dimensionnalite, le clustering et l'extraction de motifs.
 
-**Instructors**: Peggy Cellier (INSA Rennes), with TP contributions from Francesco Bariatti, Ludovic Jean-Baptiste (Universite de Caen), Mehdi Kaytoue (INSA Lyon)
+**Enseignants** : Peggy Cellier (INSA Rennes), avec des contributions TP de Francesco Bariatti, Ludovic Jean-Baptiste (Universite de Caen), Mehdi Kaytoue (INSA Lyon)
 
-**Language**: Lectures and exams are in French. This guide is written in English but preserves key French terminology.
+**Langue** : Les cours et examens sont en francais.
 
-## Course Structure
+## Structure du cours
 
-The course is split into two major parts:
+Le cours se divise en deux grandes parties :
 
-| Part | French Name | Topics |
-|------|-------------|--------|
-| **AD** -- Analyse de Donnees | Data Analysis | Preprocessing, PCA, Dimensionality Reduction |
-| **FD** -- Fouille de Donnees | Data Mining | Clustering, Frequent Itemsets, Pattern Mining, NLP |
+| Partie | Nom | Sujets |
+|--------|-----|--------|
+| **AD** -- Analyse de Donnees | Analyse de Donnees | Pretraitement, ACP, Reduction de dimensionnalite |
+| **FD** -- Fouille de Donnees | Fouille de Donnees | Clustering, Itemsets frequents, Fouille de motifs, NLP |
 
-## Chapter List
+## Liste des chapitres
 
-| # | Chapter File | Topic | Key Concepts |
-|---|-------------|-------|--------------|
-| 1 | [01-preprocessing.md](/S5/ADFD/guide/01-preprocessing) | Data Preprocessing | Missing values, outliers, normalization, encoding |
-| 2 | [02-pca.md](/S5/ADFD/guide/02-pca) | PCA (Analyse en Composantes Principales) | Eigenvalues, correlation circle, variance, factorial planes |
-| 3 | [03-clustering.md](/S5/ADFD/guide/03-clustering) | Clustering Methods | CAH, K-means, DBSCAN, dendrograms, metrics |
-| 4 | [04-data-mining-nlp.md](/S5/ADFD/guide/04-data-mining-nlp) | Data Mining & NLP | Frequent itemsets, Apriori, text preprocessing, TF-IDF |
-| 5 | [05-pandas.md](/S5/ADFD/guide/05-pandas) | Pandas & Data Manipulation | DataFrames, groupby, filtering, CSV handling |
+| # | Fichier | Sujet | Concepts cles |
+|---|---------|-------|---------------|
+| 1 | [01-preprocessing.md](/S5/ADFD/guide/01-preprocessing) | Pretraitement des donnees | Valeurs manquantes, valeurs aberrantes, normalisation, encodage |
+| 2 | [02-pca.md](/S5/ADFD/guide/02-pca) | ACP (Analyse en Composantes Principales) | Valeurs propres, cercle des correlations, variance, plans factoriels |
+| 3 | [03-clustering.md](/S5/ADFD/guide/03-clustering) | Methodes de clustering | CAH, K-means, DBSCAN, dendrogrammes, metriques |
+| 4 | [04-data-mining-nlp.md](/S5/ADFD/guide/04-data-mining-nlp) | Fouille de donnees et NLP | Itemsets frequents, Apriori, pretraitement de texte, TF-IDF |
+| 5 | [05-pandas.md](/S5/ADFD/guide/05-pandas) | Pandas et manipulation de donnees | DataFrames, groupby, filtrage, gestion de CSV |
 
-## Key Concepts at a Glance
+## Concepts cles en un coup d'oeil
 
-### Data Analysis (AD)
+### Analyse de Donnees (AD)
 
-- **Preprocessing** (Pretraitement): Cleaning data before analysis -- handling missing values (valeurs manquantes), outliers (points aberrants), normalization (standardisation), and encoding categorical variables.
-- **PCA / ACP** (Analyse en Composantes Principales): The central technique of the AD part. Transforms correlated variables into uncorrelated principal components that maximize captured variance. Produces the correlation circle (cercle des correlations) and factorial planes (plans factoriels).
-- **Dimensionality Reduction** (Reduction de dimension): Broader category including variable selection (filter, wrapper, embedded methods) and variable extraction (PCA, t-SNE).
+- **Pretraitement** : Nettoyage des donnees avant analyse -- gestion des valeurs manquantes, des valeurs aberrantes (points aberrants), normalisation (standardisation) et encodage des variables categorielles.
+- **ACP** (Analyse en Composantes Principales) : La technique centrale de la partie AD. Transforme des variables correlees en composantes principales non correlees qui maximisent la variance capturee. Produit le cercle des correlations et les plans factoriels.
+- **Reduction de dimension** : Categorie plus large incluant la selection de variables (methodes a base de filtres, enveloppantes, integrees) et l'extraction de variables (ACP, t-SNE).
 
-### Data Mining (FD)
+### Fouille de Donnees (FD)
 
-- **Clustering**: Grouping observations into homogeneous clusters. Methods studied: CAH with Ward criterion, K-means, DBSCAN.
-- **Frequent Itemsets** (Itemsets frequents): Apriori algorithm for mining co-occurring items above a minimum support threshold.
-- **Pattern Mining** (Fouille de motifs): Advanced techniques for extracting sequential patterns and association rules.
-- **NLP/Text Preprocessing**: Stopword removal, accent normalization, regex filtering for tag analysis.
+- **Clustering** : Regroupement des observations en clusters homogenes. Methodes etudiees : CAH avec critere de Ward, K-means, DBSCAN.
+- **Itemsets frequents** (Motifs frequents) : Algorithme Apriori pour l'extraction d'items co-occurrents au-dessus d'un seuil de support minimum.
+- **Fouille de motifs** : Techniques avancees pour l'extraction de motifs sequentiels et de regles d'association.
+- **Pretraitement NLP/Texte** : Suppression des mots vides, normalisation des accents, filtrage par expressions regulieres pour l'analyse de tags.
 
-## Exam Format
+## Format des examens
 
-The course typically has two separate exams:
+Le cours comporte generalement deux examens distincts :
 
-| Exam | Duration | Content |
-|------|----------|---------|
-| **DS AD** (Analyse de Donnees) | ~2h | PCA interpretation, correlation circle reading, preprocessing questions |
-| **DS FD** (Fouille de Donnees) | ~2h | Clustering (DBSCAN, K-means, CAH), itemset mining, Apriori algorithm |
+| Examen | Duree | Contenu |
+|--------|-------|---------|
+| **DS AD** (Analyse de Donnees) | ~2h | Interpretation de l'ACP, lecture du cercle des correlations, questions de pretraitement |
+| **DS FD** (Fouille de Donnees) | ~2h | Clustering (DBSCAN, K-means, CAH), extraction d'itemsets, algorithme Apriori |
 
-Some years have a single combined exam (ADFD).
+Certaines annees proposent un examen unique combine (ADFD).
 
-## Python Libraries Used
+## Bibliotheques Python utilisees
 
 ```python noexec
-# Data manipulation
+# Manipulation de donnees
 import pandas as pd
 import numpy as np
 
-# Visualization
+# Visualisation
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -75,27 +75,27 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.cluster import DBSCAN, KMeans
 
-# Hierarchical clustering
+# Clustering hierarchique
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
 from scipy.spatial.distance import cdist
 
-# Evaluation metrics
+# Metriques d'evaluation
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 
-# Cartography (for TP3-4)
+# Cartographie (pour TP3-4)
 import folium
 
-# Text / NLP (for TP3-4)
+# Texte / NLP (pour TP3-4)
 import nltk
 from nltk.corpus import stopwords
 from mlxtend.frequent_patterns import apriori
 from mlxtend.preprocessing import TransactionEncoder
 ```
 
-## Study Strategy
+## Strategie de revision
 
-1. **Master PCA interpretation first** -- it is the most heavily tested topic in AD exams.
-2. **Know the clustering algorithms by heart** -- be able to trace DBSCAN and K-means step-by-step on small examples.
-3. **Practice Apriori by hand** -- frequent itemset exams always include manual computation.
-4. **Understand when to use what** -- exams often ask you to justify your choice of method.
-5. **Read the correlation circle** -- this is the single most important skill for exam success.
+1. **Maitriser l'interpretation de l'ACP en priorite** -- c'est le sujet le plus frequemment teste aux examens AD.
+2. **Connaitre les algorithmes de clustering par coeur** -- etre capable de derouler DBSCAN et K-means pas a pas sur de petits exemples.
+3. **Pratiquer Apriori a la main** -- les examens sur les itemsets frequents incluent toujours un calcul manuel.
+4. **Comprendre quand utiliser quoi** -- les examens demandent souvent de justifier le choix de methode.
+5. **Lire le cercle des correlations** -- c'est la competence la plus importante pour reussir l'examen.

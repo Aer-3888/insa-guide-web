@@ -1,24 +1,24 @@
 ---
-title: "LDS5 - Process Automation & Scripting"
+title: "LDS5 - Automatisation de processus et scripting"
 sidebar_position: 12
 ---
 
-# LDS5 - Process Automation & Scripting
+# LDS5 - Automatisation de processus et scripting
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-Automate tasks with Python scripts:
+Automatiser des taches avec des scripts Python :
 
-- Execute system commands from Python
-- Process files and directories
-- Parse structured data (GEDCOM genealogy files)
-- Generate reports and output files
-- Build command-line tools
-- Integrate multiple technologies (file I/O, databases, web)
+- Executer des commandes systeme depuis Python
+- Traiter des fichiers et des repertoires
+- Analyser des donnees structurees (fichiers genealogiques GEDCOM)
+- Generer des rapports et des fichiers de sortie
+- Construire des outils en ligne de commande
+- Integrer plusieurs technologies (E/S fichier, bases de donnees, web)
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. Running System Commands
+### 1. Executer des commandes systeme
 
 ```python noexec
 import subprocess
@@ -38,7 +38,7 @@ except subprocess.CalledProcessError as e:
     print(f"Command failed: {e}")
 ```
 
-### 2. File and Directory Operations
+### 2. Operations sur les fichiers et repertoires
 
 ```python noexec
 import os
@@ -73,7 +73,7 @@ for file in Path('.').glob('*.txt'):
     print(file)
 ```
 
-### 3. Reading and Writing Files
+### 3. Lire et ecrire des fichiers
 
 ```python noexec
 # Reading
@@ -97,9 +97,9 @@ with open('image.jpg', 'rb') as f:
     data = f.read()
 ```
 
-### 4. Parsing Structured Data
+### 4. Analyser des donnees structurees
 
-**CSV Files**:
+**Fichiers CSV** :
 ```python noexec
 import csv
 
@@ -117,7 +117,7 @@ with open('output.csv', 'w', newline='') as f:
     writer.writerow(['Alice', 25])
 ```
 
-**JSON Files**:
+**Fichiers JSON** :
 ```python noexec
 import json
 
@@ -130,7 +130,7 @@ with open('output.json', 'w') as f:
     json.dump(data, f, indent=2)
 ```
 
-### 5. Command-Line Arguments
+### 5. Arguments en ligne de commande
 
 ```python noexec
 import sys
@@ -157,7 +157,7 @@ print(f"Input: {args.input}")
 print(f"Verbose: {args.verbose}")
 ```
 
-### 6. Regular Expressions
+### 6. Expressions regulieres
 
 ```python
 import re
@@ -181,44 +181,44 @@ result = re.sub(r'\d+', 'X', 'Replace 123 and 456')
 parts = re.split(r'\s+', 'Split  on   whitespace')
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: GEDCOM File Processing
-Parse genealogy data in GEDCOM format (see FUS4 for format details).
+### Exercice 1 : Traitement de fichiers GEDCOM
+Analyser des donnees genealogiques au format GEDCOM (voir FUS4 pour les details du format).
 
-**Tasks**:
+**Taches** :
 - Read GEDCOM file
 - Extract person records
 - Build family tree structure
 - Generate reports
 
-**Files**: `sabotiers.ged`
+**Fichiers** : `sabotiers.ged`
 
-### Exercise 2: Automated Report Generation
-Generate HTML or text reports from GEDCOM data.
+### Exercice 2 : Generation automatisee de rapports
+Generer des rapports HTML ou texte a partir des donnees GEDCOM.
 
-**Features**:
+**Fonctionnalites** :
 - List of all individuals
 - Family groups
 - Statistics (births, deaths, marriages by year)
 - Formatted output
 
-### Exercise 3: File Processing Pipeline
-Build script that processes multiple files:
+### Exercice 3 : Chaine de traitement de fichiers
+Construire un script qui traite plusieurs fichiers :
 - Read input files
 - Transform data
 - Generate output files
 - Handle errors gracefully
 
-### Exercise 4: Data Validation
-Validate GEDCOM files:
+### Exercice 4 : Validation des donnees
+Valider les fichiers GEDCOM :
 - Check format correctness
 - Verify referenced IDs exist
 - Validate dates
 - Report inconsistencies
 
-### Exercise 5: Integration Project
-Combine previous concepts:
+### Exercice 5 : Projet d'integration
+Combiner les concepts precedents :
 - File processing
 - Database storage
 - Web scraping (if needed)
@@ -227,22 +227,22 @@ Combine previous concepts:
 ## Solutions
 
 See `src/` directory and original files:
-- `Q1.py` - Question 1 solution
-- `Q2.py` - Question 2 solution
-- `Q4.py` - Question 4 solution
-- `Q6.py` - Question 6 solution
+- `Q1.py` - Solution question 1
+- `Q2.py` - Solution question 2
+- `Q4.py` - Solution question 4
+- `Q6.py` - Solution question 6
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Automate repetitive tasks** - Scripts save time on repeated operations
-2. **Error handling is critical** - Files may not exist, permissions may fail
-3. **Test with small data first** - Debug on small files before processing large datasets
-4. **Modularize code** - Separate parsing, processing, output
-5. **Document scripts** - Add usage instructions and examples
+1. **Automatiser les taches repetitives** - Les scripts font gagner du temps sur les operations repetees
+2. **La gestion des erreurs est critique** - Les fichiers peuvent ne pas exister, les permissions peuvent echouer
+3. **Tester d'abord avec de petites donnees** - Deboguer sur de petits fichiers avant de traiter de grands jeux de donnees
+4. **Modulariser le code** - Separer l'analyse, le traitement et la sortie
+5. **Documenter les scripts** - Ajouter des instructions d'utilisation et des exemples
 
-## Common Patterns
+## Motifs courants
 
-### File Processing Template
+### Modele de traitement de fichier
 ```python noexec
 import sys
 from pathlib import Path
@@ -281,7 +281,7 @@ if __name__ == '__main__':
     main()
 ```
 
-### Batch Processing
+### Traitement par lots
 ```python noexec
 from pathlib import Path
 
@@ -297,7 +297,7 @@ def process_directory(input_dir, output_dir):
         print(f"Processed: {file.name}")
 ```
 
-### Progress Reporting
+### Rapport de progression
 ```python noexec
 def process_with_progress(items):
     total = len(items)
@@ -307,16 +307,16 @@ def process_with_progress(items):
         print(f"Progress: {i}/{total} ({percent:.1f}%)")
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Not using context managers (with)** - Files may not close properly
-2. **Hardcoding paths** - Use Path objects, accept arguments
-3. **Not validating input** - Check file existence, permissions
-4. **Ignoring errors** - Wrap risky operations in try-except
-5. **Not testing edge cases** - Empty files, malformed data
-6. **Platform-specific code** - Use Path instead of string concatenation
+1. **Ne pas utiliser les gestionnaires de contexte (with)** - Les fichiers peuvent ne pas se fermer correctement
+2. **Coder en dur les chemins** - Utiliser les objets Path, accepter des arguments
+3. **Ne pas valider les entrees** - Verifier l'existence des fichiers, les permissions
+4. **Ignorer les erreurs** - Entourer les operations risquees de try-except
+5. **Ne pas tester les cas limites** - Fichiers vides, donnees malformees
+6. **Code specifique a la plateforme** - Utiliser Path au lieu de la concatenation de chaines
 
-## Further Reading
+## Pour aller plus loin
 
 - Pathlib documentation: https://docs.python.org/3/library/pathlib.html
 - Subprocess module: https://docs.python.org/3/library/subprocess.html
@@ -324,7 +324,7 @@ def process_with_progress(items):
 - "Automate the Boring Stuff with Python" book
 - Python's standard library: csv, json, configparser, logging
 
-## Script Organization
+## Organisation du script
 
 ```python noexec
 #!/usr/bin/env python3
@@ -351,19 +351,19 @@ if __name__ == '__main__':
     main()
 ```
 
-## Best Practices
+## Bonnes pratiques
 
-1. **Shebang line** - `#!/usr/bin/env python3` for executable scripts
-2. **Docstrings** - Document functions and modules
-3. **Type hints** - Help catch errors early
-4. **Logging** - Use logging module instead of print
-5. **Configuration files** - Separate config from code
-6. **Exit codes** - Use sys.exit(0) for success, non-zero for errors
+1. **Ligne shebang** - `#!/usr/bin/env python3` pour les scripts executables
+2. **Docstrings** - Documenter les fonctions et les modules
+3. **Type hints** - Aider a detecter les erreurs tot
+4. **Logging** - Utiliser le module logging au lieu de print
+5. **Fichiers de configuration** - Separer la configuration du code
+6. **Codes de retour** - Utiliser sys.exit(0) pour le succes, non-zero pour les erreurs
 
-## GEDCOM Processing Tips
+## Conseils pour le traitement GEDCOM
 
-- Use state machine for parsing nested structures
-- Track level changes to close tags
-- Build dictionary mapping IDs to records
-- Validate references after parsing
-- Handle missing fields gracefully
+- Utiliser une machine a etats pour analyser les structures imbriquees
+- Suivre les changements de niveau pour fermer les balises
+- Construire un dictionnaire associant les ID aux enregistrements
+- Valider les references apres l'analyse
+- Gerer les champs manquants proprement

@@ -1,23 +1,23 @@
 ---
-title: "TP CPOO1 - Exercices 2 to 6: Testing with JUnit 5, Mockito, and Pitest"
+title: "TP CPOO1 - Exercices 2 a 6 : Tests avec JUnit 5, Mockito et Pitest"
 sidebar_position: 3
 ---
 
-# TP CPOO1 - Exercices 2 to 6: Testing with JUnit 5, Mockito, and Pitest
+# TP CPOO1 - Exercices 2 a 6 : Tests avec JUnit 5, Mockito et Pitest
 
-> Following teacher instructions from: `S5/CPOO/data/moodle/tp/tp3_gitlab_exercises/README.md` (Exercices 2-6)
+> D'apres les instructions de l'enseignant dans : `S5/CPOO/data/moodle/tp/tp3_gitlab_exercises/README.md` (Exercices 2-6)
 
-These exercises work with pre-existing classes. You write tests, analyze control flow, and evaluate test quality. The code is in the `tp-CPOO1` gitlab project, folder structure matching `src/main/java/cpoo1/exoN/`.
+Ces exercices travaillent avec des classes preexistantes. Vous ecrivez des tests, analysez le flot de controle et evaluez la qualite des tests. Le code se trouve dans le projet gitlab `tp-CPOO1`, avec la structure de dossiers correspondant a `src/main/java/cpoo1/exoN/`.
 
 ---
 
-## Exercice 2 - Testing Exo2 (IP Validation and Network)
+## Exercice 2 - Tester Exo2 (Validation d'IP et reseau)
 
-The teacher's original text:
+Texte original de l'enseignant :
 
 > Vous devez tester la classe `Exo2` (la classe de tests est deja creee).
 
-### Code Under Test
+### Code a tester
 
 **Exo2.java** (`cpoo1/exo2/`):
 
@@ -69,7 +69,7 @@ package cpoo1.exo2;
 public class NetworkException extends Exception { }
 ```
 
-**TestExo2.java** (skeleton provided by teacher):
+**TestExo2.java** (squelette fourni par l'enseignant) :
 
 ```java
 package cpoo1.exo2;
@@ -95,15 +95,15 @@ public class TestExo2 {
 
 ### Tester comme dans l'exercice precedent.
 
-**Answer:**
+**Reponse :**
 
-`Exo2` depends on `Network`, which is an interface. We cannot use a real network in tests. We create a **mock**: a fake object that simulates `Network` behavior. Mockito creates mocks that return default values (false for booleans, null for objects) unless configured with `when().thenReturn()`.
+`Exo2` depend de `Network`, qui est une interface. On ne peut pas utiliser un vrai reseau dans les tests. On cree un **mock** : un faux objet qui simule le comportement de `Network`. Mockito cree des mocks qui retournent des valeurs par defaut (false pour les booleens, null pour les objets) sauf si configures avec `when().thenReturn()`.
 
-There are 4 distinct paths through `connectServer`:
-1. Invalid IP format --> return false
-2. Valid IP, ping returns true, no exception --> return true
-3. Valid IP, ping returns false, no exception --> return false
-4. Valid IP, ping throws NetworkException --> return false
+Il y a 4 chemins distincts a travers `connectServer` :
+1. Format d'IP invalide --> retourne false
+2. IP valide, ping retourne true, pas d'exception --> retourne true
+3. IP valide, ping retourne false, pas d'exception --> retourne false
+4. IP valide, ping lance NetworkException --> retourne false
 
 ```java
 package cpoo1.exo2;
@@ -150,7 +150,7 @@ public class TestExo2 {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `TestExo2.java`: Added `@BeforeEach` setup with mock Network, added tests for paths 2, 3, and 4
 
 ---
@@ -159,9 +159,9 @@ public class TestExo2 {
 
 ### Utiliser des tests parametres pour tester le `if(!regex.matcher(address).matches())`. Attention, le(s) test(s) utilisant une mauvaise adresse IP doivent echouer parce que le format de l'IP n'est pas bon (et non pas parce que `network.ping(address)` retourne `false` par defaut). Dans ce cas, il vous faut donc configurer `network.ping(address)` pour qu'elle retourne `true`.
 
-**Answer:**
+**Reponse :**
 
-The teacher explicitly warns: tests for invalid IPs must fail **because the IP format is wrong**, not because `network.ping` returns false (which is the mock's default). So we must configure `network.ping(address)` to return `true`. That way the only reason `connectServer` returns `false` is the regex check.
+L'enseignant avertit explicitement : les tests pour des IP invalides doivent echouer **parce que le format de l'IP est incorrect**, et non parce que `network.ping` retourne false (qui est la valeur par defaut du mock). Il faut donc configurer `network.ping(address)` pour retourner `true`. Ainsi, la seule raison pour laquelle `connectServer` retourne `false` est la verification du regex.
 
 ```java
     // Path 1: Invalid IP formats (parameterized)
@@ -185,7 +185,7 @@ The teacher explicitly warns: tests for invalid IPs must fail **because the IP f
     }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `TestExo2.java`: Added `@ParameterizedTest` with `@ValueSource` for invalid IP addresses, with `network.ping` configured to return `true`
 
 ---
@@ -194,9 +194,9 @@ The teacher explicitly warns: tests for invalid IPs must fail **because the IP f
 
 ### Meme si vous avez une couverture de 100%, un de vos tests doit verifier que la methode `sendGetHTTPQuery` est bien appelee avec la valeur `address`.
 
-**Answer:**
+**Reponse :**
 
-Code coverage tells you which lines were executed, but not whether the right methods were called with the right arguments. `Mockito.verify()` checks that a mock's method was called with specific arguments.
+La couverture de code vous dit quelles lignes ont ete executees, mais pas si les bonnes methodes ont ete appelees avec les bons arguments. `Mockito.verify()` verifie qu'une methode du mock a ete appelee avec des arguments specifiques.
 
 ```java
     // Verify sendGetHTTPQuery is called with the correct address
@@ -221,18 +221,18 @@ Code coverage tells you which lines were executed, but not whether the right met
     }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `TestExo2.java`: Added `verify()` test to confirm `sendGetHTTPQuery` is called with the correct address value
 
 ---
 
-## Exercice 3 - Client and Services (Control Flow Analysis)
+## Exercice 3 - Client et Services (Analyse de flot de controle)
 
-The teacher's original text:
+Texte original de l'enseignant :
 
 > Le code de cet exercice se trouve dans le dossier `exo4`. Il concerne une classe `Client` qui utilise des objets `Service`. Pour rappel, une latence est le temps entre une demande et la reponse.
 
-### Code Under Test
+### Code a tester
 
 **Client.java** (`cpoo1/exo4/`):
 
@@ -278,23 +278,23 @@ public class Client {
 
 ### Quelle est la difference entre les operateurs `&&` et `&` (idem pour `||` et `|`) ? Exemple ligne 23.
 
-**Answer:**
+**Reponse :**
 
-**Short-circuit operators (`&&`, `||`):**
-- `&&`: if the left side is `false`, the right side is **not evaluated** (result is already `false`)
-- `||`: if the left side is `true`, the right side is **not evaluated** (result is already `true`)
+**Operateurs en court-circuit (`&&`, `||`) :**
+- `&&` : si le cote gauche est `false`, le cote droit n'est **pas evalue** (le resultat est deja `false`)
+- `||` : si le cote gauche est `true`, le cote droit n'est **pas evalue** (le resultat est deja `true`)
 
-**Non-short-circuit operators (`&`, `|`):**
-- `&`: both sides are **always evaluated**, regardless of the left side's value
-- `|`: both sides are **always evaluated**, regardless of the left side's value
+**Operateurs sans court-circuit (`&`, `|`) :**
+- `&` : les deux cotes sont **toujours evalues**, quelle que soit la valeur du cote gauche
+- `|` : les deux cotes sont **toujours evalues**, quelle que soit la valeur du cote gauche
 
-**Line 23 uses `||` (short-circuit):**
+**La ligne 23 utilise `||` (court-circuit) :**
 ```java
 if (s == null || services.contains(s))
 ```
-If `s == null` is `true`, then `services.contains(s)` is not evaluated. This means:
-1. Performance: no need to search the list if s is null
-2. For testing: you only need to cover the specific combinations that actually execute
+Si `s == null` est `true`, alors `services.contains(s)` n'est pas evalue. Cela signifie :
+1. Performance : pas besoin de chercher dans la liste si s est null
+2. Pour les tests : il suffit de couvrir les combinaisons specifiques qui sont effectivement executees
 
 ---
 
@@ -302,19 +302,19 @@ If `s == null` is `true`, then `services.contains(s)` is not evaluated. This mea
 
 ### En tenant compte de la question precedente, donner la table de verite effective de la condition ligne 23. Pourquoi est-ce utile lors de l'ecriture de tests ?
 
-**Answer:**
+**Reponse :**
 
-Because `||` short-circuits, not all combinations of the two sub-conditions are reachable:
+Comme `||` effectue un court-circuit, toutes les combinaisons des deux sous-conditions ne sont pas atteignables :
 
-| `s == null` | `services.contains(s)` | Evaluated? | Result |
-|:-----------:|:---------------------:|:----------:|:------:|
-| true | -- (not evaluated) | Short-circuit | throws `IllegalArgumentException` |
-| false | true | Both evaluated | throws `IllegalArgumentException` |
-| false | false | Both evaluated | `services.add(s)` succeeds |
+| `s == null` | `services.contains(s)` | Evalue ? | Resultat |
+|:-----------:|:---------------------:|:--------:|:--------:|
+| true | -- (non evalue) | Court-circuit | lance `IllegalArgumentException` |
+| false | true | Les deux evalues | lance `IllegalArgumentException` |
+| false | false | Les deux evalues | `services.add(s)` reussit |
 
-**Only 3 rows instead of 4.** The combination `s == null` AND `services.contains(s) == false` would exist with `|` but not with `||`. This means you need exactly **3 test cases** to cover all condition/branch combinations.
+**Seulement 3 lignes au lieu de 4.** La combinaison `s == null` ET `services.contains(s) == false` existerait avec `|` mais pas avec `||`. Cela signifie qu'il faut exactement **3 cas de test** pour couvrir toutes les combinaisons de conditions/branches.
 
-This is useful when writing tests because it tells you the minimum number of test cases needed for full condition/branch coverage.
+C'est utile lors de l'ecriture des tests car cela indique le nombre minimum de cas de test necessaires pour une couverture complete des conditions/branches.
 
 ---
 
@@ -322,9 +322,9 @@ This is useful when writing tests because it tells you the minimum number of tes
 
 ### En utilisant cette table de verite, donner maintenant le graphe de flot de controles de la methode `addService`.
 
-**Answer:**
+**Reponse :**
 
-With short-circuit `||`, the graph has two separate decision nodes, not one combined node:
+Avec le court-circuit `||`, le graphe a deux noeuds de decision separes, pas un noeud combine :
 
 ```
     [entry: s]
@@ -346,7 +346,7 @@ With short-circuit `||`, the graph has two separate decision nodes, not one comb
     [return]
 ```
 
-For branch coverage, you need to test both the `s == null` branch and the `services.contains(s)` branch independently.
+Pour la couverture de branches, il faut tester les branches `s == null` et `services.contains(s)` independamment.
 
 ---
 
@@ -354,15 +354,15 @@ For branch coverage, you need to test both the `s == null` branch and the `servi
 
 ### En lien avec la question precedente, quelles sont les classes d'equivalence du parametre `s` de la methode `addService` ?
 
-**Answer:**
+**Reponse :**
 
-An equivalence class is a set of inputs that produce the same behavior:
+Une classe d'equivalence est un ensemble d'entrees qui produisent le meme comportement :
 
-| Class | Description | Representative Input | Expected Outcome |
-|:-----:|-------------|---------------------|:----------------:|
-| 1 | `s` is null | `null` | throws `IllegalArgumentException` |
-| 2 | `s` is a valid Service already in the list | a Service already added | throws `IllegalArgumentException` |
-| 3 | `s` is a valid Service NOT in the list | a fresh Service mock | `s` is added to the list |
+| Classe | Description | Entree representative | Resultat attendu |
+|:------:|-------------|----------------------|:----------------:|
+| 1 | `s` est null | `null` | lance `IllegalArgumentException` |
+| 2 | `s` est un Service valide deja dans la liste | un Service deja ajoute | lance `IllegalArgumentException` |
+| 3 | `s` est un Service valide PAS dans la liste | un nouveau mock Service | `s` est ajoute a la liste |
 
 ---
 
@@ -389,12 +389,12 @@ An equivalence class is a set of inputs that produce the same behavior:
     +----> back to C
 ```
 
-Paths through the graph:
-1. **Empty list:** A -> B -> C -> E (loop body never executes)
-2. **One service:** A -> B -> C -> D -> C -> E
-3. **Two services:** A -> B -> C -> D -> C -> D -> C -> E
+Chemins a travers le graphe :
+1. **Liste vide :** A -> B -> C -> E (le corps de la boucle ne s'execute jamais)
+2. **Un service :** A -> B -> C -> D -> C -> E
+3. **Deux services :** A -> B -> C -> D -> C -> D -> C -> E
 
-To achieve full branch coverage, you need at least paths 1 and 2 (one test with empty list, one with at least one service).
+Pour atteindre une couverture de branches complete, il faut au minimum les chemins 1 et 2 (un test avec une liste vide, un avec au moins un service).
 
 ---
 
@@ -402,9 +402,9 @@ To achieve full branch coverage, you need at least paths 1 and 2 (one test with 
 
 ### Donner le code Java d'une classe de tests unitaires `ClientTest` testant la classe `Client` avec une couverture de conditions et de branches de 100 %. Vous ne disposez pas d'implementations de l'interface `Service`.
 
-**Answer:**
+**Reponse :**
 
-Since `Service` is an interface with no implementation provided, we must **mock** it. Mockito creates a fake `Service` whose `getLatency()` returns a configured value.
+Comme `Service` est une interface sans implementation fournie, nous devons la **mocker**. Mockito cree un faux `Service` dont `getLatency()` retourne une valeur configuree.
 
 ```java
 package cpoo1.exo4;
@@ -500,18 +500,18 @@ public class ClientTest {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `ClientTest.java`: Created from scratch with mock Services, covers all 3 equivalence classes of `addService` plus all branches of `getTotalLatency`
 
 ---
 
-## Exercice 4 - PlateauJeu (Game Board with Parameterized Tests)
+## Exercice 4 - PlateauJeu (Plateau de jeu avec tests parametres)
 
-The teacher's original text:
+Texte original de l'enseignant :
 
 > Le code de cet exercice se trouve dans le dossier `exo5`. Il concerne une classe `PlateauJeu` qui utilise des objets `Pion`.
 
-### Code Under Test
+### Code a tester
 
 **PlateauJeu.java** (`cpoo1/exo5/`):
 
@@ -571,19 +571,19 @@ public class PlateauJeu {
 
 ### En Java, que signifie le mot-cle `final` pose sur l'attribut `pions` ? Quelle est la difference entre un attribut de type primitif *final* (exemple `SIZE`) et un attribut de type complexe (exemple `pions`) ?
 
-**Answer:**
+**Reponse :**
 
 **`public static final int SIZE = 5;`**
-- `SIZE` is a constant. The value `5` can never change.
-- `static` means it belongs to the class, not to an instance.
-- This is a true immutable constant.
+- `SIZE` est une constante. La valeur `5` ne peut jamais changer.
+- `static` signifie qu'elle appartient a la classe, pas a une instance.
+- C'est une vraie constante immuable.
 
 **`private final List<Pion> pions;`**
-- The **reference** `pions` always points to the same `ArrayList` object after construction. You cannot write `pions = new ArrayList<>()` after the constructor.
-- BUT the **contents** of the list can still change. `pions.add(...)`, `pions.remove(...)`, `pions.clear()` all work.
-- `final` on a complex type means "the variable always points to the same object," NOT "the object itself is immutable."
+- La **reference** `pions` pointe toujours vers le meme objet `ArrayList` apres la construction. On ne peut pas ecrire `pions = new ArrayList<>()` apres le constructeur.
+- MAIS le **contenu** de la liste peut toujours changer. `pions.add(...)`, `pions.remove(...)`, `pions.clear()` fonctionnent tous.
+- `final` sur un type complexe signifie "la variable pointe toujours vers le meme objet", PAS "l'objet lui-meme est immuable".
 
-The `Collections.unmodifiableList()` in `getPions()` is separate from `final`. It returns a **view** that throws `UnsupportedOperationException` if you try to modify it. `final` prevents reassigning the variable; `unmodifiableList()` prevents modifying the contents through the returned view.
+Le `Collections.unmodifiableList()` dans `getPions()` est distinct de `final`. Il retourne une **vue** qui lance `UnsupportedOperationException` si on tente de la modifier. `final` empeche la reassignation de la variable ; `unmodifiableList()` empeche la modification du contenu via la vue retournee.
 
 ---
 
@@ -591,22 +591,22 @@ The `Collections.unmodifiableList()` in `getPions()` is separate from `final`. I
 
 ### Etudier le code de la classe `PlateauJeu` et inferez quelles sont les classes d'equivalence de la coordonnee `x` (idem pour `y`) d'un pion ?
 
-**Answer:**
+**Reponse :**
 
-Given `SIZE = 5` and `isOut(value)` returns `value < 0 || value >= SIZE`:
+Etant donne `SIZE = 5` et `isOut(value)` retourne `value < 0 || value >= SIZE` :
 
-| Class | Range | `isOut` result | Description |
-|:-----:|:-----:|:--------------:|-------------|
-| 1 | x < 0 | true | Below valid range |
-| 2 | 0 <= x < 5 | false | Valid range [0, 4] |
-| 3 | x >= 5 | true | Above valid range |
+| Classe | Intervalle | Resultat `isOut` | Description |
+|:------:|:----------:|:----------------:|-------------|
+| 1 | x < 0 | true | En dessous de l'intervalle valide |
+| 2 | 0 <= x < 5 | false | Intervalle valide [0, 4] |
+| 3 | x >= 5 | true | Au-dessus de l'intervalle valide |
 
-**Boundary values** (most likely to reveal bugs): `-1, 0, 4, 5`
+**Valeurs limites** (les plus susceptibles de reveler des bugs) : `-1, 0, 4, 5`
 
-- `-1`: last invalid value below 0
-- `0`: first valid value
-- `4`: last valid value (SIZE - 1)
-- `5`: first invalid value at SIZE
+- `-1` : derniere valeur invalide sous 0
+- `0` : premiere valeur valide
+- `4` : derniere valeur valide (SIZE - 1)
+- `5` : premiere valeur invalide a SIZE
 
 ---
 
@@ -642,11 +642,11 @@ Given `SIZE = 5` and `isOut(value)` returns `value < 0 || value >= SIZE`:
          +----> back to loop
 ```
 
-To achieve full branch coverage:
-- One test where `isOut(x)` is true
-- One test where `isOut(y)` is true (but `isOut(x)` is false)
-- One test where coordinates are valid and no pion occupies the position (return true)
-- One test where coordinates are valid and a pion occupies the position (return false)
+Pour atteindre une couverture de branches complete :
+- Un test ou `isOut(x)` est true
+- Un test ou `isOut(y)` est true (mais `isOut(x)` est false)
+- Un test ou les coordonnees sont valides et aucun pion n'occupe la position (retourne true)
+- Un test ou les coordonnees sont valides et un pion occupe la position (retourne false)
 
 ---
 
@@ -654,9 +654,9 @@ To achieve full branch coverage:
 
 ### Tester la methode `isOut` en utilisant des tests parametres.
 
-**Answer:**
+**Reponse :**
 
-Since `isOut` is `private`, we test it indirectly through `isFree`. If `isOut(x)` returns true, then `isFree(x, validY)` returns false.
+Comme `isOut` est `private`, on la teste indirectement via `isFree`. Si `isOut(x)` retourne true, alors `isFree(x, validY)` retourne false.
 
 ```java
 package cpoo1.exo5;
@@ -785,18 +785,18 @@ public class PlateauJeuTest {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `PlateauJeuTest.java`: Created with parameterized tests for `isOut` (via `isFree`), plus tests for `addPion`, `isFree` with occupants, and `getPions`
 
 ---
 
-## Exercice 5 - Mocking Random (Exo8)
+## Exercice 5 - Mocker Random (Exo8)
 
-The teacher's original text:
+Texte original de l'enseignant :
 
 > La classe `Exo8` presente deux problemes pour tester ses methodes.
 
-### Code Under Test
+### Code a tester
 
 **Exo8.java** (`cpoo1/exo8/`):
 
@@ -834,9 +834,9 @@ public class Exo8 {
 
 ### Cette classe instancie dans son constructeur l'objet `Random`. Nous ne pouvons donc pas "mocker" un `Random` et le donner a l'objet `Exo8`. Utilisez cette technique pour pallier ce probleme et tester la methode `uneFonctionInutile`. https://javadoc.io/static/org.mockito/mockito-core/5.20.0/org.mockito/org/mockito/Mockito.html#49
 
-**Answer:**
+**Reponse :**
 
-The problem is that `Exo8` creates `Random` internally -- we cannot inject a mock through the constructor. The solution is `Mockito.mockConstruction(Class)`, which intercepts `new Class()` calls. Every time `new Random()` is called within the `try` block, Mockito replaces the newly created object with a mock.
+Le probleme est que `Exo8` cree `Random` en interne -- on ne peut pas injecter un mock via le constructeur. La solution est `Mockito.mockConstruction(Class)`, qui intercepte les appels `new Class()`. Chaque fois que `new Random()` est appele dans le bloc `try`, Mockito remplace l'objet nouvellement cree par un mock.
 
 ```java
 package cpoo1.exo8;
@@ -879,7 +879,7 @@ class Exo8Test {
 }
 ```
 
-**How it works step by step:**
+**Comment ca fonctionne etape par etape :**
 
 ```
 1. Mockito.mockConstruction(Random.class, ...) activates construction interception
@@ -891,7 +891,7 @@ class Exo8Test {
 7. 42 * 5 = 210
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Exo8Test.java`: Created with `mockConstruction` tests for `uneFonctionInutile`
 
 ---
@@ -900,9 +900,9 @@ class Exo8Test {
 
 ### L'autre methode de la classe `Exo8`, `uneAutreFonctionInutile`, utilise directement une methode statique de la classe `RandomGenerator`. Utilisez cette autre technique pour pallier ce nouveau probleme : https://javadoc.io/static/org.mockito/mockito-core/5.20.0/org.mockito/org/mockito/Mockito.html#48
 
-**Answer:**
+**Reponse :**
 
-Static methods cannot be mocked with regular `mock()` because they belong to the class, not to an instance. `Mockito.mockStatic()` creates a scoped override: within the `try` block, calls to the static method return whatever you configure.
+Les methodes statiques ne peuvent pas etre mockees avec `mock()` classique car elles appartiennent a la classe, pas a une instance. `Mockito.mockStatic()` cree un remplacement scope : dans le bloc `try`, les appels a la methode statique retournent ce que vous configurez.
 
 ```java
     @Test
@@ -940,7 +940,7 @@ Static methods cannot be mocked with regular `mock()` because they belong to the
     }
 ```
 
-**How it works step by step:**
+**Comment ca fonctionne etape par etape :**
 
 ```
 1. Mockito.mockStatic(RandomGenerator.class) activates static interception
@@ -951,20 +951,20 @@ Static methods cannot be mocked with regular `mock()` because they belong to the
 6. 10 * 3 = 30
 ```
 
-**IMPORTANT:** Both `mockConstruction` and `mockStatic` use `try-with-resources`. The mock is only active within the `try` block. After the block closes, normal behavior is restored.
+**IMPORTANT :** `mockConstruction` et `mockStatic` utilisent tous deux `try-with-resources`. Le mock n'est actif que dans le bloc `try`. Apres la fermeture du bloc, le comportement normal est retabli.
 
-**File changes:**
+**Fichiers modifies :**
 - `Exo8Test.java`: Added `mockStatic` tests for `uneAutreFonctionInutile`
 
 ---
 
-## Exercice 6 - Mutation Testing (Exo9)
+## Exercice 6 - Tests de mutation (Exo9)
 
-The teacher's original text:
+Texte original de l'enseignant :
 
 > Etudier le code de la classe `Exo9` ainsi que celui de sa classe de test `TestExo9`. Cette derniere teste tres mal la classe `Exo9`.
 
-### Code Under Test (with Bug)
+### Code a tester (avec bug)
 
 **Exo9.java** (`cpoo1/exo9/`):
 
@@ -1002,7 +1002,7 @@ public class Exo9 {
 }
 ```
 
-**TestExo9.java** (intentionally weak tests provided by teacher):
+**TestExo9.java** (tests intentionnellement faibles fournis par l'enseignant) :
 
 ```java
 package cpoo1.exo9;
@@ -1043,9 +1043,9 @@ public class TestExo9 {
 
 ### Quelles sont les trois raisons ? La premiere est assez evidente, les deux autres moins.
 
-**Answer:**
+**Reponse :**
 
-**Problem 1 (obvious): `testAjouterElement` has NO assertion.**
+**Probleme 1 (evident) : `testAjouterElement` n'a AUCUNE assertion.**
 
 ```java
 @Test
@@ -1056,7 +1056,7 @@ void testAjouterElement() {
 }
 ```
 
-**Problem 2 (subtle): `testIsEmpty` only tests the `true` case.**
+**Probleme 2 (subtil) : `testIsEmpty` ne teste que le cas `true`.**
 
 ```java
 @Test
@@ -1067,7 +1067,7 @@ void testIsEmpty() {
 }
 ```
 
-**Problem 3 (subtle): `testContient` never tests the case where the element is NOT found.**
+**Probleme 3 (subtil) : `testContient` ne teste jamais le cas ou l'element n'est PAS trouve.**
 
 ```java
 @Test
@@ -1080,7 +1080,7 @@ void testContient() {
 }
 ```
 
-The bug in `contient` is `i <= taille` instead of `i < taille`. When the element IS in the list, it is found before reaching the invalid index. The bug only triggers when the element is NOT found (the loop goes one index too far and throws `IndexOutOfBoundsException`).
+Le bug dans `contient` est `i <= taille` au lieu de `i < taille`. Quand l'element EST dans la liste, il est trouve avant d'atteindre l'indice invalide. Le bug ne se declenche que quand l'element n'est PAS trouve (la boucle va un indice trop loin et lance `IndexOutOfBoundsException`).
 
 ---
 
@@ -1088,15 +1088,15 @@ The bug in `contient` is `i <= taille` instead of `i < taille`. When the element
 
 ### Pour trouver les trois problemes : commenter le contenu des trois methodes, et pour `estVide`, ecrivez `return true;`. Reexecuter les tests. Essayez de comprendre pourquoi le fait de changer le code et que la suite de tests passe toujours est un probleme.
 
-**Answer:**
+**Reponse :**
 
-If you modify the production code and the tests still pass, the tests are not verifying the behavior. This is a **weak test suite**:
+Si on modifie le code de production et que les tests passent toujours, les tests ne verifient pas le comportement. C'est une **suite de tests faible** :
 
-- `estVide()` always returns `true` --> `testIsEmpty` still passes (only checks `true`)
-- `ajouterElement()` does nothing --> `testAjouterElement` still passes (no assertion)
-- `contient()` always returns `true` --> `testContient` still passes (only asserts `true`)
+- `estVide()` retourne toujours `true` --> `testIsEmpty` passe toujours (ne verifie que `true`)
+- `ajouterElement()` ne fait rien --> `testAjouterElement` passe toujours (pas d'assertion)
+- `contient()` retourne toujours `true` --> `testContient` passe toujours (n'asserte que `true`)
 
-A good test suite should **fail when the implementation changes**. Tests that pass regardless of the implementation provide a false sense of security. This is precisely what mutation testing detects.
+Une bonne suite de tests devrait **echouer quand l'implementation change**. Des tests qui passent quelle que soit l'implementation donnent un faux sentiment de securite. C'est precisement ce que les tests de mutation detectent.
 
 ---
 
@@ -1104,25 +1104,25 @@ A good test suite should **fail when the implementation changes**. Tests that pa
 
 ### En ligne de commande, executez Pitest : `mvn clean install test org.pitest:pitest-maven:mutationCoverage` puis ouvrez le fichier `index.html` se trouvant dans `target/pi-reports`. Pitest est un outil de score de *mutation testing*. Essayez de comprendre le principe a partir des resultats.
 
-**Answer:**
+**Reponse :**
 
-**What Pitest does:**
+**Ce que fait Pitest :**
 
-1. Runs your tests to make sure they all pass (baseline)
-2. Creates **mutants**: copies of your code with small changes:
-   - Replacing `<=` with `<` (boundary mutant)
-   - Replacing `return true` with `return false`
-   - Removing method calls
-   - Changing `+` to `-`
-3. Runs your tests against each mutant
-4. If a test fails (detects the mutation), the mutant is **killed** (good)
-5. If all tests pass (mutation undetected), the mutant **survives** (bad)
-6. **Mutation score** = killed mutants / total mutants * 100%
+1. Execute vos tests pour s'assurer qu'ils passent tous (ligne de base)
+2. Cree des **mutants** : des copies de votre code avec de petits changements :
+   - Remplacer `<=` par `<` (mutant de borne)
+   - Remplacer `return true` par `return false`
+   - Supprimer des appels de methodes
+   - Changer `+` en `-`
+3. Execute vos tests contre chaque mutant
+4. Si un test echoue (detecte la mutation), le mutant est **tue** (bien)
+5. Si tous les tests passent (mutation non detectee), le mutant **survit** (mauvais)
+6. **Score de mutation** = mutants tues / total mutants * 100%
 
-With the original weak tests, many mutants survive because:
-- Changing `i <= taille` to `i < taille` --> tests still pass (the bug fix is undetected!)
-- Removing `maListe.add(elt)` --> `testAjouterElement` still passes (no assertion)
-- Changing `return maListe.isEmpty()` to `return true` --> `testIsEmpty` still passes
+Avec les tests faibles originaux, beaucoup de mutants survivent car :
+- Changer `i <= taille` en `i < taille` --> les tests passent toujours (la correction du bug n'est pas detectee !)
+- Supprimer `maListe.add(elt)` --> `testAjouterElement` passe toujours (pas d'assertion)
+- Changer `return maListe.isEmpty()` en `return true` --> `testIsEmpty` passe toujours
 
 ---
 
@@ -1130,13 +1130,13 @@ With the original weak tests, many mutants survive because:
 
 ### Concernant le *mutation testing*, modifier la suite de tests de `TestExo9` pour arriver a un score de mutation de 100% (corrigez egalement les eventuels defauts presents dans la classe `Exo9`).
 
-**Answer:**
+**Reponse :**
 
-**Step 1: Fix the bug in `Exo9.contient()`**
+**Etape 1 : Corriger le bug dans `Exo9.contient()`**
 
-The bug is on line 24: `i <= taille` should be `i < taille`. If the list has 3 elements, `taille = 3`, valid indices are 0, 1, 2. With `i <= 3`, the loop tries `maListe.get(3)`, which throws `IndexOutOfBoundsException`.
+Le bug est a la ligne 24 : `i <= taille` devrait etre `i < taille`. Si la liste a 3 elements, `taille = 3`, les indices valides sont 0, 1, 2. Avec `i <= 3`, la boucle essaie `maListe.get(3)`, ce qui lance `IndexOutOfBoundsException`.
 
-**Fixed Exo9.java:**
+**Exo9.java corrige :**
 
 ```java
 package cpoo1.exo9;
@@ -1172,9 +1172,9 @@ public class Exo9 {
 }
 ```
 
-**Step 2: Write comprehensive tests for 100% mutation score**
+**Etape 2 : Ecrire des tests complets pour 100% de score de mutation**
 
-To achieve 100% mutation score, every possible mutation must cause at least one test to fail:
+Pour atteindre 100% de score de mutation, chaque mutation possible doit faire echouer au moins un test :
 
 ```java
 package cpoo1.exo9;
@@ -1259,10 +1259,10 @@ public class TestExo9 {
 }
 ```
 
-**Why each test kills specific mutants:**
+**Pourquoi chaque test tue des mutants specifiques :**
 
-| Mutant | Killed By |
-|--------|-----------|
+| Mutant | Tue par |
+|--------|---------|
 | Remove `maListe.add(elt)` in `ajouterElement` | `testAjouterElementAddsToList` (assertFalse on estVide fails) |
 | Change `return maListe.isEmpty()` to `return true` | `testEstVideFalse` (assertFalse fails) |
 | Change `return maListe.isEmpty()` to `return false` | `testEstVideTrue` (assertTrue fails) |
@@ -1272,6 +1272,6 @@ public class TestExo9 {
 | Remove the `equals` check | `testContientAbsent` (would return true for any string) |
 | Negate the `equals` check | `testContientPresent` (would not find "bar") |
 
-**File changes:**
+**Fichiers modifies :**
 - `Exo9.java`: Fixed bug `i <= taille` to `i < taille` on line 24
 - `TestExo9.java`: Rewritten with comprehensive assertions covering both true and false returns for every method

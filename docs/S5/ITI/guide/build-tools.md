@@ -1,104 +1,104 @@
 ---
-title: "Build Tools -- Make, GCC, and Compilation"
+title: "Outils de construction -- Make, GCC et compilation"
 sidebar_position: 2
 ---
 
-# Build Tools -- Make, GCC, and Compilation
+# Outils de construction -- Make, GCC et compilation
 
-## Overview
+## Apercu
 
-Build tools automate the process of compiling and linking programs. The FUS part of the ITI course focuses on `gcc` (GNU Compiler Collection) and `make` (build automation). Understanding how compilation works and how to write Makefiles is a core exam topic.
+Les outils de construction automatisent le processus de compilation et d'edition de liens des programmes. La partie FUS du cours ITI se concentre sur `gcc` (GNU Compiler Collection) et `make` (automatisation de la construction). Comprendre le fonctionnement de la compilation et savoir ecrire des Makefiles est un sujet fondamental a l'examen.
 
-## GCC Compilation Pipeline
+## Chaine de compilation GCC
 
-The compilation of a C program happens in four phases:
+La compilation d'un programme C se deroule en quatre phases :
 
 ```
-Source (.c) --> Preprocessor --> Compiler --> Assembler --> Linker --> Executable
-              (-E, .i)       (-S, .s)    (-c, .o)     (link)
+Source (.c) --> Preprocesseur --> Compilateur --> Assembleur --> Editeur de liens --> Executable
+              (-E, .i)         (-S, .s)       (-c, .o)       (link)
 ```
 
-### Phase by Phase
+### Phase par phase
 
-| Phase | Flag | Input | Output | What It Does |
-|-------|------|-------|--------|--------------|
-| Preprocessing | `-E` | `.c` | `.i` | Expand macros, include headers, remove comments |
-| Compilation | `-S` | `.i` | `.s` | Translate C to assembly language |
-| Assembly | `-c` | `.s` | `.o` | Convert assembly to machine code (object file) |
-| Linking | (none) | `.o` | executable | Combine object files, resolve symbols |
+| Phase | Option | Entree | Sortie | Description |
+|-------|--------|--------|--------|-------------|
+| Preprocessing | `-E` | `.c` | `.i` | Expansion des macros, inclusion des headers, suppression des commentaires |
+| Compilation | `-S` | `.i` | `.s` | Traduction du C en langage assembleur |
+| Assemblage | `-c` | `.s` | `.o` | Conversion de l'assembleur en code machine (fichier objet) |
+| Edition de liens | (aucune) | `.o` | executable | Combinaison des fichiers objets, resolution des symboles |
 
-### Important GCC Flags
+### Options GCC importantes
 
 ```bash
-# Compilation control
-gcc -c file.c              # Compile only, produce .o (no linking)
-gcc -o output file.c       # Specify output filename
-gcc -E file.c              # Stop after preprocessing
-gcc -S file.c              # Stop after compilation (produce .s)
+# Controle de la compilation
+gcc -c file.c              # Compiler uniquement, produire .o (pas d'edition de liens)
+gcc -o output file.c       # Specifier le nom du fichier de sortie
+gcc -E file.c              # S'arreter apres le preprocessing
+gcc -S file.c              # S'arreter apres la compilation (produire .s)
 
-# Warnings
-gcc -Wall file.c           # Enable all common warnings
-gcc -Werror file.c         # Treat warnings as errors
-gcc -Wextra file.c         # Extra warnings
+# Avertissements
+gcc -Wall file.c           # Activer tous les avertissements courants
+gcc -Werror file.c         # Traiter les avertissements comme des erreurs
+gcc -Wextra file.c         # Avertissements supplementaires
 
-# Debugging
-gcc -g file.c              # Include debugging symbols (for gdb)
+# Debogage
+gcc -g file.c              # Inclure les symboles de debogage (pour gdb)
 
-# Optimization
-gcc -O0 file.c             # No optimization (default)
-gcc -O1 file.c             # Basic optimization
-gcc -O2 file.c             # Recommended optimization
-gcc -O3 file.c             # Aggressive optimization
-gcc -Os file.c             # Optimize for size
-gcc -Og file.c             # Optimize for debugging
+# Optimisation
+gcc -O0 file.c             # Pas d'optimisation (par defaut)
+gcc -O1 file.c             # Optimisation basique
+gcc -O2 file.c             # Optimisation recommandee
+gcc -O3 file.c             # Optimisation agressive
+gcc -Os file.c             # Optimisation en taille
+gcc -Og file.c             # Optimisation pour le debogage
 
-# Profiling
-gcc -pg file.c             # Enable profiling (for gprof)
+# Profilage
+gcc -pg file.c             # Activer le profilage (pour gprof)
 
-# Preprocessor defines
-gcc -DDEBUG file.c         # Define DEBUG macro
-gcc -DSIZE=100 file.c      # Define SIZE as 100
+# Definitions du preprocesseur
+gcc -DDEBUG file.c         # Definir la macro DEBUG
+gcc -DSIZE=100 file.c      # Definir SIZE a 100
 
-# Include and library paths
-gcc -I/path/to/headers     # Add include search path
-gcc -L/path/to/libs        # Add library search path
-gcc -lm                    # Link with math library
+# Chemins d'inclusion et de bibliotheques
+gcc -I/path/to/headers     # Ajouter un chemin de recherche d'includes
+gcc -L/path/to/libs        # Ajouter un chemin de recherche de bibliotheques
+gcc -lm                    # Lier avec la bibliotheque mathematique
 
-# Dependencies
-gcc -MM file.c             # Generate dependency rules for Make
+# Dependances
+gcc -MM file.c             # Generer les regles de dependance pour Make
 ```
 
-### Optimization Levels Comparison
+### Comparaison des niveaux d'optimisation
 
-| Level | Speed | Compile Time | Debugging | Code Size |
-|-------|-------|-------------|-----------|-----------|
-| `-O0` | Baseline | Fast | Easy | Normal |
-| `-O1` | Faster | Moderate | Harder | Normal |
-| `-O2` | Fast | Slow | Harder | Normal |
-| `-O3` | Fastest | Slowest | Very hard | Larger |
-| `-Os` | Good | Moderate | Harder | Smallest |
+| Niveau | Vitesse | Temps de compilation | Debogage | Taille du code |
+|--------|---------|---------------------|----------|----------------|
+| `-O0` | Reference | Rapide | Facile | Normale |
+| `-O1` | Plus rapide | Modere | Plus difficile | Normale |
+| `-O2` | Rapide | Lent | Plus difficile | Normale |
+| `-O3` | Le plus rapide | Le plus lent | Tres difficile | Plus grande |
+| `-Os` | Bonne | Modere | Plus difficile | La plus petite |
 
-The **80-20 rule**: 80% of execution time is spent in 20% of code. Profile first, optimize second.
+La **regle des 80-20** : 80% du temps d'execution est passe dans 20% du code. Profiler d'abord, optimiser ensuite.
 
-## Make and Makefiles
+## Make et Makefiles
 
-### Why Make?
+### Pourquoi Make ?
 
-Without make, you must recompile everything after any change:
+Sans make, il faut tout recompiler apres chaque modification :
 ```bash
 gcc -c file1.c && gcc -c file2.c && gcc -c file3.c && gcc -o program file1.o file2.o file3.o
 ```
 
-With make, only changed files are recompiled, based on file timestamps.
+Avec make, seuls les fichiers modifies sont recompiles, en se basant sur les horodatages des fichiers.
 
-### Makefile Syntax
+### Syntaxe du Makefile
 
 ```makefile
-# Rule format:
+# Format d'une regle :
 target: dependencies
-	command          # MUST be indented with a TAB (not spaces!)
+	command          # DOIT etre indente avec une TABULATION (pas des espaces !)
 
-# Example:
+# Exemple :
 program: main.o utils.o
 	gcc -o program main.o utils.o
 
@@ -109,47 +109,47 @@ utils.o: utils.c utils.h main.h
 	gcc -c utils.c
 ```
 
-**Critical rule**: Commands MUST start with a TAB character, not spaces. This is the most common Makefile error.
+**Regle fondamentale** : les commandes DOIVENT commencer par un caractere TABULATION, pas des espaces. C'est l'erreur la plus courante dans les Makefiles.
 
 ### Variables
 
 ```makefile
-# User-defined variables
+# Variables definies par l'utilisateur
 CC = gcc
 CFLAGS = -Wall -g
 LDFLAGS = -lm
 SOURCES = main.c utils.c
-OBJECTS = $(SOURCES:.c=.o)    # Replace .c with .o
+OBJECTS = $(SOURCES:.c=.o)    # Remplacer .c par .o
 TARGET = program
 
-# Use variables
+# Utilisation des variables
 $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 ```
 
-### Automatic Variables
+### Variables automatiques
 
-| Variable | Meaning | Example |
-|----------|---------|---------|
-| `$@` | Target name | `program` |
-| `$<` | First dependency | `main.c` |
-| `$^` | All dependencies | `main.o utils.o` |
-| `$?` | Dependencies newer than target | Changed files |
+| Variable | Signification | Exemple |
+|----------|---------------|---------|
+| `$@` | Nom de la cible | `program` |
+| `$<` | Premiere dependance | `main.c` |
+| `$^` | Toutes les dependances | `main.o utils.o` |
+| `$?` | Dependances plus recentes que la cible | Fichiers modifies |
 
-### Pattern Rules
+### Regles generiques
 
 ```makefile
-# Generic rule: compile any .c to .o
+# Regle generique : compiler tout .c en .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# This replaces individual rules for each .c file
+# Cela remplace les regles individuelles pour chaque fichier .c
 ```
 
-### Phony Targets
+### Cibles factices
 
 ```makefile
-# Targets that don't produce files
+# Cibles qui ne produisent pas de fichiers
 .PHONY: all clean
 
 all: $(TARGET)
@@ -158,131 +158,131 @@ clean:
 	rm -f $(OBJECTS) $(TARGET)
 ```
 
-### Complete Makefile Template
+### Modele de Makefile complet
 
 ```makefile
-# Compiler configuration
+# Configuration du compilateur
 CC = gcc
 CFLAGS = -Wall -g
 LDFLAGS =
 
-# Files
+# Fichiers
 SOURCES = principal.c tableau.c
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = principal
 
-# Default target
+# Cible par defaut
 all: $(TARGET)
 
-# Link executable
+# Edition de liens de l'executable
 $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-# Pattern rule for object files
+# Regle generique pour les fichiers objets
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Explicit dependencies (from gcc -MM)
+# Dependances explicites (issues de gcc -MM)
 principal.o: principal.c commun.h tableau.h
 tableau.o: tableau.c commun.h tableau.h
 
-# Profiling build
+# Construction avec profilage
 profile: CFLAGS += -pg
 profile: LDFLAGS += -pg
 profile: clean $(TARGET)
 
-# Optimized build
+# Construction optimisee
 optimized: CFLAGS += -O3
 optimized: clean $(TARGET)
 
-# Clean build artifacts
+# Nettoyage des artefacts de construction
 clean:
 	rm -f $(OBJECTS) $(TARGET) gmon.out
 
-# Show dependencies
+# Afficher les dependances
 deps:
 	$(CC) -MM $(SOURCES)
 
-# Generate preprocessed output
+# Generer la sortie preprocessee
 %.i: %.c
 	$(CC) -E $< -o $@
 
-# Generate assembly output
+# Generer la sortie assembleur
 %.s: %.c
 	$(CC) $(CFLAGS) -S $< -o $@
 
 .PHONY: all clean profile optimized deps
 ```
 
-### How Make Decides What to Build
+### Comment Make decide quoi construire
 
-1. Check if target exists
-2. If target exists, compare timestamps with dependencies
-3. If any dependency is newer than target, rebuild
-4. Recursively check dependencies
+1. Verifier si la cible existe
+2. Si la cible existe, comparer les horodatages avec les dependances
+3. Si une dependance est plus recente que la cible, reconstruire
+4. Verifier recursivement les dependances
 
-### Common Make Invocations
+### Invocations courantes de Make
 
 ```bash
-make                       # Build default target (first target, usually 'all')
-make clean                 # Run clean target
-make -n                    # Dry run (show commands without executing)
-make -f MyMakefile         # Use specific makefile
-make -j4                   # Build with 4 parallel jobs
-make CC=clang              # Override variable on command line
+make                       # Construire la cible par defaut (premiere cible, generalement 'all')
+make clean                 # Executer la cible clean
+make -n                    # Execution a blanc (afficher les commandes sans les executer)
+make -f MyMakefile         # Utiliser un makefile specifique
+make -j4                   # Construire avec 4 taches paralleles
+make CC=clang              # Surcharger une variable en ligne de commande
 ```
 
-## Libraries
+## Bibliotheques
 
-### Static Libraries (.a)
+### Bibliotheques statiques (.a)
 
 ```bash
-# Create object files
+# Creer les fichiers objets
 gcc -c file1.c file2.c
 
-# Create static library
+# Creer la bibliotheque statique
 ar rcs libmylib.a file1.o file2.o
 
-# Use static library
+# Utiliser la bibliotheque statique
 gcc -o program main.c -L. -lmylib
 ```
 
-### Dynamic Libraries (.so)
+### Bibliotheques dynamiques (.so)
 
 ```bash
-# Create position-independent object files
+# Creer les fichiers objets independants de la position
 gcc -fPIC -c file1.c file2.c
 
-# Create shared library
+# Creer la bibliotheque partagee
 gcc -shared -o libmylib.so file1.o file2.o
 
-# Use shared library
+# Utiliser la bibliotheque partagee
 gcc -o program main.c -L. -lmylib
 
-# Set library path at runtime
+# Definir le chemin de la bibliotheque a l'execution
 export LD_LIBRARY_PATH=.
 ```
 
-### Makefile for Libraries
+### Makefile pour les bibliotheques
 
 ```makefile
-# Static library
+# Bibliotheque statique
 libmylib.a: file1.o file2.o
 	ar rcs $@ $^
 
-# Dynamic library
+# Bibliotheque dynamique
 libmylib.so: file1.o file2.o
 	gcc -shared -o $@ $^
 ```
 
-## Dependency Generation
+## Generation des dependances
 
 ```bash
-# Generate dependency lines for Makefile
+# Generer les lignes de dependance pour le Makefile
 gcc -MM main.c
-# Output: main.o: main.c main.h utils.h
+# Sortie : main.o: main.c main.h utils.h
 
-# Include auto-generated dependencies in Makefile
+# Inclure les dependances auto-generees dans le Makefile
 -include $(SOURCES:.c=.d)
 
 %.d: %.c
@@ -291,43 +291,43 @@ gcc -MM main.c
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### GCC Flags
-| Flag | Purpose |
-|------|---------|
-| `-c` | Compile only (no link) |
-| `-o name` | Output filename |
-| `-Wall` | All warnings |
-| `-g` | Debug symbols |
-| `-O0/O2/O3` | Optimization level |
-| `-pg` | Profiling (gprof) |
-| `-E` | Preprocess only |
-| `-S` | Compile to assembly |
-| `-MM` | Show dependencies |
-| `-DNAME` | Define macro |
-| `-I dir` | Include path |
-| `-L dir` | Library path |
-| `-l lib` | Link library |
+### Options GCC
+| Option | Objectif |
+|--------|----------|
+| `-c` | Compiler uniquement (pas d'edition de liens) |
+| `-o name` | Nom du fichier de sortie |
+| `-Wall` | Tous les avertissements |
+| `-g` | Symboles de debogage |
+| `-O0/O2/O3` | Niveau d'optimisation |
+| `-pg` | Profilage (gprof) |
+| `-E` | Preprocessing uniquement |
+| `-S` | Compiler en assembleur |
+| `-MM` | Afficher les dependances |
+| `-DNAME` | Definir une macro |
+| `-I dir` | Chemin d'inclusion |
+| `-L dir` | Chemin de bibliotheque |
+| `-l lib` | Lier une bibliotheque |
 
-### Makefile Essentials
+### Essentiels du Makefile
 ```
-target: deps           Rule definition
-	command            Command (TAB-indented!)
-$@                     Target name
-$<                     First dependency
-$^                     All dependencies
-$(VAR)                 Variable reference
-%.o: %.c               Pattern rule
-.PHONY: target         Non-file target
+target: deps           Definition de regle
+	command            Commande (indentee par TAB !)
+$@                     Nom de la cible
+$<                     Premiere dependance
+$^                     Toutes les dependances
+$(VAR)                 Reference de variable
+%.o: %.c               Regle generique
+.PHONY: target         Cible sans fichier
 ```
 
-### Compilation Commands
+### Commandes de compilation
 ```
-gcc -Wall -g -c file.c       Compile to object file
-gcc -o prog file1.o file2.o  Link to executable
-gcc -MM file.c               Show dependencies
-make                         Build default target
-make clean                   Clean artifacts
-make -n                      Dry run
+gcc -Wall -g -c file.c       Compiler en fichier objet
+gcc -o prog file1.o file2.o  Lier en executable
+gcc -MM file.c               Afficher les dependances
+make                         Construire la cible par defaut
+make clean                   Nettoyer les artefacts
+make -n                      Execution a blanc
 ```

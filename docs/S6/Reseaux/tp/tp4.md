@@ -1,33 +1,33 @@
 ---
-title: "TP4 - Socket Programming in C"
+title: "TP4 - Programmation socket en C"
 sidebar_position: 4
 ---
 
-# TP4 - Socket Programming in C
+# TP4 - Programmation socket en C
 
-Low-level network programming with C sockets API on Linux and Windows.
+Programmation reseau bas niveau avec l'API sockets C sous Linux et Windows.
 
-## Objectives
+## Objectifs
 
-- Master POSIX socket API in C
-- Understand cross-platform socket programming (Linux/Windows)
-- Implement TCP and UDP clients/servers in C
-- Compare C socket programming with Java
+- Maitriser l'API socket POSIX en C
+- Comprendre la programmation socket multiplateforme (Linux/Windows)
+- Implementer des clients/serveurs TCP et UDP en C
+- Comparer la programmation socket en C et en Java
 
-## Topics Covered
+## Themes abordes
 
-1. **TCP Client/Server** - Connection-oriented communication
-2. **UDP Client/Server** - Connectionless datagrams
-3. **Cross-platform Support** - Windows (Winsock) vs Linux
-4. **"Plus ou Moins" Game** - Implementing TP3 game in C
+1. **Client/Serveur TCP** - Communication orientee connexion
+2. **Client/Serveur UDP** - Datagrammes sans connexion
+3. **Support multiplateforme** - Windows (Winsock) vs Linux
+4. **Jeu "Plus ou Moins"** - Porter le jeu du TP3 en C
 
 ---
 
-## C Socket API Overview
+## Vue d'ensemble de l'API Socket C
 
-### Essential Headers
+### En-tetes essentiels
 
-**Linux:**
+**Linux :**
 ```c noexec
 #include <sys/types.h>    // Socket types
 #include <sys/socket.h>   // Socket functions
@@ -37,13 +37,13 @@ Low-level network programming with C sockets API on Linux and Windows.
 #include <netdb.h>        // gethostbyname()
 ```
 
-**Windows:**
+**Windows :**
 ```c noexec
 #include <winsock2.h>     // Winsock API
 #pragma comment(lib, "ws2_32.lib")  // Link with Winsock library
 ```
 
-### Cross-Platform Initialization
+### Initialisation multiplateforme
 
 ```c noexec
 #ifdef WIN32
@@ -67,19 +67,19 @@ static void end(void) { /* Nothing on Linux */ }
 
 ---
 
-## Part 1: TCP Programming
+## Partie 1 : Programmation TCP
 
-### TCP Server
+### Serveur TCP
 
-**Steps:**
-1. Create socket
-2. Bind to port
-3. Listen for connections
-4. Accept client connections
-5. Exchange data
-6. Close connection
+**Etapes :**
+1. Creer le socket
+2. Lier au port (bind)
+3. Ecouter les connexions (listen)
+4. Accepter les connexions clients (accept)
+5. Echanger des donnees
+6. Fermer la connexion
 
-**Implementation (ServeurTCP.c):**
+**Implementation (ServeurTCP.c) :**
 
 ```c noexec
 int main(int argc, char** argv) {
@@ -169,16 +169,16 @@ int main(int argc, char** argv) {
 }
 ```
 
-### TCP Client
+### Client TCP
 
-**Steps:**
-1. Create socket
-2. Setup server address
-3. Connect to server
-4. Exchange data
-5. Close socket
+**Etapes :**
+1. Creer le socket
+2. Configurer l'adresse du serveur
+3. Se connecter au serveur
+4. Echanger des donnees
+5. Fermer le socket
 
-**Implementation (ClientTCP.c):**
+**Implementation (ClientTCP.c) :**
 
 ```c noexec
 int main(int argc, char** argv) {
@@ -256,21 +256,21 @@ int main(int argc, char** argv) {
 }
 ```
 
-### Running TCP Example
+### Execution de l'exemple TCP
 
 ```bash
-# Compile
+# Compiler
 gcc -o serveur ServeurTCP.c
 gcc -o client ClientTCP.c
 
-# Terminal 1: Start server
+# Terminal 1 : Demarrer le serveur
 ./serveur SRV1 8000
 
-# Terminal 2: Start client
+# Terminal 2 : Demarrer le client
 ./client CLI1 127.0.0.1 8000
 ```
 
-**Output (Server):**
+**Sortie (Serveur) :**
 ```
 Server SRV1 listening on port 8000
 Client connected: 127.0.0.1:54321
@@ -279,7 +279,7 @@ Received: #CLI1=001
 Received: #CLI1=002
 ```
 
-**Output (Client):**
+**Sortie (Client) :**
 ```
 Connected from (127.0.0.1,54321) to (127.0.0.1,8000)
 Sending: #CLI1=000
@@ -292,16 +292,16 @@ Received: #SRV1=002#
 
 ---
 
-## Part 2: UDP Programming
+## Partie 2 : Programmation UDP
 
-### UDP Server
+### Serveur UDP
 
-**Key differences from TCP:**
-- No `listen()` or `accept()`
-- Use `recvfrom()` and `sendto()` (include sender/dest address)
-- Each datagram is independent
+**Differences cles par rapport a TCP :**
+- Pas de `listen()` ni de `accept()`
+- Utilisation de `recvfrom()` et `sendto()` (incluent l'adresse de l'emetteur/destinataire)
+- Chaque datagramme est independant
 
-**Implementation (serveur_UDP2_et.c):**
+**Implementation (serveur_UDP2_et.c) :**
 
 ```c noexec
 int main(int argc, char** argv) {
@@ -368,9 +368,9 @@ int main(int argc, char** argv) {
 }
 ```
 
-### UDP Client
+### Client UDP
 
-**Implementation (client_UDP2_et.c):**
+**Implementation (client_UDP2_et.c) :**
 
 ```c noexec
 int main(int argc, char** argv) {
@@ -437,27 +437,27 @@ int main(int argc, char** argv) {
 }
 ```
 
-### Running UDP Example
+### Execution de l'exemple UDP
 
 ```bash
-# Compile
+# Compiler
 gcc -o udp_server serveur_UDP2_et.c
 gcc -o udp_client client_UDP2_et.c
 
-# Terminal 1: Start server
+# Terminal 1 : Demarrer le serveur
 ./udp_server SRV 7000
 
-# Terminal 2: Start client
+# Terminal 2 : Demarrer le client
 ./udp_client CLI 127.0.0.1 7000
 ```
 
 ---
 
-## Part 3: "Plus ou Moins" Game in C
+## Partie 3 : Jeu "Plus ou Moins" en C
 
-Implementing the guessing game from TP3 in C.
+Portage du jeu de devinette du TP3 en C.
 
-### Server (ServeurPlusMoins.c)
+### Serveur (ServeurPlusMoins.c)
 
 ```c noexec
 int main(int argc, char** argv) {
@@ -552,18 +552,18 @@ int main(int argc, char** argv) {
 
 ---
 
-## TCP vs UDP Comparison (Wireshark Analysis)
+## Comparaison TCP vs UDP (analyse Wireshark)
 
-### Exercise: Capture and Compare
+### Exercice : Capturer et comparer
 
-1. **Start Wireshark** on loopback interface
-2. **Run TCP client/server**
-3. **Run UDP client/server**
-4. **Compare packet counts**
+1. **Demarrer Wireshark** sur l'interface loopback
+2. **Lancer le client/serveur TCP**
+3. **Lancer le client/serveur UDP**
+4. **Comparer le nombre de paquets**
 
-### Expected Results
+### Resultats attendus
 
-**TCP (3 message exchanges):**
+**TCP (3 echanges de messages) :**
 ```
 1-3:   Three-way handshake (SYN, SYN-ACK, ACK)
 4-5:   Client sends msg 1, server ACKs
@@ -576,7 +576,7 @@ int main(int argc, char** argv) {
 Total: ~19 packets
 ```
 
-**UDP (3 message exchanges):**
+**UDP (3 echanges de messages) :**
 ```
 1: Client → Server (datagram 1)
 2: Server → Client (response 1)
@@ -589,19 +589,19 @@ Total: 6 packets
 
 ### Observation
 
-**Q5-Q6:** TCP has significant overhead due to:
-- Connection establishment (3 packets)
-- Acknowledgments for every data transfer
-- Connection termination (4 packets)
-- Total: ~3x more packets than UDP for same data
+**Q5-Q6 :** TCP a un surcout significatif du a :
+- L'etablissement de connexion (3 paquets)
+- Les accuses de reception pour chaque transfert de donnees
+- La terminaison de connexion (4 paquets)
+- Total : environ 3 fois plus de paquets qu'UDP pour les memes donnees
 
-**Reason:** TCP guarantees reliability, ordering, and flow control. UDP sacrifices these for speed and simplicity.
+**Raison :** TCP garantit la fiabilite, l'ordre et le controle de flux. UDP sacrifie ces garanties pour la rapidite et la simplicite.
 
 ---
 
-## Key Socket Functions
+## Fonctions socket principales
 
-### Common to TCP and UDP
+### Communes a TCP et UDP
 
 ```c noexec
 // Create socket
@@ -624,7 +624,7 @@ int getsockname(int socket, struct sockaddr *address, socklen_t *length);
 int getpeername(int socket, struct sockaddr *address, socklen_t *length);
 ```
 
-### TCP-Specific
+### Specifiques a TCP
 
 ```c noexec
 // Listen for connections
@@ -644,7 +644,7 @@ ssize_t send(int socket, const void *buffer, size_t length, int flags);
 ssize_t recv(int socket, void *buffer, size_t length, int flags);
 ```
 
-### UDP-Specific
+### Specifiques a UDP
 
 ```c noexec
 // Send datagram (specify destination)
@@ -660,9 +660,9 @@ ssize_t recvfrom(int socket, void *buffer, size_t length,
 
 ---
 
-## Address Structures
+## Structures d'adresses
 
-### IPv4 Address Structure
+### Structure d'adresse IPv4
 
 ```c noexec
 struct sockaddr_in {
@@ -677,7 +677,7 @@ struct in_addr {
 };
 ```
 
-### Generic Socket Address
+### Adresse socket generique
 
 ```c noexec
 struct sockaddr {
@@ -686,7 +686,7 @@ struct sockaddr {
 };
 ```
 
-Used for type casting:
+Utilise pour le cast de type :
 ```c noexec
 struct sockaddr_in addr;
 bind(sock, (struct sockaddr *)&addr, sizeof(addr));
@@ -694,9 +694,9 @@ bind(sock, (struct sockaddr *)&addr, sizeof(addr));
 
 ---
 
-## Byte Order Conversion
+## Conversion d'ordre des octets
 
-Network byte order is **big-endian**. Host may be little-endian.
+L'ordre du reseau est **big-endian**. La machine peut etre little-endian.
 
 ```c noexec
 // Host to Network (16-bit)
@@ -712,7 +712,7 @@ uint32_t htonl(uint32_t hostlong);
 uint32_t ntohl(uint32_t netlong);
 ```
 
-**Example:**
+**Exemple :**
 ```c noexec
 // Port 8000 in network byte order
 serveur.sin_port = htons(8000);
@@ -723,9 +723,9 @@ printf("Port: %d\n", ntohs(serveur.sin_port));
 
 ---
 
-## Address Conversion
+## Conversion d'adresses
 
-### String to Binary
+### Chaine vers binaire
 
 ```c noexec
 // Linux - preferred
@@ -739,7 +739,7 @@ int inet_pton(int af, const char *src, void *dst);
 // af: AF_INET or AF_INET6
 ```
 
-### Binary to String
+### Binaire vers chaine
 
 ```c noexec
 // IPv4 only (not thread-safe)
@@ -749,7 +749,7 @@ char *inet_ntoa(struct in_addr in);
 const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 ```
 
-**Example:**
+**Exemple :**
 ```c noexec
 // String → Binary
 struct in_addr addr;
@@ -761,11 +761,11 @@ printf("IP: %s\n", inet_ntoa(addr));
 
 ---
 
-## Error Handling
+## Gestion des erreurs
 
 ### Linux
 
-Errors set `errno`, check with `strerror()`:
+Les erreurs positionnent `errno`, a verifier avec `strerror()` :
 
 ```c noexec
 if (connect(sock, ...) < 0) {
@@ -776,7 +776,7 @@ if (connect(sock, ...) < 0) {
 
 ### Windows
 
-Use `WSAGetLastError()`:
+Utiliser `WSAGetLastError()` :
 
 ```c noexec
 if (connect(sock, ...) == SOCKET_ERROR) {
@@ -787,40 +787,40 @@ if (connect(sock, ...) == SOCKET_ERROR) {
 
 ---
 
-## Common Issues
+## Problemes courants
 
-### 1. Bind fails with "Address already in use"
+### 1. Bind echoue avec "Address already in use"
 
-**Solution:** Enable SO_REUSEADDR:
+**Solution :** Activer SO_REUSEADDR :
 ```c noexec
 int opt = 1;
 setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 ```
 
-### 2. Connect fails immediately
+### 2. Connect echoue immediatement
 
-**Causes:**
-- Server not running
-- Wrong IP/port
-- Firewall blocking
+**Causes :**
+- Serveur non demarre
+- Mauvaise IP/mauvais port
+- Pare-feu bloquant
 
-**Debug:**
+**Debugger :**
 ```bash
 netstat -tuln | grep 8000  # Check if server listening
 telnet 127.0.0.1 8000      # Test connection
 ```
 
-### 3. recv() returns 0
+### 3. recv() retourne 0
 
-**Meaning:** Peer closed connection gracefully (sent FIN).
+**Signification :** Le pair a ferme la connexion proprement (a envoye FIN).
 
-**Action:** Close socket and exit.
+**Action :** Fermer le socket et quitter.
 
-### 4. Partial send/recv
+### 4. Envoi/reception partiel
 
-`send()` and `recv()` may transfer less than requested.
+`send()` et `recv()` peuvent transferer moins que demande.
 
-**Solution:** Loop until complete:
+**Solution :** Boucler jusqu'a completion :
 ```c noexec
 ssize_t send_all(int sock, const void *buf, size_t len) {
     size_t total = 0;
@@ -835,31 +835,31 @@ ssize_t send_all(int sock, const void *buf, size_t len) {
 
 ---
 
-## Key Takeaways
+## Points a retenir
 
-1. **C sockets are low-level** - more control, more responsibility
-2. **Cross-platform differences** - Winsock vs POSIX
-3. **Byte order matters** - use htons/ntohs/htonl/ntohl
-4. **Error checking critical** - network operations can fail
-5. **TCP vs UDP tradeoff** - reliability vs efficiency
-6. **Address structures** - sockaddr_in for IPv4
-7. **Resource management** - always close() sockets
+1. **Les sockets C sont bas niveau** - plus de controle, plus de responsabilite
+2. **Differences multiplateforme** - Winsock vs POSIX
+3. **L'ordre des octets compte** - utiliser htons/ntohs/htonl/ntohl
+4. **La verification d'erreurs est essentielle** - les operations reseau peuvent echouer
+5. **Compromis TCP vs UDP** - fiabilite vs efficacite
+6. **Structures d'adresses** - sockaddr_in pour IPv4
+7. **Gestion des ressources** - toujours fermer les sockets avec close()
 
 ---
 
-## Files in This Directory
+## Fichiers dans ce repertoire
 
-### Source Code (`src/`)
-- `ClientTCP.c` - TCP client implementation
-- `ServeurTCP.c` - TCP server implementation
-- `client_UDP2_et.c` - UDP client
-- `serveur_UDP2_et.c` - UDP server
-- `ClientPlusMoins.c` - Guessing game client
-- `ServeurPlusMoins.c` - Guessing game server
+### Code source (`src/`)
+- `ClientTCP.c` - Implementation du client TCP
+- `ServeurTCP.c` - Implementation du serveur TCP
+- `client_UDP2_et.c` - Client UDP
+- `serveur_UDP2_et.c` - Serveur UDP
+- `ClientPlusMoins.c` - Client du jeu de devinette
+- `ServeurPlusMoins.c` - Serveur du jeu de devinette
 
 ### Documentation
-- `TP4 Res.pdf` - Assignment instructions
-- `fire.txt` - Sample data file
+- `TP4 Res.pdf` - Enonce du TP
+- `fire.txt` - Fichier de donnees exemple
 
 ### Compilation
 
@@ -874,9 +874,9 @@ cl ClientTCP.c /link ws2_32.lib
 
 ---
 
-## Further Reading
+## Pour aller plus loin
 
-- Beej's Guide to Network Programming (excellent C sockets tutorial)
-- `man 2 socket`, `man 2 bind`, `man 2 connect` (Linux man pages)
-- Winsock documentation (Microsoft Docs)
-- Stevens, "Unix Network Programming" (classic reference)
+- Beej's Guide to Network Programming (excellent tutoriel sur les sockets C)
+- `man 2 socket`, `man 2 bind`, `man 2 connect` (pages man Linux)
+- Documentation Winsock (Microsoft Docs)
+- Stevens, "Unix Network Programming" (reference classique)

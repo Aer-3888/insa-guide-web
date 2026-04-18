@@ -9,14 +9,14 @@ sidebar_position: 8
 
 1. [TypeScript essentiel](#1-typescript-essentiel)
 2. [Composants Angular](#2-composants-angular)
-3. [Data binding](#3-data-binding)
+3. [Liaison de donnees (data binding)](#3-liaison-de-donnees-data-binding)
 4. [Directives structurelles](#4-directives-structurelles)
 5. [Injection de dependances et services](#5-injection-de-dependances-et-services)
 6. [Requetes HTTP (HttpClient)](#6-requetes-http-httpclient)
 7. [Cycle de vie et acces au DOM](#7-cycle-de-vie-et-acces-au-dom)
-8. [Routes Angular](#8-routes-angular)
+8. [Routage Angular](#8-routage-angular)
 9. [Pieges courants](#9-pieges-courants)
-10. [Cheat Sheet](#10-cheat-sheet)
+10. [Aide-memoire](#10-aide-memoire)
 
 ---
 
@@ -121,14 +121,14 @@ export class AppComponent {
 
 ---
 
-## 3. Data binding
+## 3. Liaison de donnees (data binding)
 
 | Type | Syntaxe | Direction |
 |------|---------|-----------|
 | Interpolation | `{{ expr }}` | TS -> HTML |
-| Property binding | `[prop]` | TS -> HTML |
-| Event binding | `(event)` | HTML -> TS |
-| Two-way binding | `[(ngModel)]` | TS <-> HTML |
+| Liaison de propriete | `[prop]` | TS -> HTML |
+| Liaison d'evenement | `(event)` | HTML -> TS |
+| Liaison bidirectionnelle | `[(ngModel)]` | TS <-> HTML |
 
 ### Exemples
 
@@ -148,7 +148,7 @@ export class AppComponent {
 <div [attr.data-x]="x" [attr.data-y]="y"></div>
 ```
 
-### Recuperer l'element dans le handler
+### Recuperer l'element dans le gestionnaire d'evenement
 
 ```typescript
 public handleClick(event: MouseEvent): void {
@@ -265,7 +265,7 @@ this.http.put(`api/item/${x}`, {}, {}).subscribe(data => { });
 this.http.delete(`api/item/${id}`).subscribe(() => { });
 ```
 
-### Promise (alternative)
+### Promise (alternative aux Observables)
 
 ```typescript
 async chargerFoo(name: string): Promise<Foo> {
@@ -280,7 +280,7 @@ const foo = await this.chargerFoo("test");
 
 ## 7. Cycle de vie et acces au DOM
 
-### Hooks du cycle de vie
+### Points d'accroche du cycle de vie
 
 ```
 constructor()        <-- injection de dependances
@@ -310,7 +310,7 @@ ngAfterViewInit(): void {
 
 ---
 
-## 8. Routes Angular
+## 8. Routage Angular
 
 ### Configuration
 
@@ -347,28 +347,28 @@ naviguer(): void { this.router.navigate(['/game']); }
 1. **Oublier subscribe** : la requete HTTP n'est pas envoyee
 2. **Acceder au DOM avant ngAfterViewInit** : les elements n'existent pas encore
 3. **Proprietes privees dans le template** : erreur de compilation
-4. **this dans arrow functions** : ne pointe pas vers l'objet
+4. **this dans les fonctions flechees** : ne pointe pas vers l'objet
 5. **Confondre nativeElement et ElementRef** : nativeElement = l'element HTML reel
-6. **Route nommee comme le proxy** : conflit avec le back-end
+6. **Route nommee comme le proxy** : conflit avec le back-end possible
 
 ---
 
-## 10. Cheat Sheet
+## 10. Aide-memoire
 
 ```
 TypeScript :
   Types : string, number, boolean, any
   Interface : peut typer du JSON (sans new)
-  Classe : private/public dans le constructeur = declaration auto
+  Classe : private/public dans le constructeur = declaration automatique
 
-Angular composant :
+Composant Angular :
   @Component({ selector, templateUrl, styleUrls })
   Cycle de vie : constructor -> ngOnInit -> ngAfterViewInit
 
-Data binding :
+Liaison de donnees :
   {{ }}      = interpolation (TS -> HTML)
-  [prop]     = property binding (TS -> HTML)
-  (event)    = event binding (HTML -> TS)
+  [prop]     = liaison de propriete (TS -> HTML)
+  (event)    = liaison d'evenement (HTML -> TS)
   $event     = objet evenement dans le template
 
 Directives :
@@ -379,9 +379,9 @@ Directives :
 HTTP :
   this.http.get<T>(url).subscribe(data => ...)
   this.http.post(url, body, {}).subscribe(...)
-  subscribe OBLIGATOIRE sinon requete PAS envoyee
+  subscribe OBLIGATOIRE, sinon la requete n'est PAS envoyee
 
 Service :
   @Injectable({ providedIn: 'root' })
-  Injection via le constructeur (private service: Service)
+  Injection via le constructeur : private service: Service
 ```

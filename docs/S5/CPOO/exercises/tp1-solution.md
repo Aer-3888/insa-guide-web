@@ -1,25 +1,25 @@
 ---
-title: "TP CPOO1 - UML to Java: Associations and Composition (Velo/Guidon/Roue)"
+title: "TP CPOO1 - UML vers Java : Associations et Composition (Velo/Guidon/Roue)"
 sidebar_position: 1
 ---
 
-# TP CPOO1 - UML to Java: Associations and Composition (Velo/Guidon/Roue)
+# TP CPOO1 - UML vers Java : Associations et Composition (Velo/Guidon/Roue)
 
-> Following teacher instructions from: `S5/CPOO/data/moodle/tp/tp1/README.md`
+> D'apres les instructions de l'enseignant dans : `S5/CPOO/data/moodle/tp/tp1/README.md`
 
-This TP covers how to translate UML class diagrams into Java code. It progresses from simple unidirectional associations through bidirectional referential integrity to composition with one-to-many relationships.
+Ce TP couvre la traduction de diagrammes de classes UML en code Java. Il progresse des associations unidirectionnelles simples a l'integrite referentielle bidirectionnelle, puis a la composition avec des relations un-vers-plusieurs.
 
 ---
 
-## Q.1 - Simple Association (0..1)
+## Q.1 - Association simple (0..1)
 
-### Create a simple unidirectional association between `Velo` and `Guidon`. A `Velo` can have 0 or 1 `Guidon`. A `Guidon` can be associated with 0 or 1 `Velo`. Both classes have getters and setters.
+### Creer une association unidirectionnelle simple entre `Velo` et `Guidon`. Un `Velo` peut avoir 0 ou 1 `Guidon`. Un `Guidon` peut etre associe a 0 ou 1 `Velo`. Les deux classes ont des getters et setters.
 
-**Answer:**
+**Reponse :**
 
-A 0..1 multiplicity in UML means the reference is optional (can be null). In Java, this is implemented as a nullable field. Both `Velo` and `Guidon` hold a reference to each other, but there is no automatic synchronization -- setting one side does not update the other.
+Une multiplicite 0..1 en UML signifie que la reference est optionnelle (peut etre null). En Java, cela se traduit par un champ nullable. `Velo` et `Guidon` detiennent chacun une reference vers l'autre, mais il n'y a pas de synchronisation automatique -- modifier un cote ne met pas a jour l'autre.
 
-**UML Diagram:**
+**Diagramme UML :**
 
 ```
 +-----------------+         guidon     +-----------------+
@@ -32,7 +32,7 @@ A 0..1 multiplicity in UML means the reference is optional (can be null). In Jav
 +-----------------+       0..1         +-----------------+
 ```
 
-**Velo.java:**
+**Velo.java :**
 
 ```java
 package q1;
@@ -50,7 +50,7 @@ public class Velo {
 }
 ```
 
-**Guidon.java:**
+**Guidon.java :**
 
 ```java
 package q1;
@@ -68,7 +68,7 @@ public class Guidon {
 }
 ```
 
-**Tests:**
+**Tests :**
 
 ```java
 package q1;
@@ -120,36 +120,36 @@ class GuidonTest {
 }
 ```
 
-**The problem with Q.1:** There is no automatic synchronization between the two sides. After `v.setGuidon(g)`, calling `g.getVelo()` still returns null. The programmer must manually call both sides, which is error-prone. This motivates Q.2.
+**Le probleme de Q.1 :** Il n'y a pas de synchronisation automatique entre les deux cotes. Apres `v.setGuidon(g)`, appeler `g.getVelo()` retourne toujours null. Le programmeur doit mettre a jour manuellement les deux cotes, ce qui est source d'erreurs. Cela motive Q.2.
 
-**File changes:**
-- `q1/Velo.java`: Created with a `Guidon` field, getter, and setter
-- `q1/Guidon.java`: Created with a `Velo` field, getter, and setter
+**Fichiers modifies :**
+- `q1/Velo.java` : Cree avec un champ `Guidon`, getter et setter
+- `q1/Guidon.java` : Cree avec un champ `Velo`, getter et setter
 
 ---
 
-## Q.2 - Bidirectional Association with Referential Integrity
+## Q.2 - Association bidirectionnelle avec integrite referentielle
 
-### Ensure referential integrity when adding a `Guidon` to a `Velo`. When `velo.setGuidon(guidon)` is called, `guidon.setVelo(velo)` should be automatically called.
+### Assurer l'integrite referentielle lors de l'ajout d'un `Guidon` a un `Velo`. Quand `velo.setGuidon(guidon)` est appele, `guidon.setVelo(velo)` devrait etre appele automatiquement.
 
-**Answer:**
+**Reponse :**
 
-Referential integrity means both sides of a bidirectional association are always consistent. The solution is to designate one class as the "master" (Velo) that manages the relationship. The other class (Guidon) has a simple setter. The key challenge is avoiding infinite recursion: if `setGuidon` calls `setVelo` and `setVelo` calls `setGuidon`, you get a stack overflow. The guard clause `if (gd != this.guidon)` prevents this.
+L'integrite referentielle signifie que les deux cotes d'une association bidirectionnelle sont toujours coherents. La solution consiste a designer une classe comme "maitre" (Velo) qui gere la relation. L'autre classe (Guidon) a un setter simple. Le defi principal est d'eviter la recursion infinie : si `setGuidon` appelle `setVelo` et `setVelo` appelle `setGuidon`, on obtient un debordement de pile. La clause de garde `if (gd != this.guidon)` empeche cela.
 
-**UML Diagram:**
+**Diagramme UML :**
 
 ```
 +-----------------+        guidon      +-----------------+
 |      Velo       | =================> |     Guidon      |
 +-----------------+       0..1         +-----------------+
-| - guidon: Guidon|   referential      | - velo: Velo    |
-+-----------------+   integrity        +-----------------+
+| - guidon: Guidon|   integrite        | - velo: Velo    |
++-----------------+   referentielle    +-----------------+
 | + getGuidon()   |                    | + getVelo()     |
 | + setGuidon()   | <================= | + setVelo()     |
 +-----------------+       0..1         +-----------------+
 ```
 
-**Velo.java** (master side -- manages the relationship):
+**Velo.java** (cote maitre -- gere la relation) :
 
 ```java
 package q2;
@@ -162,19 +162,19 @@ public class Velo {
     }
 
     public void setGuidon(Guidon gd) {
-        // Guard: if same object, do nothing (prevents infinite recursion)
+        // Garde : si meme objet, ne rien faire (empeche la recursion infinie)
         if (gd != this.guidon) {
             Guidon oldGuidon = this.guidon;
 
-            // If removing the handlebar, notify the old one
+            // Si on retire le guidon, notifier l'ancien
             if (gd == null && oldGuidon != null) {
                 oldGuidon.setVelo(null);
             }
 
-            // Set the new handlebar
+            // Definir le nouveau guidon
             this.guidon = gd;
 
-            // Establish back-reference on the new handlebar
+            // Etablir la reference retour sur le nouveau guidon
             if (gd != null) {
                 gd.setVelo(this);
             }
@@ -183,7 +183,7 @@ public class Velo {
 }
 ```
 
-**Guidon.java** (passive side -- simple setter):
+**Guidon.java** (cote passif -- setter simple) :
 
 ```java
 package q2;
@@ -195,28 +195,28 @@ public class Guidon {
         return this.velo;
     }
 
-    // Simple setter. The Velo side manages referential integrity.
-    // This method does NOT call back to Velo.setGuidon() to avoid infinite recursion.
+    // Setter simple. Le cote Velo gere l'integrite referentielle.
+    // Cette methode N'appelle PAS Velo.setGuidon() pour eviter la recursion infinie.
     public void setVelo(Velo vl) {
         this.velo = vl;
     }
 }
 ```
 
-**How infinite recursion is prevented:**
+**Comment la recursion infinie est empechee :**
 
 ```
 v.setGuidon(g)
-  |-- gd != this.guidon? YES (guidon was null, gd is g)
+  |-- gd != this.guidon? OUI (guidon etait null, gd est g)
   |-- this.guidon = g
-  |-- g.setVelo(v)              // Guidon.setVelo is a simple setter
-  |     |-- this.velo = v       // Done. No callback.
-  |-- Done.
+  |-- g.setVelo(v)              // Guidon.setVelo est un setter simple
+  |     |-- this.velo = v       // Termine. Pas de rappel.
+  |-- Termine.
 ```
 
-If `Guidon.setVelo` called back `v.setGuidon(g)`, the guard `gd != this.guidon` would evaluate to FALSE (because `this.guidon` is already `g`), and the method would return immediately.
+Si `Guidon.setVelo` rappelait `v.setGuidon(g)`, la garde `gd != this.guidon` s'evaluerait a FAUX (car `this.guidon` est deja `g`), et la methode retournerait immediatement.
 
-**Tests:**
+**Tests :**
 
 ```java
 package q2;
@@ -232,7 +232,7 @@ class VeloGuidonTest {
         Guidon g = new Guidon();
         v.setGuidon(g);
         assertSame(g, v.getGuidon());
-        assertSame(v, g.getVelo());     // automatic back-reference
+        assertSame(v, g.getVelo());     // reference retour automatique
     }
 
     @Test
@@ -243,7 +243,7 @@ class VeloGuidonTest {
         v.setGuidon(g1);
         v.setGuidon(g2);
         assertSame(g2, v.getGuidon());
-        assertSame(v, g2.getVelo());    // new guidon linked
+        assertSame(v, g2.getVelo());    // nouveau guidon lie
     }
 
     @Test
@@ -253,7 +253,7 @@ class VeloGuidonTest {
         v.setGuidon(g);
         v.setGuidon(null);
         assertNull(v.getGuidon());
-        assertNull(g.getVelo());        // old back-reference cleared
+        assertNull(g.getVelo());        // ancienne reference retour nettoyee
     }
 
     @Test
@@ -261,7 +261,7 @@ class VeloGuidonTest {
         Velo v = new Velo();
         Guidon g = new Guidon();
         v.setGuidon(g);
-        v.setGuidon(g);                 // no change
+        v.setGuidon(g);                 // pas de changement
         assertSame(g, v.getGuidon());
         assertSame(v, g.getVelo());
     }
@@ -274,21 +274,21 @@ class VeloGuidonTest {
 }
 ```
 
-**File changes:**
-- `q2/Velo.java`: Copied from q1, modified `setGuidon()` to maintain referential integrity with a guard clause and back-reference update
-- `q2/Guidon.java`: Copied from q1, unchanged (passive side)
+**Fichiers modifies :**
+- `q2/Velo.java` : Copie de q1, `setGuidon()` modifie pour maintenir l'integrite referentielle avec clause de garde et mise a jour de la reference retour
+- `q2/Guidon.java` : Copie de q1, inchange (cote passif)
 
 ---
 
-## Q.3 - Removing Bidirectional Access
+## Q.3 - Suppression de l'acces bidirectionnel
 
-### Prevent `Guidon` from accessing its parent `Velo`. The association is strictly unidirectional with multiplicity 1 (a Velo MUST have a Guidon).
+### Empecher `Guidon` d'acceder a son `Velo` parent. L'association est strictement unidirectionnelle avec multiplicite 1 (un Velo DOIT avoir un Guidon).
 
-**Answer:**
+**Reponse :**
 
-When navigation is only needed in one direction, the design is simpler. The `Guidon` becomes a pure component with no knowledge of who owns it. The multiplicity changes from 0..1 to 1, meaning null is rejected.
+Quand la navigation n'est necessaire que dans un sens, la conception est plus simple. Le `Guidon` devient un composant pur sans connaissance de son proprietaire. La multiplicite passe de 0..1 a 1, ce qui signifie que null est rejete.
 
-**UML Diagram:**
+**Diagramme UML :**
 
 ```
 +-----------------+        guidon      +-----------------+
@@ -296,14 +296,14 @@ When navigation is only needed in one direction, the design is simpler. The `Gui
 +-----------------+          1         +-----------------+
 | - guidon: Guidon|                    |                 |
 +-----------------+                    +-----------------+
-| + Velo()        |   NO back-reference.
-| + Velo(Guidon)  |   Multiplicity is 1 (not 0..1).
+| + Velo()        |   PAS de reference retour.
+| + Velo(Guidon)  |   La multiplicite est 1 (pas 0..1).
 | + getGuidon()   |
 | + setGuidon()   |
 +-----------------+
 ```
 
-**Velo.java:**
+**Velo.java :**
 
 ```java
 package q3;
@@ -312,10 +312,10 @@ public class Velo {
     private Guidon guidon;
 
     public Velo() {
-        // guidon is null by default
+        // guidon est null par defaut
     }
 
-    // Constructor enforcing multiplicity-1 constraint
+    // Constructeur imposant la contrainte de multiplicite 1
     public Velo(Guidon gd) {
         if (gd == null) {
             throw new IllegalArgumentException("Guidon cannot be null");
@@ -327,7 +327,7 @@ public class Velo {
         return this.guidon;
     }
 
-    // Rejects null to enforce multiplicity 1. If null is passed, no-op.
+    // Rejette null pour imposer la multiplicite 1. Si null est passe, pas d'effet.
     public void setGuidon(Guidon gd) {
         if (gd != null) {
             this.guidon = gd;
@@ -336,20 +336,20 @@ public class Velo {
 }
 ```
 
-**Guidon.java:**
+**Guidon.java :**
 
 ```java
 package q3;
 
-// Simple handlebar with no reference to any bicycle.
+// Guidon simple sans reference vers un velo.
 public class Guidon {
     public Guidon() {
-        // Empty constructor
+        // Constructeur vide
     }
 }
 ```
 
-**Tests:**
+**Tests :**
 
 ```java
 package q3;
@@ -390,7 +390,7 @@ class VeloTest {
         Guidon g = new Guidon();
         Velo v = new Velo(g);
         v.setGuidon(null);
-        assertSame(g, v.getGuidon()); // unchanged
+        assertSame(g, v.getGuidon()); // inchange
     }
 
     @Test
@@ -404,21 +404,21 @@ class VeloTest {
 }
 ```
 
-**File changes:**
-- `q3/Velo.java`: Copied from q2, removed referential integrity logic, added constructor with null validation, setGuidon rejects null
-- `q3/Guidon.java`: Removed `velo` field, `getVelo()`, and `setVelo()` entirely
+**Fichiers modifies :**
+- `q3/Velo.java` : Copie de q2, logique d'integrite referentielle retiree, constructeur avec validation de null ajoute, setGuidon rejette null
+- `q3/Guidon.java` : Champ `velo`, `getVelo()` et `setVelo()` supprimes entierement
 
 ---
 
-## Q.4 - One-to-Many Association (0..*)
+## Q.4 - Association un-vers-plusieurs (0..*)
 
-### Implement a one-to-many association where a `Velo` has multiple `Roue` (wheels). The association is unidirectional.
+### Implementer une association un-vers-plusieurs ou un `Velo` a plusieurs `Roue` (roues). L'association est unidirectionnelle.
 
-**Answer:**
+**Reponse :**
 
-A 0..* multiplicity means "zero or more," which maps to a `List<Roue>` in Java. The collection must be initialized in the constructor (otherwise `NullPointerException`). Null and duplicate wheels are rejected.
+Une multiplicite 0..* signifie "zero ou plusieurs", ce qui se traduit par une `List<Roue>` en Java. La collection doit etre initialisee dans le constructeur (sinon `NullPointerException`). Les roues null et les doublons sont rejetes.
 
-**UML Diagram:**
+**Diagramme UML :**
 
 ```
 +---------------------+       roues      +-------------+
@@ -433,7 +433,7 @@ A 0..* multiplicity means "zero or more," which maps to a `List<Roue>` in Java. 
 +---------------------+
 ```
 
-**Velo.java:**
+**Velo.java :**
 
 ```java
 package q4;
@@ -452,7 +452,7 @@ public class Velo {
         return this.roues;
     }
 
-    // Adds a wheel. Rejects null and duplicate wheels.
+    // Ajoute une roue. Rejette null et les doublons.
     public Boolean addRoue(Roue r) {
         if (r == null || this.roues.contains(r)) {
             return false;
@@ -460,27 +460,27 @@ public class Velo {
         return this.roues.add(r);
     }
 
-    // Removes a wheel from this bicycle.
+    // Retire une roue de ce velo.
     public Boolean removeRoues(Roue r) {
         return this.roues.remove(r);
     }
 }
 ```
 
-**Roue.java:**
+**Roue.java :**
 
 ```java
 package q4;
 
-// Simple wheel with no knowledge of which bicycle it belongs to.
+// Roue simple sans connaissance du velo auquel elle appartient.
 public class Roue {
     public Roue() {
-        // Empty constructor
+        // Constructeur vide
     }
 }
 ```
 
-**Tests:**
+**Tests :**
 
 ```java
 package q4;
@@ -549,21 +549,21 @@ class VeloRoueTest {
 }
 ```
 
-**File changes:**
-- `q4/Velo.java`: Created with `List<Roue>` field, `addRoue()` with null/duplicate guards, `removeRoues()`
-- `q4/Roue.java`: Created as a simple empty class
+**Fichiers modifies :**
+- `q4/Velo.java` : Cree avec un champ `List<Roue>`, `addRoue()` avec gardes null/doublon, `removeRoues()`
+- `q4/Roue.java` : Cree comme classe vide simple
 
 ---
 
-## Q.5 - Composition with Bidirectional Navigation
+## Q.5 - Composition avec navigation bidirectionnelle
 
-### Implement composition where `Roue` belongs to exactly one `Velo`, and `Velo` can access its wheels. Respect referential integrity of the `roues` role in the composition.
+### Implementer la composition ou `Roue` appartient a exactement un `Velo`, et `Velo` peut acceder a ses roues. Respecter l'integrite referentielle du role `roues` dans la composition.
 
-**Answer:**
+**Reponse :**
 
-Composition is a strong form of association where the "part" (Roue) belongs to exactly one "whole" (Velo) at a time. Adding a Roue to a Velo sets `roue.getVelo()` automatically. Removing a Roue clears it. Moving a Roue from one Velo to another removes it from the first. The infinite recursion prevention is more complex here because both `addRoue` and `setVelo` call each other.
+La composition est une forme forte d'association ou la "partie" (Roue) appartient a exactement un "tout" (Velo) a la fois. Ajouter une Roue a un Velo definit automatiquement `roue.getVelo()`. Retirer une Roue la remet a null. Deplacer une Roue d'un Velo a un autre la retire du premier. La prevention de la recursion infinie est plus complexe ici car `addRoue` et `setVelo` s'appellent mutuellement.
 
-**UML Diagram:**
+**Diagramme UML :**
 
 ```
 +---------------------+       roues      +------------------+
@@ -578,7 +578,7 @@ Composition is a strong form of association where the "part" (Roue) belongs to e
 +---------------------+
 ```
 
-**Velo.java:**
+**Velo.java :**
 
 ```java
 package q5;
@@ -597,10 +597,10 @@ public class Velo {
         return this.roues;
     }
 
-    // Adds a wheel with referential integrity.
-    // 1. Reject null and duplicates
-    // 2. Add to collection
-    // 3. If wheel does not already reference us, set it (prevents recursion)
+    // Ajoute une roue avec integrite referentielle.
+    // 1. Rejeter null et les doublons
+    // 2. Ajouter a la collection
+    // 3. Si la roue ne nous reference pas deja, la definir (empeche la recursion)
     public Boolean addRoue(Roue r) {
         if (r == null || this.roues.contains(r)) {
             return false;
@@ -608,7 +608,7 @@ public class Velo {
 
         this.roues.add(r);
 
-        // Establish back-reference (guard prevents recursion)
+        // Etablir la reference retour (la garde empeche la recursion)
         if (r.getVelo() != this) {
             r.setVelo(this);
         }
@@ -616,9 +616,9 @@ public class Velo {
         return true;
     }
 
-    // Removes a wheel with referential integrity.
-    // 1. Reject null
-    // 2. If wheel is in collection, clear its back-reference, then remove
+    // Retire une roue avec integrite referentielle.
+    // 1. Rejeter null
+    // 2. Si la roue est dans la collection, nettoyer sa reference retour, puis retirer
     public Boolean removeRoues(Roue r) {
         if (r == null) {
             return false;
@@ -637,7 +637,7 @@ public class Velo {
 }
 ```
 
-**Roue.java:**
+**Roue.java :**
 
 ```java
 package q5;
@@ -649,28 +649,28 @@ public class Roue {
         return this.velo;
     }
 
-    // Sets the bicycle this wheel belongs to with referential integrity.
-    // 1. If already set to this bike, do nothing (recursion guard)
-    // 2. If currently on another bike, remove from that bike first
-    //    (clear reference BEFORE calling removeRoues to prevent recursion)
-    // 3. Set the new bike reference
-    // 4. If new bike does not already contain us, add us
+    // Definit le velo auquel cette roue appartient avec integrite referentielle.
+    // 1. Si deja defini sur ce velo, ne rien faire (garde de recursion)
+    // 2. Si actuellement sur un autre velo, retirer de ce velo d'abord
+    //    (nettoyer la reference AVANT d'appeler removeRoues pour empecher la recursion)
+    // 3. Definir la nouvelle reference vers le velo
+    // 4. Si le nouveau velo ne nous contient pas deja, nous ajouter
     public void setVelo(Velo vl) {
         if (this.velo == vl) {
             return;
         }
 
-        // Remove from old bike (if any)
+        // Retirer de l'ancien velo (si existant)
         if (this.velo != null) {
             Velo oldVelo = this.velo;
-            this.velo = null;          // clear BEFORE calling remove
+            this.velo = null;          // nettoyer AVANT d'appeler remove
             oldVelo.removeRoues(this);
         }
 
-        // Set new bike
+        // Definir le nouveau velo
         this.velo = vl;
 
-        // Add to new bike's collection (if not already there)
+        // Ajouter a la collection du nouveau velo (si pas deja present)
         if (vl != null && !vl.getRoues().contains(this)) {
             vl.addRoue(this);
         }
@@ -678,41 +678,41 @@ public class Roue {
 }
 ```
 
-**How infinite recursion is prevented for a normal add:**
+**Comment la recursion infinie est empechee pour un ajout normal :**
 
 ```
 bike.addRoue(wheel)
-  |-- wheel not null, not in list --> add to list
-  |-- wheel.getVelo() != bike --> call wheel.setVelo(bike)
-  |     |-- this.velo != bike? YES (was null)
-  |     |-- this.velo is null, so skip "remove from old bike"
+  |-- wheel pas null, pas dans la liste --> ajouter a la liste
+  |-- wheel.getVelo() != bike --> appeler wheel.setVelo(bike)
+  |     |-- this.velo != bike? OUI (etait null)
+  |     |-- this.velo est null, donc passer "retirer de l'ancien velo"
   |     |-- this.velo = bike
-  |     |-- bike.getRoues().contains(this)? YES (just added above)
-  |     |-- skip addRoue (already in collection)
-  |-- DONE
+  |     |-- bike.getRoues().contains(this)? OUI (vient d'etre ajoute)
+  |     |-- passer addRoue (deja dans la collection)
+  |-- TERMINE
 ```
 
-**How moving a wheel between bikes works:**
+**Comment le deplacement d'une roue entre velos fonctionne :**
 
 ```
 wheel.setVelo(bike2)
-  |-- this.velo != bike2? YES (was bike1)
+  |-- this.velo != bike2? OUI (etait bike1)
   |-- oldVelo = bike1
-  |-- this.velo = null          <-- break link BEFORE callback
+  |-- this.velo = null          <-- couper le lien AVANT le rappel
   |-- bike1.removeRoues(wheel)
-  |     |-- wheel is in bike1's list
-  |     |-- wheel.getVelo() == bike1? NO (we set it to null)
-  |     |-- skip setVelo(null) call
-  |     |-- remove from list
+  |     |-- wheel est dans la liste de bike1
+  |     |-- wheel.getVelo() == bike1? NON (on l'a mis a null)
+  |     |-- passer l'appel setVelo(null)
+  |     |-- retirer de la liste
   |-- this.velo = bike2
-  |-- bike2 does not contain wheel --> bike2.addRoue(wheel)
-  |     |-- wheel not null, not in list --> add to list
-  |     |-- wheel.getVelo() == bike2? YES (just set above)
-  |     |-- skip setVelo call
-  |-- DONE
+  |-- bike2 ne contient pas wheel --> bike2.addRoue(wheel)
+  |     |-- wheel pas null, pas dans la liste --> ajouter a la liste
+  |     |-- wheel.getVelo() == bike2? OUI (vient d'etre defini)
+  |     |-- passer l'appel setVelo
+  |-- TERMINE
 ```
 
-**Tests:**
+**Tests :**
 
 ```java
 package q5;
@@ -793,11 +793,11 @@ class CompositionTest {
         assertSame(v1, r.getVelo());
         assertEquals(1, v1.getRoues().size());
 
-        r.setVelo(v2);     // move wheel to v2
+        r.setVelo(v2);     // deplacer la roue vers v2
 
-        assertFalse(v1.getRoues().contains(r));   // removed from v1
-        assertTrue(v2.getRoues().contains(r));     // added to v2
-        assertSame(v2, r.getVelo());               // back-reference updated
+        assertFalse(v1.getRoues().contains(r));   // retiree de v1
+        assertTrue(v2.getRoues().contains(r));     // ajoutee a v2
+        assertSame(v2, r.getVelo());               // reference retour mise a jour
     }
 
     @Test
@@ -812,7 +812,7 @@ class CompositionTest {
     @Test
     void testSetVeloDirectlyAddsToList() {
         Roue r = new Roue();
-        r.setVelo(velo);    // set from the Roue side
+        r.setVelo(velo);    // defini depuis le cote Roue
         assertTrue(velo.getRoues().contains(r));
         assertSame(velo, r.getVelo());
     }
@@ -821,53 +821,53 @@ class CompositionTest {
     void testSetVeloSameBikeNoOp() {
         Roue r = new Roue();
         velo.addRoue(r);
-        r.setVelo(velo);    // already set
+        r.setVelo(velo);    // deja defini
         assertEquals(1, velo.getRoues().size());
         assertSame(velo, r.getVelo());
     }
 }
 ```
 
-**File changes:**
-- `q5/Velo.java`: Copied from q4, added referential integrity in `addRoue()` and `removeRoues()` with back-reference management
-- `q5/Roue.java`: Added `velo` field with `getVelo()` and `setVelo()` that handles moving between bikes with break-before-callback recursion prevention
+**Fichiers modifies :**
+- `q5/Velo.java` : Copie de q4, integrite referentielle ajoutee dans `addRoue()` et `removeRoues()` avec gestion de la reference retour
+- `q5/Roue.java` : Champ `velo` ajoute avec `getVelo()` et `setVelo()` gerant le deplacement entre velos avec prevention de la recursion par coupure-avant-rappel
 
 ---
 
-## Q.6 - Testing with Moodle Test Suite
+## Q.6 - Tests avec la suite de tests Moodle
 
-### Execute tests provided by Moodle and correct any issues.
+### Executer les tests fournis par Moodle et corriger les eventuels problemes.
 
-**Answer:**
+**Reponse :**
 
-This step validates the implementation against the teacher's official test suite.
+Cette etape valide l'implementation par rapport a la suite de tests officielle de l'enseignant.
 
-**Steps:**
+**Etapes :**
 
-1. Download the test archive from Moodle
-2. Extract it to `test/java2` directory in your project
-3. In IntelliJ: right-click on `java2` folder, select "Mark directory as" then "Test Sources Root"
-4. Run all tests using right-click on the test class, then "Run"
-5. Fix any failing tests by correcting your implementation in q1 through q5
+1. Telecharger l'archive de tests depuis Moodle
+2. L'extraire dans le repertoire `test/java2` de votre projet
+3. Dans IntelliJ : clic droit sur le dossier `java2`, selectionner "Mark directory as" puis "Test Sources Root"
+4. Executer tous les tests en cliquant droit sur la classe de test, puis "Run"
+5. Corriger les tests echoues en corrigeant votre implementation de q1 a q5
 
-**Common issues found by the Moodle test suite:**
+**Problemes courants detectes par la suite de tests Moodle :**
 
-- Forgetting to check for null in `addRoue()`
-- Not handling the case where `removeRoues()` is called with a wheel not in the list
-- Infinite recursion in bidirectional associations due to missing guard clauses
-- Not clearing old back-references when replacing a Guidon in Q.2
+- Oublier de verifier null dans `addRoue()`
+- Ne pas gerer le cas ou `removeRoues()` est appele avec une roue absente de la liste
+- Recursion infinie dans les associations bidirectionnelles due a l'absence de clauses de garde
+- Ne pas nettoyer les anciennes references retour lors du remplacement d'un Guidon en Q.2
 
-If a test fails, read the assertion message carefully. It tells you which expected value did not match the actual value. Trace through your code with the test's inputs to find the discrepancy.
+Si un test echoue, lisez attentivement le message d'assertion. Il indique quelle valeur attendue ne correspond pas a la valeur reelle. Tracez l'execution de votre code avec les entrees du test pour trouver l'ecart.
 
 ---
 
-## Summary Table
+## Tableau recapitulatif
 
-| Question | Classes | Relationship | Key Concept |
-|----------|---------|-------------|-------------|
-| Q.1 | Velo, Guidon | 0..1 bidirectional, no sync | Simple association |
-| Q.2 | Velo, Guidon | 0..1 bidirectional, with integrity | Referential integrity, guard clauses |
-| Q.3 | Velo, Guidon | 1 unidirectional | Remove back-reference, reject null |
-| Q.4 | Velo, Roue | 0..* unidirectional | One-to-many with List |
-| Q.5 | Velo, Roue | 0..* composition with integrity | Composition, break-before-callback |
-| Q.6 | All | All | Validate against Moodle tests |
+| Question | Classes | Relation | Concept cle |
+|----------|---------|----------|-------------|
+| Q.1 | Velo, Guidon | 0..1 bidirectionnelle, sans sync | Association simple |
+| Q.2 | Velo, Guidon | 0..1 bidirectionnelle, avec integrite | Integrite referentielle, clauses de garde |
+| Q.3 | Velo, Guidon | 1 unidirectionnelle | Retrait reference retour, rejet de null |
+| Q.4 | Velo, Roue | 0..* unidirectionnelle | Un-vers-plusieurs avec List |
+| Q.5 | Velo, Roue | 0..* composition avec integrite | Composition, coupure-avant-rappel |
+| Q.6 | Toutes | Toutes | Validation avec les tests Moodle |

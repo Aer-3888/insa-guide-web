@@ -16,7 +16,7 @@ sidebar_position: 4
 7. [Services Spring](#7-services-spring)
 8. [Marshalling (Jackson)](#8-marshalling-jackson)
 9. [Tester les routes avec MockMvc](#9-tester-les-routes-avec-mockmvc)
-10. [Cheat Sheet](#10-cheat-sheet)
+10. [Aide-memoire](#10-aide-memoire)
 
 ---
 
@@ -256,10 +256,10 @@ public class UserNoIdDTO {
 }
 ```
 
-### Quand utiliser differents DTOs
+### Quand utiliser differents DTO
 
-| DTO | Usage | Contient |
-|-----|-------|----------|
+| DTO | Utilisation | Contient |
+|-----|-------------|----------|
 | `ExamDTO` | GET (retour) | id + nom + date |
 | `ExamNoIdDTO` | POST (entree) | nom + date (sans id) |
 | `ExamPatchDTO` | PATCH (entree) | tous les attributs optionnels |
@@ -379,7 +379,7 @@ class ExamControllerTest {
 
 ---
 
-## 10. Cheat Sheet
+## 10. Aide-memoire
 
 ```
 Controleur :

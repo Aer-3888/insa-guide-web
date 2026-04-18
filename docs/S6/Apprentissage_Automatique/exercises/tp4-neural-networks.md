@@ -1,37 +1,37 @@
 ---
-title: "TP4 - Neural Networks and CNNs with TensorFlow/Keras"
+title: "TP4 - Reseaux de neurones et CNN avec TensorFlow/Keras"
 sidebar_position: 4
 ---
 
-# TP4 - Neural Networks and CNNs with TensorFlow/Keras
+# TP4 - Reseaux de neurones et CNN avec TensorFlow/Keras
 
-> Following teacher instructions from: `data/moodle/tp/tp4_neural_networks/tp_nn.py` and `data/moodle/tp/tp4_neural_networks/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp4_neural_networks/tp_nn.py` et `data/moodle/tp/tp4_neural_networks/README.md`
 
 ---
 
-## Dataset: CIFAR-10
+## Jeu de donnees : CIFAR-10
 
-| Property | Value |
-|----------|-------|
-| Training images | 50,000 |
-| Test images | 10,000 |
-| Dimensions | 32 x 32 pixels, 3 channels (RGB) |
+| Propriete | Valeur |
+|-----------|--------|
+| Images d'entrainement | 50 000 |
+| Images de test | 10 000 |
+| Dimensions | 32 x 32 pixels, 3 canaux (RVB) |
 | Classes (10) | airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck |
-| Flattened vector size | 32 * 32 * 3 = 3072 |
-| Balance | 5000 images/class (train), 1000/class (test) |
+| Taille du vecteur aplati | 32 * 32 * 3 = 3072 |
+| Equilibre | 5000 images/classe (train), 1000/classe (test) |
 
 ---
 
-## Exercise 1: Loading and Preprocessing CIFAR-10
+## Exercice 1 : Chargement et preprocessing de CIFAR-10
 
-### Load the dataset, normalize pixel values, and prepare both flat and spatial representations.
+### Charger le jeu de donnees, normaliser les valeurs des pixels, et preparer les representations aplatie et spatiale.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 #!/usr/bin/python3
 
-# Prevent TensorFlow from reserving all GPU memory
+# Empecher TensorFlow de reserver toute la memoire GPU
 import tensorflow as tf
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -44,32 +44,32 @@ if gpus:
 import numpy as np
 from sklearn.metrics import classification_report, accuracy_score
 
-# Load CIFAR-10
+# Charger CIFAR-10
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 print('x_train.shape=', x_train.shape)
 print('x_test.shape=', x_test.shape)
 
-# Normalize pixel values from [0, 255] to [0.0, 1.0]
+# Normaliser les valeurs des pixels de [0, 255] a [0.0, 1.0]
 x_train = x_train / 255.0
 x_test = x_test / 255.0
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 x_train.shape= (50000, 32, 32, 3)
 x_test.shape= (10000, 32, 32, 3)
 ```
 
-**Explanation:** Normalizing pixels to [0, 1] helps the optimizer (Adam) converge faster, prevents neuron saturation, and improves numerical stability. Without normalization, training is very slow or unstable.
+**Explication :** Normaliser les pixels dans [0, 1] aide l'optimiseur (Adam) a converger plus rapidement, evite la saturation des neurones et ameliore la stabilite numerique. Sans normalisation, l'entrainement est tres lent ou instable.
 
-### Reshape for each model type
+### Reformater pour chaque type de modele
 
 ```python noexec
-# For the Perceptron: flatten each image into a vector of 3072 values
+# Pour le Perceptron : aplatir chaque image en un vecteur de 3072 valeurs
 x_train_flat = x_train.reshape(50000, 3072)
 x_test_flat = x_test.reshape(10000, 3072)
 
-# For the CNN: preserve the spatial structure (32x32x3 tensor)
+# Pour le CNN : preserver la structure spatiale (tenseur 32x32x3)
 x_train_cnn = x_train.reshape(50000, 32, 32, 3)
 x_test_cnn = x_test.reshape(10000, 32, 32, 3)
 
@@ -77,7 +77,7 @@ print('x_train_flat.shape=', x_train_flat.shape)
 print('x_train_cnn.shape=', x_train_cnn.shape)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 x_train_flat.shape= (50000, 3072)
 x_train_cnn.shape= (50000, 32, 32, 3)
@@ -85,11 +85,11 @@ x_train_cnn.shape= (50000, 32, 32, 3)
 
 ---
 
-## Exercise 2: Simple Perceptron (Multi-Layer Perceptron)
+## Exercice 2 : Perceptron simple (Perceptron multi-couches)
 
-### Implement a perceptron with one hidden layer, train it on CIFAR-10, and evaluate.
+### Implementer un perceptron avec une couche cachee, l'entrainer sur CIFAR-10 et evaluer.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 def perceptron(nbhidden=1):
@@ -106,31 +106,31 @@ def perceptron(nbhidden=1):
     return model
 ```
 
-**Architecture:**
+**Architecture :**
 ```
-Input (3072) --> Dense(nbhidden, ReLU) --> Dense(10, Softmax) --> Output
+Entree (3072) --> Dense(nbhidden, ReLU) --> Dense(10, Softmax) --> Sortie
 ```
 
-**Line-by-line explanation:**
+**Explication ligne par ligne :**
 
-| Line | Role |
-|------|------|
-| `tf.keras.Input(shape=(3072,))` | Input layer. The image is flattened into a vector of 3072 values (32*32*3). |
-| `Dense(units=nbhidden, activation='relu')` | Hidden layer with `nbhidden` neurons and ReLU activation. Each neuron computes a linear combination of ALL 3072 inputs, then applies max(0, x). |
-| `Dense(units=10, activation='softmax')` | Output layer with 10 neurons (one per class). Softmax converts the 10 values into probabilities summing to 1. |
-| `sparse_categorical_crossentropy` | Loss function for multiclass classification. "Sparse" means labels are integers (0-9), not one-hot vectors. |
-| `adam` | Adaptive optimizer combining momentum and RMSprop. Good default, converges faster than plain SGD. |
+| Ligne | Role |
+|-------|------|
+| `tf.keras.Input(shape=(3072,))` | Couche d'entree. L'image est aplatie en un vecteur de 3072 valeurs (32*32*3). |
+| `Dense(units=nbhidden, activation='relu')` | Couche cachee avec `nbhidden` neurones et activation ReLU. Chaque neurone calcule une combinaison lineaire de TOUTES les 3072 entrees, puis applique max(0, x). |
+| `Dense(units=10, activation='softmax')` | Couche de sortie avec 10 neurones (un par classe). Softmax convertit les 10 valeurs en probabilites dont la somme fait 1. |
+| `sparse_categorical_crossentropy` | Fonction de cout pour la classification multiclasse. "Sparse" signifie que les etiquettes sont des entiers (0-9), pas des vecteurs one-hot. |
+| `adam` | Optimiseur adaptatif combinant momentum et RMSprop. Bon choix par defaut, converge plus vite que le SGD classique. |
 
-### Training
+### Entrainement
 
 ```python noexec
 clf = perceptron(100000)
 clf.fit(x_train_flat, y_train, epochs=20, batch_size=51)
 ```
 
-**Training parameters:**
-- `epochs=20`: the model sees the entire training set 20 times.
-- `batch_size=51`: at each step, the model processes 51 images and updates its weights. About 980 batches per epoch (50000/51).
+**Parametres d'entrainement :**
+- `epochs=20` : le modele voit l'ensemble du jeu d'entrainement 20 fois.
+- `batch_size=51` : a chaque etape, le modele traite 51 images et met a jour ses poids. Environ 980 batchs par epoque (50000/51).
 
 ### Evaluation
 
@@ -140,18 +140,18 @@ print(classification_report(y_test, predictions))
 print('accuracy_score=', accuracy_score(y_test, predictions))
 ```
 
-**`argmax(-1)` explained:** For each image, the model outputs a vector of 10 probabilities. `argmax(-1)` returns the index of the neuron with the highest probability, which corresponds to the predicted class number (0=airplane, 1=automobile, ..., 9=truck).
+**Explication de `argmax(-1)` :** Pour chaque image, le modele produit un vecteur de 10 probabilites. `argmax(-1)` retourne l'indice du neurone avec la probabilite la plus elevee, qui correspond au numero de la classe predite (0=airplane, 1=automobile, ..., 9=truck).
 
-**Expected results for different hidden layer sizes:**
+**Resultats attendus pour differentes tailles de couche cachee :**
 
-| nbhidden | Test Accuracy | Parameters | Comment |
-|----------|--------------|------------|---------|
+| nbhidden | Precision test | Parametres | Commentaire |
+|----------|---------------|-----------|-------------|
 | 100 | ~40-45% | ~308K | Minimum viable |
-| 1,000 | ~48-52% | ~3M | Marginal improvement |
-| 10,000 | ~50-53% | ~30M | Diminishing returns |
-| 100,000 | ~50-55% | ~308M | Massive overfitting likely |
+| 1 000 | ~48-52% | ~3M | Amelioration marginale |
+| 10 000 | ~50-53% | ~30M | Rendements decroissants |
+| 100 000 | ~50-55% | ~308M | Sur-apprentissage massif probable |
 
-**Expected output (nbhidden=100000, 20 epochs):**
+**Sortie attendue (nbhidden=100000, 20 epoques) :**
 ```
               precision    recall  f1-score   support
 
@@ -163,39 +163,39 @@ print('accuracy_score=', accuracy_score(y_test, predictions))
     accuracy                           0.50     10000
 ```
 
-**Explanation:** Even with 100,000 hidden neurons (307 million parameters), the MLP cannot exceed ~55% on CIFAR-10. The problem is not model capacity but architecture: by flattening the image, all spatial structure is lost. Pixel (0,0) is treated identically to pixel (31,31), even though they have no spatial relationship. The gap between train accuracy (~92%) and test accuracy (~50%) indicates **massive overfitting**.
+**Explication :** Meme avec 100 000 neurones caches (307 millions de parametres), le MLP ne peut pas depasser ~55% sur CIFAR-10. Le probleme n'est pas la capacite du modele mais l'architecture : en aplatissant l'image, toute la structure spatiale est perdue. Le pixel (0,0) est traite de maniere identique au pixel (31,31), alors qu'ils n'ont aucune relation spatiale. L'ecart entre la precision d'entrainement (~92%) et de test (~50%) indique un **sur-apprentissage massif**.
 
 ---
 
-## Exercise 3: Convolutional Neural Network (CNN)
+## Exercice 3 : Reseau de neurones convolutif (CNN)
 
-### Implement a CNN that preserves spatial structure. Note: identify and fix the bug in the original code.
+### Implementer un CNN qui preserve la structure spatiale. Note : identifier et corriger le bug dans le code original.
 
-**Answer:**
+**Reponse :**
 
-### The bug in the original code (`tp_nn.py`)
+### Le bug dans le code original (`tp_nn.py`)
 
-The original source file contains a **bug on lines 30 and 32**. The 2nd and 3rd Conv2D layers are connected to `entree` (the input) instead of `layer` (the previous layer's output):
+Le fichier source original contient un **bug aux lignes 30 et 32**. Les 2e et 3e couches Conv2D sont connectees a `entree` (l'entree) au lieu de `layer` (la sortie de la couche precedente) :
 
 ```python noexec
-# BUGGY CODE (lines 28-33 of tp_nn.py):
+# CODE BUGGUE (lignes 28-33 de tp_nn.py) :
 layer = tf.keras.layers.Conv2D(32, kernel_size=(5,5), strides=(1,1), activation='relu')(entree)
 layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2), strides=(2,2))(layer)
-layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), activation='relu')(entree)   # BUG! Should be (layer)
+layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), activation='relu')(entree)   # BUG ! Devrait etre (layer)
 layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2))(layer)
-layer = tf.keras.layers.Conv2D(128, kernel_size=(5,5), activation='relu')(entree)  # BUG! Should be (layer)
+layer = tf.keras.layers.Conv2D(128, kernel_size=(5,5), activation='relu')(entree)  # BUG ! Devrait etre (layer)
 layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2), strides=(2,2))(layer)
 ```
 
-This creates an architecture where all 3 conv blocks are connected directly to the input independently. Only the 3rd block (128 filters) feeds into the rest -- the first two blocks are completely ignored.
+Cela cree une architecture ou les 3 blocs conv sont connectes directement a l'entree de maniere independante. Seul le 3e bloc (128 filtres) alimente la suite -- les deux premiers blocs sont completement ignores.
 
-### Corrected CNN
+### CNN corrige
 
 ```python noexec
 def cnn():
     entree = tf.keras.Input(shape=(32, 32, 3))
 
-    # First conv block
+    # Premier bloc conv
     layer = tf.keras.layers.Conv2D(
         32, kernel_size=(5, 5), strides=(1, 1), activation='relu'
     )(entree)
@@ -203,7 +203,7 @@ def cnn():
         pool_size=(2, 2), strides=(2, 2)
     )(layer)
 
-    # Second conv block (FIXED: takes layer, not entree)
+    # Deuxieme bloc conv (CORRIGE : prend layer, pas entree)
     layer = tf.keras.layers.Conv2D(
         64, kernel_size=(5, 5), activation='relu'
     )(layer)
@@ -211,7 +211,7 @@ def cnn():
         pool_size=(2, 2)
     )(layer)
 
-    # Third conv block (FIXED: takes layer, not entree)
+    # Troisieme bloc conv (CORRIGE : prend layer, pas entree)
     layer = tf.keras.layers.Conv2D(
         128, kernel_size=(5, 5), activation='relu'
     )(layer)
@@ -219,10 +219,10 @@ def cnn():
         pool_size=(2, 2), strides=(2, 2)
     )(layer)
 
-    # Regularization
+    # Regularisation
     layer = tf.keras.layers.Dropout(0.37)(layer)
 
-    # Classification head
+    # Tete de classification
     layer = tf.keras.layers.Flatten()(layer)
     layer = tf.keras.layers.Dense(10000, activation='relu')(layer)
     out = tf.keras.layers.Dense(10, activation='softmax')(layer)
@@ -236,9 +236,9 @@ def cnn():
     return model
 ```
 
-**Architecture:**
+**Architecture :**
 ```
-Input (32x32x3)
+Entree (32x32x3)
   --> Conv2D(32, 5x5, ReLU) --> MaxPooling2D(2x2)
   --> Conv2D(64, 5x5, ReLU) --> MaxPooling2D(2x2)
   --> Conv2D(128, 5x5, ReLU) --> MaxPooling2D(2x2)
@@ -246,27 +246,27 @@ Input (32x32x3)
   --> Flatten()
   --> Dense(10000, ReLU)
   --> Dense(10, Softmax)
-  --> Output
+  --> Sortie
 ```
 
-**Layer-by-layer explanation:**
+**Explication couche par couche :**
 
-| Layer | Input | Output | Parameters | Role |
-|-------|-------|--------|-----------|------|
-| Conv2D(32, (5,5)) | 32x32x3 | 28x28x32 | 2,432 | Detects 32 local 5x5 patterns (edges, corners, simple textures) |
-| MaxPooling2D(2,2) | 28x28x32 | 14x14x32 | 0 | Halves spatial resolution, keeps max activations |
-| Conv2D(64, (5,5)) | 14x14x32 | 10x10x64 | 51,264 | Detects 64 intermediate patterns (complex textures, object parts) |
-| MaxPooling2D(2,2) | 10x10x64 | 5x5x64 | 0 | Spatial reduction |
-| Conv2D(128, (5,5)) | 5x5x64 | 1x1x128 | 204,928 | Detects 128 high-level patterns. Output is 1x1 because 5x5 kernel exactly covers 5x5 input. |
-| MaxPooling2D(2,2) | 1x1x128 | 1x1x128 | 0 | No effect (already 1x1) |
-| Dropout(0.37) | 1x1x128 | 1x1x128 | 0 | Randomly disables 37% of neurons during training |
-| Flatten() | 1x1x128 | 128 | 0 | Converts 3D tensor to 1D vector |
-| Dense(10000, relu) | 128 | 10000 | 1.29M | Non-linear classification head |
-| Dense(10, softmax) | 10000 | 10 | 100K | Final probabilities for 10 classes |
+| Couche | Entree | Sortie | Parametres | Role |
+|--------|--------|--------|-----------|------|
+| Conv2D(32, (5,5)) | 32x32x3 | 28x28x32 | 2 432 | Detecte 32 motifs locaux 5x5 (bords, coins, textures simples) |
+| MaxPooling2D(2,2) | 28x28x32 | 14x14x32 | 0 | Divise la resolution spatiale par 2, conserve les activations max |
+| Conv2D(64, (5,5)) | 14x14x32 | 10x10x64 | 51 264 | Detecte 64 motifs intermediaires (textures complexes, parties d'objets) |
+| MaxPooling2D(2,2) | 10x10x64 | 5x5x64 | 0 | Reduction spatiale |
+| Conv2D(128, (5,5)) | 5x5x64 | 1x1x128 | 204 928 | Detecte 128 motifs de haut niveau. La sortie est 1x1 car le noyau 5x5 couvre exactement l'entree 5x5. |
+| MaxPooling2D(2,2) | 1x1x128 | 1x1x128 | 0 | Pas d'effet (deja 1x1) |
+| Dropout(0.37) | 1x1x128 | 1x1x128 | 0 | Desactive aleatoirement 37% des neurones pendant l'entrainement |
+| Flatten() | 1x1x128 | 128 | 0 | Convertit le tenseur 3D en vecteur 1D |
+| Dense(10000, relu) | 128 | 10000 | 1.29M | Tete de classification non lineaire |
+| Dense(10, softmax) | 10000 | 10 | 100K | Probabilites finales pour les 10 classes |
 
-**Total parameters:** ~1.65M (much less than the MLP with 100K neurons which has ~308M)
+**Total des parametres :** ~1.65M (bien moins que le MLP avec 100K neurones qui a ~308M)
 
-### Training and evaluation
+### Entrainement et evaluation
 
 ```python noexec
 clf = cnn()
@@ -277,7 +277,7 @@ print(classification_report(y_test, predictions))
 print('accuracy_score=', accuracy_score(y_test, predictions))
 ```
 
-**Expected output (corrected architecture, 20 epochs):**
+**Sortie attendue (architecture corrigee, 20 epoques) :**
 ```
 Epoch 1/20
 981/981 [...] - loss: 1.5234 - accuracy: 0.4532
@@ -303,56 +303,56 @@ Epoch 20/20
     accuracy                           0.78     10000
 ```
 
-**Explanation:**
-- **~78% accuracy** on test (vs ~50% for MLP): a massive +28 point improvement.
-- Classes "cat" (3) and "dog" (5) remain the hardest (visual similarity, confusion between them).
-- "automobile" (1), "ship" (8), "truck" (9) are well classified (distinctive geometric shapes).
-- The train/test gap is much smaller than for the MLP thanks to dropout and the more efficient architecture.
+**Explication :**
+- **~78% de precision** en test (vs ~50% pour le MLP) : une amelioration massive de +28 points.
+- Les classes "cat" (3) et "dog" (5) restent les plus difficiles (similarite visuelle, confusion entre elles).
+- "automobile" (1), "ship" (8), "truck" (9) sont bien classees (formes geometriques distinctives).
+- L'ecart train/test est bien plus faible que pour le MLP grace au dropout et a l'architecture plus efficace.
 
 ---
 
-## Exercise 4: Complete Main Function
+## Exercice 4 : Fonction main complete
 
-### Putting it all together: the complete `main()` function as in `tp_nn.py`.
+### Assembler le tout : la fonction `main()` complete comme dans `tp_nn.py`.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
 def main():
-    # Load CIFAR-10
+    # Charger CIFAR-10
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
     print('x_train.shape=', x_train.shape)
     print('x_test.shape=', x_test.shape)
 
-    # Normalize
+    # Normaliser
     x_train = x_train / 255.0
     x_test = x_test / 255.0
 
-    # For perceptron: represent each image as a vector of 3072 pixels
+    # Pour le perceptron : representer chaque image comme un vecteur de 3072 pixels
     # x_train = x_train.reshape(50000, 3072)
     # x_test = x_test.reshape(10000, 3072)
 
-    # For CNN: represent each image as a 32x32x3 tensor
+    # Pour le CNN : representer chaque image comme un tenseur 32x32x3
     x_train = x_train.reshape(50000, 32, 32, 3)
     x_test = x_test.reshape(10000, 32, 32, 3)
     print('x_train.shape=', x_train.shape)
     print('x_test.shape=', x_test.shape)
 
-    # Choose the model: cnn() or perceptron(100000)
+    # Choisir le modele : cnn() ou perceptron(100000)
     clf = cnn()
     clf.fit(x_train, y_train, epochs=20, batch_size=51)
 
-    # argmax picks the active neuron (the predicted class number)
+    # argmax selectionne le neurone actif (le numero de la classe predite)
     predictions = clf.predict(x_test).argmax(-1)
 
-    print(classification_report(y_test, predictions))  # Error details
-    print('accuracy_score=', accuracy_score(y_test, predictions))  # Score to maximize
+    print(classification_report(y_test, predictions))  # Details des erreurs
+    print('accuracy_score=', accuracy_score(y_test, predictions))  # Score a maximiser
 
 if __name__ == "__main__":
     main()
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 x_train.shape= (50000, 32, 32, 3)
 x_test.shape= (10000, 32, 32, 3)
@@ -375,14 +375,14 @@ accuracy_score= 0.79
 
 ---
 
-## Exercise 5: Comparison -- Why CNNs Outperform Perceptrons for Images
+## Exercice 5 : Comparaison -- Pourquoi les CNN surpassent les perceptrons pour les images
 
-### Compare the perceptron with different hidden layer sizes against the CNN.
+### Comparer le perceptron avec differentes tailles de couche cachee face au CNN.
 
-**Answer:**
+**Reponse :**
 
 ```python noexec
-# MLP with different sizes
+# MLP avec differentes tailles
 for hidden in [100, 1000, 10000, 100000]:
     clf = perceptron(hidden)
     x_train_flat = x_train.reshape(50000, 3072)
@@ -392,7 +392,7 @@ for hidden in [100, 1000, 10000, 100000]:
     acc = accuracy_score(y_test, predictions)
     print(f"MLP(hidden={hidden}) -> {acc:.3f}")
 
-# CNN (corrected)
+# CNN (corrige)
 clf = cnn()
 x_train_cnn = x_train.reshape(50000, 32, 32, 3)
 x_test_cnn = x_test.reshape(10000, 32, 32, 3)
@@ -402,83 +402,83 @@ acc = accuracy_score(y_test, predictions)
 print(f"CNN -> {acc:.3f}")
 ```
 
-**Expected results:**
+**Resultats attendus :**
 
-| Model | Input Shape | Parameters | Test Accuracy | Overfitting |
-|-------|-------------|-----------|---------------|-------------|
-| MLP (100 hidden) | 3072 (flat) | ~308K | ~40-45% | Mild |
-| MLP (1000 hidden) | 3072 (flat) | ~3M | ~48-52% | Moderate |
-| MLP (100K hidden) | 3072 (flat) | ~308M | ~50-55% | Severe (train ~92%, test ~50%) |
-| **CNN (3 conv + dense)** | 32x32x3 | ~1.65M | **~75-80%** | Moderate (train ~88%, test ~78%) |
+| Modele | Forme de l'entree | Parametres | Precision test | Sur-apprentissage |
+|--------|-------------------|-----------|----------------|-------------------|
+| MLP (100 caches) | 3072 (aplati) | ~308K | ~40-45% | Leger |
+| MLP (1000 caches) | 3072 (aplati) | ~3M | ~48-52% | Modere |
+| MLP (100K caches) | 3072 (aplati) | ~308M | ~50-55% | Severe (train ~92%, test ~50%) |
+| **CNN (3 conv + dense)** | 32x32x3 | ~1.65M | **~75-80%** | Modere (train ~88%, test ~78%) |
 
-### Why the CNN wins
+### Pourquoi le CNN gagne
 
-**1. Spatial structure preservation.**
-The MLP treats pixel (0,0) and pixel (31,31) as independent features with no spatial relationship. The CNN applies local 5x5 filters that capture neighborhood patterns (edges, textures, shapes).
+**1. Preservation de la structure spatiale.**
+Le MLP traite les pixels (0,0) et (31,31) comme des features independantes sans relation spatiale. Le CNN applique des filtres locaux 5x5 qui capturent les motifs de voisinage (bords, textures, formes).
 
-**2. Parameter sharing (weight sharing).**
-A Conv2D filter is applied across the entire image with the same weights. A 5x5x3 filter has only 75 parameters but is applied at 784 positions (28x28). The MLP needs a separate weight for every pixel-to-neuron connection.
+**2. Partage de parametres (weight sharing).**
+Un filtre Conv2D est applique sur toute l'image avec les memes poids. Un filtre 5x5x3 n'a que 75 parametres mais est applique a 784 positions (28x28). Le MLP necessite un poids separe pour chaque connexion pixel-neurone.
 
-**3. Translation invariance.**
-A filter that detects a vertical edge detects it regardless of its position in the image. The MLP must learn "vertical edge at top-left", "vertical edge at center", etc. separately.
+**3. Invariance par translation.**
+Un filtre qui detecte un bord vertical le detecte quelle que soit sa position dans l'image. Le MLP doit apprendre "bord vertical en haut a gauche", "bord vertical au centre", etc. separement.
 
-**4. Hierarchical features.**
-- Layer 1 (32 filters): simple features (edges, corners, color blobs)
-- Layer 2 (64 filters): combines simple features into textures and complex patterns
-- Layer 3 (128 filters): object parts (wheels, wings, legs)
-- Dense layers: combines everything for final classification
+**4. Features hierarchiques.**
+- Couche 1 (32 filtres) : features simples (bords, coins, taches de couleur)
+- Couche 2 (64 filtres) : combine les features simples en textures et motifs complexes
+- Couche 3 (128 filtres) : parties d'objets (roues, ailes, pattes)
+- Couches denses : combine le tout pour la classification finale
 
-**5. Parameter efficiency.**
-The CNN has 200x fewer parameters than the MLP but achieves much better results. Fewer parameters = less overfitting risk = better generalization.
+**5. Efficacite parametrique.**
+Le CNN a 200x moins de parametres que le MLP mais obtient de bien meilleurs resultats. Moins de parametres = moins de risque de sur-apprentissage = meilleure generalisation.
 
 ---
 
-## Key Concepts Reference
+## Reference des concepts cles
 
 ### Convolution 2D
 
-A filter (kernel) of size KxK slides over the image pixel by pixel. At each position, it computes the dot product between the filter and the local patch:
+Un filtre (noyau) de taille KxK glisse sur l'image pixel par pixel. A chaque position, il calcule le produit scalaire entre le filtre et le patch local :
 
 ```
-Output[i,j] = sum(Filter * Image[i:i+K, j:j+K]) + bias
+Output[i,j] = sum(Filter * Image[i:i+K, j:j+K]) + biais
 ```
 
-With K=5, strides=(1,1), no padding: a 32x32 image produces a 28x28 feature map (32-5+1=28).
+Avec K=5, strides=(1,1), pas de padding : une image 32x32 produit une carte de features 28x28 (32-5+1=28).
 
 ### Max Pooling
 
-Reduces resolution by taking the maximum value in each window:
+Reduit la resolution en prenant la valeur maximale dans chaque fenetre :
 ```
-MaxPool(2,2) on 28x28 --> 14x14
-Each 2x2 window is reduced to 1 pixel (the max of 4)
+MaxPool(2,2) sur 28x28 --> 14x14
+Chaque fenetre 2x2 est reduite a 1 pixel (le max des 4)
 ```
 
-Advantages: reduces parameters in subsequent layers, introduces slight translation invariance.
+Avantages : reduit les parametres dans les couches suivantes, introduit une legere invariance par translation.
 
 ### Dropout
 
-During **training only**, each neuron is deactivated with probability p (here 0.37). This forces the network to learn redundant, robust representations and prevents co-adaptation. During **inference** (predict), all neurons are active, and weights are scaled by (1-p) to compensate.
+Pendant l'**entrainement uniquement**, chaque neurone est desactive avec une probabilite p (ici 0.37). Cela force le reseau a apprendre des representations redundantes et robustes et empeche la co-adaptation. Pendant l'**inference** (predict), tous les neurones sont actifs, et les poids sont ponderes par (1-p) pour compenser.
 
 ### Softmax
 
-Converts a vector of raw values (logits) into probabilities:
+Convertit un vecteur de valeurs brutes (logits) en probabilites :
 
 ```
-softmax(z_i) = exp(z_i) / sum(exp(z_j) for j in 1..10)
+softmax(z_i) = exp(z_i) / sum(exp(z_j) pour j dans 1..10)
 ```
 
-The 10 outputs sum to 1. The predicted class is the one with the highest probability (argmax).
+Les 10 sorties somment a 1. La classe predite est celle avec la probabilite la plus elevee (argmax).
 
 ### Sparse Categorical Crossentropy
 
-Loss function for multiclass classification with integer labels:
+Fonction de cout pour la classification multiclasse avec des etiquettes entieres :
 
 ```
-L = -log(p_predicted_for_true_class)
+L = -log(p_predite_pour_la_vraie_classe)
 ```
 
-If the true class is "cat" (3) and the model predicts P(cat) = 0.2, the loss is -log(0.2) = 1.61. If P(cat) = 0.95, the loss is -log(0.95) = 0.05. "Sparse" means labels are integers, not one-hot vectors.
+Si la vraie classe est "cat" (3) et que le modele predit P(cat) = 0.2, la perte est -log(0.2) = 1.61. Si P(cat) = 0.95, la perte est -log(0.95) = 0.05. "Sparse" signifie que les etiquettes sont des entiers, pas des vecteurs one-hot.
 
-### Adam Optimizer
+### Optimiseur Adam
 
-Adaptive optimizer combining momentum (smooths gradient updates) and RMSprop (adapts learning rate per parameter). Converges faster than plain SGD, good default learning rate of 0.001.
+Optimiseur adaptatif combinant le momentum (lisse les mises a jour du gradient) et RMSprop (adapte le taux d'apprentissage par parametre). Converge plus vite que le SGD classique, bon taux d'apprentissage par defaut de 0.001.

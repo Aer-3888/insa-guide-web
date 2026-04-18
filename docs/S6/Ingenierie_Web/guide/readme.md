@@ -55,7 +55,7 @@ Semaine 1-2          Semaine 3-4          Semaine 5-6          Semaine 7-8
 | 5 | ORM et JPA | [05_orm_jpa.md](/S6/Ingenierie_Web/guide/05-orm-jpa) | Entites, relations, repositories |
 | 6 | XML et JSON | [06_xml_json.md](/S6/Ingenierie_Web/guide/06-xml-json) | Formats de donnees, schemas, marshalling |
 | 7 | Securite Web | [07_web_security.md](/S6/Ingenierie_Web/guide/07-web-security) | XSS, CSRF, authentification, sessions |
-| 8 | Angular et TypeScript | [08_angular_typescript.md](/S6/Ingenierie_Web/guide/08-angular-typescript) | Composants, data binding, HttpClient |
+| 8 | Angular et TypeScript | [08_angular_typescript.md](/S6/Ingenierie_Web/guide/08-angular-typescript) | Composants, liaison de donnees, HttpClient |
 
 ## Correspondance avec les materiaux
 
@@ -66,7 +66,7 @@ Semaine 1-2          Semaine 3-4          Semaine 5-6          Semaine 7-8
 | 03 JavaScript ES6+ | Poly 2022.pdf, TP-intro-JS.pdf | TP1 (First Step, ES6 Babel) |
 | 04 Spring Boot | Web-3INFO.pdf, Poly 2022.pdf | TP legacy (springboot2) |
 | 05 ORM/JPA | Poly 2022.pdf | TP4 (JPA), TP legacy (JPA) |
-| 06 XML/JSON | Poly 2022.pdf | TP3 (data formats) |
+| 06 XML/JSON | Poly 2022.pdf | TP3 (formats de donnees) |
 | 07 Securite | Poly 2022.pdf | TP legacy (auth) |
 | 08 Angular | front-end1.pdf, front-end2.pdf | TP5 (Angular) |
 

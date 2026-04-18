@@ -5,22 +5,22 @@ sidebar_position: 11
 
 # LDS4 - Web Scraping (BeautifulSoup)
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-Extract and parse data from web pages:
+Extraire et analyser des donnees de pages web :
 
-- Understand HTML structure and DOM
-- Parse HTML with BeautifulSoup
-- Extract data using CSS selectors
-- Handle web requests with urllib
-- Process and store scraped data
-- Build a practical DVD database application
+- Comprendre la structure HTML et le DOM
+- Analyser le HTML avec BeautifulSoup
+- Extraire des donnees avec les selecteurs CSS
+- Gerer les requetes web avec urllib
+- Traiter et stocker les donnees recuperees
+- Construire une application pratique de DVDtheque
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. HTML Basics
+### 1. Bases du HTML
 
-HTML (HyperText Markup Language) structures web content:
+Le HTML (HyperText Markup Language) structure le contenu web :
 
 ```html
 <!DOCTYPE html>
@@ -41,16 +41,16 @@ HTML (HyperText Markup Language) structures web content:
 </html>
 ```
 
-**Key concepts**:
+**Concepts cles** :
 - **Tags**: `<tag>content</tag>`
 - **Attributes**: `<tag attribute="value">`
-- **Classes**: `class="classname"` (can have multiple)
+- **Classes** : `class="classname"` (can have multiple)
 - **IDs**: `id="unique-id"` (must be unique)
 - **Nesting**: Tags inside tags (tree structure)
 
 ### 2. BeautifulSoup
 
-Python library for parsing HTML/XML:
+Bibliotheque Python pour analyser le HTML/XML :
 
 ```python noexec
 from bs4 import BeautifulSoup
@@ -64,7 +64,7 @@ with open('page.html', 'r') as f:
     soup = BeautifulSoup(f, 'html.parser')
 ```
 
-### 3. Finding Elements
+### 3. Trouver des elements
 
 ```python noexec
 # Find first matching element
@@ -85,7 +85,7 @@ soup.select('div p')              # <p> anywhere inside <div>
 soup.select('[href]')             # Elements with href attribute
 ```
 
-### 4. Extracting Data
+### 4. Extraire des donnees
 
 ```python noexec
 # Get element text
@@ -103,7 +103,7 @@ children = list(elem.children)
 siblings = list(elem.next_siblings)
 ```
 
-### 5. Web Requests
+### 5. Requetes web
 
 ```python noexec
 from urllib.request import urlopen
@@ -117,9 +117,9 @@ html = response.read().decode('utf-8')
 soup = BeautifulSoup(html, 'html.parser')
 ```
 
-**Note**: For production, use `requests` library instead of `urllib`.
+**Note** : For production, use `requests` library instead of `urllib`.
 
-### 6. Error Handling
+### 6. Gestion des erreurs
 
 ```python noexec
 try:
@@ -138,12 +138,12 @@ except Exception as e:
     print(f"Parsing error: {e}")
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Parse DVD Information
-Extract DVD details from DVDFr.com HTML pages.
+### Exercice 1 : Analyser les informations de DVD
+Extraire les details des DVD depuis les pages HTML de DVDFr.com.
 
-**Data to extract**:
+**Donnees a extraire** :
 - Title
 - Director
 - Release year
@@ -152,22 +152,22 @@ Extract DVD details from DVDFr.com HTML pages.
 - Cover image URL
 - Synopsis
 
-**Files**: Sample HTML files included
+**Fichiers** : Sample HTML files included
 
-### Exercise 2: EAN13 Barcode Processing
-Work with EAN13 barcodes for DVDs.
+### Exercice 2 : Traitement des codes-barres EAN13
+Travailler avec les codes-barres EAN13 pour les DVD.
 
-**Concepts**:
+**Concepts** :
 - Barcode format and validation
 - Checksum calculation
 - Database lookup by barcode
 
-**Files**: `ean13.py`, `codesBarresSA.csv`
+**Fichiers** : `ean13.py`, `codesBarresSA.csv`
 
-### Exercise 3: Database Integration
-Store scraped DVD data in SQLite database.
+### Exercice 3 : Integration base de donnees
+Stocker les donnees de DVD recuperees dans une base de donnees SQLite.
 
-**Schema**:
+**Schema** :
 ```sql noexec
 CREATE TABLE dvds (
     id INTEGER PRIMARY KEY,
@@ -180,36 +180,36 @@ CREATE TABLE dvds (
 );
 ```
 
-**Files**: `bdDVD.py`, `BDRegMat.py`
+**Fichiers** : `bdDVD.py`, `BDRegMat.py`
 
-### Exercise 4: Complete DVD Library Application
-Build application that:
+### Exercice 4 : Application complete de DVDtheque
+Construire une application qui :
 - Searches DVDs by title or barcode
 - Scrapes data from web
 - Stores in database
 - Displays collection with Qt GUI
 
-**Files**: `dvdtheque.py`, `parserWeb.py`
+**Fichiers** : `dvdtheque.py`, `parserWeb.py`
 
 ## Solutions
 
 See `src/` directory and original files:
-- `parserWeb.py` - Web scraping functions
-- `ean13.py` - Barcode handling
-- `bdDVD.py` - Database operations
-- `dvdtheque.py` - Complete application
+- `parserWeb.py` - Fonctions de web scraping
+- `ean13.py` - Gestion des codes-barres
+- `bdDVD.py` - Operations de base de donnees
+- `dvdtheque.py` - Application complete
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Inspect before scraping** - Use browser dev tools to understand structure
-2. **Web pages change** - Scraping code breaks when sites update
-3. **Respect robots.txt** - Check if scraping is allowed
-4. **Rate limiting** - Don't overwhelm servers with requests
-5. **CSS selectors are powerful** - More flexible than tag names
+1. **Inspecter avant de scraper** - Utiliser les outils de developpement du navigateur pour comprendre la structure
+2. **Les pages web changent** - Le code de scraping casse quand les sites sont mis a jour
+3. **Respecter robots.txt** - Verifier si le scraping est autorise
+4. **Limiter le debit** - Ne pas submerger les serveurs de requetes
+5. **Les selecteurs CSS sont puissants** - Plus flexibles que les noms de balises
 
-## Common Patterns
+## Motifs courants
 
-### Basic Scraping Template
+### Modele de scraping basique
 ```python noexec
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
@@ -235,7 +235,7 @@ def scrape_page(url):
         return []
 ```
 
-### Table Parsing
+### Analyse de tableaux
 ```python noexec
 def parse_table(soup):
     table = soup.find('table', class_='data')
@@ -249,7 +249,7 @@ def parse_table(soup):
     return rows
 ```
 
-### Link Extraction
+### Extraction de liens
 ```python noexec
 def extract_links(soup, base_url):
     links = []
@@ -264,16 +264,16 @@ def extract_links(soup, base_url):
     return links
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Not handling None** - find() returns None if not found
-2. **Wrong parser** - Use 'html.parser', not 'lxml' unless installed
-3. **Forgetting strip=True** - get_text() includes whitespace
-4. **Not checking attributes exist** - Use .get() for safe access
-5. **Encoding issues** - Specify encoding when reading files
-6. **Dynamic content** - BeautifulSoup can't handle JavaScript-rendered content
+1. **Ne pas gerer None** - find() retourne None si rien n'est trouve
+2. **Mauvais analyseur** - Utiliser 'html.parser', pas 'lxml' sauf s'il est installe
+3. **Oublier strip=True** - get_text() inclut les espaces
+4. **Ne pas verifier l'existence des attributs** - Utiliser .get() pour un acces securise
+5. **Problemes d'encodage** - Specifier l'encodage lors de la lecture de fichiers
+6. **Contenu dynamique** - BeautifulSoup ne peut pas gerer le contenu rendu par JavaScript
 
-## Further Reading
+## Pour aller plus loin
 
 - BeautifulSoup Documentation: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 - CSS Selectors: https://www.w3schools.com/cssref/css_selectors.asp
@@ -282,7 +282,7 @@ def extract_links(soup, base_url):
 - Scrapy: Full-featured scraping framework
 - Web scraping ethics and legality
 
-## EAN13 Barcode Format
+## Format de code-barres EAN13
 
 EAN13 is 13-digit barcode standard:
 ```
@@ -291,7 +291,7 @@ EAN13 is 13-digit barcode standard:
  ^^^  ^^^^^  ^^^^  ^
 ```
 
-**Checksum calculation**:
+**Calcul du checksum** :
 1. Sum odd positions (1st, 3rd, 5th...)
 2. Sum even positions × 3
 3. Add sums
@@ -310,18 +310,18 @@ def validate_ean13(code):
     return checksum == int(code[12])
 ```
 
-## Web Scraping Ethics
+## Ethique du web scraping
 
-1. **Check robots.txt** - Respect site's scraping policy
-2. **Rate limit requests** - Don't overload servers
-3. **Identify your bot** - Use proper User-Agent header
-4. **Cache responses** - Don't re-fetch unnecessarily
-5. **Respect copyright** - Don't republish scraped content
-6. **Check terms of service** - Some sites prohibit scraping
+1. **Verifier robots.txt** - Respecter la politique de scraping du site
+2. **Limiter le debit des requetes** - Ne pas surcharger les serveurs
+3. **Identifier votre bot** - Utiliser un en-tete User-Agent correct
+4. **Mettre en cache les reponses** - Ne pas re-telecharger inutilement
+5. **Respecter le droit d'auteur** - Ne pas republier le contenu recupere
+6. **Verifier les conditions d'utilisation** - Certains sites interdisent le scraping
 
-## Handling Dynamic Content
+## Gestion du contenu dynamique
 
-BeautifulSoup only parses static HTML. For JavaScript-rendered content:
+BeautifulSoup n'analyse que le HTML statique. Pour le contenu rendu par JavaScript :
 
 ```python noexec
 # Option 1: Use Selenium (loads JavaScript)

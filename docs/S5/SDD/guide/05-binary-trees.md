@@ -1,35 +1,35 @@
 ---
-title: "Binary Trees (Arbres Binaires)"
+title: "Arbres Binaires"
 sidebar_position: 5
 ---
 
-# Binary Trees (Arbres Binaires)
+# Arbres Binaires
 
-## Theory
+## Theorie
 
-A **binary tree** is a hierarchical structure where each node has at most two children (left and right).
+Un **arbre binaire** est une structure hierarchique ou chaque noeud a au plus deux enfants (gauche et droit).
 
 ```
-         [A]           <- root (racine)
+         [A]           <- racine
         /   \
-      [B]   [C]        <- internal nodes
+      [B]   [C]        <- noeuds internes
       / \     \
-    [D] [E]   [F]      <- leaves (feuilles) = no children
+    [D] [E]   [F]      <- feuilles = pas d'enfants
 ```
 
-Terminology:
-- **Root** (racine): top node, has no parent
-- **Leaf** (feuille): node with no children
-- **Internal node**: node with at least one child
-- **Height** (hauteur): length of longest path from root to leaf
-- **Depth** of a node: distance from root to that node
-- **Subtree** (sous-arbre): any node + all its descendants
+Terminologie :
+- **Racine** : noeud au sommet, sans parent
+- **Feuille** : noeud sans enfants
+- **Noeud interne** : noeud avec au moins un enfant
+- **Hauteur** : longueur du plus long chemin de la racine a une feuille
+- **Profondeur** d'un noeud : distance de la racine a ce noeud
+- **Sous-arbre** : tout noeud + tous ses descendants
 
-### Binary Search Tree (BST / ABR)
+### Arbre Binaire de Recherche (ABR)
 
-A BST satisfies: for every node N,
-- All values in left subtree < N.value
-- All values in right subtree > N.value
+Un ABR satisfait : pour tout noeud N,
+- Toutes les valeurs du sous-arbre gauche < N.valeur
+- Toutes les valeurs du sous-arbre droit > N.valeur
 
 ```
          [7]
@@ -41,22 +41,22 @@ A BST satisfies: for every node N,
        [4]
 ```
 
-Note: Inserting 7 again -- since the BST uses `>=` for left placement (see `placer()` in exam code), a duplicate 7 would go to the left subtree of 10. The exact placement depends on the BST's duplicate-handling policy.
+Note : Inserer 7 a nouveau -- puisque l'ABR utilise `>=` pour le placement a gauche (voir `placer()` dans le code d'examen), un doublon 7 irait dans le sous-arbre gauche de 10. Le placement exact depend de la politique de gestion des doublons de l'ABR.
 
-**Search**: follow left if target < node, right if target > node.
+**Recherche** : aller a gauche si cible < noeud, a droite si cible > noeud.
 
-### AVL Tree
+### Arbre AVL
 
-A **self-balancing BST** where for every node, the heights of left and right subtrees differ by at most 1.
+Un **ABR auto-equilibrant** ou pour chaque noeud, les hauteurs des sous-arbres gauche et droit different d'au plus 1.
 
-**Balance factor** = height(left) - height(right)
-- If |balance factor| > 1: rebalance with rotations
+**Facteur d'equilibre** = hauteur(gauche) - hauteur(droit)
+- Si |facteur d'equilibre| > 1 : reequilibrer avec des rotations
 
 #### Rotations
 
-**Right rotation** (rotation droite) -- when left-heavy:
+**Rotation droite** -- quand le cote gauche est trop lourd :
 ```
-Before:        After:
+Avant :        Apres :
     [C]          [B]
     /            / \
   [B]          [A] [C]
@@ -64,9 +64,9 @@ Before:        After:
 [A]
 ```
 
-**Left rotation** (rotation gauche) -- when right-heavy:
+**Rotation gauche** -- quand le cote droit est trop lourd :
 ```
-Before:        After:
+Avant :        Apres :
 [A]              [B]
   \              / \
   [B]          [A] [C]
@@ -74,22 +74,22 @@ Before:        After:
     [C]
 ```
 
-**Left-Right rotation** (double rotation):
+**Rotation gauche-droite** (double rotation) :
 ```
-Before:          After left on B:     After right on C:
-    [C]              [C]                  [B]
-    /                /                    / \
-  [A]              [B]                  [A] [C]
+Avant :          Apres rot. gauche sur B :   Apres rot. droite sur C :
+    [C]              [C]                        [B]
+    /                /                          / \
+  [A]              [B]                        [A] [C]
     \              /
     [B]          [A]
 ```
 
-**Right-Left rotation**: mirror of left-right.
+**Rotation droite-gauche** : symetrique de gauche-droite.
 
 
-## Traversals (Parcours)
+## Parcours
 
-Four fundamental tree traversals:
+Quatre parcours fondamentaux :
 
 ```
          [+]
@@ -99,30 +99,30 @@ Four fundamental tree traversals:
     [2] [4]
 ```
 
-### Inorder (Infixe) -- Left, Root, Right
+### Infixe -- Gauche, Racine, Droit
 ```
-2, *, 4, +, 3     (gives sorted order for BST)
-Infix expression: (2 * 4) + 3
+2, *, 4, +, 3     (donne l'ordre trie pour un ABR)
+Expression infixe : (2 * 4) + 3
 ```
 
-### Preorder (Prefixe) -- Root, Left, Right
+### Prefixe -- Racine, Gauche, Droit
 ```
 +, *, 2, 4, 3
-Prefix expression: + * 2 4 3
+Expression prefixe : + * 2 4 3
 ```
 
-### Postorder (Postfixe) -- Left, Right, Root
+### Postfixe -- Gauche, Droit, Racine
 ```
 2, 4, *, 3, +
-Postfix (RPN): 2 4 * 3 +
+Postfixe (NPI) : 2 4 * 3 +
 ```
 
-### BFS / Level-order (Parcours en largeur)
+### Parcours en largeur (BFS)
 ```
-+, *, 3, 2, 4     (level by level, using a queue)
++, *, 3, 2, 4     (niveau par niveau, en utilisant une file)
 ```
 
-### Recursive traversal template
+### Modele de parcours recursif
 
 ```java
 void inorder(Node n) {
@@ -148,9 +148,9 @@ void postorder(Node n) {
 ```
 
 
-## Java Implementation (from TP6)
+## Implementation Java (du TP6)
 
-### Interface: Arbre
+### Interface : Arbre
 
 ```java
 public interface Arbre {
@@ -167,7 +167,7 @@ public interface Arbre {
 }
 ```
 
-### Implementation: TreeTwo
+### Implementation : TreeTwo
 
 ```java
 public class TreeTwo implements Arbre {
@@ -201,7 +201,7 @@ public class TreeTwo implements Arbre {
     }
 ```
 
-### Postfix Traversal (toString)
+### Parcours Postfixe (toString)
 
 ```java
     private String postfixTraversal(Noeud r) {
@@ -216,7 +216,7 @@ public class TreeTwo implements Arbre {
     }
 ```
 
-### Count occurrences (iterative BFS with stack)
+### Denombrer les occurrences (BFS iteratif avec pile)
 
 ```java
     public int denombrer(String n) {
@@ -234,19 +234,19 @@ public class TreeTwo implements Arbre {
     }
 ```
 
-### Arithmetic Expression Tree (ExprArith, TP6)
+### Arbre d'Expressions Arithmetiques (ExprArith, TP6)
 
 ```
-Expression: (3 + 4) * 2
+Expression : (3 + 4) * 2
 
-Tree:        [*]
+Arbre :      [*]
             /   \
           [+]   [2]
           / \
         [3] [4]
 
-Postfix: 3 4 + 2 *
-Evaluation: recursive descent
+Postfixe : 3 4 + 2 *
+Evaluation : descente recursive
 ```
 
 ```java
@@ -286,9 +286,9 @@ public class ExprArith {
 ```
 
 
-## BST Operations
+## Operations sur les ABR
 
-### Search in BST
+### Recherche dans un ABR
 
 ```java
 Node search(Node root, int key) {
@@ -298,7 +298,7 @@ Node search(Node root, int key) {
 }
 ```
 
-### Insert in BST (from exam 2020)
+### Insertion dans un ABR (examen 2020)
 
 ```java
 public void placer(int i) {
@@ -313,12 +313,12 @@ public void placer(int i) {
 }
 ```
 
-### Delete from BST (from exam 2020)
+### Suppression dans un ABR (examen 2020)
 
-To delete a node with two children:
-1. Find the **largest value** in the left subtree (rightmost node in left subtree)
-2. Replace the node's value with that value
-3. Delete the found node (which has at most one child)
+Pour supprimer un noeud avec deux enfants :
+1. Trouver la **plus grande valeur** du sous-arbre gauche (noeud le plus a droite du sous-arbre gauche)
+2. Remplacer la valeur du noeud par cette valeur
+3. Supprimer le noeud trouve (qui a au plus un enfant)
 
 ```java
 public void supprimerEc() {
@@ -331,20 +331,20 @@ public void supprimerEc() {
 ```
 
 
-## Complexity
+## Complexite
 
-| Operation | BST (balanced) | BST (worst) | AVL |
-|-----------|---------------|-------------|-----|
-| Search | O(log n) | O(n) | O(log n) |
-| Insert | O(log n) | O(n) | O(log n) |
-| Delete | O(log n) | O(n) | O(log n) |
-| Traversal | O(n) | O(n) | O(n) |
-| Height | O(log n) | O(n) | O(log n) |
+| Operation | ABR (equilibre) | ABR (pire cas) | AVL |
+|-----------|-----------------|----------------|-----|
+| Recherche | O(log n) | O(n) | O(log n) |
+| Insertion | O(log n) | O(n) | O(log n) |
+| Suppression | O(log n) | O(n) | O(log n) |
+| Parcours | O(n) | O(n) | O(n) |
+| Hauteur | O(log n) | O(n) | O(log n) |
 
-Worst case for BST: inserting sorted data creates a "linked list" tree.
+Pire cas pour un ABR : inserer des donnees triees cree un arbre "liste chainee".
 
 ```
-Insert: 1, 2, 3, 4, 5
+Insertion : 1, 2, 3, 4, 5
 
      [1]
        \
@@ -356,40 +356,40 @@ Insert: 1, 2, 3, 4, 5
              \
              [5]
 
-Height = n-1 = 4   (all operations O(n))
+Hauteur = n-1 = 4   (toutes les operations en O(n))
 ```
 
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-BINARY TREE
-============
-             [root]
-            /      \
-        [left]    [right]
-        /   \       /  \
-       ...   ...  ...   ...
+ARBRE BINAIRE
+==============
+             [racine]
+            /        \
+        [gauche]    [droit]
+        /   \         /  \
+       ...   ...    ...   ...
 
-TRAVERSALS:
-  Inorder  (LNR): left, node, right  -> sorted for BST
-  Preorder (NLR): node, left, right  -> copy tree
-  Postorder(LRN): left, right, node  -> delete tree / RPN
+PARCOURS :
+  Infixe   (GRD) : gauche, noeud, droit  -> trie pour ABR
+  Prefixe  (RGD) : noeud, gauche, droit  -> copie d'arbre
+  Postfixe (GDR) : gauche, droit, noeud  -> suppression / NPI
 
-BST PROPERTY: left < node < right
+PROPRIETE ABR : gauche < noeud < droit
 
-INSERT: follow BST property to find correct leaf position
-DELETE:
-  0 children: just remove
-  1 child:    replace with child
-  2 children: replace with max(left subtree), delete that
+INSERTION : suivre la propriete ABR pour trouver la bonne position feuille
+SUPPRESSION :
+  0 enfant : supprimer simplement
+  1 enfant : remplacer par l'enfant
+  2 enfants : remplacer par max(sous-arbre gauche), supprimer ce noeud
 
-AVL BALANCE: |height(L) - height(R)| <= 1
-  Left-heavy   -> Right rotation
-  Right-heavy  -> Left rotation
-  Left-Right   -> Left on child, then Right on node
-  Right-Left   -> Right on child, then Left on node
+EQUILIBRE AVL : |hauteur(G) - hauteur(D)| <= 1
+  Lourd a gauche  -> Rotation droite
+  Lourd a droite  -> Rotation gauche
+  Gauche-Droite   -> Rotation gauche sur enfant, puis droite sur noeud
+  Droite-Gauche   -> Rotation droite sur enfant, puis gauche sur noeud
 
-HEIGHT: O(log n) balanced, O(n) worst
-ALL BST OPS: O(height)
+HAUTEUR : O(log n) equilibre, O(n) pire cas
+TOUTES LES OPS ABR : O(hauteur)
 ```

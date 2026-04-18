@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # TP4 - MPI : Calcul de PI distribue
 
-> Following teacher instructions from: `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP4_mpi.pdf`
+> D'apres les consignes de l'enseignant : `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP4_mpi.pdf`
 
 ---
 
@@ -25,7 +25,7 @@ sidebar_position: 4
 > - Pour compiler : `mpicc -o <programme> <programme.c>`
 > - Pour executer : `mpiexec -n <nb processus> -f ~/.machines <programme>`
 
-**Answer:**
+**Reponse :**
 
 ```bash
 # Configuration SSH
@@ -65,7 +65,7 @@ echo "localhost" >> ~/.machines
 > Fini
 > ```
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 }
 ```
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 mpicc -o monprog monprog.c
@@ -98,7 +98,7 @@ mpiexec -n 1 ./monprog
 mpiexec -n 3 ./monprog
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 Chaque processus execute le meme code (SPMD). L'ordre d'affichage est non-deterministe. Seul le rang 0 affiche "Fini" (dans le code ci-dessus). Le sujet montre que chaque processus affiche "Fini" -- cela depend de la version du code fourni.
 
@@ -110,7 +110,7 @@ Chaque processus execute le meme code (SPMD). L'ordre d'affichage est non-determ
 
 > Copiez, compilez et executez le programme `teste.c` avec un nombre variable de processus. Ce petit exemple contient l'essentiel de ce qu'il faut savoir pour ecrire des programmes MPI simples.
 
-**Answer:**
+**Reponse :**
 
 Ce programme de test illustre les fonctions de base MPI : `MPI_Init`, `MPI_Comm_rank`, `MPI_Comm_size`, `MPI_Finalize`, et les communications collectives.
 
@@ -134,7 +134,7 @@ Ce programme de test illustre les fonctions de base MPI : `MPI_Init`, `MPI_Comm_
 >
 > **Implementation sequentielle :** Ecrivez le programme calculant Pi avec cette methode. Verifier que l'on s'approche bien de Pi quand n augmente.
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -174,14 +174,14 @@ int main(void)
 }
 ```
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 mpicc sequentiel.c -o sequentiel -lm
 ./sequentiel
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 ```
 PI=3.1415926535899348, error 4.396282e-14, time 0.048572 (s)
@@ -197,7 +197,7 @@ L'erreur relative diminue quand N augmente, confirmant la convergence de la meth
 
 > **Implementation parallele :** Realisez le programme parallele. Le processus 0 prend en parametre les valeurs de n et de p et transmet la valeur de n a tous les autres processus 1...p. Il realise egalement une partie des calculs lui meme. Chaque processus realise les calculs dont il est responsable et envoie au maitre le resultat. On pourra utiliser les fonctions `MPI_Broadcast` et `MPI_Gather`. Tester votre programme.
 
-**Answer:**
+**Reponse :**
 
 ### Strategie de parallelisation
 
@@ -309,7 +309,7 @@ MPI_Reduce(&resultPartiel, &estimationPi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WO
 ```
 Chaque processus fournit `resultPartiel`. MPI additionne (`MPI_SUM`) et place le resultat dans `estimationPi` sur P0.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 mpicc parallel.c -o parallel -lm
@@ -321,7 +321,7 @@ mpiexec -n 4 ./parallel 1000000
 mpiexec -n 8 ./parallel 1000000
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 ```
 $ mpiexec -n 1 ./parallel 1000000
@@ -341,7 +341,7 @@ L'erreur varie legerement entre executions car l'ordre des additions flottantes 
 
 > Nous allons evaluer la performance de ce programme pour un nombre d'intervalles "n" donne et un nombre de processus variable. Pour cela, nous utiliserons la fonction `MPI_Wtime`.
 
-**Answer:**
+**Reponse :**
 
 ### Resultats typiques (N = 10^6)
 

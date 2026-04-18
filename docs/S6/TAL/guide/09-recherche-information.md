@@ -7,7 +7,7 @@ sidebar_position: 9
 
 ## 9.1 Definition
 
-> "Trouver des documents de nature non structuree qui satisfont un besoin d'information au sein de grandes collections." -- Manning
+> "Trouver des documents de nature non structuree qui satisfont un besoin d'information au sein de grandes collections." (d'apres Manning)
 
 ```
 Utilisateur --> requete --> Systeme de RI --> resultats classes
@@ -101,7 +101,7 @@ R = |pertinents recuperes| / |pertinents totaux|
 F1 = 2 * P * R / (P + R)
 ```
 
-### Resultats classes (ranked)
+### Resultats ordonnes (classement)
 
 **P@k** : precision sur les k premiers resultats.
 
@@ -135,9 +135,9 @@ q1 = alpha * q0 + beta * (1/|Dr|) * SUM_{d in Dr} d - gamma * (1/|Dnr|) * SUM_{d
 - alpha=1, beta=0.75, gamma=0.15 (valeurs typiques)
 - Deplace le vecteur requete vers les documents pertinents
 
-### Pseudo Retour de Pertinence
+### Pseudo-retour de pertinence
 
-On considere les k premiers documents comme pertinents (sans retour utilisateur).
+On considere les k premiers resultats comme pertinents (sans retour de l'utilisateur).
 
 ## 9.6 PageRank
 
@@ -157,23 +157,23 @@ PR(u) = (1-d)/N + d * SUM_{v in B_u} PR(v) / L(v)
 - N = nombre total de pages
 - Teleportation (1-d) : evite les culs-de-sac
 
-## 9.7 Learning to Rank (L2R)
+## 9.7 Apprentissage de classement (L2R)
 
 | Approche | Entree | Methode | Limite |
 |----------|--------|---------|--------|
 | **Pointwise** | Paire (q,d) | Score par document | Ignore l'ordre relatif |
 | **Pairwise** | Paire (d1,d2) | d1 meilleur que d2 ? | Pas de position absolue |
-| **Listwise** | Liste complete | Optimise MAP/nDCG | Complexe |
+| **Listwise** | Liste complete | Optimise MAP/nDCG | Plus complexe |
 
 ## 9.8 RI et Deep Learning
 
-### Modeles bases representation (siamois)
+### Modeles bases sur la representation (reseaux siamois)
 
 Requete et document representes **independamment**, compares par cosinus.
-- Avantage : representations de documents calculables offline
+- Avantage : les representations de documents sont calculables hors ligne
 - Exemple : DSSM
 
-### Modeles bases interaction
+### Modeles bases sur l'interaction
 
 Matrice de similarite entre termes de q et d.
 - Exemple : DRMM (premier a battre BM25)
@@ -185,7 +185,7 @@ Entree : [CLS] requete [SEP] document [SEP]
          --> BERT --> [CLS] --> score de pertinence
 ```
 
-Tres performant mais couteux. Applique en re-classement sur top-1000 de BM25.
+Tres performant mais couteux. Applique en re-classement sur les 1000 premiers resultats de BM25.
 
 ---
 
@@ -217,7 +217,7 @@ ROCCHIO :
 L2R : Pointwise < Pairwise < Listwise
 
 DEEP LEARNING RI :
-  DSSM (siamois), DRMM (interaction), MonoBERT (re-ranking)
+  DSSM (siamois), DRMM (interaction), MonoBERT (re-classement)
 
 PIEGES :
   - nDCG utilise jugements GRADUES (pas binaires comme MAP)

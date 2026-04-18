@@ -1,38 +1,38 @@
 ---
-title: "Question Bank by Type"
+title: "Banque de questions par type"
 sidebar_position: 3
 ---
 
-# Question Bank by Type
+# Banque de questions par type
 
-All questions extracted from the 2019-2025 CPOO exams, organized by topic.
+Toutes les questions extraites des examens CPOO de 2019 a 2025, organisees par sujet.
 
 ---
 
-## Type 1: Write a Test Class
+## Type 1 : Ecrire une classe de test
 
-These questions give you a Java class + interface and ask you to write a complete test class with maximum coverage.
+Ces questions vous donnent une classe Java + une interface et vous demandent d'ecrire une classe de test complete avec couverture maximale.
 
-### Question Pattern
+### Schema type de la question
 
-You receive:
-- A class to test (with constructor, methods, possibly a static factory)
-- An interface that the class depends on (must be mocked)
-- Sometimes a custom exception class
+Vous recevez :
+- Une classe a tester (avec constructeur, methodes, eventuellement une fabrique statique)
+- Une interface dont la classe depend (doit etre mockee)
+- Parfois une classe d'exception personnalisee
 
-You must write:
-- `@BeforeEach` with mock setup
-- Tests for constructor (including null input)
-- Tests for each method (normal case, edge cases, exception paths)
-- `verify()` calls where appropriate
+Vous devez ecrire :
+- `@BeforeEach` avec configuration du mock
+- Tests pour le constructeur (y compris entree null)
+- Tests pour chaque methode (cas normal, cas limites, chemins d'exception)
+- Appels `verify()` le cas echeant
 
-### Examples from Past Exams
+### Exemples tires des examens passes
 
-**2024-2025**: Test `Traitement` (Observateur interface, switch/case, defect to find)
-**2021-2022**: Test `A` (B interface, AnException, private doSomething, static createA)
-**2020-2021**: Test `Client` (Service interface, addService with validation, getTotalLatency)
+**2024-2025** : Tester `Traitement` (interface Observateur, switch/case, defaut a trouver)
+**2021-2022** : Tester `A` (interface B, AnException, doSomething privee, createA statique)
+**2020-2021** : Tester `Client` (interface Service, addService avec validation, getTotalLatency)
 
-### Template Answer
+### Reponse type
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -71,22 +71,22 @@ public class TestClassName {
 
 ---
 
-## Type 2: Fix Assertions / Rewrite Tests
+## Type 2 : Corriger des assertions / reecrire des tests
 
-### Common Fixes (appear every year)
+### Corrections courantes (reviennent chaque annee)
 
-| Wrong | Correct | Why |
-|-------|---------|-----|
-| `assertTrue(a.equals(b))` | `assertEquals(a, b)` | Better error message on failure |
-| `assertFalse(!a.foo())` | `assertTrue(a.foo())` | Double negation is confusing |
-| `assertTrue(a == b)` | `assertSame(a, b)` | Semantic clarity for reference equality |
-| `assertFalse(a.equals(b))` | `assertNotEquals(a, b)` | Clearer intent |
-| `assertTrue(!o.myMethod())` | `assertFalse(o.myMethod())` | Remove negation |
+| Incorrect | Correct | Pourquoi |
+|-----------|---------|----------|
+| `assertTrue(a.equals(b))` | `assertEquals(a, b)` | Meilleur message d'erreur en cas d'echec |
+| `assertFalse(!a.foo())` | `assertTrue(a.foo())` | La double negation est confuse |
+| `assertTrue(a == b)` | `assertSame(a, b)` | Clarte semantique pour l'egalite de reference |
+| `assertFalse(a.equals(b))` | `assertNotEquals(a, b)` | Intention plus claire |
+| `assertTrue(!o.myMethod())` | `assertFalse(o.myMethod())` | Supprimer la negation |
 
-### try/catch Antipattern
+### Anti-patron try/catch
 
 ```java
-// WRONG
+// INCORRECT
 @Test void test1() {
     try {
         foobar.m(null);
@@ -102,10 +102,10 @@ public class TestClassName {
 }
 ```
 
-### if/fail Antipattern
+### Anti-patron if/fail
 
 ```java
-// WRONG
+// INCORRECT
 @Test void testI() {
     final int i = foo.getI();
     if (i != 10) { fail(); }
@@ -117,10 +117,10 @@ public class TestClassName {
 }
 ```
 
-### Duplicate Setup Antipattern
+### Anti-patron d'initialisation dupliquee
 
 ```java
-// WRONG
+// INCORRECT
 @Test void testC1() { C c = new C(); assertEquals(12.12, c.getC1()); }
 @Test void testC2() { C c = new C(); assertEquals("foo", c.getC2()); }
 
@@ -133,168 +133,168 @@ C c;
 
 ---
 
-## Type 3: UML Class Diagrams from Text
+## Type 3 : Diagrammes de classes UML depuis un texte
 
-### Exam Instances
+### Instances d'examen
 
-**2024-2025 (Devis)**: Devis, Client, Entreprise, Tache, UniteDeMesure (enum), Materiel, Fournisseur
+**2024-2025 (Devis)** : Devis, Client, Entreprise, Tache, UniteDeMesure (enum), Materiel, Fournisseur
 
-**2021-2022 (Football)**: Championnat, Equipe, Joueur, Entraineur, Arbitre (3 types), Rencontre, events (Penalty, But, Carton, Remplacement, Expulsion)
+**2021-2022 (Football)** : Championnat, Equipe, Joueur, Entraineur, Arbitre (3 types), Rencontre, evenements (Penalty, But, Carton, Remplacement, Expulsion)
 
-**2020-2021 (Arithmetic)**: FormuleArithmetique, Constante, Noeud (interface/abstract), Valeur, RefConstante, Operateur (abstract), Addition, Soustraction -- Composite pattern
+**2020-2021 (Arithmetique)** : FormuleArithmetique, Constante, Noeud (interface/abstraite), Valeur, RefConstante, Operateur (abstraite), Addition, Soustraction -- patron Composite
 
-### Systematic Method
+### Methode systematique
 
-1. **List all nouns**: these are candidate classes or attributes
-2. **Classify nouns**: standalone entity = class; descriptor = attribute; fixed set of values = enum
-3. **Identify inheritance**: "X is a type of Y" or "X can be Y" = Y is parent
-4. **Identify associations**: "X has Y" or "X contains Y"
-5. **Determine multiplicity**: "one" = 1; "zero or more" = 0..*; "at least one" = 1..*; "optional" = 0..1
-6. **Aggregation vs Composition**: "belongs to exactly one" or lifecycle dependency = composition; "can exist independently" = aggregation
-7. **Add methods**: where behavior is described
-8. **Mark abstract**: classes that should not be instantiated directly
+1. **Lister tous les noms** : ce sont des classes ou attributs candidats
+2. **Classifier les noms** : entite autonome = classe ; descripteur = attribut ; ensemble fixe de valeurs = enum
+3. **Identifier l'heritage** : "X est un type de Y" ou "X peut etre Y" = Y est parent
+4. **Identifier les associations** : "X possede Y" ou "X contient Y"
+5. **Determiner la multiplicite** : "un" = 1 ; "zero ou plusieurs" = 0..* ; "au moins un" = 1..* ; "optionnel" = 0..1
+6. **Agregation vs Composition** : "appartient a exactement un" ou dependance de cycle de vie = composition ; "peut exister independamment" = agregation
+7. **Ajouter les methodes** : la ou un comportement est decrit
+8. **Marquer les abstraites** : les classes qui ne doivent pas etre instanciees directement
 
-### Common Mistakes
+### Erreurs courantes
 
-- Forgetting multiplicity on association ends
-- Making everything a class (some things are just attributes)
-- Missing the inheritance relationship when text says "X can be Y" or "X is a special kind of Y"
-- Not recognizing enumerations ("is either A, B, or C")
+- Oublier la multiplicite aux extremites des associations
+- Tout transformer en classe (certaines choses ne sont que des attributs)
+- Manquer la relation d'heritage quand le texte dit "X peut etre Y" ou "X est un type special de Y"
+- Ne pas reconnaitre les enumerations ("est soit A, B, ou C")
 
 ---
 
-## Type 4: Control Flow Graphs
+## Type 4 : Graphes de flot de controle
 
-### What to Draw
+### Que dessiner
 
-- **Nodes**: statements, conditions, loop headers
-- **Edges**: control flow between nodes
-- **Branch nodes**: `if`, `switch`, loop conditions
+- **Noeuds** : instructions, conditions, en-tetes de boucle
+- **Aretes** : flot de controle entre les noeuds
+- **Noeuds de branchement** : `if`, `switch`, conditions de boucle
 
-### Short-Circuit Operators
+### Operateurs en court-circuit
 
-For `if (a || b)`:
+Pour `if (a || b)` :
 ```
-  [a?] --true--> [then-body]
+  [a?] --vrai--> [corps-then]
   |
-  false
+  faux
   v
-  [b?] --true--> [then-body]
+  [b?] --vrai--> [corps-then]
   |
-  false
+  faux
   v
-  [else-body or next]
-```
-
-For `if (a && b)`:
-```
-  [a?] --false--> [else-body or next]
-  |
-  true
-  v
-  [b?] --false--> [else-body or next]
-  |
-  true
-  v
-  [then-body]
+  [corps-else ou suite]
 ```
 
-### Exam Instances
+Pour `if (a && b)` :
+```
+  [a?] --faux--> [corps-else ou suite]
+  |
+  vrai
+  v
+  [b?] --faux--> [corps-else ou suite]
+  |
+  vrai
+  v
+  [corps-then]
+```
 
-- **2024-2025**: `deplacerPoints` with two for-loops and `||` condition
-- **2021-2022**: `addService` with `||` condition, `getTotalLatency` with for-each loop
-- **2020-2021**: `foo` with `||` condition
+### Instances d'examen
 
----
-
-## Type 5: Truth Tables
-
-### Method
-
-For `if (a || b)` with short-circuit:
-
-| a | b | b evaluated? | Result |
-|---|---|-------------|--------|
-| T | - | No | T |
-| F | T | Yes | T |
-| F | F | Yes | F |
-
-For `if (a && b)` with short-circuit:
-
-| a | b | b evaluated? | Result |
-|---|---|-------------|--------|
-| F | - | No | F |
-| T | F | Yes | F |
-| T | T | Yes | T |
+- **2024-2025** : `deplacerPoints` avec deux boucles for et condition `||`
+- **2021-2022** : `addService` avec condition `||`, `getTotalLatency` avec boucle for-each
+- **2020-2021** : `foo` avec condition `||`
 
 ---
 
-## Type 6: Equivalence Classes
+## Type 5 : Tables de verite
 
-### Method
+### Methode
 
-1. Identify the input parameter
-2. Identify conditions that partition the input space
-3. Name each partition
-4. Identify boundary values
+Pour `if (a || b)` avec court-circuit :
 
-### Example (positions in deplacerPoints, polygon with 3 points)
+| a | b | b evalue ? | Resultat |
+|---|---|------------|----------|
+| V | - | Non | V |
+| F | V | Oui | V |
+| F | F | Oui | F |
 
-| Class | Range | Behavior |
-|-------|-------|----------|
-| Invalid low | position < 0 | return (exit method) |
-| Valid | 0 <= position < 3 | translated |
-| Invalid high | position >= 3 | return (exit method) |
+Pour `if (a && b)` avec court-circuit :
 
-Boundaries: -1, 0, 2, 3
-
----
-
-## Type 7: QCM / Short Answer
-
-### Recurring Topics
-
-**Testing definitions**:
-- Testing brings confidence, does not prove correctness
-- Code coverage is dynamic analysis (code must run)
-- Mocks test the code that USES the mock, not the mock itself
-- Mutation testing evaluates test quality by introducing code changes
-
-**OOP definitions**:
-- Abstract classes can have constructors, concrete methods, and fields
-- An interface defines a contract; multiple implementation is possible
-- `final` on a reference: the reference cannot change, but the object can be mutated
-- Polymorphism: same method call, different behavior based on actual type
-
-**UML/Design definitions**:
-- User stories capture requirements; class diagrams capture design
-- Acceptance criteria/tests bridge requirements and verification
+| a | b | b evalue ? | Resultat |
+|---|---|------------|----------|
+| F | - | Non | F |
+| V | F | Oui | F |
+| V | V | Oui | V |
 
 ---
 
-## Type 8: Coverage Analysis
+## Type 6 : Classes d'equivalence
 
-### "Can you achieve 100% line/branch/condition coverage?"
+### Methode
 
-Check for:
-1. **Dead code**: code after `return` or `throw`
-2. **Unreachable branches**: short-circuit preventing evaluation
-3. **Private methods that change state**: e.g., `doSomething()` sets `str = "yolo"`, making the subsequent `str == null` branch dead
-4. **Declared but unthrowable exceptions**: `throws SecurityException` but no code path throws it
+1. Identifier le parametre d'entree
+2. Identifier les conditions qui partitionnent l'espace des entrees
+3. Nommer chaque partition
+4. Identifier les valeurs limites
 
-### 2021-2022 Analysis of Class A
+### Exemple (positions dans deplacerPoints, polygone a 3 points)
 
-- `doSomething()` always sets `str = "yolo"` before the `if` check
-- So `str == null` is always `false` in `al()` -- that sub-condition cannot be `true`
-- `SecurityException` and `NumberFormatException` are declared but never thrown by `al()` itself
-- Result: 100% **line** coverage IS achievable (all lines are reachable: `return 0` via `!value`, `return str.length() * b.getB1()` via `value == true`). But 100% **branch** and **condition** coverage are NOT achievable (`str == null` true-branch is dead)
+| Classe | Intervalle | Comportement |
+|--------|-----------|--------------|
+| Invalide basse | position < 0 | return (quitter la methode) |
+| Valide | 0 <= position < 3 | translatee |
+| Invalide haute | position >= 3 | return (quitter la methode) |
+
+Valeurs limites : -1, 0, 2, 3
 
 ---
 
-## Type 9: Bonus Questions
+## Type 7 : QCM / Reponses courtes
 
-### Mutation Testing (2024-2025)
+### Sujets recurrents
 
-Explain in a few sentences how mutation testing works and its value:
+**Definitions sur les tests** :
+- Tester apporte de la confiance, ne prouve pas la correction
+- La couverture de code est de l'analyse dynamique (le code doit s'executer)
+- Les mocks testent le code qui UTILISE le mock, pas le mock lui-meme
+- Les tests de mutation evaluent la qualite des tests en introduisant des modifications de code
 
-"Mutation testing automatically modifies the source code to create 'mutants' (e.g., changing `>` to `>=`, removing a method call, negating a condition). The test suite is then run against each mutant. If a test fails, the mutant is 'killed' (detected). If all tests pass, the mutant 'survives,' indicating a gap in the test suite. The mutation score (killed/total) measures the quality of tests -- a high score means the tests are effective at detecting code changes."
+**Definitions POO** :
+- Les classes abstraites peuvent avoir des constructeurs, des methodes concretes et des champs
+- Une interface definit un contrat ; l'implementation multiple est possible
+- `final` sur une reference : la reference ne peut pas changer, mais l'objet peut etre mute
+- Polymorphisme : meme appel de methode, comportement different selon le type reel
+
+**Definitions UML/Conception** :
+- Les user stories capturent les besoins ; les diagrammes de classes capturent la conception
+- Les criteres/tests d'acceptation font le lien entre les besoins et la verification
+
+---
+
+## Type 8 : Analyse de couverture
+
+### "Peut-on atteindre 100% de couverture de lignes/branches/conditions ?"
+
+Verifier :
+1. **Code mort** : code apres `return` ou `throw`
+2. **Branches inatteignables** : court-circuit empechant l'evaluation
+3. **Methodes privees qui changent l'etat** : par ex., `doSomething()` definit `str = "yolo"`, rendant la branche `str == null` dans le `if` suivant morte
+4. **Exceptions declarees mais non lancables** : `throws SecurityException` mais aucun chemin de code ne la lance
+
+### Analyse 2021-2022 de la classe A
+
+- `doSomething()` definit toujours `str = "yolo"` avant la verification `if`
+- Donc `str == null` est toujours `false` dans `al()` -- cette sous-condition ne peut pas etre `true`
+- `SecurityException` et `NumberFormatException` sont declarees mais jamais lancees par `al()` elle-meme
+- Resultat : 100% de couverture de **lignes** EST atteignable (toutes les lignes sont atteignables : `return 0` via `!value`, `return str.length() * b.getB1()` via `value == true`). Mais 100% de couverture de **branches** et **conditions** ne sont PAS atteignables (la branche `str == null` true est morte)
+
+---
+
+## Type 9 : Questions bonus
+
+### Tests de mutation (2024-2025)
+
+Expliquer en quelques phrases le fonctionnement des tests de mutation et leur interet :
+
+"Les tests de mutation modifient automatiquement le code source pour creer des 'mutants' (par ex., changer `>` en `>=`, supprimer un appel de methode, inverser une condition). La suite de tests est ensuite executee contre chaque mutant. Si un test echoue, le mutant est 'tue' (detecte). Si tous les tests passent, le mutant 'survit', indiquant une lacune dans la suite de tests. Le score de mutation (tues/total) mesure la qualite des tests -- un score eleve signifie que les tests detectent efficacement les modifications du code."

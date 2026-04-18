@@ -325,7 +325,7 @@ do {
 
 ---
 
-## CHEAT SHEET -- OpenMP
+## AIDE-MEMOIRE -- OpenMP
 
 ```c noexec
 /* Directives */

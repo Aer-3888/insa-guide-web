@@ -160,7 +160,7 @@ Verifier a l'execution que les sauts indirects (appels via pointeurs de fonction
 
 ### Limites
 
-- Overhead de performance
+- Surcharge de performance
 - Protection incomplete si l'ensemble des cibles legitimes est trop large
 - Des implementations faibles ont ete contournees
 

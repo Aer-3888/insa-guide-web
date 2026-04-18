@@ -15,15 +15,15 @@ L'OWASP Top 10 est la reference pour les vulnerabilites web les plus critiques. 
 
 | Rang | Categorie | Description | Exemples du cours |
 |------|----------|-------------|-------------------|
-| A01 | **Broken Access Control** | Acces a des ressources non autorisees | Path traversal, IDOR |
-| A02 | **Cryptographic Failures** | Mauvaise utilisation de la cryptographie | Mots de passe en clair, HTTP sans TLS |
+| A01 | **Controle d'acces defaillant** | Acces a des ressources non autorisees | Path traversal, IDOR |
+| A02 | **Defaillances cryptographiques** | Mauvaise utilisation de la cryptographie | Mots de passe en clair, HTTP sans TLS |
 | A03 | **Injection** | Injection de code dans un interprete | SQL, CMD, XSS |
-| A04 | **Insecure Design** | Defauts de conception | Protocoles vulnerables (NSPK) |
-| A05 | **Security Misconfiguration** | Mauvaise configuration | Mots de passe par defaut, services inutiles |
-| A06 | **Vulnerable Components** | Composants avec des vulnerabilites connues | Heartbleed (OpenSSL), ShellShock (Bash) |
-| A07 | **Auth Failures** | Authentification defaillante | Sessions previsibles, brute force |
-| A08 | **Data Integrity Failures** | Donnees non verifiees | Deserialization, mises a jour non signees |
-| A09 | **Logging Failures** | Journalisation insuffisante | Pas de logs d'authentification echouee |
+| A04 | **Conception non securisee** | Defauts de conception | Protocoles vulnerables (NSPK) |
+| A05 | **Mauvaise configuration** | Mauvaise configuration | Mots de passe par defaut, services inutiles |
+| A06 | **Composants vulnerables** | Composants avec des vulnerabilites connues | Heartbleed (OpenSSL), ShellShock (Bash) |
+| A07 | **Defaillances d'authentification** | Authentification defaillante | Sessions previsibles, brute force |
+| A08 | **Defaillances d'integrite** | Donnees non verifiees | Deserialization, mises a jour non signees |
+| A09 | **Defaillances de journalisation** | Journalisation insuffisante | Pas de logs d'authentification echouee |
 | A10 | **SSRF** | Requetes forgees cote serveur | Le serveur fait des requetes vers des cibles internes |
 
 ---
@@ -45,10 +45,10 @@ Attaquant                Serveur web              Reseau interne
     |                        | GET /latest/meta-data  |
     |                        |----------------------->|
     |                        |                        |
-    |                        | (credentials AWS)      |
+    |                        | (identifiants AWS)     |
     |                        |<-----------------------|
     | Reponse avec les       |                        |
-    | credentials            |                        |
+    | identifiants           |                        |
     |<-----------------------|                        |
 ```
 
@@ -88,7 +88,7 @@ def fetch():
 
 ### Cas celebre
 
-L'attaque contre Capital One en 2019 a exploite une SSRF pour acceder au service de metadonnees AWS (169.254.169.254), permettant de voler des identifiants IAM et d'extraire les donnees de 106 millions de clients.
+L'attaque contre Capital One en 2019 a exploite une SSRF pour acceder au service de metadonnees AWS (169.254.169.254), permettant de voler des cles d'acces IAM et d'extraire les donnees de 106 millions de clients.
 
 ---
 
@@ -155,7 +155,7 @@ Toujours verifier que l'utilisateur authentifie est autorise a acceder a la ress
 
 ---
 
-## 8.5 Deserialization non securisee
+## 8.5 Deserialisation non securisee
 
 ### Concept
 
@@ -181,13 +181,13 @@ Un objet serialise (JSON, XML, binaire) est reconstruit sans verification. Si l'
 |----------------------|-----------------|----------|
 | Injection SQL | A03 Injection | Ch. 3 |
 | XSS | A03 Injection | Ch. 4 |
-| CSRF | A01 Broken Access Control | Ch. 4 |
+| CSRF | A01 Controle d'acces defaillant | Ch. 4 |
 | Injection de commandes | A03 Injection | Ch. 5 |
-| Mots de passe en clair | A02 Cryptographic Failures | Ch. 9 |
-| Protocole NSPK | A04 Insecure Design | Ch. 12 |
-| Mot de passe par defaut | A05 Security Misconfiguration | Ch. 1 |
-| OpenSSL Heartbleed | A06 Vulnerable Components | Ch. 1 |
-| Session hijacking (XSS) | A07 Auth Failures | Ch. 4 |
+| Mots de passe en clair | A02 Defaillances cryptographiques | Ch. 9 |
+| Protocole NSPK | A04 Conception non securisee | Ch. 12 |
+| Mot de passe par defaut | A05 Mauvaise configuration | Ch. 1 |
+| OpenSSL Heartbleed | A06 Composants vulnerables | Ch. 1 |
+| Detournement de session (XSS) | A07 Defaillances d'authentification | Ch. 4 |
 | SSRF | A10 SSRF | Ce chapitre |
 
 ---
@@ -196,16 +196,16 @@ Un objet serialise (JSON, XML, binaire) est reconstruit sans verification. Si l'
 
 ```
 OWASP TOP 10 (2021) :
-  A01: Broken Access Control   (CSRF, IDOR, path traversal)
-  A02: Cryptographic Failures  (mdp en clair, HTTP sans TLS)
-  A03: Injection               (SQL, CMD, XSS)
-  A04: Insecure Design         (protocoles defaillants)
-  A05: Security Misconfiguration (mdp par defaut)
-  A06: Vulnerable Components   (Heartbleed, ShellShock)
-  A07: Auth Failures           (sessions previsibles)
-  A08: Data Integrity Failures (deserialization)
-  A09: Logging Failures        (pas de logs)
-  A10: SSRF                    (requetes forgees cote serveur)
+  A01: Controle d'acces defaillant    (CSRF, IDOR, path traversal)
+  A02: Defaillances cryptographiques (mdp en clair, HTTP sans TLS)
+  A03: Injection                     (SQL, CMD, XSS)
+  A04: Conception non securisee      (protocoles defaillants)
+  A05: Mauvaise configuration        (mdp par defaut)
+  A06: Composants vulnerables        (Heartbleed, ShellShock)
+  A07: Defaillances d'authentification (sessions previsibles)
+  A08: Defaillances d'integrite      (deserialization)
+  A09: Defaillances de journalisation (pas de logs)
+  A10: SSRF                          (requetes forgees cote serveur)
 
 SSRF :
   Le SERVEUR fait une requete vers une cible interne

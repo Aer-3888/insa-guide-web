@@ -171,7 +171,7 @@ flowchart LR
 |----------|-----------------|-----------------|------------|
 | JOIN + WHERE | 200s | 3s | O(n*m) |
 | **Sous-requete + IN** | **1s** | **0.8s** | **O(n+m)** |
-| NATURAL JOIN | 283s | 4.5s | O(n*m) + overhead |
+| NATURAL JOIN | 283s | 4.5s | O(n*m) + surcout |
 | Sous-requete avec JOIN interne | 219s | 5.3s | O(n*m) |
 
 ```sql noexec

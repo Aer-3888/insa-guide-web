@@ -70,8 +70,8 @@ Attaques possibles : brute-forcer un code PIN dans un document, verifier la pres
 
 | Type | Description |
 |------|------------|
-| **Canal covert** | Collaboration pour exfiltrer des donnees |
-| **Canal side** | Observation des effets secondaires (cache, temps) |
+| **Canal cache** | Collaboration pour exfiltrer des donnees |
+| **Canal auxiliaire** | Observation des effets secondaires (cache, temps) |
 
 ---
 
@@ -79,7 +79,7 @@ Attaques possibles : brute-forcer un code PIN dans un document, verifier la pres
 
 | Risque | Description |
 |--------|------------|
-| Images pre-compromises | Vulnerabilites, backdoors dans les images tierces |
+| Images pre-compromises | Vulnerabilites, portes derobees dans les images tierces |
 | Images obsoletes | Deviennent vulnerables avec le temps |
 | Premiere action | TOUJOURS mettre a jour apres le deploiement |
 
@@ -148,7 +148,7 @@ RISQUES SPECIFIQUES :
   Multitenancy : canaux auxiliaires (cache, deduplication)
   Images : toujours mettre a jour
   Interface web : risques XSS, preferer l'API
-  Confiance : "easy in... easy out?"
+  Confiance : "facile d'entrer... facile de sortir ?"
 
 BONNES PRATIQUES :
   IAM avec droits minimaux

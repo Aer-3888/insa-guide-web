@@ -1,17 +1,17 @@
 ---
-title: "TP3: Régression linéaire multiple"
+title: "TP3: Regression lineaire multiple"
 sidebar_position: 3
 ---
 
-# TP3: Régression linéaire multiple
+# TP3: Regression lineaire multiple
 
 ## Objectifs
 
-Maîtriser la régression linéaire multiple et la sélection de variables:
-- Régression avec plusieurs variables explicatives
-- Analyse de corrélation
-- Sélection automatique de variables (backward, forward)
-- Critère AIC pour comparer des modèles
+Maitriser la regression lineaire multiple et la selection de variables :
+- Regression avec plusieurs variables explicatives
+- Analyse de correlation
+- Selection automatique de variables (backward, forward)
+- Critere AIC pour comparer des modeles
 - Visualisation 3D
 - Calcul matriciel manuel des coefficients
 
@@ -20,31 +20,31 @@ Maîtriser la régression linéaire multiple et la sélection de variables:
 ```
 TP3/
 ├── README.md                    # Ce fichier
-├── Sujet TP3.pdf               # Énoncé officiel
+├── Sujet TP3.pdf               # Enonce officiel
 ├── src/
-│   └── TP3_solutions.R         # Solutions commentées et nettoyées
-├── TP3_Donnees/                # Jeux de données
+│   └── TP3_solutions.R         # Solutions commentees et nettoyees
+├── TP3_Donnees/                # Jeux de donnees
 │   ├── Advertising.csv
 │   ├── lait.txt
 │   └── eucalyptus.txt
-└── (fichiers originaux)        # Déplacés vers _originals/
+└── (fichiers originaux)        # Deplaces vers _originals/
 ```
 
-## Modèle linéaire multiple
+## Modele lineaire multiple
 
-**Équation:** Y = β₀ + β₁X₁ + β₂X₂ + ... + βₚXₚ + ε  
-où ε ~ N(0, σ²)
+**Equation :** $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \varepsilon$
+ou $\varepsilon \sim \mathcal{N}(0, \sigma^2)$
 
-**Forme matricielle:** Y = Xβ + ε  
-**Estimation:** β̂ = (X'X)⁻¹X'Y
+**Forme matricielle :** $Y = X\beta + \varepsilon$
+**Estimation :** $\hat{\beta} = (X'X)^{-1}X'Y$
 
-**Syntaxe R:** `lm(Y ~ X1 + X2 + X3, data=df)`
+**Syntaxe R :** `lm(Y ~ X1 + X2 + X3, data=df)`
 
 ## Packages requis
 
 ```r noexec
 install.packages("rgl")     # Visualisation 3D
-install.packages("car")     # Outils graphiques avancés
+install.packages("car")     # Outils graphiques avances
 
 library(rgl)
 library(car)
@@ -52,189 +52,189 @@ library(car)
 
 ## Exercices
 
-### Exercice 1: Publicité et ventes
-Analyser l'impact de 3 médias publicitaires (TV, Radio, Journaux) sur les ventes.
+### Exercice 1 : Publicite et ventes
+Analyser l'impact de 3 medias publicitaires (TV, Radio, Journaux) sur les ventes.
 
-**Données:** 200 entreprises avec budgets pub et ventes
+**Donnees :** 200 entreprises avec budgets pub et ventes
 
-**Workflow:**
+**Demarche :**
 
-#### 1. Analyse de corrélation
+#### 1. Analyse de correlation
 ```r noexec
-cor(pub)  # Matrice de corrélation
+cor(pub)  # Matrice de correlation
 ```
-- TV et Sales: corrélés positivement
-- Identifier les colinéarités entre variables explicatives
+- TV et Sales : correles positivement
+- Identifier les colinearites entre variables explicatives
 
-#### 2. Régression simple (TV uniquement)
-- R² moyen
-- Résidus non homoscédastiques
-- **Transformation log:** améliore l'homoscédasticité
+#### 2. Regression simple (TV uniquement)
+- $R^2$ moyen
+- Residus non homoscedastiques
+- **Transformation log :** ameliore l'homoscedasticite
 
 #### 3. Tester les autres variables
-- Radio vs TV: faible corrélation
-- Newspaper vs TV: faible corrélation
+- Radio vs TV : faible correlation
+- Newspaper vs TV : faible correlation
 
-#### 4. Régression multiple (3 variables)
+#### 4. Regression multiple (3 variables)
 ```r noexec
 regm <- lm(Sales ~ TV + Radio + Newspaper)
 ```
-- R² = 0.89 → 89% de variabilité expliquée
-- **Test global (F-test):** p < 0.05 → au moins une variable significative
-- **Tests individuels:**
-  - TV: significatif (p < 0.05)
-  - Radio: significatif (p < 0.05)
-  - Newspaper: **NON** significatif (p > 0.05)
+- $R^2 = 0.89$ -- 89% de variabilite expliquee
+- **Test global (test F) :** $p < 0.05$ -- au moins une variable significative
+- **Tests individuels :**
+  - TV : significatif ($p < 0.05$)
+  - Radio : significatif ($p < 0.05$)
+  - Newspaper : **NON** significatif ($p > 0.05$)
 
-#### 5. Modèle réduit (TV + Radio)
+#### 5. Modele reduit (TV + Radio)
 ```r noexec
 reg2 <- lm(Sales ~ TV + Radio)
 ```
-- Radio a une influence plus forte que TV (coefficient plus élevé)
-- Modèle plus parcimonieux sans perte de qualité
+- Radio a une influence plus forte que TV (coefficient plus eleve)
+- Modele plus parcimonieux sans perte de qualite
 
 #### 6. Visualisation 3D
 ```r noexec
 scatter3d(Sales ~ TV + Radio, surface=TRUE)
 ```
-- Plan de régression dans l'espace 3D
-- Visualiser l'ajustement et les résidus
+- Plan de regression dans l'espace 3D
+- Visualiser l'ajustement et les residus
 
-#### 7. Prédiction
-Pour TV=100k$, Radio=20k$:
+#### 7. Prediction
+Pour TV = 100 k$, Radio = 20 k$ :
 ```r noexec
 predict(reg2, data.frame(TV=100, Radio=20), interval="prediction")
 ```
 
-**Concepts clés:**
-- Multicolinéarité: corrélation entre variables explicatives
+**Concepts cles :**
+- Multicolinearite : correlation entre variables explicatives
 - Test global vs tests individuels
-- Parcimonie: préférer un modèle simple
+- Parcimonie : preferer un modele simple
 
-### Exercice 2: Lait et rendement fromager
-Prédire le rendement fromager à partir de la composition du lait (5 variables).
+### Exercice 2 : Lait et rendement fromager
+Predire le rendement fromager a partir de la composition du lait (5 variables).
 
-**Variables explicatives:**
-- Densite, TxButy (taux butyrique), TxProt (taux protéique), TxCase (taux caséine), ExSec (extrait sec)
+**Variables explicatives :**
+- Densite, TxButy (taux butyrique), TxProt (taux proteique), TxCase (taux caseine), ExSec (extrait sec)
 
-**Workflow:**
+**Demarche :**
 
-#### 1. Matrice de corrélation
+#### 1. Matrice de correlation
 ```r noexec
 cor(lait[,1:5])
 ```
-**Observations:**
-- ExSec ~ Densite: corrélation 0.76
-- TxCase ~ TxProt: très corrélés 0.96 → **redondance d'information**
+**Observations :**
+- ExSec ~ Densite : correlation 0.76
+- TxCase ~ TxProt : tres correles 0.96 -- **redondance d'information**
 
-**Implication:** Un modèle avec moins de variables peut fonctionner aussi bien
+**Implication :** Un modele avec moins de variables peut fonctionner aussi bien
 
-#### 2. Visualisations bivariées
-- Densite vs Rendement: non linéaire
-- TxButy, TxProt, TxCase, ExSec vs Rendement: linéaires
+#### 2. Visualisations bivariees
+- Densite vs Rendement : non lineaire
+- TxButy, TxProt, TxCase, ExSec vs Rendement : lineaires
 
-#### 3. Régression multiple complète
+#### 3. Regression multiple complete
 ```r noexec
 reg <- lm(Rendement ~ Densite + TxButy + TxProt + TxCase + ExSec)
 ```
-**Variables significatives (p < 0.05):**
+**Variables significatives ($p < 0.05$) :**
 - TxButy
 - ExSec
 
-Les autres variables ne sont pas significatives (multicolinéarité)
+Les autres variables ne sont pas significatives (multicolinearite)
 
-#### 4. Sélection automatique (backward)
+#### 4. Selection automatique (backward)
 ```r noexec
 reg_backward <- step(reg, direction="backward")
 ```
 
-**Algorithme step():**
-1. Calcule l'AIC du modèle complet
-2. Enlève une variable à la fois et recalcule l'AIC
-3. Garde le modèle avec l'AIC le plus petit
-4. Répète jusqu'à ce qu'aucune amélioration ne soit possible
+**Algorithme `step()` :**
+1. Calcule l'AIC du modele complet
+2. Enleve une variable a la fois et recalcule l'AIC
+3. Garde le modele avec l'AIC le plus petit
+4. Repete jusqu'a ce qu'aucune amelioration ne soit possible
 
-**Résultat:** Densite + TxButy + TxProt + ExSec (enlève TxCase)
+**Resultat :** Densite + TxButy + TxProt + ExSec (enleve TxCase)
 
-#### 5. Modèle sans intercept
+#### 5. Modele sans intercept
 ```r noexec
 reg_no_intercept <- lm(Rendement ~ -1 + Densite + TxButy + TxProt + ExSec)
 ```
-- `-1` ou `0` enlève l'ordonnée à l'origine
+- `-1` ou `0` enleve l'ordonnee a l'origine
 - Force le passage par (0,0)
 
-#### 6. Comparaison des modèles
-Critères:
-- **AIC (Akaike Information Criterion):** plus petit = meilleur
-- **R² ajusté:** pénalise le nombre de variables
+#### 6. Comparaison des modeles
+Criteres :
+- **AIC (Akaike Information Criterion) :** plus petit = meilleur
+- **$R^2$ ajuste :** penalise le nombre de variables
 
 ```r noexec
 extractAIC(reg)
 summary(reg)$adj.r.squared
 ```
 
-**Décision:** Choisir le modèle avec le meilleur compromis AIC/R²
+**Decision :** Choisir le modele avec le meilleur compromis AIC/$R^2$
 
-#### 7. Prédiction
-Comparer deux vaches (Holstein vs Normande):
+#### 7. Prediction
+Comparer deux vaches (Holstein vs Normande) :
 ```r noexec
 predict(reg, newdata=df_vaches, interval="prediction")
 ```
 
-**Concepts clés:**
-- Sélection de variables: backward, forward, stepwise
-- AIC pour comparer des modèles non emboîtés
-- R² ajusté pour pénaliser la complexité
-- Modèles sans intercept (cas particuliers)
+**Concepts cles :**
+- Selection de variables : backward, forward, stepwise
+- AIC pour comparer des modeles non emboites
+- $R^2$ ajuste pour penaliser la complexite
+- Modeles sans intercept (cas particuliers)
 
-### Exercice 3: Hauteur des eucalyptus (calcul matriciel)
-Prédire la hauteur des arbres à partir de leur circonférence avec calcul matriciel manuel.
+### Exercice 3 : Hauteur des eucalyptus (calcul matriciel)
+Predire la hauteur des arbres a partir de leur circonference avec calcul matriciel manuel.
 
-**Objectif pédagogique:** Comprendre les calculs matriciels derrière `lm()`
+**Objectif pedagogique :** Comprendre les calculs matriciels derriere `lm()`
 
-**Workflow:**
+**Demarche :**
 
-#### 1. Visualisation et régression simple
+#### 1. Visualisation et regression simple
 ```r noexec
 plot(circ, ht)
 reg_simple <- lm(ht ~ circ)
 ```
-- Résidus non homoscédastiques → amélioration possible
+- Residus non homoscedastiques -- amelioration possible
 
-#### 2. Modèle avec racine carrée
-**Hypothèse:** ht = β₀ + β₁*circ + β₂*√circ + ε
+#### 2. Modele avec racine carree
+**Hypothese :** $\text{ht} = \beta_0 + \beta_1 \cdot \text{circ} + \beta_2 \cdot \sqrt{\text{circ}} + \varepsilon$
 
 #### 3. Calcul matriciel manuel
 
 **a) Construction des matrices**
 ```r noexec
-Y <- ht                    # Vecteur réponse (n × 1)
+Y <- ht                    # Vecteur reponse (n x 1)
 X0 <- rep(1, length(circ)) # Intercept
-X1 <- circ                 # Circonférence
-X2 <- sqrt(circ)           # Racine carrée
-X <- cbind(X0, X1, X2)     # Matrice de design (n × 3)
+X1 <- circ                 # Circonference
+X2 <- sqrt(circ)           # Racine carree
+X <- cbind(X0, X1, X2)     # Matrice de design (n x 3)
 ```
 
 **b) Calcul des coefficients**
 ```r noexec
 B <- solve(t(X) %*% X) %*% t(X) %*% Y
 ```
-- `t(X)`: transposée de X
-- `%*%`: produit matriciel
-- `solve()`: inverse de matrice
+- `t(X)` : transposee de X
+- `%*%` : produit matriciel
+- `solve()` : inverse de matrice
 
-**Résultat:** B = [β₀, β₁, β₂]'
+**Resultat :** $B = (\hat{\beta}_0, \hat{\beta}_1, \hat{\beta}_2)^T$
 
-**c) Calcul de σ (écart-type résiduel)**
+**c) Calcul de $\sigma$ (ecart-type residuel)**
 ```r noexec
-y_fit <- X %*% B          # Valeurs ajustées
-e <- Y - y_fit            # Résidus
+y_fit <- X %*% B          # Valeurs ajustees
+e <- Y - y_fit            # Residus
 n <- length(e)
 p <- 2                    # Nombre de variables (sans intercept)
 sigma <- sqrt(sum(e^2) / (n - p - 1))
 ```
 
-**d) Écarts-types des coefficients**
+**d) Ecarts-types des coefficients**
 ```r noexec
 var_beta <- sigma^2 * solve(t(X) %*% X)
 se_B0 <- sqrt(var_beta[1, 1])
@@ -242,82 +242,82 @@ se_B1 <- sqrt(var_beta[2, 2])
 se_B2 <- sqrt(var_beta[3, 3])
 ```
 
-**e) Test de significativité de β₂**
-- **H₀:** β₂ = 0 (racine carrée n'a pas d'effet)
-- **H₁:** β₂ ≠ 0 (racine carrée a un effet)
+**e) Test de significativite de $\beta_2$**
+- **$H_0$ :** $\beta_2 = 0$ (la racine carree n'a pas d'effet)
+- **$H_1$ :** $\beta_2 \neq 0$ (la racine carree a un effet)
 
-**Statistique de test:**
+**Statistique de test :**
 ```r noexec
 T0 <- B[3] / se_B2
 ```
-Sous H₀: T₀ ~ t(n-p-1)
+Sous $H_0$ : $T_0 \sim t_{n-p-1}$
 
-**Région de rejet (α=5%):** ]-∞, -t_{n-p-1, 0.975}] ∪ [t_{n-p-1, 0.975}, +∞[
+**Region de rejet ($\alpha = 5\%$) :** $]-\infty, -t_{n-p-1, 0.975}] \cup [t_{n-p-1, 0.975}, +\infty[$
 
 ```r noexec
 t_critique <- qt(0.975, n-p-1)
 if (abs(T0) > t_critique) {
-  # Rejeter H₀
+  # Rejeter H0
 }
 ```
 
-**f) Vérification avec lm()**
+**f) Verification avec `lm()`**
 ```r noexec
 reg_complet <- lm(ht ~ circ + sqrt(circ))
 summary(reg_complet)
 ```
-Vérifier que les coefficients correspondent
+Verifier que les coefficients correspondent
 
 **g) Comparaison graphique**
-- Tracer le modèle simple et le modèle avec √circ
-- Visualiser l'amélioration
+- Tracer le modele simple et le modele avec $\sqrt{\text{circ}}$
+- Visualiser l'amelioration
 
-**Concepts clés:**
-- Forme matricielle de la régression
-- Calcul manuel de β̂, σ, SE(β̂)
-- Tests d'hypothèse sur les coefficients
+**Concepts cles :**
+- Forme matricielle de la regression
+- Calcul manuel de $\hat{\beta}$, $\sigma$, $SE(\hat{\beta})$
+- Tests d'hypothese sur les coefficients
 - Distributions t de Student
-- Transformations de variables (√, log, etc.)
+- Transformations de variables ($\sqrt{}$, log, etc.)
 
-## Sélection de variables
+## Selection de variables
 
-### Méthodes
+### Methodes
 
-1. **Forward (ascendante):**
+1. **Forward (ascendante) :**
    - Commence avec aucune variable
-   - Ajoute une variable à chaque étape
-   - S'arrête quand aucune amélioration
+   - Ajoute une variable a chaque etape
+   - S'arrete quand aucune amelioration
 
-2. **Backward (descendante):**
+2. **Backward (descendante) :**
    - Commence avec toutes les variables
-   - Enlève une variable à chaque étape
-   - S'arrête quand aucune amélioration
+   - Enleve une variable a chaque etape
+   - S'arrete quand aucune amelioration
 
-3. **Stepwise (mixte):**
+3. **Stepwise (mixte) :**
    - Combine forward et backward
    - Peut ajouter et enlever des variables
 
-### Fonction step()
+### Fonction `step()`
 
 ```r noexec
 step(reg, direction="backward")  # Backward
-step(reg, direction="forward")   # Forward  
+step(reg, direction="forward")   # Forward
 step(reg, direction="both")      # Stepwise
 ```
 
-**Critère:** AIC (par défaut)
+**Critere :** AIC (par defaut)
 
-### Critères de comparaison
+### Criteres de comparaison
 
-| Critère | Formule | Objectif |
+| Critere | Formule | Objectif |
 |---------|---------|----------|
-| AIC | -2log(L) + 2p | Minimiser |
-| BIC | -2log(L) + p·log(n) | Minimiser |
-| R² ajusté | 1 - (1-R²)(n-1)/(n-p-1) | Maximiser |
+| AIC | $-2\ln(L) + 2p$ | Minimiser |
+| BIC | $-2\ln(L) + p \cdot \ln(n)$ | Minimiser |
+| $R^2$ ajuste | $1 - (1-R^2)(n-1)/(n-p-1)$ | Maximiser |
 
-- L: vraisemblance
-- p: nombre de paramètres
-- n: nombre d'observations
+- $L$ : vraisemblance
+- $p$ : nombre de parametres
+- $n$ : nombre d'observations
 
 ## Visualisation 3D
 
@@ -326,41 +326,41 @@ library(rgl)
 library(car)
 
 scatter3d(Y ~ X1 + X2, data=df,
-          surface=TRUE,    # Afficher le plan de régression
+          surface=TRUE,    # Afficher le plan de regression
           grid=TRUE,       # Grille
-          ellipsoid=TRUE)  # Ellipsoïde de confiance
+          ellipsoid=TRUE)  # Ellipsoide de confiance
 ```
 
-**Contrôles:**
+**Controles :**
 - Souris pour faire tourner
 - Molette pour zoomer
 - Visualiser l'ajustement dans l'espace
 
-## Multicolinéarité
+## Multicolinearite
 
-### Problème
-Lorsque deux variables explicatives sont très corrélées:
+### Probleme
+Lorsque deux variables explicatives sont tres correlees :
 - Coefficients instables
-- Erreurs standards élevées
-- Tests non significatifs (alors que le modèle est bon)
+- Erreurs standards elevees
+- Tests non significatifs (alors que le modele est bon)
 
-### Détection
-1. Matrice de corrélation: |r| > 0.8
-2. VIF (Variance Inflation Factor):
+### Detection
+1. Matrice de correlation : $|r| > 0.8$
+2. VIF (Variance Inflation Factor) :
 ```r noexec
 library(car)
-vif(reg)  # VIF > 10 → problème
+vif(reg)  # VIF > 10 → probleme
 ```
 
 ### Solutions
-1. Enlever une des variables corrélées
+1. Retirer une des variables correlees
 2. Combiner les variables (ACP)
-3. Régularisation (Ridge, Lasso)
+3. Regularisation (Ridge, Lasso)
 
 ## Commandes essentielles
 
 ```r noexec
-# Régression multiple
+# Regression multiple
 reg <- lm(Y ~ X1 + X2 + X3, data=df)
 reg <- lm(Y ~ ., data=df)        # Toutes les colonnes sauf Y
 
@@ -370,14 +370,14 @@ reg <- lm(Y ~ 0 + X1 + X2)
 
 # Interaction
 reg <- lm(Y ~ X1 * X2)           # X1 + X2 + X1:X2
-reg <- lm(Y ~ X1 + X2 + X1:X2)  # Équivalent
+reg <- lm(Y ~ X1 + X2 + X1:X2)  # Equivalent
 
 # Transformation
 reg <- lm(Y ~ X + I(X^2))        # Polynomial
 reg <- lm(log(Y) ~ X)            # Log
 reg <- lm(Y ~ sqrt(X))           # Racine
 
-# Sélection
+# Selection
 step(reg, direction="backward")
 step(reg, direction="forward", scope=~X1+X2+X3)
 
@@ -386,35 +386,35 @@ extractAIC(reg1)
 summary(reg)$adj.r.squared
 AIC(reg1, reg2, reg3)
 
-# Prédiction
+# Prediction
 predict(reg, newdata=df_new, interval="prediction")
 
-# Matrice de corrélation
+# Matrice de correlation
 cor(df)
-pairs(df)  # Scatter plot matrix
+pairs(df)  # Matrice de nuages de points
 
 # Visualisation 3D
 scatter3d(Y ~ X1 + X2, data=df)
 ```
 
-## Interprétation des coefficients
+## Interpretation des coefficients
 
-### Régression simple
-β₁: augmentation moyenne de Y quand X augmente de 1 unité
+### Regression simple
+$\beta_1$ : augmentation moyenne de Y quand X augmente de 1 unite
 
-### Régression multiple
-β₁: augmentation moyenne de Y quand X₁ augmente de 1 unité,  
-**toutes les autres variables étant constantes**
+### Regression multiple
+$\beta_1$ : augmentation moyenne de Y quand $X_1$ augmente de 1 unite,
+**toutes les autres variables etant constantes**
 
 ### Attention
-- Ne pas confondre significativité statistique et importance pratique
-- Un coefficient peut être non significatif à cause de la multicolinéarité
-- R² élevé ne garantit pas un bon modèle (vérifier les résidus !)
+- Ne pas confondre significativite statistique et importance pratique
+- Un coefficient peut etre non significatif a cause de la multicolinearite
+- Un $R^2$ eleve ne garantit pas un bon modele (verifier les residus !)
 
 ## Ressources
 
 - `?lm` pour la documentation
-- `?step` pour la sélection de variables
-- `?cor` pour la corrélation
-- Package `car`: outils diagnostiques avancés
-- Package `rgl`: visualisation 3D interactive
+- `?step` pour la selection de variables
+- `?cor` pour la correlation
+- Package `car` : outils diagnostiques avances
+- Package `rgl` : visualisation 3D interactive

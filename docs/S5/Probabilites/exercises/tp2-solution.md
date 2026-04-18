@@ -1,29 +1,29 @@
 ---
-title: "TP2 - Law of Large Numbers and Central Limit Theorem"
+title: "TP2 - Loi des grands nombres et theoreme central limite"
 sidebar_position: 2
 ---
 
-# TP2 - Law of Large Numbers and Central Limit Theorem
+# TP2 - Loi des grands nombres et theoreme central limite
 
-> Following teacher instructions from: `S5/Probabilites/data/moodle/tp/tp2/README.md`
+> D'apres les instructions de l'enseignant : `S5/Probabilites/data/moodle/tp/tp2/README.md`
 
-## Setup
+## Preparation
 
 ```r noexec
-# Install MASS package if not already installed
+# Installer le package MASS si necessaire
 # install.packages("MASS")
 library(MASS)
 ```
 
-The `MASS` package provides the `michelson` dataset containing Michelson's 1879 speed of light measurements: 100 measurements across 5 experiments of 20 runs each.
+Le package `MASS` fournit le jeu de donnees `michelson` contenant les mesures de la vitesse de la lumiere par Michelson en 1879 : 100 mesures reparties en 5 experiences de 20 repetitions chacune.
 
 ---
 
-## Exercise 1: Michelson's Speed of Light Data -- Law of Large Numbers
+## Exercice 1 : Donnees de vitesse de la lumiere de Michelson -- Loi des grands nombres
 
-### 1. Load and explore the `michelson` dataset from MASS library
+### 1. Charger et explorer le jeu de donnees `michelson` du package MASS
 
-**Answer:**
+**Reponse :**
 ```r noexec
 library(MASS)
 
@@ -37,7 +37,7 @@ cat("\nNumber of measurements:", nrow(michelson), "\n")
 cat("Number of experiments:", length(unique(michelson$Expt)), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
       Expt          Run            Speed
  Min.   :1    Min.   : 1.00   Min.   : 620
@@ -65,14 +65,14 @@ Number of measurements: 100
 Number of experiments: 5
 ```
 
-**Explanation:**
-Speed values are in km/s with 299,000 subtracted (so 850 means 299,850 km/s). The actual speed of light is 299,792.458 km/s, so in these units the "true" value would be 792.458 -- Michelson's measurements systematically overestimate.
+**Explication :**
+Les valeurs de vitesse sont en km/s avec 299 000 retranches (ainsi 850 signifie 299 850 km/s). La vitesse reelle de la lumiere est de 299 792,458 km/s, donc dans ces unites la « vraie » valeur serait 792,458 -- les mesures de Michelson surestiment systematiquement.
 
 ---
 
-### 2. Calculate mean and standard deviation
+### 2. Calculer la moyenne et l'ecart-type
 
-**Answer:**
+**Reponse :**
 ```r noexec
 mu <- mean(michelson$Speed)
 sigma <- sd(michelson$Speed)
@@ -84,7 +84,7 @@ cat("Standard deviation:", round(sigma, 2), "\n")
 cat("Variance:", round(var(michelson$Speed), 2), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Overall statistics:
 Mean speed: 852.4
@@ -92,22 +92,22 @@ Standard deviation: 79.01
 Variance: 6242.67
 ```
 
-**Mathematical explanation:**
-R's `sd()` computes the sample standard deviation with Bessel's correction (divides by $n-1$):
+**Explication mathematique :**
+La fonction `sd()` de R calcule l'ecart-type empirique avec la correction de Bessel (division par $n-1$) :
 
 $$S' = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(X_i - \bar{X})^2}$$
 
-This gives an unbiased estimator of the population variance. With $n = 100$, the difference between dividing by 99 vs 100 is small.
+Ceci fournit un estimateur sans biais de la variance de la population. Avec $n = 100$, la difference entre diviser par 99 ou par 100 est faible.
 
 ---
 
-### 3. Visualize convergence using cumulative mean (Law of Large Numbers)
+### 3. Visualiser la convergence avec la moyenne cumulee (loi des grands nombres)
 
-**Theory:** For $X_1, X_2, \ldots, X_n$ i.i.d. with $E[X_i] = \mu$:
+**Theorie :** Pour $X_1, X_2, \ldots, X_n$ i.i.d. avec $E[X_i] = \mu$ :
 
 $$\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{P} \mu \quad \text{as } n \to \infty$$
 
-**Answer:**
+**Reponse :**
 ```r noexec
 # Calculate cumulative mean using cumsum
 cumulative_means <- cumsum(michelson$Speed) / (1:n)
@@ -126,8 +126,8 @@ legend("topright",
        col = c("blue", "red"), lty = c(1, 2), lwd = 2)
 ```
 
-**Expected output:**
-Blue line starting at the first measurement (850), fluctuating significantly for the first ~20 measurements, then progressively stabilizing toward the final mean 852.4 (red dashed line). The path zigzags but the trend is convergent.
+**Sortie attendue :**
+Courbe bleue partant de la premiere mesure (850), fluctuant significativement pour les ~20 premieres mesures, puis se stabilisant progressivement vers la moyenne finale 852,4 (ligne rouge pointillee). Le trace zigzague mais la tendance est convergente.
 
 ```r noexec
 # Convergence at key points
@@ -144,7 +144,7 @@ for (i in key_points) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Convergence of empirical mean:
 n      | Emp. Mean    | Error
@@ -157,8 +157,8 @@ n      | Emp. Mean    | Error
    100 |      852.400 |      0.000
 ```
 
-**Mathematical explanation:**
-The standard error $\text{SE} = \sigma/\sqrt{n}$ governs the rate of convergence:
+**Explication mathematique :**
+L'erreur standard $\text{SE} = \sigma/\sqrt{n}$ regit la vitesse de convergence :
 
 $$\text{Var}(\bar{X}_n) = \frac{\sigma^2}{n}, \quad \text{SD}(\bar{X}_n) = \frac{\sigma}{\sqrt{n}}$$
 
@@ -184,14 +184,14 @@ legend("topright",
 grid()
 ```
 
-**Expected output:**
-Funnel-shaped confidence envelope that narrows as $n$ increases. At $n = 1$, $\text{SE} = 79.01$. At $n = 100$, $\text{SE} = 79.01/10 = 7.90$.
+**Sortie attendue :**
+Enveloppe de confiance en forme d'entonnoir qui se retrecit a mesure que $n$ augmente. A $n = 1$, $\text{SE} = 79.01$. A $n = 100$, $\text{SE} = 79.01/10 = 7.90$.
 
 ---
 
-### 4. Create histogram with theoretical normal overlay (Central Limit Theorem)
+### 4. Creer un histogramme avec superposition de la courbe normale theorique (theoreme central limite)
 
-**Answer:**
+**Reponse :**
 ```r noexec
 hist(michelson$Speed,
      freq = FALSE, breaks = 25,
@@ -209,14 +209,14 @@ legend("topright",
        col = c(NA, "red"), lwd = c(NA, 2))
 ```
 
-**Expected output:**
-Roughly bell-shaped histogram of 100 measurements with the red $\mathcal{N}(852.4, 79.01)$ curve overlaid. Distribution ranges from about 620 to 1070.
+**Sortie attendue :**
+Histogramme a peu pres en forme de cloche des 100 mesures avec la courbe rouge $\mathcal{N}(852.4, 79.01)$ superposee. La distribution s'etend d'environ 620 a 1070.
 
 ---
 
-### 5. Group by experiment and compare distributions
+### 5. Grouper par experience et comparer les distributions
 
-**Answer:**
+**Reponse :**
 ```r noexec
 # Calculate mean for each experiment using tapply()
 experiment_means <- tapply(michelson$Speed, michelson$Expt, mean)
@@ -237,7 +237,7 @@ cat("Mean of experiment means:", round(mean(experiment_means), 2), "\n")
 cat("SD of experiment means:", round(sd(experiment_means), 2), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Experiment means (n=20 each):
     1     2     3     4     5
@@ -252,12 +252,12 @@ Mean of experiment means: 852.4
 SD of experiment means: 34.28
 ```
 
-**Mathematical explanation:**
-By the CLT, the distribution of sample means approaches:
+**Explication mathematique :**
+D'apres le TCL, la distribution des moyennes d'echantillons tend vers :
 
 $$\bar{X}_n \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right) \quad \text{approximately}$$
 
-The `tapply(VALUES, GROUPS, FUNCTION)` function applies a function to data grouped by a factor. The empirical SD (34.28) is higher than the predicted SE (17.67), but with only 5 data points the estimate is very unreliable.
+La fonction `tapply(VALEURS, GROUPES, FONCTION)` applique une fonction a des donnees regroupees par un facteur. L'ecart-type empirique (34,28) est superieur a l'erreur standard predite (17,67), mais avec seulement 5 points de donnees l'estimation est tres peu fiable.
 
 ```r noexec
 # Bootstrap simulation to demonstrate CLT more clearly
@@ -292,8 +292,8 @@ legend("topright",
        lwd = c(NA, 3, NA), pch = c(NA, NA, 19))
 ```
 
-**Expected output:**
-Bell-shaped histogram of 1000 simulated means, narrower than the original data distribution. The green $\mathcal{N}(852.4, 17.67)$ curve fits well. Red dots mark actual experiment means.
+**Sortie attendue :**
+Histogramme en forme de cloche de 1000 moyennes simulees, plus etroit que la distribution des donnees brutes. La courbe verte $\mathcal{N}(852.4, 17.67)$ s'ajuste bien. Les points rouges marquent les moyennes reelles des experiences.
 
 ```r noexec
 # Compare different sample sizes
@@ -318,27 +318,27 @@ for (n_sample in sample_sizes) {
 par(mfrow = c(1, 1))
 ```
 
-**Expected output:**
-Four panels showing increasingly narrow, more normal distributions of means:
-- $n = 5$: SE = 35.3, wide, somewhat irregular
-- $n = 10$: SE = 25.0, narrower, more bell-shaped
-- $n = 20$: SE = 17.7, good normal fit
-- $n = 50$: SE = 11.2, very narrow, excellent normal fit
+**Sortie attendue :**
+Quatre panneaux montrant des distributions de moyennes de plus en plus etroites et de plus en plus normales :
+- $n = 5$ : SE = 35,3 -- large, un peu irreguliere
+- $n = 10$ : SE = 25,0 -- plus etroite, plus en forme de cloche
+- $n = 20$ : SE = 17,7 -- bon ajustement normal
+- $n = 50$ : SE = 11,2 -- tres etroite, excellent ajustement normal
 
 ---
 
-## Exercise 2: Multiple Choice Question (MCQ) Simulation
+## Exercice 2 : Simulation d'un QCM
 
-### Problem setup
+### Enonce du probleme
 
-- 10 questions, 4 choices each, only 1 correct
-- Student answers randomly: $p = 1/4 = 0.25$
-- Pass requires $\geq 6$ correct answers
-- Model: $X \sim B(n = 10, p = 0.25)$
+- 10 questions, 4 choix chacune, 1 seule reponse correcte
+- L'etudiant repond au hasard : $p = 1/4 = 0.25$
+- La reussite requiert $\geq 6$ bonnes reponses
+- Modele : $X \sim B(n = 10, p = 0.25)$
 
-### 1. Calculate exact probability: $P(X \geq 6) = 1 - P(X \leq 5)$
+### 1. Calculer la probabilite exacte : $P(X \geq 6) = 1 - P(X \leq 5)$
 
-**Answer:**
+**Reponse :**
 ```r
 n_questions <- 10
 p_correct <- 0.25
@@ -367,7 +367,7 @@ for (i in 1:length(x_values)) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Exact probability calculation:
 P(pass) = P(X >= 6) = 0.01973
@@ -389,20 +389,20 @@ P(X =  9) = 0.00003 <-- PASS
 P(X = 10) = 0.00000 <-- PASS
 ```
 
-**Mathematical explanation:**
-For $X \sim B(n = 10, p = 0.25)$:
+**Explication mathematique :**
+Pour $X \sim B(n = 10, p = 0.25)$ :
 
 $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 
 $E[X] = np = 2.5$, $\text{Var}(X) = np(1-p) = 1.875$, $\sigma = 1.369$.
 
-A student guessing randomly has only a 1.97% chance of passing. The expected score is only 2.5 out of 10.
+Un etudiant repondant au hasard n'a que 1,97% de chances de reussir. Le score attendu n'est que de 2,5 sur 10.
 
 ---
 
-### 2. Simulate 5000 exams using `rbinom()`
+### 2. Simuler 5000 examens avec `rbinom()`
 
-**Answer:**
+**Reponse :**
 ```r
 n_simulations <- 5000
 set.seed(42)
@@ -419,7 +419,7 @@ cat("Exact pass rate:", round(prob_pass_exact, 5), "\n")
 cat("Difference:", round(abs(empirical_pass_rate - prob_pass_exact), 5), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Simulation results (5000 exams):
 Number passed: 103
@@ -430,9 +430,9 @@ Difference: 0.00087
 
 ---
 
-### 3. Verify Law of Large Numbers for pass rate
+### 3. Verifier la loi des grands nombres pour le taux de reussite
 
-**Answer:**
+**Reponse :**
 ```r
 cumulative_passes <- cumsum(exam_passed)
 cumulative_pass_rate <- cumulative_passes / (1:n_simulations)
@@ -451,8 +451,8 @@ legend("topright",
 grid()
 ```
 
-**Expected output:**
-Blue cumulative pass rate line with large initial jumps, progressively converging toward the red dashed line at 0.01973.
+**Sortie attendue :**
+Courbe bleue du taux de reussite cumulatif avec de grands sauts initiaux, convergeant progressivement vers la ligne rouge pointillee a 0,01973.
 
 ```r
 # Score distribution: empirical vs theoretical
@@ -472,14 +472,14 @@ legend("topright",
        lwd = c(10, 2, 2), lty = c(1, 1, 3), pch = c(NA, 19, NA))
 ```
 
-**Expected output:**
-Histogram bars and red dots align closely. Almost all mass is in the fail region (left of the green threshold line).
+**Sortie attendue :**
+Les barres de l'histogramme et les points rouges sont bien alignes. La quasi-totalite de la masse se trouve dans la zone d'echec (a gauche de la ligne verte du seuil).
 
 ---
 
-### 4. Apply CLT: approximate with normal distribution
+### 4. Appliquer le TCL : approximer avec la loi normale
 
-**Answer:**
+**Reponse :**
 ```r
 # Check approximation suitability
 np <- n_questions * p_correct
@@ -508,7 +508,7 @@ cat("Error:", round(abs(prob_pass_exact - prob_pass_normal_no_cc), 6), "\n")
 cat("Relative error:", round(abs(prob_pass_exact - prob_pass_normal_no_cc) / prob_pass_exact * 100, 2), "%\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Normal approximation suitability check:
 np = 2.5 (should be >= 5)
@@ -524,18 +524,18 @@ Error: 0.014400
 Relative error: 72.97 %
 ```
 
-**Mathematical explanation:**
-For $X \sim B(n, p)$, the CLT gives $X \approx \mathcal{N}(\mu = np, \sigma^2 = np(1-p))$.
+**Explication mathematique :**
+Pour $X \sim B(n, p)$, le TCL donne $X \approx \mathcal{N}(\mu = np, \sigma^2 = np(1-p))$.
 
-Without continuity correction: $P(X \geq 6) \approx P\left(Z \geq \frac{6 - 2.5}{1.369}\right) = P(Z \geq 2.556) = 0.0053$.
+Sans correction de continuite : $P(X \geq 6) \approx P\left(Z \geq \frac{6 - 2.5}{1.369}\right) = P(Z \geq 2.556) = 0.0053$.
 
-The 73% relative error shows the approximation is very poor when $np < 5$.
+L'erreur relative de 73% montre que l'approximation est tres mauvaise lorsque $np < 5$.
 
 ---
 
-### 5. Compare exact vs approximate probabilities (with continuity correction)
+### 5. Comparer probabilites exactes et approchees (avec correction de continuite)
 
-**Answer:**
+**Reponse :**
 ```r
 # With continuity correction: P(X >= 6) ~ P(Y > 5.5)
 prob_pass_normal_cc <- 1 - pnorm(pass_threshold - 0.5, mean = mu_X, sd = sigma_X)
@@ -564,7 +564,7 @@ cat("With CC:", round(prob_pass_prop_cc, 6), "\n")
 cat("Exact:", round(prob_pass_exact, 6), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 With continuity correction:
 Normal approx (with CC): 0.014209
@@ -582,11 +582,11 @@ With CC: 0.014209
 Exact: 0.019734
 ```
 
-**Mathematical explanation:**
-The **continuity correction** accounts for the discrete-to-continuous mismatch:
-- $P(X \geq k) \approx P(Y > k - 0.5)$ where $Y \sim \mathcal{N}(np, np(1-p))$
+**Explication mathematique :**
+La **correction de continuite** compense le passage du discret au continu :
+- $P(X \geq k) \approx P(Y > k - 0.5)$ ou $Y \sim \mathcal{N}(np, np(1-p))$
 
-This shifts the boundary from 6 to 5.5, recovering probability mass from the "step" at $X = 6$. Error drops from 73% to 28%.
+Cela deplace la frontiere de 6 a 5,5, recuperant la masse de probabilite du « palier » en $X = 6$. L'erreur passe de 73% a 28%.
 
 ```r
 # Visualization: Binomial vs Normal
@@ -615,8 +615,8 @@ legend("topright",
 grid()
 ```
 
-**Expected output:**
-Blue vertical bars (exact binomial) with red smooth curve (normal approximation). Visible mismatch: binomial is right-skewed, normal is symmetric. The normal underestimates the right tail.
+**Sortie attendue :**
+Barres bleues verticales (binomiale exacte) avec courbe rouge lisse (approximation normale). Desaccord visible : la binomiale est asymetrique a droite, la normale est symetrique. La normale sous-estime la queue droite.
 
 ```r
 # Show improvement with larger n
@@ -639,18 +639,18 @@ for (n in n_values) {
 par(mfrow = c(1, 1))
 ```
 
-**Expected output:**
-Four panels with improving fit: $n = 10$ (poor), $n = 20$ (better at threshold), $n = 50$ (very good), $n = 100$ (excellent). The rule of thumb $np \geq 5$ marks where the approximation becomes visually acceptable.
+**Sortie attendue :**
+Quatre panneaux avec un ajustement de plus en plus bon : $n = 10$ (mediocre), $n = 20$ (meilleur au seuil), $n = 50$ (tres bon), $n = 100$ (excellent). La regle empirique $np \geq 5$ marque le point ou l'approximation devient visuellement acceptable.
 
 ---
 
-## Summary Comparison Table
+## Tableau recapitulatif
 
-| Method | $P(X \geq 6)$ for $B(10, 0.25)$ | Error vs exact |
-|--------|----------------------------------|----------------|
-| Exact binomial | 0.019734 | -- |
-| Normal, no CC | 0.005334 | 73.0% relative error |
-| Normal, with CC | 0.014209 | 28.0% relative error |
-| Simulation (5000) | ~0.0206 | ~4.4% relative error |
+| Methode | $P(X \geq 6)$ pour $B(10, 0.25)$ | Erreur par rapport a l'exact |
+|---------|----------------------------------|------------------------------|
+| Binomiale exacte | 0,019734 | -- |
+| Normale, sans CC | 0,005334 | 73,0% d'erreur relative |
+| Normale, avec CC | 0,014209 | 28,0% d'erreur relative |
+| Simulation (5000) | ~0,0206 | ~4,4% d'erreur relative |
 
-**Key takeaway:** For this problem ($n = 10$, $p = 0.25$), always use the exact binomial. The normal approximation is inadequate because $np = 2.5 < 5$. For larger $n$ ($\geq 20$ with $p = 0.25$), the normal approximation becomes acceptable, especially with continuity correction.
+**Point cle :** Pour ce probleme ($n = 10$, $p = 0.25$), il faut toujours utiliser la binomiale exacte. L'approximation normale est inadequate car $np = 2.5 < 5$. Pour des $n$ plus grands ($\geq 20$ avec $p = 0.25$), l'approximation normale devient acceptable, surtout avec la correction de continuite.

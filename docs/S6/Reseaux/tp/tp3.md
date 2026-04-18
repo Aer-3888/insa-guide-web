@@ -1,52 +1,52 @@
 ---
-title: "TP3 - TCP Services in Java"
+title: "TP3 - Services TCP en Java"
 sidebar_position: 3
 ---
 
-# TP3 - TCP Services in Java
+# TP3 - Services TCP en Java
 
-Building interactive TCP client-server applications with text-based protocols.
+Construction d'applications client-serveur TCP interactives avec des protocoles textuels.
 
-## Objectives
+## Objectifs
 
-- Implement TCP server that handles multiple sequential clients
-- Design simple application-layer protocols
-- Build interactive services (uppercase conversion, guessing game)
-- Understand socket lifecycle and connection management
+- Implementer un serveur TCP gerant plusieurs clients sequentiels
+- Concevoir des protocoles de couche application simples
+- Construire des services interactifs (conversion en majuscules, jeu de devinette)
+- Comprendre le cycle de vie des sockets et la gestion des connexions
 
-## Topics Covered
+## Themes abordes
 
-1. **Uppercase Service** - TCP server converts text to uppercase
-2. **Guessing Game** - Interactive "Plus ou Moins" (higher/lower) game
-3. **Protocol Design** - Application-layer message formats
+1. **Service Majuscule** - Le serveur TCP convertit le texte en majuscules
+2. **Jeu de devinette** - Jeu interactif "Plus ou Moins"
+3. **Conception de protocole** - Formats de messages applicatifs
 
 ---
 
-## Part 1: Uppercase Service (ServeurMajuscule)
+## Partie 1 : Service Majuscule (ServeurMajuscule)
 
 ### Concept
 
-Simple text transformation service:
-1. Client connects to server
-2. Server sends welcome message
-3. Client sends strings
-4. Server responds with uppercase version
-5. Client sends "." to terminate
-6. Connection closes
+Service de transformation de texte simple :
+1. Le client se connecte au serveur
+2. Le serveur envoie un message de bienvenue
+3. Le client envoie des chaines de caracteres
+4. Le serveur repond avec la version en majuscules
+5. Le client envoie "." pour terminer
+6. La connexion se ferme
 
-### Protocol
+### Protocole
 
 ```
-Server → Client: "Welcome! Send text to convert (. to quit)"
-Client → Server: "hello world"
-Server → Client: "HELLO WORLD"
-Client → Server: "bonjour"
-Server → Client: "BONJOUR"
-Client → Server: "."
-[Connection closes]
+Serveur -> Client : "Welcome! Send text to convert (. to quit)"
+Client -> Serveur : "hello world"
+Serveur -> Client : "HELLO WORLD"
+Client -> Serveur : "bonjour"
+Serveur -> Client : "BONJOUR"
+Client -> Serveur : "."
+[Connexion fermee]
 ```
 
-### Server Implementation
+### Implementation du serveur
 
 ```java
 // Create server socket
@@ -80,7 +80,7 @@ while (true) {
 }
 ```
 
-### Client Implementation (ClientMajuscule)
+### Implementation du client (ClientMajuscule)
 
 ```java
 // Connect to server
@@ -115,59 +115,59 @@ while ((userInput = keyboard.readLine()) != null) {
 socket.close();
 ```
 
-### Running
+### Execution
 
 ```bash
-# Terminal 1: Start server
+# Terminal 1 : Demarrer le serveur
 javac ServeurMajuscule.java
 java ServeurMajuscule 8989
 
-# Terminal 2: Start client
+# Terminal 2 : Demarrer le client
 javac ClientMajuscule.java
 java ClientMajuscule localhost 8989
 ```
 
-**Example session:**
+**Exemple de session :**
 ```
-Client: hello world
-Server: HELLO WORLD
-Client: java is fun
-Server: JAVA IS FUN
-Client: .
-[Connection closed]
+Client : hello world
+Serveur : HELLO WORLD
+Client : java is fun
+Serveur : JAVA IS FUN
+Client : .
+[Connexion fermee]
 ```
 
 ---
 
-## Part 2: Guessing Game (Plus ou Moins)
+## Partie 2 : Jeu de devinette (Plus ou Moins)
 
-### Game Rules
+### Regles du jeu
 
-1. Server picks random number between 1 and 100
-2. Client guesses a number
-3. Server responds:
-   - `+` if guess is too low
-   - `-` if guess is too high  
-   - `=` if guess is correct
-   - `~` if input is invalid
-4. Game ends when correct number guessed
+1. Le serveur choisit un nombre aleatoire entre 1 et 100
+2. Le client propose un nombre
+3. Le serveur repond :
+   - `+` si la proposition est trop basse
+   - `-` si la proposition est trop haute
+   - `=` si la proposition est correcte
+   - `~` si l'entree est invalide
+4. Le jeu se termine quand le bon nombre est trouve
 
-### Protocol
+### Protocole
 
 ```
-Server → Client: "Guess a number between 1 and 100"
-Client → Server: "50"
-Server → Client: "+"
-Client → Server: "75"
-Server → Client: "-"
-Client → Server: "62"
-Server → Client: "+"
-Client → Server: "68"
-Server → Client: "="
-[Connection closes]
+Serveur -> Client : "Guess a number between 1 and 100"
+Client -> Serveur : "50"
+Serveur -> Client : "+"
+Client -> Serveur : "75"
+Serveur -> Client : "-"
+Client -> Serveur : "62"
+Serveur -> Client : "+"
+Client -> Serveur : "68"
+Serveur -> Client : "="
+[Connexion fermee]
 ```
 
-### Server Implementation (ServeurPlusMoins)
+### Implementation du serveur (ServeurPlusMoins)
 
 ```java
 ServerSocket serverSocket = new ServerSocket(port);
@@ -210,7 +210,7 @@ while (true) {
 }
 ```
 
-### Client Implementation (ClientPlusMoins)
+### Implementation du client (ClientPlusMoins)
 
 ```java
 Socket socket = new Socket(hostname, port);
@@ -255,19 +255,19 @@ while (true) {
 }
 ```
 
-### Running
+### Execution
 
 ```bash
-# Terminal 1: Start server
+# Terminal 1 : Demarrer le serveur
 javac ServeurPlusMoins.java
 java ServeurPlusMoins 8988
 
-# Terminal 2: Start client
+# Terminal 2 : Demarrer le client
 javac ClientPlusMoins.java
 java ClientPlusMoins localhost 8988
 ```
 
-**Example game:**
+**Exemple de partie :**
 ```
 Guess a number between 1 and 100
 Your guess: 50
@@ -280,9 +280,9 @@ Your guess: 68
 You found it!
 ```
 
-### Binary Search Strategy
+### Strategie par recherche dichotomique
 
-Optimal client uses binary search:
+Le client optimal utilise la recherche dichotomique (binary search) :
 ```java
 int low = 1, high = 100;
 while (low <= high) {
@@ -300,15 +300,15 @@ while (low <= high) {
 }
 ```
 
-Finds any number in at most 7 guesses (log₂(100) ≈ 6.64).
+Trouve n'importe quel nombre en au plus 7 tentatives (log2(100) = 6.64).
 
 ---
 
-## Enhanced Features
+## Fonctionnalites avancees
 
-### Server Enhancements
+### Ameliorations du serveur
 
-**1. Handle multiple clients concurrently**
+**1. Gerer plusieurs clients simultanement**
 ```java
 while (true) {
     Socket client = serverSocket.accept();
@@ -318,14 +318,14 @@ while (true) {
 }
 ```
 
-**2. Track statistics**
+**2. Suivre les statistiques**
 ```java
 int totalGames = 0;
 int totalGuesses = 0;
 Map<Integer, Integer> guessDistribution = new HashMap<>();
 ```
 
-**3. Configurable difficulty**
+**3. Difficulte configurable**
 ```java
 enum Difficulty {
     EASY(1, 10),
@@ -340,7 +340,7 @@ enum Difficulty {
 }
 ```
 
-**4. Add hints**
+**4. Ajouter des indices**
 ```java
 if (Math.abs(guess - target) <= 5) {
     out.println("+!");  // Very close!
@@ -349,19 +349,19 @@ if (Math.abs(guess - target) <= 5) {
 }
 ```
 
-### Client Enhancements
+### Ameliorations du client
 
-**1. Automated optimal player**
-Binary search implementation that always wins in ≤ 7 guesses.
+**1. Joueur automatique optimal**
+Implementation par recherche dichotomique qui gagne toujours en 7 tentatives ou moins.
 
-**2. GUI interface**
-Swing/JavaFX interface with:
-- Input field for guesses
-- History of previous guesses
-- Visual indicator (too high/low)
-- Number of attempts counter
+**2. Interface graphique**
+Interface Swing/JavaFX avec :
+- Champ de saisie pour les propositions
+- Historique des tentatives precedentes
+- Indicateur visuel (trop haut/trop bas)
+- Compteur de tentatives
 
-**3. Network error handling**
+**3. Gestion des erreurs reseau**
 ```java
 try {
     // Network operations
@@ -373,24 +373,24 @@ try {
 
 ---
 
-## Protocol Design Principles
+## Principes de conception de protocole
 
-### Key Concepts
+### Concepts cles
 
-1. **Simplicity** - Easy to implement and debug
-2. **Text-based** - Human-readable with telnet/nc
-3. **Stateful** - Server remembers game state per connection
-4. **Explicit termination** - Clear end-of-session signal
-5. **Error handling** - Invalid input handled gracefully
+1. **Simplicite** - Facile a implementer et a debugger
+2. **Texte** - Lisible par un humain avec telnet/nc
+3. **Avec etat** - Le serveur memorise l'etat du jeu pour chaque connexion
+4. **Terminaison explicite** - Signal de fin de session clair
+5. **Gestion d'erreurs** - Entrees invalides gerees proprement
 
-### Message Format
+### Format des messages
 
-Our protocols use simple newline-delimited text:
+Nos protocoles utilisent du texte simple delimite par des retours a la ligne :
 ```
 <command>\n
 ```
 
-More complex protocols might use:
+Des protocoles plus complexes pourraient utiliser :
 ```json
 {
   "type": "guess",
@@ -399,18 +399,18 @@ More complex protocols might use:
 }
 ```
 
-Or binary formats for efficiency.
+Ou des formats binaires pour l'efficacite.
 
-### Protocol State Machine
+### Machine a etats du protocole
 
-**Uppercase Service:**
+**Service Majuscule :**
 ```
 [CONNECTED] → send welcome → [ACTIVE]
 [ACTIVE] → receive text → convert → send response → [ACTIVE]
 [ACTIVE] → receive "." → [CLOSED]
 ```
 
-**Guessing Game:**
+**Jeu de devinette :**
 ```
 [CONNECTED] → pick number → send welcome → [PLAYING]
 [PLAYING] → receive guess → evaluate → send hint → [PLAYING]
@@ -419,9 +419,9 @@ Or binary formats for efficiency.
 
 ---
 
-## Testing with Netcat
+## Test avec Netcat
 
-Test servers without writing client code:
+Tester les serveurs sans ecrire de code client :
 
 ```bash
 # Connect to uppercase server
@@ -443,18 +443,18 @@ nc localhost 8988
 
 ---
 
-## Wireshark Analysis
+## Analyse Wireshark
 
-Capture TCP stream with filter: `tcp.port == 8988`
+Capture du flux TCP avec le filtre : `tcp.port == 8988`
 
-**Handshake:**
+**Handshake :**
 ```
 1. Client → Server: SYN
 2. Server → Client: SYN-ACK
 3. Client → Server: ACK
 ```
 
-**Data Exchange:**
+**Echange de donnees :**
 ```
 4. Server → Client: PSH-ACK "Guess a number..."
 5. Client → Server: ACK
@@ -465,7 +465,7 @@ Capture TCP stream with filter: `tcp.port == 8988`
 ... (more guesses)
 ```
 
-**Connection Termination:**
+**Terminaison de la connexion :**
 ```
 N.   Client → Server: FIN-ACK
 N+1. Server → Client: ACK
@@ -475,13 +475,13 @@ N+3. Client → Server: ACK
 
 ---
 
-## Common Issues & Solutions
+## Problemes courants et solutions
 
-### Issue: Server doesn't respond
+### Probleme : Le serveur ne repond pas
 
-**Cause:** Output not flushed
+**Cause :** Sortie non flushee
 
-**Solution:** Use `PrintWriter` with auto-flush:
+**Solution :** Utiliser `PrintWriter` avec auto-flush :
 ```java
 PrintWriter out = new PrintWriter(
     socket.getOutputStream(), 
@@ -489,70 +489,70 @@ PrintWriter out = new PrintWriter(
 );
 ```
 
-Or manually flush:
+Ou flusher manuellement :
 ```java
 out.flush();
 ```
 
-### Issue: readLine() blocks forever
+### Probleme : readLine() bloque indefiniment
 
-**Cause:** Client didn't send newline
+**Cause :** Le client n'a pas envoye de retour a la ligne
 
-**Solution:** Ensure client sends `\n`:
+**Solution :** S'assurer que le client envoie `\n` :
 ```java
 out.println(message);  // Adds \n automatically
 ```
 
-### Issue: Connection refuses
+### Probleme : Connexion refusee
 
-**Cause:** Server not running or wrong port
+**Cause :** Serveur non demarre ou mauvais port
 
-**Solution:** Check server is listening:
+**Solution :** Verifier que le serveur ecoute :
 ```bash
 netstat -tuln | grep 8988
 ```
 
-### Issue: Address already in use
+### Probleme : Address already in use
 
-**Cause:** Previous server instance still bound to port
+**Cause :** L'instance precedente du serveur est encore liee au port
 
-**Solution:** Enable SO_REUSEADDR:
+**Solution :** Activer SO_REUSEADDR :
 ```java
 ServerSocket server = new ServerSocket();
 server.setReuseAddress(true);
 server.bind(new InetSocketAddress(port));
 ```
 
-Or wait for TIME_WAIT to expire (30-120 seconds).
+Ou attendre que le TIME_WAIT expire (30-120 secondes).
 
 ---
 
-## Key Takeaways
+## Points a retenir
 
-1. **TCP provides reliable stream** - no message boundaries
-2. **BufferedReader.readLine()** uses `\n` as delimiter
-3. **PrintWriter auto-flush** important for responsiveness
-4. **Each client needs separate socket** from accept()
-5. **Sequential server** handles one client at a time
-6. **Protocol design** determines application behavior
-7. **Text protocols** are easy to debug with telnet
-8. **Error handling** critical for robust applications
+1. **TCP fournit un flux fiable** - pas de frontieres de messages
+2. **BufferedReader.readLine()** utilise `\n` comme delimiteur
+3. **Auto-flush de PrintWriter** important pour la reactivite
+4. **Chaque client necessite un socket separe** depuis accept()
+5. **Serveur sequentiel** gere un seul client a la fois
+6. **La conception du protocole** determine le comportement de l'application
+7. **Les protocoles textuels** sont faciles a debugger avec telnet
+8. **La gestion d'erreurs** est essentielle pour des applications robustes
 
 ---
 
-## Files in This Directory
+## Fichiers dans ce repertoire
 
-### Source Code (`src/`)
-- `ServeurMajuscule.java` - Uppercase conversion server
-- `ClientMajuscule.java` - Uppercase client
-- `ServeurPlusMoins.java` - Guessing game server
-- `ClientPlusMoins.java` - Guessing game client (with binary search)
+### Code source (`src/`)
+- `ServeurMajuscule.java` - Serveur de conversion en majuscules
+- `ClientMajuscule.java` - Client majuscule
+- `ServeurPlusMoins.java` - Serveur du jeu de devinette
+- `ClientPlusMoins.java` - Client du jeu de devinette (avec recherche dichotomique)
 
-### Alternative Implementations (`GUILHEM/`)
-- Different student's implementation for comparison
+### Implementations alternatives (`GUILHEM/`)
+- Implementation d'un autre etudiant pour comparaison
 
 ### Documentation
-- `tp3.pdf` - Assignment instructions
+- `tp3.pdf` - Enonce du TP
 
 ### Compilation
 
@@ -567,32 +567,32 @@ java ClientMajuscule localhost 8989
 
 ## Extensions
 
-### 1. Multiplayer Game
+### 1. Jeu multijoueur
 
-Multiple clients compete to guess first:
-- Server broadcasts hints to all clients
-- First correct guess wins
-- Use multithreading + shared state
+Plusieurs clients s'affrontent pour deviner en premier :
+- Le serveur diffuse les indices a tous les clients
+- La premiere reponse correcte gagne
+- Utiliser le multithreading + etat partage
 
-### 2. Chat Server
+### 2. Serveur de chat
 
-Relay messages between connected clients:
-- Each client has username
-- Messages broadcast to all clients
-- Commands: `/who`, `/msg user text`, `/quit`
+Relayer les messages entre les clients connectes :
+- Chaque client a un nom d'utilisateur
+- Les messages sont diffuses a tous les clients
+- Commandes : `/who`, `/msg utilisateur texte`, `/quit`
 
-### 3. File Transfer
+### 3. Transfert de fichiers
 
-Client uploads/downloads files:
+Le client telecharge/envoie des fichiers :
 ```
 GET filename    → Server sends file content
 PUT filename    → Client sends file content
 LIST            → Server sends directory listing
 ```
 
-### 4. Authentication
+### 4. Authentification
 
-Add login requirement:
+Ajouter une exigence de connexion :
 ```
 Server: Username:
 Client: alice
@@ -603,10 +603,10 @@ Server: Welcome alice!
 
 ---
 
-## Further Reading
+## Pour aller plus loin
 
-- Java Socket API documentation
-- RFC 854 (Telnet) - inspiration for text protocols
-- Design patterns for network servers
-- Thread pooling (ExecutorService)
-- Non-blocking I/O (java.nio)
+- Documentation de l'API Socket Java
+- RFC 854 (Telnet) - inspiration pour les protocoles textuels
+- Patrons de conception pour les serveurs reseau
+- Pool de threads (ExecutorService)
+- I/O non bloquant (java.nio)

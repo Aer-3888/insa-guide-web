@@ -31,7 +31,7 @@ Les cartes sont representees par `carte(Hauteur, Couleur)` et les mains par
 ## Concepts cles
 
 - **Termes construits** : `carte(sept, trefle)`, `main(C1, C2, C3, C4, C5)`
-- **Unification** : le pattern matching permet de decomposer les termes
+- **Unification** : le filtrage par motif (pattern matching) permet de decomposer les termes
 - **Ordre defini par faits** : `succ_hauteur` et `succ_couleur` definissent un ordre sans arithmetique
 - **Recursion pour la transitivite** : `inf_hauteur` utilise `succ_hauteur` transitivement
 

@@ -1,26 +1,26 @@
 ---
-title: "TD Solutions -- Processor Design: Complete Walkthroughs"
+title: "Corrections de TD -- Conception de processeur : solutions detaillees"
 sidebar_position: 3
 ---
 
-# TD Solutions -- Processor Design: Complete Walkthroughs
+# Corrections de TD -- Conception de processeur : solutions detaillees
 
-## Overview
+## Presentation
 
-This file covers the complete design methodology for building dedicated processors, including the GCD machine (cours) and Fibonacci machine (TD5). The key pattern is always the same:
+Ce fichier couvre la methodologie complete de conception de processeurs dedies, incluant la machine PGCD (cours) et la machine de Fibonacci (TD5). Le schema est toujours le meme :
 
-1. Write the algorithm
-2. Identify registers, operations, conditions
-3. Design the UT (Processing Unit / Unite de Traitement)
-4. Design the UC (Control Unit / Unite de Commande)
-5. Choose implementation: hardwired (gates) or microprogrammed (ROM)
-6. Integrate UC + UT and test
+1. Ecrire l'algorithme
+2. Identifier les registres, operations, conditions
+3. Concevoir l'UT (Unite de Traitement)
+4. Concevoir l'UC (Unite de Commande)
+5. Choisir l'implementation : cablee (portes) ou microprogrammee (ROM)
+6. Integrer UC + UT et tester
 
 ---
 
-## GCD Machine Design (Course Example)
+## Conception de la machine PGCD (exemple du cours)
 
-### Step 1: Algorithm
+### Etape 1 : Algorithme
 
 ```
 Input: A, B (integers)
@@ -35,21 +35,21 @@ LOOP:
 DONE: output A (or B, since A == B)
 ```
 
-### Step 2: Identify Hardware Needs
+### Etape 2 : Identifier les besoins materiels
 
-**Registers**: A (8-bit), B (8-bit)
+**Registres** : A (8 bits), B (8 bits)
 
-**Operations**:
-- Subtraction (A-B or B-A)
-- Comparison (A vs B: equal, greater, less)
-- Load from input
-- Output to result
+**Operations** :
+- Soustraction (A-B ou B-A)
+- Comparaison (A vs B : egal, superieur, inferieur)
+- Chargement depuis l'entree
+- Sortie du resultat
 
-**Conditions** (decisions the algorithm makes):
-- Is A equal to B?
-- Is A greater than B?
+**Conditions** (decisions que prend l'algorithme) :
+- A est-il egal a B ?
+- A est-il superieur a B ?
 
-### Step 3: UT Design
+### Etape 3 : Conception de l'UT
 
 ```
                 +--------+
@@ -63,35 +63,35 @@ External In --> |   B    |---+---> Subtractor ---> B (on A<B)
                      +---> Output
 ```
 
-**Command signals** (from UC to UT):
+**Signaux de commande** (de l'UC vers l'UT) :
 
-| Command | Action | Active when |
-|---------|--------|-------------|
-| INIT | Load external inputs into A and B | Initialization state |
+| Commande | Action | Active quand |
+|----------|--------|--------------|
+| INIT | Charger les entrees externes dans A et B | Etat d'initialisation |
 | A_SUB_B | A <- A - B | A > B |
 | B_SUB_A | B <- B - A | A < B |
-| OUTPUT | Place A on output bus | Done state |
+| OUTPUT | Placer A sur le bus de sortie | Etat termine |
 
-**Condition signals** (from UT to UC):
+**Signaux de condition** (de l'UT vers l'UC) :
 
-| Condition | Meaning | Used for |
-|-----------|---------|----------|
-| A_EQ_B | A equals B | Detecting termination |
-| A_GT_B | A greater than B | Choosing which subtraction |
+| Condition | Signification | Utilise pour |
+|-----------|---------------|--------------|
+| A_EQ_B | A egal a B | Detection de la terminaison |
+| A_GT_B | A superieur a B | Choisir quelle soustraction |
 
-### Step 4: UC as State Machine
+### Etape 4 : L'UC comme machine a etats
 
-**5 states**:
+**5 etats** :
 
-| State | Code | Description |
-|-------|------|-------------|
-| S0 | 000 | Initialize: load inputs |
-| S1 | 001 | Compare: check A vs B |
-| S2 | 010 | Subtract: A = A - B |
-| S3 | 011 | Subtract: B = B - A |
-| S4 | 100 | Done: output result |
+| Etat | Code | Description |
+|------|------|-------------|
+| S0 | 000 | Initialiser : charger les entrees |
+| S1 | 001 | Comparer : verifier A vs B |
+| S2 | 010 | Soustraire : A = A - B |
+| S3 | 011 | Soustraire : B = B - A |
+| S4 | 100 | Termine : sortir le resultat |
 
-**State diagram**:
+**Diagramme d'etats** :
 ```
         +---> S2 (A_SUB_B) ---+
         |                      |
@@ -102,23 +102,23 @@ S0 ---> S1 ---> S4 (A_EQ_B)   |
         +--------- <----------+
 ```
 
-**Transition table**:
+**Table de transitions** :
 
-| Current | Condition | Next | Active Commands |
-|---------|-----------|------|-----------------|
-| S0 | always | S1 | INIT |
-| S1 | A_EQ_B | S4 | (none) |
-| S1 | A_GT_B and not A_EQ_B | S2 | (none) |
-| S1 | not A_GT_B and not A_EQ_B | S3 | (none) |
-| S2 | always | S1 | A_SUB_B |
-| S3 | always | S1 | B_SUB_A |
-| S4 | always | S4 (or S0) | OUTPUT |
+| Courant | Condition | Suivant | Commandes actives |
+|---------|-----------|---------|-------------------|
+| S0 | toujours | S1 | INIT |
+| S1 | A_EQ_B | S4 | (aucune) |
+| S1 | A_GT_B et non A_EQ_B | S2 | (aucune) |
+| S1 | non A_GT_B et non A_EQ_B | S3 | (aucune) |
+| S2 | toujours | S1 | A_SUB_B |
+| S3 | toujours | S1 | B_SUB_A |
+| S4 | toujours | S4 (ou S0) | OUTPUT |
 
-### Step 5: Hardwired UC Implementation
+### Etape 5 : Implementation de l'UC cablee
 
-**3 flip-flops** (s2, s1, s0) encode the 5 states. Next-state logic is combinational.
+**3 bascules** (s2, s1, s0) encodent les 5 etats. La logique d'etat suivant est combinatoire.
 
-**Next-state equations** (derived from the transition table):
+**Equations d'etat suivant** (derivees de la table de transitions) :
 
 ```
 s2(t+1) = s0 . /s1 . /s2 . A_EQ_B
@@ -130,23 +130,23 @@ s1(t+1) = s0 . /s1 . /s2 . /A_EQ_B . /A_GT_B
            @ Stay in S2/S3 path (both go to S1, but s1 bit...)
 ```
 
-Actually, let me derive these more carefully.
+En fait, derivons ces equations plus soigneusement.
 
-**From each state, what is the next state?**
+**Depuis chaque etat, quel est l'etat suivant ?**
 
-| From | To | Condition for this transition |
+| De | Vers | Condition pour cette transition |
 |------|----|------|
-| 000 (S0) | 001 (S1) | always |
+| 000 (S0) | 001 (S1) | toujours |
 | 001 (S1) | 100 (S4) | A_EQ_B |
 | 001 (S1) | 010 (S2) | A_GT_B and /A_EQ_B |
 | 001 (S1) | 011 (S3) | /A_GT_B and /A_EQ_B |
-| 010 (S2) | 001 (S1) | always |
-| 011 (S3) | 001 (S1) | always |
-| 100 (S4) | 100 (S4) | always (loop) |
+| 010 (S2) | 001 (S1) | toujours |
+| 011 (S3) | 001 (S1) | toujours |
+| 100 (S4) | 100 (S4) | toujours (boucle) |
 
-**Bit-level next-state equations**:
+**Equations d'etat suivant bit par bit** :
 
-For s0(t+1) = 1 when next state has bit 0 set (S1=001, S3=011):
+Pour s0(t+1) = 1 quand l'etat suivant a le bit 0 a 1 (S1=001, S3=011) :
 ```
 s0(t+1) = /s2./s1./s0                         @ S0 -> S1
          + /s2./s1.s0./A_EQ_B./A_GT_B         @ S1 -> S3
@@ -154,27 +154,27 @@ s0(t+1) = /s2./s1./s0                         @ S0 -> S1
          + /s2.s1.s0                           @ S3 -> S1
 ```
 
-Simplifying:
+Simplification :
 ```
 s0(t+1) = /s2./s1./s0                         @ from S0
          + /s2.s1                              @ from S2 or S3
          + /s2./s1.s0./A_EQ_B./A_GT_B         @ from S1 to S3
 ```
 
-For s1(t+1) = 1 when next state has bit 1 set (S2=010, S3=011):
+Pour s1(t+1) = 1 quand l'etat suivant a le bit 1 a 1 (S2=010, S3=011) :
 ```
 s1(t+1) = /s2./s1.s0.A_GT_B./A_EQ_B          @ S1 -> S2
          + /s2./s1.s0./A_GT_B./A_EQ_B         @ S1 -> S3
          = /s2./s1.s0./A_EQ_B                 @ S1 -> S2 or S3
 ```
 
-For s2(t+1) = 1 when next state has bit 2 set (S4=100):
+Pour s2(t+1) = 1 quand l'etat suivant a le bit 2 a 1 (S4=100) :
 ```
 s2(t+1) = /s2./s1.s0.A_EQ_B                  @ S1 -> S4
          + s2./s1./s0                          @ S4 -> S4
 ```
 
-**Command generation** (active-high):
+**Generation des commandes** (actif haut) :
 ```
 INIT    = /s2 . /s1 . /s0     @ State S0
 A_SUB_B = /s2 . s1 . /s0      @ State S2
@@ -182,11 +182,11 @@ B_SUB_A = /s2 . s1 . s0       @ State S3
 OUTPUT  = s2 . /s1 . /s0      @ State S4
 ```
 
-### Step 6: Microprogrammed UC Implementation
+### Etape 6 : Implementation de l'UC microprogrammee
 
-Instead of gates, use a ROM that maps (state, conditions) to (next state, commands).
+Au lieu de portes, utiliser une ROM qui fait correspondre (etat, conditions) a (etat suivant, commandes).
 
-**Microcode word format** (12 bits):
+**Format du mot de microcode** (12 bits) :
 ```
 Bits [11:9]: Jump type (3 bits)
 Bits [8:6]:  Jump address (3 bits)
@@ -194,18 +194,18 @@ Bits [5:3]:  Condition select (for MUX)
 Bits [2:0]:  Commands (INIT, A_SUB_B, B_SUB_A, OUTPUT)
 ```
 
-Alternatively, simpler format using jump codes:
+Alternativement, format plus simple utilisant des codes de saut :
 
-| Jump Code | Meaning |
-|-----------|---------|
-| 000 | Increment (go to next address) |
-| 001 | Test condition, jump if true |
-| 010 | Test condition, jump if false |
-| 111 | Unconditional jump |
+| Code de saut | Signification |
+|--------------|---------------|
+| 000 | Incrementer (aller a l'adresse suivante) |
+| 001 | Tester la condition, sauter si vraie |
+| 010 | Tester la condition, sauter si fausse |
+| 111 | Saut inconditionnel |
 
-**ROM contents**:
+**Contenu de la ROM** :
 
-| Address | State | Jump Code | Condition | Jump Addr | Commands |
+| Adresse | Etat | Code de saut | Condition | Adr. saut | Commandes |
 |---------|-------|-----------|-----------|-----------|----------|
 | 000 | S0 | 000 (INC) | -- | -- | INIT |
 | 001 | S1 | 001 (test=jump) | A_EQ_B | 100 | -- |
@@ -213,16 +213,16 @@ Alternatively, simpler format using jump codes:
 | 011 | S3 | 111 (always) | -- | 001 | B_SUB_A |
 | 100 | S4 | 111 (always) | -- | 100 | OUTPUT |
 
-Wait -- S1 has a 3-way branch (S2, S3, or S4). This needs special handling. Options:
+Attendons -- S1 a un branchement a 3 voies (S2, S3, ou S4). Cela necessite un traitement special. Options :
 
-**Option A**: Two-step test at S1.
+**Option A** : Test en deux etapes a S1.
 ```
 Address 001: Test A_EQ_B, jump to 100 if true. Else increment to 010.
 Address 010: Test A_GT_B, jump to 011 if true. Else increment to 100_alt.
      (This requires re-encoding)
 ```
 
-**Option B**: Re-encode states for sequential testing.
+**Option B** : Re-encoder les etats pour un test sequentiel.
 ```
 000: S0 (INIT), INC
 001: S1-check-eq, test A_EQ_B, jump to 101 (S4)
@@ -231,7 +231,7 @@ Address 010: Test A_GT_B, jump to 011 if true. Else increment to 100_alt.
 004: S2 (A_SUB_B), jump to 001   -- wait, numbering conflict
 ```
 
-Let me use a cleaner encoding:
+Utilisons un encodage plus propre :
 ```
 000: S0, always INC                          Commands: INIT
 001: test A_EQ_B, jump to 100 if true        Commands: --
@@ -239,9 +239,9 @@ Let me use a cleaner encoding:
      (falls through to 011 if false -- oops)
 ```
 
-**Better approach**: Use dedicated microcode format where S1 is split into two test states:
+**Meilleure approche** : Utiliser un format de microcode dedie ou S1 est scinde en deux etats de test :
 
-| Addr | Label | Test | True -> | False -> | Commands |
+| Adr. | Label | Test | Vrai -> | Faux -> | Commandes |
 |------|-------|------|---------|----------|----------|
 | 000 | S0 | -- | 001 | 001 | INIT |
 | 001 | S1a | A_EQ_B? | 100 | 010 | -- |
@@ -250,11 +250,11 @@ Let me use a cleaner encoding:
 | 100 | S3 | -- | 001 | 001 | B_SUB_A |
 | 101 | S4 | -- | 101 | 101 | OUTPUT |
 
-This makes the 3-way branch explicit as two sequential 2-way tests.
+Cela rend le branchement a 3 voies explicite sous forme de deux tests a 2 voies sequentiels.
 
-### Execution Trace: GCD(18, 12)
+### Trace d'execution : PGCD(18, 12)
 
-| Cycle | State | A | B | A_EQ_B | A_GT_B | Command | Next |
+| Cycle | Etat | A | B | A_EQ_B | A_GT_B | Commande | Suivant |
 |-------|-------|---|---|--------|--------|---------|------|
 | 0 | S0 | 18 | 12 | 0 | 1 | INIT | S1 |
 | 1 | S1 | 18 | 12 | 0 | 1 | -- | S2 |
@@ -264,13 +264,13 @@ This makes the 3-way branch explicit as two sequential 2-way tests.
 | 5 | S1 | 6 | 6 | 1 | 0 | -- | S4 |
 | 6 | S4 | 6 | 6 | -- | -- | OUTPUT | S4 |
 
-Result: A = B = 6 = GCD(18, 12).
+Resultat : A = B = 6 = PGCD(18, 12).
 
 ---
 
-## Fibonacci Machine Design (TD 5)
+## Conception de la machine de Fibonacci (TD 5)
 
-### Step 1: Algorithm
+### Etape 1 : Algorithme
 
 ```
 WAIT: while not init:
@@ -288,19 +288,19 @@ DISPLAY: while init:
 RESET: Res = 0, goto WAIT
 ```
 
-### Step 2: UT Components
+### Etape 2 : Composants de l'UT
 
-| Component | Type | Width | Purpose |
+| Composant | Type | Largeur | Role |
 |-----------|------|-------|---------|
-| R_N0 | Register | 8 bits | Current Fibonacci value (starts at 0) |
-| R_N1 | Register | 8 bits | Next Fibonacci value (starts at 1) |
-| R_N | Register | 8 bits | Target index (from input) |
-| Q | Counter | 8 bits | Current iteration count |
-| Res | JK latch | 1 bit | "Result ready" flag |
-| Adder | Combinational | 8 bits | Computes N0 + N1 |
-| Comp | Comparator | 8 bits | Compares N with Q |
+| R_N0 | Registre | 8 bits | Valeur courante de Fibonacci (commence a 0) |
+| R_N1 | Registre | 8 bits | Valeur suivante de Fibonacci (commence a 1) |
+| R_N | Registre | 8 bits | Indice cible (depuis l'entree) |
+| Q | Compteur | 8 bits | Nombre d'iterations courantes |
+| Res | Verrou JK | 1 bit | Drapeau "resultat pret" |
+| Additionneur | Combinatoire | 8 bits | Calcule N0 + N1 |
+| Comp | Comparateur | 8 bits | Compare N avec Q |
 
-**UT block diagram**:
+**Schema bloc de l'UT** :
 ```
 Input ---------> R_N
                   |
@@ -321,38 +321,38 @@ RESET (from UC): N0=0, N1=1, Q=0, N=input
 RES_0 / RES_1 (from UC): control Res latch
 ```
 
-### Step 3: Interface Signals
+### Etape 3 : Signaux d'interface
 
-**Commands** (UC to UT):
+**Commandes** (UC vers UT) :
 
-| # | Command | Action |
+| # | Commande | Action |
 |---|---------|--------|
-| 0 | RESET | Load initial values: N0=0, N1=1, Q=0, N=input |
-| 1 | N1_2_N0 | Copy current N1 into N0 (N0 <- N1) |
-| 2 | SUM_N1 | Load adder output into N1 (N1 <- N0 + N1) |
-| 3 | INC_Q | Increment counter Q (Q <- Q + 1) |
-| 4 | RES_0 | Reset Res flag to 0 |
-| 5 | RES_1 | Set Res flag to 1 |
-| 6 | OUT_N0 | Place N0 on output bus |
+| 0 | RESET | Charger les valeurs initiales : N0=0, N1=1, Q=0, N=entree |
+| 1 | N1_2_N0 | Copier N1 courant dans N0 (N0 <- N1) |
+| 2 | SUM_N1 | Charger la sortie de l'additionneur dans N1 (N1 <- N0 + N1) |
+| 3 | INC_Q | Incrementer le compteur Q (Q <- Q + 1) |
+| 4 | RES_0 | Remettre le drapeau Res a 0 |
+| 5 | RES_1 | Mettre le drapeau Res a 1 |
+| 6 | OUT_N0 | Placer N0 sur le bus de sortie |
 
-**Conditions** (UT to UC):
+**Conditions** (UT vers UC) :
 
-| Condition | Meaning |
-|-----------|---------|
-| init | External initialization signal (user button) |
-| N_GT_Q | N > Q (comparator output) |
+| Condition | Signification |
+|-----------|---------------|
+| init | Signal d'initialisation externe (bouton utilisateur) |
+| N_GT_Q | N > Q (sortie du comparateur) |
 
-### Step 4: State Machine
+### Etape 4 : Machine a etats
 
-**5 states**:
+**5 etats** :
 
-| State | Code | Description | Active Commands |
+| Etat | Code | Description | Commandes actives |
 |-------|------|-------------|-----------------|
-| A | 000 | Wait for init; initialize | RESET, RES_0 |
-| B | 001 | Check loop condition | (none) |
-| C | 010 | Execute one iteration | N1_2_N0, SUM_N1, INC_Q |
-| D | 011 | Display result | RES_1, OUT_N0 |
-| E | 100 | Reset result flag | RES_0 |
+| A | 000 | Attente init ; initialiser | RESET, RES_0 |
+| B | 001 | Verifier la condition de boucle | (aucune) |
+| C | 010 | Executer une iteration | N1_2_N0, SUM_N1, INC_Q |
+| D | 011 | Afficher le resultat | RES_1, OUT_N0 |
+| E | 100 | Remettre le drapeau resultat a zero | RES_0 |
 
 **State diagram**:
 ```
@@ -371,43 +371,43 @@ A <---------> A    B -------> C ----+
           E ----always----> A
 ```
 
-**CRITICAL**: In state C, N1_2_N0 and SUM_N1 execute SIMULTANEOUSLY in the same clock cycle. The adder uses the OLD values of N0 and N1 (before the register updates). This is correct because:
-- The adder is combinational: its output = current N0 + current N1
-- N1 register loads the adder output at the clock edge
-- N0 register loads the current N1 at the same clock edge
-- Both loads happen at the SAME moment (rising edge of clock)
+**CRITIQUE** : Dans l'etat C, N1_2_N0 et SUM_N1 s'executent SIMULTANEMENT dans le meme cycle d'horloge. L'additionneur utilise les ANCIENNES valeurs de N0 et N1 (avant la mise a jour des registres). C'est correct car :
+- L'additionneur est combinatoire : sa sortie = N0 courant + N1 courant
+- Le registre N1 charge la sortie de l'additionneur au front d'horloge
+- Le registre N0 charge le N1 courant au meme front d'horloge
+- Les deux chargements se produisent au MEME moment (front montant de l'horloge)
 
-### Step 5: Sequencer Design
+### Etape 5 : Conception du sequenceur
 
-The microprogrammed UC uses a sequencer with:
-- A 3-bit register (current state)
-- A MUX selecting the condition to test
-- A ROM containing the microcode
+L'UC microprogrammee utilise un sequenceur compose de :
+- Un registre 3 bits (etat courant)
+- Un MUX selectionnant la condition a tester
+- Une ROM contenant le microcode
 
-**MUX configuration**:
+**Configuration du MUX** :
 
-| MUX input | Value | Purpose |
+| Entree MUX | Valeur | Fonction |
 |-----------|-------|---------|
-| 0 | 0 (constant) | Forces increment (condition always false) |
-| 1 | init | Tests initialization signal |
-| 2 | /N_GT_Q | Tests loop exit condition |
-| 7 | 1 (constant) | Forces jump (condition always true) |
+| 0 | 0 (constante) | Force l'increment (condition toujours fausse) |
+| 1 | init | Teste le signal d'initialisation |
+| 2 | /N_GT_Q | Teste la condition de sortie de boucle |
+| 7 | 1 (constante) | Force le saut (condition toujours vraie) |
 
-**Jump code interpretation**:
-- Code selects which MUX input to use
-- If selected condition is TRUE: load jump address into state register
-- If selected condition is FALSE: increment state register
+**Interpretation du code de saut** :
+- Le code selectionne quelle entree MUX utiliser
+- Si la condition selectionnee est VRAIE : charger l'adresse de saut dans le registre d'etat
+- Si la condition selectionnee est FAUSSE : incrementer le registre d'etat
 
-### Step 6: Microcode
+### Etape 6 : Microcode
 
-**Microcode word format** (13 bits):
+**Format du mot de microcode** (13 bits) :
 ```
 Bits [2:0]:  Jump code (3 bits) - selects MUX input
 Bits [5:3]:  Jump address (3 bits) - target if condition true
 Bits [12:6]: Commands (7 bits) - one bit per command signal
 ```
 
-**Command bit assignment** (bits 12 down to 6):
+**Affectation des bits de commande** (bits 12 a 6) :
 ```
 Bit 12: N1_2_N0
 Bit 11: SUM_N1
@@ -418,9 +418,9 @@ Bit 7:  RES_1
 Bit 6:  OUT_N0 / RESET (combined)
 ```
 
-**ROM contents**:
+**Contenu de la ROM** :
 
-| State | Jump Code | Jump Addr | Commands | Binary |
+| Etat | Code de saut | Adr. saut | Commandes | Binaire |
 |-------|-----------|-----------|----------|--------|
 | A (000) | 001 (test init) | 000 (self) | RES_0=1, RESET=1 | 001 000 0001001 |
 | B (001) | 010 (test /N_GT_Q) | 011 (D) | none | 010 011 0000000 |
@@ -428,23 +428,23 @@ Bit 6:  OUT_N0 / RESET (combined)
 | D (011) | 001 (test init) | 011 (self) | RES_1=1, OUT_N0=1 | 001 011 0000110 |
 | E (100) | 111 (always jump) | 000 (A) | RES_0=1 | 111 000 0001000 |
 
-**How state A works**:
-- Jump code = 001: test MUX input 1 = init signal
-- If init is TRUE: load jump address 000 (stay at A, keep resetting)
-- If init is FALSE: increment to state B (001)
-- Commands: RESET and RES_0 execute every cycle while in state A
+**Fonctionnement de l'etat A** :
+- Code de saut = 001 : tester l'entree MUX 1 = signal init
+- Si init est VRAI : charger l'adresse de saut 000 (rester en A, continuer a reinitialiser)
+- Si init est FAUX : incrementer vers l'etat B (001)
+- Commandes : RESET et RES_0 s'executent a chaque cycle tant qu'on est dans l'etat A
 
-**How state B works**:
-- Jump code = 010: test MUX input 2 = /N_GT_Q
-- If /N_GT_Q is TRUE (loop done): load jump address 011 (go to D)
-- If /N_GT_Q is FALSE (N > Q): increment to state C (010)
-- No commands (just testing the condition)
+**Fonctionnement de l'etat B** :
+- Code de saut = 010 : tester l'entree MUX 2 = /N_GT_Q
+- Si /N_GT_Q est VRAI (boucle terminee) : charger l'adresse de saut 011 (aller a D)
+- Si /N_GT_Q est FAUX (N > Q) : incrementer vers l'etat C (010)
+- Pas de commandes (juste le test de condition)
 
-### Step 7: Verification -- Computing F(6)
+### Etape 7 : Verification -- Calcul de F(6)
 
 F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
 
-| Cycle | State | N0 | N1 | Q | N | N_GT_Q | Command | Next |
+| Cycle | Etat | N0 | N1 | Q | N | N_GT_Q | Commande | Suivant |
 |-------|-------|----|----|---|---|--------|---------|------|
 | 0 | A | 0 | 1 | 0 | 6 | - | RESET, RES_0 | A (init=1) |
 | 1 | A | 0 | 1 | 0 | 6 | - | RESET, RES_0 | B (init=0) |
@@ -465,42 +465,42 @@ F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
 | ... | D | 8 | 13 | 6 | 6 | - | RES_1, OUT_N0 | E (init=0) |
 | ... | E | 8 | 13 | 6 | 6 | - | RES_0 | A |
 
-**Output**: N0 = **8** = F(6). Correct.
+**Sortie** : N0 = **8** = F(6). Correct.
 
-**Cycle 3 detail** (the first iteration):
-- Before cycle 3: N0=0, N1=1
-- Adder computes: 0 + 1 = 1 (combinational, instant)
-- At clock edge: N0 <- N1 (old value) = 1, N1 <- adder output = 1, Q <- Q+1 = 1
-- After cycle 3: N0=1, N1=1, Q=1
+**Detail du cycle 3** (la premiere iteration) :
+- Avant le cycle 3 : N0=0, N1=1
+- L'additionneur calcule : 0 + 1 = 1 (combinatoire, instantane)
+- Au front d'horloge : N0 <- N1 (ancienne valeur) = 1, N1 <- sortie additionneur = 1, Q <- Q+1 = 1
+- Apres le cycle 3 : N0=1, N1=1, Q=1
 
-**Cycle 5 detail**:
-- Before: N0=1, N1=1
-- Adder: 1 + 1 = 2
-- At edge: N0 <- 1 (old N1), N1 <- 2 (adder), Q <- 2
-- After: N0=1, N1=2, Q=2
+**Detail du cycle 5** :
+- Avant : N0=1, N1=1
+- Additionneur : 1 + 1 = 2
+- Au front : N0 <- 1 (ancien N1), N1 <- 2 (additionneur), Q <- 2
+- Apres : N0=1, N1=2, Q=2
 
 ---
 
-## Design Methodology Summary
+## Resume de la methodologie de conception
 
-### When Given an Algorithm, Follow This Recipe
+### Quand on vous donne un algorithme, suivez cette recette
 
-1. **Write pseudocode** clearly separating initialization, computation, and output
-2. **List all variables** -- each becomes a register in the UT
-3. **List all arithmetic operations** -- each becomes a functional unit (adder, multiplier, comparator)
-4. **List all decisions** -- each becomes a condition signal from UT to UC
-5. **List all state-change operations** -- each becomes a command signal from UC to UT
-6. **Draw the UT** connecting registers, functional units, and buses
-7. **Draw the state diagram** for the UC with transitions labeled by conditions
-8. **Choose implementation**:
-   - Hardwired: derive boolean equations for next-state and command signals
-   - Microprogrammed: encode state machine in ROM with jump codes and command fields
-9. **Verify** by tracing execution with known inputs/outputs
+1. **Ecrire le pseudocode** en separant clairement initialisation, calcul et sortie
+2. **Lister toutes les variables** -- chacune devient un registre dans l'UT
+3. **Lister toutes les operations arithmetiques** -- chacune devient une unite fonctionnelle (additionneur, multiplieur, comparateur)
+4. **Lister toutes les decisions** -- chacune devient un signal de condition de l'UT vers l'UC
+5. **Lister toutes les operations de changement d'etat** -- chacune devient un signal de commande de l'UC vers l'UT
+6. **Dessiner l'UT** en connectant registres, unites fonctionnelles et bus
+7. **Dessiner le diagramme d'etats** de l'UC avec les transitions etiquetees par les conditions
+8. **Choisir l'implementation** :
+   - Cablee : deriver les equations booleennes pour les signaux d'etat suivant et de commande
+   - Microprogrammee : encoder la machine a etats dans la ROM avec codes de saut et champs de commande
+9. **Verifier** en tracant l'execution avec des entrees/sorties connues
 
-### Common Exam Question Patterns
+### Types de questions d'examen frequents
 
-- "Design a UT for algorithm X" -- list registers, ALU, signals
-- "Draw the state machine for the UC" -- 3-7 states typical
-- "Write the microcode for state Y" -- encode jump + commands
-- "Trace execution for input Z" -- fill in table cycle by cycle
-- "What happens if we remove command W?" -- identify which Fibonacci iteration breaks
+- "Concevoir une UT pour l'algorithme X" -- lister registres, UAL, signaux
+- "Dessiner la machine a etats de l'UC" -- 3 a 7 etats typiquement
+- "Ecrire le microcode pour l'etat Y" -- encoder saut + commandes
+- "Tracer l'execution pour l'entree Z" -- remplir le tableau cycle par cycle
+- "Que se passe-t-il si on supprime la commande W ?" -- identifier quelle iteration de Fibonacci est cassee

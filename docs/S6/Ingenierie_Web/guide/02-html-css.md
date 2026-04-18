@@ -12,11 +12,11 @@ sidebar_position: 2
 3. [Formulaires HTML](#3-formulaires-html)
 4. [CSS : mise en forme](#4-css--mise-en-forme)
 5. [Selecteurs CSS et specificite](#5-selecteurs-css-et-specificite)
-6. [Box Model](#6-box-model)
+6. [Modele de boite (Box Model)](#6-modele-de-boite-box-model)
 7. [Flexbox et Grid](#7-flexbox-et-grid)
-8. [Design responsive](#8-design-responsive)
+8. [Design adaptatif (responsive)](#8-design-adaptatif-responsive)
 9. [Pieges courants](#9-pieges-courants)
-10. [Cheat Sheet](#10-cheat-sheet)
+10. [Aide-memoire](#10-aide-memoire)
 
 ---
 
@@ -192,7 +192,7 @@ style en ligne (style="") -->  1,0,0,0
 
 ---
 
-## 6. Box Model
+## 6. Modele de boite (Box Model)
 
 ```
 +-----------------------------------------------+
@@ -260,7 +260,7 @@ Avec `border-box` : `width: 200px` inclut tout = 200px
 
 ---
 
-## 8. Design responsive
+## 8. Design adaptatif (responsive)
 
 ```css
 /* Media query : adapter le layout selon la taille de l'ecran */
@@ -286,7 +286,7 @@ Avec `border-box` : `width: 200px` inclut tout = 200px
 
 ---
 
-## 10. Cheat Sheet
+## 10. Aide-memoire
 
 ```
 HTML minimal :
@@ -300,10 +300,10 @@ Conteneurs generiques : div (block), span (inline)
 CSS :
   Selecteurs : balise, .classe, #id, *, [attr], :pseudo
   Specificite : id > classe > balise
-  Box Model : content + padding + border + margin
+  Modele de boite : content + padding + border + margin
   border-box : width inclut padding + border
 
-Layout :
+Mise en page :
   Flexbox : display: flex + justify-content + align-items
   Grid : display: grid + grid-template-columns
   Variables : --nom: val; utiliser avec var(--nom)

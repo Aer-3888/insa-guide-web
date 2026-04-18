@@ -1,140 +1,140 @@
 ---
-title: "Python Basics"
+title: "Bases de Python"
 sidebar_position: 5
 ---
 
-# Python Basics
+# Bases de Python
 
-## Overview
+## Apercu
 
-The LDS part of the ITI course introduces Python as a scripting language. Topics include basic syntax, data structures, object-oriented programming, sorting algorithms, and file I/O. Python is tested in the January (LDS) exam.
+La partie LDS du cours ITI introduit Python comme langage de script. Les sujets abordes comprennent la syntaxe de base, les structures de donnees, la programmation orientee objet, les algorithmes de tri et les entrees/sorties fichiers. Python est evalue a l'examen de janvier (LDS).
 
-## Syntax Fundamentals
+## Fondamentaux de la syntaxe
 
-### Variables and Types
+### Variables et types
 ```python
-# Dynamic typing -- no type declarations needed
+# Typage dynamique -- pas de declarations de type necessaires
 x = 42                     # int
 pi = 3.14                  # float
 name = "Alice"             # str
 is_valid = True            # bool
 nothing = None             # NoneType
 
-# Type checking
+# Verification de type
 type(x)                    # <class 'int'>
 isinstance(x, int)         # True
 ```
 
-### Strings
+### Chaines de caracteres
 ```python noexec
 s = "Hello, World!"
-s = 'Single quotes work too'
-s = """Multi-line
-string"""
+s = 'Les guillemets simples fonctionnent aussi'
+s = """Chaine
+multi-ligne"""
 
 # Operations
-len(s)                     # Length
+len(s)                     # Longueur
 s.upper()                  # "HELLO, WORLD!"
 s.lower()                  # "hello, world!"
-s.strip()                  # Remove leading/trailing whitespace
-s.split(",")               # Split into list: ["Hello", " World!"]
+s.strip()                  # Supprimer les espaces en debut/fin
+s.split(",")               # Decouper en liste : ["Hello", " World!"]
 ", ".join(["a", "b"])      # "a, b"
-s.replace("old", "new")   # Replace substring
+s.replace("old", "new")   # Remplacer une sous-chaine
 s.startswith("Hello")      # True
-s.find("World")            # Index of substring (or -1)
+s.find("World")            # Index de la sous-chaine (ou -1)
 
-# Formatting
-f"Name: {name}, Age: {age}"             # f-string (recommended)
-"Name: {}, Age: {}".format(name, age)   # format method
-"Name: %s, Age: %d" % (name, age)       # C-style (older)
+# Formatage
+f"Name: {name}, Age: {age}"             # f-string (recommande)
+"Name: {}, Age: {}".format(name, age)   # methode format
+"Name: %s, Age: %d" % (name, age)       # Style C (plus ancien)
 ```
 
 ### Print
 ```python noexec
-print("Hello")                          # Basic
+print("Hello")                          # Basique
 print(f"x = {x}")                       # f-string
-print(f"Pi: {pi:.2f}")                  # 2 decimal places
-print("a", "b", "c", sep=", ")         # Custom separator
-print("No newline", end="")            # No trailing newline
+print(f"Pi: {pi:.2f}")                  # 2 decimales
+print("a", "b", "c", sep=", ")         # Separateur personnalise
+print("No newline", end="")            # Pas de retour a la ligne
 ```
 
-## Data Structures
+## Structures de donnees
 
-### Lists
+### Listes
 ```python
 # Creation
 lst = [1, 2, 3, 4, 5]
 empty = []
 mixed = [1, "two", 3.0, True]
 
-# Access
-lst[0]                     # First element (1)
-lst[-1]                    # Last element (5)
-lst[1:3]                   # Slice [2, 3] (index 1 to 2)
-lst[:3]                    # First 3: [1, 2, 3]
-lst[2:]                    # From index 2: [3, 4, 5]
-lst[::2]                   # Every 2nd: [1, 3, 5]
-lst[::-1]                  # Reversed: [5, 4, 3, 2, 1]
-len(lst)                   # Length (5)
+# Acces
+lst[0]                     # Premier element (1)
+lst[-1]                    # Dernier element (5)
+lst[1:3]                   # Tranche [2, 3] (index 1 a 2)
+lst[:3]                    # 3 premiers : [1, 2, 3]
+lst[2:]                    # A partir de l'index 2 : [3, 4, 5]
+lst[::2]                   # Un sur deux : [1, 3, 5]
+lst[::-1]                  # Inverse : [5, 4, 3, 2, 1]
+len(lst)                   # Longueur (5)
 
 # Modification
-lst.append(6)              # Add to end
-lst.insert(0, 0)           # Insert at position
-lst.extend([7, 8])         # Add multiple items
-lst.pop()                  # Remove and return last
-lst.pop(0)                 # Remove and return at index
-lst.remove(3)              # Remove first occurrence of value 3
-del lst[0]                 # Delete at index
+lst.append(6)              # Ajouter a la fin
+lst.insert(0, 0)           # Inserer a une position
+lst.extend([7, 8])         # Ajouter plusieurs elements
+lst.pop()                  # Supprimer et retourner le dernier
+lst.pop(0)                 # Supprimer et retourner a l'index
+lst.remove(3)              # Supprimer la premiere occurrence de la valeur 3
+del lst[0]                 # Supprimer a l'index
 
-# Searching and sorting
-3 in lst                   # True if 3 is in list
-lst.index(3)               # Index of first occurrence
-lst.count(3)               # Count occurrences
-lst.sort()                 # Sort in-place
-sorted(lst)                # Return sorted copy (original unchanged)
-lst.reverse()              # Reverse in-place
+# Recherche et tri
+3 in lst                   # True si 3 est dans la liste
+lst.index(3)               # Index de la premiere occurrence
+lst.count(3)               # Compter les occurrences
+lst.sort()                 # Trier en place
+sorted(lst)                # Retourner une copie triee (original inchange)
+lst.reverse()              # Inverser en place
 ```
 
-### List Comprehensions
+### Comprehensions de listes
 ```python
-# Basic
+# Basique
 squares = [x**2 for x in range(10)]
 
-# With condition
+# Avec condition
 evens = [x for x in range(20) if x % 2 == 0]
 
-# Nested
+# Imbriquee
 matrix = [[i*j for j in range(5)] for i in range(5)]
 
-# With transformation
+# Avec transformation
 names = [name.upper() for name in ["alice", "bob"]]
 ```
 
-### Tuples (immutable lists)
+### Tuples (listes immuables)
 ```python noexec
 t = (1, 2, 3)
-a, b, c = t                # Unpacking
-x, y = y, x                # Swap values
+a, b, c = t                # Deballage
+x, y = y, x                # Echanger des valeurs
 ```
 
-### Dictionaries
+### Dictionnaires
 ```python
 d = {"name": "Alice", "age": 25}
-d["name"]                  # Access: "Alice"
-d.get("email", "N/A")     # Safe access with default
-d["email"] = "a@b.com"    # Add/update
-del d["age"]               # Delete key
-"name" in d                # Check key exists
-d.keys()                   # All keys
-d.values()                 # All values
-d.items()                  # Key-value pairs
+d["name"]                  # Acces : "Alice"
+d.get("email", "N/A")     # Acces securise avec valeur par defaut
+d["email"] = "a@b.com"    # Ajouter/mettre a jour
+del d["age"]               # Supprimer une cle
+"name" in d                # Verifier l'existence d'une cle
+d.keys()                   # Toutes les cles
+d.values()                 # Toutes les valeurs
+d.items()                  # Paires cle-valeur
 
 # Iteration
 for key, value in d.items():
     print(f"{key}: {value}")
 ```
 
-### Sets
+### Ensembles
 ```python noexec
 s = {1, 2, 3}
 s.add(4)
@@ -144,9 +144,9 @@ s1 & s2                    # Intersection
 s1 - s2                    # Difference
 ```
 
-## Control Flow
+## Flux de controle
 
-### Conditionals
+### Conditionnelles
 ```python noexec
 if x > 0:
     print("Positive")
@@ -155,26 +155,26 @@ elif x == 0:
 else:
     print("Negative")
 
-# Ternary
+# Ternaire
 result = "even" if x % 2 == 0 else "odd"
 ```
 
-### Loops
+### Boucles
 ```python noexec
-# For loop
+# Boucle for
 for item in [1, 2, 3]:
     print(item)
 
-for i in range(10):        # 0 to 9
+for i in range(10):        # 0 a 9
     print(i)
 
 for i in range(2, 10, 2):  # 2, 4, 6, 8
     print(i)
 
-for i, item in enumerate(lst):  # With index
+for i, item in enumerate(lst):  # Avec index
     print(f"{i}: {item}")
 
-# While loop
+# Boucle while
 while condition:
     # ...
     if should_stop:
@@ -183,51 +183,51 @@ while condition:
         continue
 ```
 
-## Functions
+## Fonctions
 
 ```python noexec
 def greet(name, greeting="Hello"):
-    """Greet a person (docstring)."""
+    """Saluer une personne (docstring)."""
     return f"{greeting}, {name}!"
 
-# Call
+# Appel
 greet("Alice")                     # "Hello, Alice!"
 greet("Bob", greeting="Hi")       # "Hi, Bob!"
 
-# Multiple return values
+# Valeurs de retour multiples
 def min_max(lst):
     return min(lst), max(lst)
 
 lo, hi = min_max([3, 1, 4, 1, 5])
 
-# Lambda (anonymous function)
+# Lambda (fonction anonyme)
 square = lambda x: x ** 2
-sorted(lst, key=lambda x: x[1])   # Sort by second element
+sorted(lst, key=lambda x: x[1])   # Trier par le deuxieme element
 
-# *args and **kwargs
+# *args et **kwargs
 def func(*args, **kwargs):
-    print(args)      # Tuple of positional args
-    print(kwargs)    # Dict of keyword args
+    print(args)      # Tuple d'arguments positionnels
+    print(kwargs)    # Dictionnaire d'arguments nommes
 ```
 
-## Object-Oriented Programming
+## Programmation orientee objet
 
 ```python
 class TableauTri:
-    """Sortable array class."""
+    """Classe de tableau triable."""
     
     def __init__(self, taille=0):
-        """Constructor."""
-        self.lst = [0] * taille    # Instance variable
+        """Constructeur."""
+        self.lst = [0] * taille    # Variable d'instance
         self.taille = taille
     
     def initialiser_aleatoire(self, vmin, vmax):
-        """Fill with random values."""
+        """Remplir avec des valeurs aleatoires."""
         import random
         self.lst = [random.randint(vmin, vmax) for _ in range(self.taille)]
     
     def tri_selection(self):
-        """Selection sort."""
+        """Tri par selection."""
         n = len(self.lst)
         for i in range(n - 1):
             min_idx = i
@@ -238,29 +238,29 @@ class TableauTri:
                 self.lst[i], self.lst[min_idx] = self.lst[min_idx], self.lst[i]
     
     def __str__(self):
-        """String representation."""
+        """Representation sous forme de chaine."""
         return str(self.lst)
 
-# Usage
+# Utilisation
 tab = TableauTri(10)
 tab.initialiser_aleatoire(0, 100)
-print(tab)                         # Calls __str__
+print(tab)                         # Appelle __str__
 tab.tri_selection()
 print(tab)
 ```
 
-### Key OOP Concepts
-- `__init__`: Constructor, called when creating instance
-- `self`: Reference to the current instance (always first parameter)
-- Instance variables: `self.var` -- unique to each instance
-- Class variables: Shared across all instances
-- `__str__`: Called by `print()` and `str()`
-- `__repr__`: Called by `repr()` and in interactive mode
+### Concepts cles de la POO
+- `__init__` : constructeur, appele lors de la creation d'une instance
+- `self` : reference a l'instance courante (toujours premier parametre)
+- Variables d'instance : `self.var` -- uniques a chaque instance
+- Variables de classe : partagees entre toutes les instances
+- `__str__` : appele par `print()` et `str()`
+- `__repr__` : appele par `repr()` et en mode interactif
 
-## Sorting Algorithms
+## Algorithmes de tri
 
-### Selection Sort -- O(n^2)
-Find minimum in unsorted portion, swap with first unsorted element.
+### Tri par selection -- O(n^2)
+Trouver le minimum dans la partie non triee, echanger avec le premier element non trie.
 ```python
 def selection_sort(lst):
     n = len(lst)
@@ -274,8 +274,8 @@ def selection_sort(lst):
     return lst
 ```
 
-### Insertion Sort -- O(n^2), O(n) best case
-Build sorted portion by inserting each element in correct position.
+### Tri par insertion -- O(n^2), O(n) meilleur cas
+Construire la partie triee en inserant chaque element a la bonne position.
 ```python
 def insertion_sort(lst):
     for i in range(1, len(lst)):
@@ -288,8 +288,8 @@ def insertion_sort(lst):
     return lst
 ```
 
-### Quicksort -- O(n log n) average
-Divide-and-conquer: partition around pivot, recursively sort.
+### Tri rapide (Quicksort) -- O(n log n) en moyenne
+Diviser pour regner : partitionner autour d'un pivot, trier recursivement.
 ```python
 def quicksort(lst):
     if len(lst) <= 1:
@@ -301,8 +301,8 @@ def quicksort(lst):
     return quicksort(left) + middle + quicksort(right)
 ```
 
-### Merge Sort -- O(n log n) always
-Divide-and-conquer: split in half, recursively sort, merge.
+### Tri fusion (Merge Sort) -- O(n log n) toujours
+Diviser pour regner : couper en deux, trier recursivement, fusionner.
 ```python
 def merge_sort(lst):
     if len(lst) <= 1:
@@ -327,37 +327,37 @@ def merge(left, right):
     return result
 ```
 
-### Comparison Table
+### Tableau comparatif
 
-| Algorithm | Best | Average | Worst | Space | Stable |
-|-----------|------|---------|-------|-------|--------|
-| Selection | O(n^2) | O(n^2) | O(n^2) | O(1) | No |
-| Insertion | O(n) | O(n^2) | O(n^2) | O(1) | Yes |
-| Quicksort | O(n log n) | O(n log n) | O(n^2) | O(log n) | No |
-| Merge Sort | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
-| Python sort | O(n) | O(n log n) | O(n log n) | O(n) | Yes |
+| Algorithme | Meilleur | Moyen | Pire | Espace | Stable |
+|-----------|----------|-------|------|--------|--------|
+| Selection | O(n^2) | O(n^2) | O(n^2) | O(1) | Non |
+| Insertion | O(n) | O(n^2) | O(n^2) | O(1) | Oui |
+| Quicksort | O(n log n) | O(n log n) | O(n^2) | O(log n) | Non |
+| Tri fusion | O(n log n) | O(n log n) | O(n log n) | O(n) | Oui |
+| sort Python | O(n) | O(n log n) | O(n log n) | O(n) | Oui |
 
-## File I/O
+## Entrees/Sorties fichiers
 
 ```python noexec
-# Reading
+# Lecture
 with open("file.txt", "r") as f:
-    content = f.read()              # Entire file as string
+    content = f.read()              # Fichier entier comme chaine
     
 with open("file.txt", "r") as f:
-    lines = f.readlines()           # List of lines
+    lines = f.readlines()           # Liste de lignes
 
 with open("file.txt", "r") as f:
-    for line in f:                  # Line by line (memory efficient)
-        line = line.strip()         # Remove newline
+    for line in f:                  # Ligne par ligne (econome en memoire)
+        line = line.strip()         # Supprimer le retour a la ligne
         print(line)
 
-# Writing
+# Ecriture
 with open("output.txt", "w") as f:
     f.write("Hello\n")
     f.writelines(["Line 1\n", "Line 2\n"])
 
-# Appending
+# Ajout
 with open("log.txt", "a") as f:
     f.write("New entry\n")
 
@@ -376,51 +376,51 @@ with open("out.json", "w") as f:
     json.dump(data, f, indent=2)
 ```
 
-## Modules and Imports
+## Modules et imports
 
 ```python noexec
-import os                          # Import entire module
-from pathlib import Path           # Import specific item
-import random as rnd               # Import with alias
-from math import pi, sqrt          # Import multiple items
+import os                          # Importer un module entier
+from pathlib import Path           # Importer un element specifique
+import random as rnd               # Importer avec un alias
+from math import pi, sqrt          # Importer plusieurs elements
 
-# Common modules
-import sys                         # System (argv, exit)
-import os                          # OS operations
-import re                          # Regular expressions
-import json                        # JSON handling
-import csv                         # CSV handling
-import random                      # Random numbers
-import time                        # Time functions
-import subprocess                  # Run shell commands
-import argparse                    # CLI arguments
-from pathlib import Path           # Path manipulation
+# Modules courants
+import sys                         # Systeme (argv, exit)
+import os                          # Operations systeme
+import re                          # Expressions regulieres
+import json                        # Gestion JSON
+import csv                         # Gestion CSV
+import random                      # Nombres aleatoires
+import time                        # Fonctions de temps
+import subprocess                  # Executer des commandes shell
+import argparse                    # Arguments en ligne de commande
+from pathlib import Path           # Manipulation de chemins
 ```
 
-## Performance Measurement
+## Mesure de performance
 
 ```python noexec
 from time import time
 
 start = time()
-# ... code to measure ...
+# ... code a mesurer ...
 end = time()
-print(f"Elapsed: {end - start:.6f} seconds")
+print(f"Temps ecoule : {end - start:.6f} secondes")
 ```
 
-## Command-Line Arguments
+## Arguments en ligne de commande
 
 ```python noexec
 import sys
 
-# Simple: sys.argv
+# Simple : sys.argv
 script_name = sys.argv[0]
 if len(sys.argv) < 2:
     print(f"Usage: {sys.argv[0]} <filename>")
     sys.exit(1)
 filename = sys.argv[1]
 
-# Advanced: argparse
+# Avance : argparse
 import argparse
 parser = argparse.ArgumentParser(description="Process files")
 parser.add_argument("input", help="Input file")
@@ -431,23 +431,23 @@ args = parser.parse_args()
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### Types & Operations
+### Types et operations
 ```
 int, float, str, bool, list, dict, tuple, set, None
 len(x), type(x), isinstance(x, int)
 ```
 
-### Lists
+### Listes
 ```
-lst[0], lst[-1], lst[1:3]      Access/slice
-lst.append(x), lst.pop()       Add/remove
-sorted(lst), lst.sort()        Sort (copy vs in-place)
-[expr for x in iterable]       List comprehension
+lst[0], lst[-1], lst[1:3]      Acces/tranche
+lst.append(x), lst.pop()       Ajouter/supprimer
+sorted(lst), lst.sort()        Trier (copie vs en place)
+[expr for x in iterable]       Comprehension de liste
 ```
 
-### Strings
+### Chaines
 ```
 s.upper(), s.lower(), s.strip()
 s.split(sep), sep.join(lst)
@@ -455,21 +455,21 @@ s.replace(old, new), s.find(sub)
 f"value: {var}"                 f-string
 ```
 
-### Control Flow
+### Flux de controle
 ```
 if/elif/else, for x in iterable, while cond
 break, continue, pass
 range(start, stop, step)
 ```
 
-### Functions
+### Fonctions
 ```
 def func(param, default=val):
     return result
 lambda x: x * 2
 ```
 
-### OOP
+### POO
 ```
 class MyClass:
     def __init__(self):
@@ -478,7 +478,7 @@ class MyClass:
         return self.var
 ```
 
-### File I/O
+### Entrees/Sorties fichiers
 ```
 with open("file", "r") as f:
     content = f.read()
@@ -486,10 +486,10 @@ with open("file", "w") as f:
     f.write("text")
 ```
 
-### Sorting Algorithms
+### Algorithmes de tri
 ```
-Selection: O(n^2), find min swap
-Insertion: O(n^2), insert in place
-Quicksort: O(n log n), pivot partition
-Merge sort: O(n log n), split and merge
+Selection : O(n^2), trouver min et echanger
+Insertion : O(n^2), inserer a la bonne place
+Quicksort : O(n log n), partitionner autour du pivot
+Tri fusion : O(n log n), diviser et fusionner
 ```

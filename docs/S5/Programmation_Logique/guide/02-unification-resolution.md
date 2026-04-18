@@ -70,7 +70,7 @@ Unifier [X|Y] avec [] :
   -> ECHEC (liste non vide vs liste vide)
 ```
 
-### Occurs check
+### Test d'occurrence (occurs check)
 
 Par defaut, Prolog ne fait **pas** le test d'occurrence (pour des raisons de performance). Cela signifie que `X = f(X)` reussit et cree un terme cyclique infini. En pratique, ce cas est rare.
 
@@ -206,7 +206,7 @@ ancetre(X, Y) :- parent(P, Y), ancetre(X, P).  % clause 2
 
 ## 2.5 Les 4 ports du modele de trace
 
-Le debugger Prolog utilise le **box model** avec 4 evenements :
+Le debogueur Prolog utilise le **modele de boites** (box model) avec 4 evenements :
 
 ```
         +---> Call  (entree dans le predicat)
@@ -241,7 +241,7 @@ Le debugger Prolog utilise le **box model** avec 4 evenements :
 
 ---
 
-## CHEAT SHEET -- Unification et Resolution
+## AIDE-MEMOIRE -- Unification et Resolution
 
 ```
 UNIFICATION

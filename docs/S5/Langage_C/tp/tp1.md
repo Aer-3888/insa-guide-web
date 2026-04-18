@@ -1,41 +1,41 @@
 ---
-title: "TP1 - Introduction au C: Pointeurs et Fonctions"
+title: "TP1 - Introduction au C : Pointeurs et Fonctions"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction au C: Pointeurs et Fonctions
+# TP1 - Introduction au C : Pointeurs et Fonctions
 
 ## Objectifs
 - Comprendre les bases de la syntaxe C
 - Manipuler les pointeurs
-- Passer des arguments par référence
-- Utiliser les fonctions mathématiques de la bibliothèque standard
+- Passer des arguments par reference
+- Utiliser les fonctions mathematiques de la bibliotheque standard
 
 ## Exercices
 
-### Exercice 1: Fonction Carré avec Pointeur
-Implémenter une fonction `carre()` qui:
-- Prend un pointeur vers un `double` en paramètre
-- Élève la valeur au carré **en place** (modifie la valeur pointée)
-- Retourne le résultat
+### Exercice 1 : Fonction Carre avec Pointeur
+Implementer une fonction `carre()` qui :
+- Prend un pointeur vers un `double` en parametre
+- Eleve la valeur au carre **en place** (modifie la valeur pointee)
+- Retourne le resultat
 
-**Concepts clés:**
-- Déréférencement de pointeur (`*ptr`)
-- Modification par référence
-- Opérateur d'assignation composée (`*=`)
+**Concepts cles :**
+- Dereferencement de pointeur (`*ptr`)
+- Modification par reference
+- Operateur d'assignation composee (`*=`)
 
-### Exercice 2: Calcul de la Norme d'un Vecteur
-Implémenter une fonction `norme()` qui:
-- Prend deux `double` (coordonnées x, y) en paramètre
-- Calcule et retourne la norme euclidienne: √(x² + y²)
+### Exercice 2 : Calcul de la Norme d'un Vecteur
+Implementer une fonction `norme()` qui :
+- Prend deux `double` (coordonnees x, y) en parametre
+- Calcule et retourne la norme euclidienne : sqrt(x^2 + y^2)
 - Utilise la fonction `sqrt()` de `<math.h>`
 
-**Formule:**
+**Formule :**
 ```
-norme(x, y) = √(x² + y²)
+norme(x, y) = sqrt(x^2 + y^2)
 ```
 
-## Compilation et Exécution
+## Compilation et Execution
 
 ```bash
 cd tp1/src
@@ -49,9 +49,9 @@ make
 gcc -Wall -Wextra -std=c11 -o main main.c -lm
 ```
 
-**Note:** L'option `-lm` lie la bibliothèque mathématique (nécessaire pour `sqrt()`).
+**Note :** L'option `-lm` lie la bibliotheque mathematique (necessaire pour `sqrt()`).
 
-## Exemple d'Exécution
+## Exemple d'Execution
 
 ```
 Nombre a elever au carre : 
@@ -66,23 +66,23 @@ Vector
 
 ## Points Importants
 
-1. **Pointeurs vs Valeurs:**
+1. **Pointeurs vs Valeurs :**
    - `carre()` utilise un pointeur pour modifier la variable en place
-   - `norme()` prend des valeurs et retourne un résultat
+   - `norme()` prend des valeurs et retourne un resultat
 
-2. **Bibliothèque Mathématique:**
-   - `#include <math.h>` pour les fonctions mathématiques
+2. **Bibliotheque Mathematique :**
+   - `#include <math.h>` pour les fonctions mathematiques
    - Lier avec `-lm` lors de la compilation
 
-3. **Format d'Entrée/Sortie:**
-   - `%lf` pour lire/écrire des `double`
+3. **Format d'Entree/Sortie :**
+   - `%lf` pour lire/ecrire des `double`
    - `scanf()` prend toujours des adresses (`&variable`)
    - `printf()` prend des valeurs directement
 
-## Concepts C Abordés
+## Concepts C Abordes
 
-- Pointeurs et déréférencement
-- Passage par référence vs passage par valeur
-- Fonctions mathématiques (`sqrt()`, opérateurs arithmétiques)
-- Entrée/sortie standard (`scanf()`, `printf()`)
-- Spécificateurs de format (`%lf`)
+- Pointeurs et dereferencement
+- Passage par reference vs passage par valeur
+- Fonctions mathematiques (`sqrt()`, operateurs arithmetiques)
+- Entree/sortie standard (`scanf()`, `printf()`)
+- Specificateurs de format (`%lf`)

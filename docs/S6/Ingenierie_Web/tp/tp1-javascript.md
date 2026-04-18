@@ -1,90 +1,90 @@
 ---
-title: "TP1-2 - JavaScript Introduction"
+title: "TP1-2 - Introduction a JavaScript"
 sidebar_position: 1
 ---
 
-# TP1-2 - JavaScript Introduction
+# TP1-2 - Introduction a JavaScript
 
-## Objective
+## Objectif
 
-Learn JavaScript fundamentals through hands-on exercises covering variables, functions, DOM manipulation, events, and object-oriented programming.
+Apprendre les fondamentaux de JavaScript a travers des exercices pratiques couvrant les variables, les fonctions, la manipulation du DOM, les evenements et la programmation orientee objet.
 
-## Assignment
+## Sujet
 
-**File**: TP-intro-JS.pdf
+**Fichier** : TP-intro-JS.pdf
 
-**Topics**:
-- JavaScript basics (variables, functions, arrays)
-- DOM manipulation and event handling
-- Object-oriented JavaScript
-- Template literals and string manipulation
-- Random value generation
+**Themes** :
+- Bases de JavaScript (variables, fonctions, tableaux)
+- Manipulation du DOM et gestion des evenements
+- JavaScript oriente objet
+- Template literals et manipulation de chaines
+- Generation de valeurs aleatoires
 
-## Exercises
+## Exercices
 
-### 1. First Step - Silly Story Generator
+### 1. First Step - Generateur d'histoires
 
-**Location**: `First Step/`
+**Emplacement** : `First Step/`
 
-**Concept**: Interactive story generator using template strings, random selection, and form input.
+**Concept** : Generateur d'histoires interactif utilisant les chaines de gabarit (template strings), la selection aleatoire et la saisie de formulaire.
 
-**Features**:
-- Random story generation from predefined templates
-- Custom name input
-- US/UK unit conversion (Fahrenheit ↔ Celsius, pounds ↔ stone)
-- DOM event handling
+**Fonctionnalites** :
+- Generation aleatoire d'histoires a partir de modeles predefinis
+- Saisie d'un nom personnalise
+- Conversion d'unites US/UK (Fahrenheit ↔ Celsius, pounds ↔ stone)
+- Gestion des evenements DOM
 
-**Key JavaScript Concepts**:
+**Concepts JavaScript essentiels** :
 ```javascript noexec
-// Random array selection
+// Selection aleatoire dans un tableau
 function randomValueFromArray(array) {
     const random = Math.floor(Math.random() * array.length);
     return array[random];
 }
 
-// Template string replacement
+// Remplacement dans une chaine
 let story = "It was 94 fahrenheit outside...";
 story = story.replace(":insertx:", randomValue);
 
-// Event listeners
+// Ecouteurs d'evenements
 button.addEventListener('click', generateStory);
 
-// Form input handling
+// Gestion des saisies de formulaire
 if(customName.value !== '') {
     story = story.replace("Bob", customName.value);
 }
 
-// Unit conversion
+// Conversion d'unites
 let celsius = Math.round((fahrenheit - 32) * 5/9);
 ```
 
-**Files**:
-- `index.html` - HTML structure with form inputs
-- `main.js` - JavaScript logic for story generation
+**Fichiers** :
+- `index.html` - Structure HTML avec champs de formulaire
+- `main.js` - Logique JavaScript pour la generation d'histoires
 
-### 2. Building Blocks - Image Gallery
+### 2. Building Blocks - Galerie d'images
 
-**Location**: `Building Blocks/`
+**Emplacement** : `Building Blocks/`
 
-**Concept**: Interactive image gallery with thumbnail navigation and overlay display.
+**Concept** : Galerie d'images interactive avec navigation par vignettes et affichage en superposition.
 
-**Features**:
-- Thumbnail grid display
-- Click to enlarge image
-- Full-size overlay view
-- Dynamic DOM manipulation
+**Fonctionnalites** :
+- Affichage en grille de vignettes
+- Clic pour agrandir l'image
+- Vue en taille reelle avec superposition
+- Manipulation dynamique du DOM
 
-**Key JavaScript Concepts**:
+**Concepts JavaScript essentiels** :
 ```javascript noexec
-// DOM traversal and manipulation
+// Parcours et manipulation du DOM
 const displayedImage = document.querySelector('.displayed-img');
 const thumbBar = document.querySelector('.thumb-bar');
 
-// Dynamic element creation
+// Creation dynamique d'elements
 const newImage = document.createElement('img');
 newImage.setAttribute('src', imagePath);
 
-// Event delegation
+// Delegation d'evenements
 thumbBar.addEventListener('click', (e) => {
     if(e.target.tagName === 'IMG') {
         displayedImage.src = e.target.src;
@@ -92,28 +92,28 @@ thumbBar.addEventListener('click', (e) => {
 });
 ```
 
-**Files**:
-- `index.html` - Gallery structure
-- `main.js` - Gallery interaction logic
-- `style.css` - Gallery styling
-- `images/` - Image assets
+**Fichiers** :
+- `index.html` - Structure de la galerie
+- `main.js` - Logique d'interaction de la galerie
+- `style.css` - Mise en forme de la galerie
+- `images/` - Ressources images
 
-### 3. Intro Objects - Bouncing Balls
+### 3. Intro Objects - Balles rebondissantes
 
-**Location**: `Intro Objects/`
+**Emplacement** : `Intro Objects/`
 
-**Concept**: Object-oriented JavaScript with animated bouncing balls on canvas.
+**Concept** : JavaScript oriente objet avec des balles rebondissantes animees sur un canvas.
 
-**Features**:
-- Object-oriented programming (classes/constructors)
-- Canvas 2D drawing
-- Animation loop with `requestAnimationFrame`
-- Collision detection
-- Physics simulation (velocity, gravity)
+**Fonctionnalites** :
+- Programmation orientee objet (classes/constructeurs)
+- Dessin sur Canvas 2D
+- Boucle d'animation avec `requestAnimationFrame`
+- Detection de collisions
+- Simulation physique (vitesse, gravite)
 
-**Key JavaScript Concepts**:
+**Concepts JavaScript essentiels** :
 ```javascript noexec
-// Constructor function / Class
+// Fonction constructeur / Classe
 function Ball(x, y, velX, velY, color, size) {
     this.x = x;
     this.y = y;
@@ -123,7 +123,7 @@ function Ball(x, y, velX, velY, color, size) {
     this.size = size;
 }
 
-// Canvas drawing
+// Dessin sur le canvas
 Ball.prototype.draw = function() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
@@ -131,19 +131,19 @@ Ball.prototype.draw = function() {
     ctx.fill();
 }
 
-// Physics update
+// Mise a jour physique
 Ball.prototype.update = function() {
-    // Boundary collision detection
+    // Detection de collision avec les bords
     if((this.x + this.size) >= width || (this.x - this.size) <= 0) {
         this.velX = -(this.velX);
     }
     
-    // Update position
+    // Mettre a jour la position
     this.x += this.velX;
     this.y += this.velY;
 }
 
-// Animation loop
+// Boucle d'animation
 function loop() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
     ctx.fillRect(0, 0, width, height);
@@ -158,63 +158,63 @@ function loop() {
 }
 ```
 
-**Files**:
-- `index-finished.html` - Canvas setup
-- `main-finished.js` - Ball animation logic
-- `style.css` - Canvas styling
+**Fichiers** :
+- `index-finished.html` - Configuration du canvas
+- `main-finished.js` - Logique d'animation des balles
+- `style.css` - Mise en forme du canvas
 
-## Key Learning Outcomes
+## Competences acquises
 
-### JavaScript Fundamentals
-- Variables (let, const) and data types
-- Functions and arrow functions
-- Arrays and object literals
-- Template literals and string manipulation
+### Fondamentaux JavaScript
+- Variables (let, const) et types de donnees
+- Fonctions et fonctions flechees
+- Tableaux et objets litteraux
+- Chaines de gabarit (template literals) et manipulation de chaines
 
-### DOM Manipulation
-- Selecting elements (`querySelector`, `getElementById`)
-- Creating and modifying elements
-- Event listeners and event handling
-- Form input processing
+### Manipulation du DOM
+- Selection d'elements (`querySelector`, `getElementById`)
+- Creation et modification d'elements
+- Ecouteurs d'evenements et gestion des evenements
+- Traitement des saisies de formulaire
 
-### Object-Oriented JavaScript
-- Constructor functions
-- Prototypes and methods
-- Object properties and methods
-- `this` keyword
+### JavaScript oriente objet
+- Fonctions constructeurs
+- Prototypes et methodes
+- Proprietes et methodes d'objets
+- Mot-cle `this`
 
-### Canvas API
-- 2D context (`getContext('2d')`)
-- Drawing shapes (`arc`, `fillRect`)
-- Animation loops (`requestAnimationFrame`)
-- Coordinate systems
+### API Canvas
+- Contexte 2D (`getContext('2d')`)
+- Dessin de formes (`arc`, `fillRect`)
+- Boucles d'animation (`requestAnimationFrame`)
+- Systemes de coordonnees
 
-### Algorithms
-- Random number generation
-- Collision detection
-- Physics simulation
-- Animation frame management
+### Algorithmes
+- Generation de nombres aleatoires
+- Detection de collisions
+- Simulation physique
+- Gestion des images d'animation
 
-## Running the Exercises
+## Execution des exercices
 
-All exercises run directly in the browser. No build step required.
+Tous les exercices s'executent directement dans le navigateur. Aucune etape de compilation n'est requise.
 
 ```bash
-# Open any HTML file in a browser
+# Ouvrir n'importe quel fichier HTML dans un navigateur
 firefox First\ Step/index.html
 firefox Building\ Blocks/index.html
 firefox Intro\ Objects/index-finished.html
 ```
 
-## Browser Compatibility
+## Compatibilite navigateur
 
-All exercises use standard JavaScript ES6+ features:
-- `const`/`let` declarations
-- Arrow functions
-- Template literals
-- Canvas 2D API
+Tous les exercices utilisent les fonctionnalites standard de JavaScript ES6+ :
+- Declarations `const`/`let`
+- Fonctions flechees
+- Chaines de gabarit (template literals)
+- API Canvas 2D
 
-Tested on:
+Teste sur :
 - Firefox 88+
 - Chrome 90+
 - Edge 90+

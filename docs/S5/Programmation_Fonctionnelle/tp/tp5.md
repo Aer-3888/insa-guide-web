@@ -1,60 +1,60 @@
 ---
-title: "TP5 - List Operations"
+title: "TP5 - Operations sur les listes"
 sidebar_position: 5
 ---
 
-# TP5 - List Operations
+# TP5 - Operations sur les listes
 
-## Overview
+## Vue d'ensemble
 
-Fundamental list manipulation functions in OCaml:
-- Basic operations (length, membership, indexing)
-- List transformations
-- Sublist operations
-- Pattern searching and replacement
+Fonctions fondamentales de manipulation de listes en OCaml :
+- Operations de base (longueur, appartenance, indexation)
+- Transformations de listes
+- Operations sur les sous-listes
+- Recherche et remplacement de motifs
 
-## Exercises
+## Exercices
 
-### 1. Basic Operations
-- `longueur l`: List length
-- `appartient e l`: Check membership
-- `rang e l`: Find index (0 if not found)
-- `rang_opt e l`: Find index as option type
+### 1. Operations de base
+- `longueur l` : Longueur de la liste
+- `appartient e l` : Verifier l'appartenance
+- `rang e l` : Trouver l'indice (0 si non trouve)
+- `rang_opt e l` : Trouver l'indice sous forme de type option
 
-**Concepts**: Recursion, option types
+**Concepts** : Recursion, types option
 
-### 2. List Concatenation
-- `concatl l1 l2`: Append two lists
+### 2. Concatenation de listes
+- `concatl l1 l2` : Concatener deux listes
 
-**Concepts**: Structural recursion on lists
+**Concepts** : Recursion structurelle sur les listes
 
-### 3. List Slicing
-- `debliste l n`: First n elements
-- `finliste l n`: Last n elements
+### 3. Decoupage de listes
+- `debliste l n` : Les n premiers elements
+- `finliste l n` : Les n derniers elements
 
-**Concepts**: List traversal
+**Concepts** : Parcours de listes
 
-### 4. Element Replacement
-- `remplace x y l`: Replace all x with y
+### 4. Remplacement d'elements
+- `remplace x y l` : Remplacer toutes les occurrences de x par y
 
-**Concepts**: List transformation
+**Concepts** : Transformation de listes
 
-### 5. Sublist Operations
-- `entete l l1`: Check if l is prefix of l1
-- `sousliste l l1`: Check if l is sublist of l1
-- `oter l l1`: Remove prefix l from l1
+### 5. Operations sur les sous-listes
+- `entete l l1` : Verifier si l est un prefixe de l1
+- `sousliste l l1` : Verifier si l est une sous-liste contigue de l1
+- `oter l l1` : Retirer le prefixe l de l1
 
-**Concepts**: Pattern matching, prefix checking
+**Concepts** : Pattern matching, verification de prefixes
 
-### 6. Advanced Replacement
-- `remplacel l1 l2 l`: Replace all occurrences of sublist l1 with l2
-- `supprimel l1 l`: Remove all occurrences of sublist l1
+### 6. Remplacement avance
+- `remplacel l1 l2 l` : Remplacer toutes les occurrences de la sous-liste l1 par l2
+- `supprimel l1 l` : Supprimer toutes les occurrences de la sous-liste l1
 
-**Concepts**: Sublist search and replace
+**Concepts** : Recherche et remplacement de sous-listes
 
-## Key OCaml Concepts
+## Concepts cles OCaml
 
-### Option Type
+### Type option
 ```ocaml
 type 'a option = None | Some of 'a
 
@@ -67,7 +67,7 @@ let rec rang_opt e l = match l with
         | Some c -> Some (c + 1)
 ```
 
-### Prefix Checking
+### Verification de prefixe
 ```ocaml
 let rec entete l l1 = match l, l1 with
   | [], _ -> true
@@ -76,7 +76,7 @@ let rec entete l l1 = match l, l1 with
       if e1 = e2 then entete t1 t2 else false
 ```
 
-### Sublist Search
+### Recherche de sous-liste
 ```ocaml
 let rec sousliste l l1 = match l, l1 with
   | [], _ -> true
@@ -86,14 +86,14 @@ let rec sousliste l l1 = match l, l1 with
       else sousliste l t2
 ```
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp5.ml";;
 ```
 
-## Expected Results
+## Resultats attendus
 
 - `longueur [1;2;3]` → 3
 - `rang_opt 2 [3;2;1]` → Some 2

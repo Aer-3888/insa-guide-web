@@ -5,8 +5,8 @@ sidebar_position: 0
 
 # TP (Enonces)
 
-- [tp1](tp1)
-- [tp2](tp2)
-- [tp3](tp3)
-- [tp4](tp4)
-- [tp5](tp5)
+- [TP1](tp1)
+- [TP2](tp2)
+- [TP3](tp3)
+- [TP4](tp4)
+- [TP5](tp5)

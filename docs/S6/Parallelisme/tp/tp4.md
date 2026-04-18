@@ -465,8 +465,8 @@ mpiexec -n 4 ./parallel 1000000
 
 1. **MPI = SPMD** : Même code, données différentes
 2. **Communications explicites** : Programmer les échanges de données
-3. **Broadcast** : Diffusion one-to-all
-4. **Reduce** : Agrégation all-to-one
+3. **Broadcast** : Diffusion un-vers-tous
+4. **Reduce** : Agregation tous-vers-un
 5. **Granularité** : Clé pour de bonnes performances
 6. **MPI_Wtime()** : Mesure de temps distribuée
 
@@ -487,6 +487,6 @@ tp4/
 
 ## Ressources
 
-- Spécification MPI: https://www.mpi-forum.org/docs/
-- Tutoriel MPI: https://hpc-tutorials.llnl.gov/mpi/
-- MPI for Python: https://mpi4py.readthedocs.io/ (pour ceux qui préfèrent Python)
+- Specification MPI : https://www.mpi-forum.org/docs/
+- Tutoriel MPI : https://hpc-tutorials.llnl.gov/mpi/
+- MPI pour Python : https://mpi4py.readthedocs.io/ (pour ceux qui preferent Python)

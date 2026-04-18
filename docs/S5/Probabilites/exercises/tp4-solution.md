@@ -1,13 +1,13 @@
 ---
-title: "TP4 - Hypothesis Testing"
+title: "TP4 - Tests d'hypotheses"
 sidebar_position: 4
 ---
 
-# TP4 - Hypothesis Testing
+# TP4 - Tests d'hypotheses
 
-> Following teacher instructions from: `S5/Probabilites/data/moodle/tp/tp4/README.md`
+> D'apres les instructions de l'enseignant : `S5/Probabilites/data/moodle/tp/tp4/README.md`
 
-## Setup
+## Preparation
 
 ```r
 # No special packages needed
@@ -16,20 +16,20 @@ sidebar_position: 4
 
 ---
 
-## Exercise 1: Octopus Weights -- One-Sample t-Test (Conformity Test)
+## Exercice 1 : Poids de poulpes -- Test t a un echantillon (test de conformite)
 
-### 15 octopuses weighed. Is the mean weight 3000g? Calculate CI, perform conformity test using both manual and `t.test()` approaches.
+### 15 poulpes peses. La moyenne est-elle de 3000g ? Calculer l'IC, effectuer le test de conformite par les approches manuelle et `t.test()`.
 
-**Theory:**
+**Theorie :**
 
-- $H_0$: $\mu = \mu_0$ (population mean equals hypothesized value)
-- $H_1$: $\mu \neq \mu_0$ (two-sided alternative)
-- Test statistic ($\sigma$ unknown): $T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}} \sim t(n-1)$ under $H_0$
-- Decision: reject $H_0$ if $|T| > t_{n-1,\,\alpha/2}$ or if p-value $< \alpha$
+- $H_0$ : $\mu = \mu_0$ (la moyenne de la population est egale a la valeur hypothetique)
+- $H_1$ : $\mu \neq \mu_0$ (alternative bilaterale)
+- Statistique de test ($\sigma$ inconnu) : $T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}} \sim t(n-1)$ sous $H_0$
+- Decision : rejeter $H_0$ si $|T| > t_{n-1,\,\alpha/2}$ ou si p-valeur $< \alpha$
 
-### Step 1: Compute sample statistics
+### Etape 1 : Calculer les statistiques descriptives
 
-**Answer:**
+**Reponse :**
 ```r
 poids_poulpe <- c(1150, 1500, 1700, 1800, 1800, 1850, 2200, 2700,
                    2900, 3000, 3100, 3500, 3900, 4000, 5400)
@@ -46,7 +46,7 @@ cat("Mean:", round(mean_empirical, 2), "g\n")
 cat("SD:", round(sd_empirical, 2), "g\n\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Octopus weight statistics:
 Sample size: 15
@@ -54,14 +54,14 @@ Mean: 2700 g
 SD: 1158.39 g
 ```
 
-**Explanation:**
-The sample mean (2700g) is 300g below the hypothesized value (3000g). The hypothesis test determines whether this difference is statistically significant or just sampling variability.
+**Explication :**
+La moyenne empirique (2700g) est 300g en dessous de la valeur hypothetique (3000g). Le test d'hypothese determine si cette difference est statistiquement significative ou simplement due a la variabilite d'echantillonnage.
 
 ---
 
-### Step 2: Calculate CI for mean
+### Etape 2 : Calculer l'IC pour la moyenne
 
-**Answer:**
+**Reponse :**
 ```r
 t_crit <- qt(1 - alpha/2, df = n - 1)
 se <- sd_empirical / sqrt(n)
@@ -75,7 +75,7 @@ cat("Standard error: S'/sqrt(n) =", round(se, 2), "\n")
 cat("CI: [", round(CI_lower, 2), ",", round(CI_upper, 2), "]\n\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 90% Confidence Interval for mean:
 t critical value: qt(0.95, df=14) = 1.7613
@@ -83,17 +83,17 @@ Standard error: S'/sqrt(n) = 299.14
 CI: [ 2173.15 , 3226.85 ]
 ```
 
-**Mathematical explanation:**
-$$\text{CI} = \left[\bar{X} - t_{n-1,\,\alpha/2} \times \frac{S'}{\sqrt{n}},\; \bar{X} + t_{n-1,\,\alpha/2} \times \frac{S'}{\sqrt{n}}\right]$$
+**Explication mathematique :**
+$$\text{IC} = \left[\bar{X} - t_{n-1,\,\alpha/2} \times \frac{S'}{\sqrt{n}},\; \bar{X} + t_{n-1,\,\alpha/2} \times \frac{S'}{\sqrt{n}}\right]$$
 $$= [2700 - 1.761 \times 299.14,\; 2700 + 1.761 \times 299.14] = [2173.15,\; 3226.85]$$
 
-Since $\mu_0 = 3000$ falls INSIDE the 90% CI, we will NOT reject $H_0$ at $\alpha = 0.10$. There is a duality: reject $H_0$ at level $\alpha$ if and only if $\mu_0$ falls outside the $(1-\alpha)$ CI.
+Puisque $\mu_0 = 3000$ tombe A L'INTERIEUR de l'IC a 90%, on ne rejettera PAS $H_0$ au niveau $\alpha = 0.10$. Il existe une dualite : on rejette $H_0$ au niveau $\alpha$ si et seulement si $\mu_0$ tombe en dehors de l'IC a $(1-\alpha)$.
 
 ---
 
-### Step 3: Perform conformity test (manual)
+### Etape 3 : Effectuer le test de conformite (methode manuelle)
 
-**Answer:**
+**Reponse :**
 ```r
 mu_0 <- 3000
 
@@ -122,7 +122,7 @@ p_value_manual <- 2 * pt(abs(test_statistic), df = n - 1, lower.tail = FALSE)
 cat("\np-value:", round(p_value_manual, 4), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Conformity test: H0: mu = 3000g
 Test statistic: T = -1.0029
@@ -134,25 +134,25 @@ Decision: FAIL TO REJECT H0
 p-value: 0.3328
 ```
 
-**Mathematical explanation:**
+**Explication mathematique :**
 $$T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}} = \frac{2700 - 3000}{1158.39 / \sqrt{15}} = \frac{-300}{299.14} = -1.003$$
 
-Since $|T| = 1.003 < t_{14,\,0.05} = 1.761$, the test statistic falls in the acceptance region.
+Puisque $|T| = 1.003 < t_{14,\,0.05} = 1.761$, la statistique de test tombe dans la zone d'acceptation.
 
-The p-value = 0.333 is $2 \times P(T > 1.003)$ where $T \sim t(14)$. Since p-value $= 0.333 > \alpha = 0.10$, we fail to reject $H_0$.
+La p-valeur = 0,333 est $2 \times P(T > 1.003)$ ou $T \sim t(14)$. Puisque la p-valeur $= 0.333 > \alpha = 0.10$, on ne rejette pas $H_0$.
 
 ---
 
-### Step 4: Use `t.test()` function
+### Etape 4 : Utiliser la fonction `t.test()`
 
-**Answer:**
+**Reponse :**
 ```r
 test_result <- t.test(poids_poulpe, mu = mu_0, conf.level = 1 - alpha)
 cat("Using t.test():\n")
 print(test_result)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Using t.test():
 
@@ -168,31 +168,31 @@ mean of x
      2700
 ```
 
-**Interpretation:**
-- **t = -1.0029**: matches manual calculation
-- **df = 14**: $n - 1 = 15 - 1 = 14$
-- **p-value = 0.3328**: probability of data this extreme if $H_0$ true
-- **90% CI = [2173.15, 3226.85]**: matches manual calculation
-- **Decision**: p-value $= 0.333 > \alpha = 0.10$, FAIL TO REJECT $H_0$
+**Interpretation :**
+- **t = -1,0029** : correspond au calcul manuel
+- **df = 14** : $n - 1 = 15 - 1 = 14$
+- **p-valeur = 0,3328** : probabilite d'observer des donnees aussi extremes si $H_0$ est vraie
+- **IC a 90% = [2173,15 ; 3226,85]** : correspond au calcul manuel
+- **Decision** : p-valeur $= 0.333 > \alpha = 0.10$, on NE REJETTE PAS $H_0$
 
-"Fail to reject $H_0$" does NOT mean "$H_0$ is true." It means we lack sufficient evidence to disprove it. With only 15 octopuses and high variability ($S' = 1158$g), the test lacks power to detect a 300g difference.
+« Ne pas rejeter $H_0$ » ne signifie PAS que « $H_0$ est vraie ». Cela signifie que nous n'avons pas suffisamment de preuves pour l'infirmer. Avec seulement 15 poulpes et une forte variabilite ($S' = 1158$g), le test manque de puissance pour detecter une difference de 300g.
 
 ---
 
-## Exercise 2: Treatment Comparison -- Two-Sample t-Test (Homogeneity Test)
+## Exercice 2 : Comparaison de traitements -- Test t a deux echantillons (test d'homogeneite)
 
-### Two groups (n=12, n=8) with different treatments. Test if means differ. Assumes equal variances.
+### Deux groupes (n=12, n=8) avec differents traitements. Tester si les moyennes different. Hypothese de variances egales.
 
-**Theory:**
+**Theorie :**
 
-- $H_0$: $\mu_A = \mu_B$ (means are equal)
-- $H_1$: $\mu_A \neq \mu_B$ (two-sided)
-- Pooled variance: $S_p^2 = \frac{(n_A - 1)S_A'^2 + (n_B - 1)S_B'^2}{n_A + n_B - 2}$
-- Test statistic: $T = \frac{\bar{X}_A - \bar{X}_B}{S_p\sqrt{1/n_A + 1/n_B}} \sim t(n_A + n_B - 2)$ under $H_0$
+- $H_0$ : $\mu_A = \mu_B$ (les moyennes sont egales)
+- $H_1$ : $\mu_A \neq \mu_B$ (alternative bilaterale)
+- Variance poolee : $S_p^2 = \frac{(n_A - 1)S_A'^2 + (n_B - 1)S_B'^2}{n_A + n_B - 2}$
+- Statistique de test : $T = \frac{\bar{X}_A - \bar{X}_B}{S_p\sqrt{1/n_A + 1/n_B}} \sim t(n_A + n_B - 2)$ sous $H_0$
 
-### Step 1: Compute pooled variance and test statistic
+### Etape 1 : Calculer la variance poolee et la statistique de test
 
-**Answer:**
+**Reponse :**
 ```r
 na <- 12
 nb <- 8
@@ -236,7 +236,7 @@ if (abs(t_stat) > t_critical) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Two-sample t-test (equal variances assumed):
 Group A: n=12, mean=1.5, sd=0.95
@@ -255,18 +255,18 @@ Critical value t_{18, 0.025}: 2.1009
 Decision: FAIL TO REJECT H0 (no significant difference)
 ```
 
-**Mathematical explanation:**
+**Explication mathematique :**
 $$S_p^2 = \frac{11 \times 0.95^2 + 7 \times 1.35^2}{18} = \frac{9.9275 + 12.7575}{18} = 1.2614$$
 
 $$T = \frac{1.5 - 2.35}{1.1231 \times \sqrt{1/12 + 1/8}} = \frac{-0.85}{0.5125} = -1.659$$
 
-Since $|T| = 1.659 < 2.101$, we cannot reject $H_0$. The small samples ($n = 12$ and $n = 8$) combined with high variability prevent detecting the difference.
+Puisque $|T| = 1.659 < 2.101$, on ne peut pas rejeter $H_0$. Les petits echantillons ($n = 12$ et $n = 8$) combines a une forte variabilite empechent de detecter la difference.
 
 ---
 
-### Step 2: Examine effect of larger sample size (na=120, nb=80)
+### Etape 2 : Examiner l'effet d'un echantillon plus grand (na=120, nb=80)
 
-**Answer:**
+**Reponse :**
 ```r
 na_large <- 120
 nb_large <- 80
@@ -289,7 +289,7 @@ cat("Decision:", ifelse(abs(t_stat_large) > t_critical_large,
                         "REJECT H0", "FAIL TO REJECT H0"), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 With larger samples (na=120, nb=80):
 Pooled SD: 1.1231
@@ -300,34 +300,34 @@ Critical value t_{198, 0.025}: 1.9720
 Decision: REJECT H0
 ```
 
-**Mathematical explanation:**
-With 10x more data, the SAME means and SDs produce a significant result. The SE decreases by $\sqrt{10} \approx 3.16$: from 0.5125 to 0.1625. The test statistic jumps from $-1.66$ to $-5.23$.
+**Explication mathematique :**
+Avec 10 fois plus de donnees, les MEMES moyennes et ecarts-types produisent un resultat significatif. L'erreur standard diminue d'un facteur $\sqrt{10} \approx 3.16$ : de 0,5125 a 0,1625. La statistique de test passe de $-1.66$ a $-5.23$.
 
-Statistical significance depends on three factors:
-1. **Effect size** (0.85 units) -- unchanged
-2. **Variability** (pooled SD 1.12) -- unchanged
-3. **Sample size** (200 vs 20) -- increased 10-fold
+La significativite statistique depend de trois facteurs :
+1. **Taille de l'effet** (0,85 unites) -- inchangee
+2. **Variabilite** (ecart-type poolee 1,12) -- inchangee
+3. **Taille de l'echantillon** (200 vs 20) -- multipliee par 10
 
 ---
 
-## Exercise 3: Milk Bottle Filling -- Power Analysis
+## Exercice 3 : Remplissage de bouteilles de lait -- Analyse de puissance
 
-### Known $\sigma = 1$ml, target $\mu = 1000$ml, $n = 40$ bottles. Test for calibration drift, calculate power for detecting 0.2ml shift, determine $n$ needed for 90% power.
+### $\sigma = 1$ ml connu, objectif $\mu = 1000$ ml, $n = 40$ bouteilles. Tester la derive de calibrage, calculer la puissance pour detecter un ecart de 0,2 ml, determiner le $n$ necessaire pour 90% de puissance.
 
-**Theory:**
+**Theorie :**
 
-- **Power** $= 1 - \beta = P(\text{reject } H_0 \mid H_1 \text{ true})$
-- **Type I error** ($\alpha$): rejecting $H_0$ when true (false positive)
-- **Type II error** ($\beta$): failing to reject $H_0$ when $H_1$ true (false negative)
+- **Puissance** $= 1 - \beta = P(\text{rejeter } H_0 \mid H_1 \text{ vraie})$
+- **Erreur de type I** ($\alpha$) : rejeter $H_0$ a tort (faux positif)
+- **Erreur de type II** ($\beta$) : ne pas rejeter $H_0$ alors que $H_1$ est vraie (faux negatif)
 
-For a $z$-test ($\sigma$ known):
-- Under $H_0$: $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0, 1)$
-- Under $H_1$ ($\mu = \mu_1$): $Z \sim \mathcal{N}(\delta, 1)$ where $\delta = \frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}}$
-- Power $\approx 1 - \Phi(z_{\alpha/2} - \delta)$
+Pour un test $z$ ($\sigma$ connu) :
+- Sous $H_0$ : $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}} \sim \mathcal{N}(0, 1)$
+- Sous $H_1$ ($\mu = \mu_1$) : $Z \sim \mathcal{N}(\delta, 1)$ ou $\delta = \frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}}$
+- Puissance $\approx 1 - \Phi(z_{\alpha/2} - \delta)$
 
-### Step 1: Compute standardized effect and power
+### Etape 1 : Calculer l'effet standardise et la puissance
 
-**Answer:**
+**Reponse :**
 ```r
 sigma <- 1
 mu_0 <- 1000
@@ -355,7 +355,7 @@ cat("Power (n=40):", round(power, 4), "\n")
 cat("Interpretation:", round(power*100, 1), "% chance of detecting 0.2ml shift\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Power analysis setup:
 H0: mu = 1000 ml
@@ -369,18 +369,18 @@ Power (n=40): 0.2445
 Interpretation: 24.4 % chance of detecting 0.2ml shift
 ```
 
-**Mathematical explanation:**
+**Explication mathematique :**
 $$\delta = \frac{\mu_1 - \mu_0}{\sigma/\sqrt{n}} = \frac{0.2}{1/\sqrt{40}} = 1.265$$
 
-$$\text{Power} = 1 - \Phi(z_{\alpha/2} - \delta) = 1 - \Phi(1.96 - 1.265) = 1 - \Phi(0.695) = 0.244$$
+$$\text{Puissance} = 1 - \Phi(z_{\alpha/2} - \delta) = 1 - \Phi(1.96 - 1.265) = 1 - \Phi(0.695) = 0.244$$
 
-Power of 24.4% is very poor -- the test will miss the shift about 3 out of 4 times. The effect size (0.2ml) is small relative to the noise ($\sigma = 1$ml).
+Une puissance de 24,4% est tres faible -- le test ne detectera pas la derive environ 3 fois sur 4. La taille de l'effet (0,2 ml) est faible par rapport au bruit ($\sigma = 1$ ml).
 
 ---
 
-### Step 2: Determine $n$ needed for 90% power
+### Etape 2 : Determiner le $n$ necessaire pour 90% de puissance
 
-**Answer:**
+**Reponse :**
 ```r
 target_power <- 0.90
 n_needed <- 40
@@ -397,14 +397,14 @@ cat("Verification: power at n =", n_needed, "is",
     round(1 - pnorm(z_crit, mean = effect / (sigma / sqrt(n_needed)), sd = 1), 4), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Sample size for 90% power: 263 bottles
 Verification: power at n = 263 is 0.9003
 ```
 
-**Mathematical explanation:**
-Setting power $= 0.90$ and solving for $n$:
+**Explication mathematique :**
+En fixant la puissance $= 0.90$ et en resolvant pour $n$ :
 
 $$1 - \Phi(z_{\alpha/2} - \delta) = 0.90$$
 $$z_{\alpha/2} - \delta = z_{0.10} = -1.282$$
@@ -414,9 +414,9 @@ $$\sqrt{n} = 16.21,\quad n = 263$$
 
 ---
 
-### Step 3: Power curve
+### Etape 3 : Courbe de puissance
 
-**Answer:**
+**Reponse :**
 ```r
 n_range <- seq(40, 300, by = 1)
 powers <- numeric(length(n_range))
@@ -442,14 +442,14 @@ legend("bottomright",
 grid()
 ```
 
-**Expected output:**
-S-shaped curve starting around 0.24 at $n = 40$, crossing 80% around $n = 197$, and reaching 90% at $n = 263$.
+**Sortie attendue :**
+Courbe en forme de S partant d'environ 0,24 a $n = 40$, franchissant 80% vers $n = 197$, et atteignant 90% a $n = 263$.
 
 ---
 
-### Step 4: Power summary table
+### Etape 4 : Tableau recapitulatif de puissance
 
-**Answer:**
+**Reponse :**
 ```r
 key_n <- c(40, 100, 150, 200, 263, 300, 400, 500)
 
@@ -464,7 +464,7 @@ for (n_val in key_n) {
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Power Summary Table:
 n        | Standardized effect  | Power
@@ -479,39 +479,39 @@ n        | Standardized effect  | Power
      500 |                4.472 |    99.4%
 ```
 
-**Mathematical explanation:**
-Required sample size scales as:
+**Explication mathematique :**
+La taille d'echantillon requise evolue selon :
 
-$$n = \left(\frac{z_{\alpha/2} + z_\beta}{\delta_{\text{raw}}/\sigma}\right)^2$$
+$$n = \left(\frac{z_{\alpha/2} + z_\beta}{\delta_{\text{brut}}/\sigma}\right)^2$$
 
-where $\delta_{\text{raw}} = \mu_1 - \mu_0$ and $z_\beta$ is the quantile for the desired power. Power increases with: larger $n$, larger effect size, larger $\alpha$, smaller $\sigma$.
+ou $\delta_{\text{brut}} = \mu_1 - \mu_0$ et $z_\beta$ est le quantile correspondant a la puissance souhaitee. La puissance augmente avec : un $n$ plus grand, une taille d'effet plus grande, un $\alpha$ plus grand, un $\sigma$ plus petit.
 
 ---
 
-## Summary: Hypothesis Testing Decision Framework
+## Resume : Cadre de decision pour les tests d'hypotheses
 
-### Test Procedure
+### Procedure de test
 
-1. State hypotheses: $H_0$: $\mu = \mu_0$ vs $H_1$: $\mu \neq \mu_0$
-2. Choose $\alpha$ (typically 0.05 or 0.10)
-3. Compute test statistic: $T = (\bar{X} - \mu_0) / (S'/\sqrt{n})$
-4. Find critical value: $t_{n-1,\,\alpha/2}$ from `qt()`
-5. Decision: reject $H_0$ if $|T| >$ critical value (equivalently, p-value $< \alpha$)
-6. Interpret: state conclusion in context
+1. Enoncer les hypotheses : $H_0$ : $\mu = \mu_0$ vs $H_1$ : $\mu \neq \mu_0$
+2. Choisir $\alpha$ (typiquement 0,05 ou 0,10)
+3. Calculer la statistique de test : $T = (\bar{X} - \mu_0) / (S'/\sqrt{n})$
+4. Trouver la valeur critique : $t_{n-1,\,\alpha/2}$ avec `qt()`
+5. Decision : rejeter $H_0$ si $|T| >$ valeur critique (de maniere equivalente, p-valeur $< \alpha$)
+6. Interpreter : formuler la conclusion dans le contexte du probleme
 
-### Common Mistakes
+### Erreurs courantes
 
-| Mistake | Correction |
-|---------|-----------|
-| "Accept $H_0$" | Say "Fail to reject $H_0$" |
-| p-value $= P(H_0$ is true$)$ | p-value $= P(\text{data this extreme} \mid H_0$ true$)$ |
-| Small p means large effect | Small p means unlikely under $H_0$; effect size is separate |
-| Non-significant $=$ no difference | May just be underpowered (Type II error) |
+| Erreur | Correction |
+|--------|-----------|
+| « Accepter $H_0$ » | Dire « Ne pas rejeter $H_0$ » |
+| p-valeur $= P(H_0$ est vraie$)$ | p-valeur $= P(\text{donnees aussi extremes} \mid H_0$ vraie$)$ |
+| Petite p-valeur = grand effet | Petite p-valeur = improbable sous $H_0$ ; la taille de l'effet est independante |
+| Non significatif = pas de difference | Peut simplement manquer de puissance (erreur de type II) |
 
-### Formulas Reference
+### Reference des formules
 
-| Test | Statistic | Distribution under $H_0$ | R function |
-|------|-----------|--------------------------|------------|
-| One-sample ($\sigma$ known) | $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}$ | $\mathcal{N}(0, 1)$ | `pnorm()` |
-| One-sample ($\sigma$ unknown) | $T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}}$ | $t(n-1)$ | `t.test(x, mu=mu_0)` |
-| Two-sample (equal var) | $T = \frac{\bar{X}_A - \bar{X}_B}{S_p\sqrt{1/n_A + 1/n_B}}$ | $t(n_A + n_B - 2)$ | `t.test(x, y, var.equal=TRUE)` |
+| Test | Statistique | Distribution sous $H_0$ | Fonction R |
+|------|-------------|--------------------------|------------|
+| Un echantillon ($\sigma$ connu) | $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}$ | $\mathcal{N}(0, 1)$ | `pnorm()` |
+| Un echantillon ($\sigma$ inconnu) | $T = \frac{\bar{X} - \mu_0}{S'/\sqrt{n}}$ | $t(n-1)$ | `t.test(x, mu=mu_0)` |
+| Deux echantillons (var. egales) | $T = \frac{\bar{X}_A - \bar{X}_B}{S_p\sqrt{1/n_A + 1/n_B}}$ | $t(n_A + n_B - 2)$ | `t.test(x, y, var.equal=TRUE)` |

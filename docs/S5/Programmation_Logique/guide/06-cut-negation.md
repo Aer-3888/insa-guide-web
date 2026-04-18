@@ -62,9 +62,9 @@ Solutions : aucune !
 
 Le cut a bloque a la premiere solution de `a(X)` (X=1), puis `b(1)` echoue, et le cut empeche le backtracking vers `a(2)` ou vers la clause 2.
 
-## 6.2 Green cut vs Red cut
+## 6.2 Cut vert vs Cut rouge
 
-### Green cut (cut vert) -- sans danger
+### Cut vert (green cut) -- sans danger
 
 Un cut **vert** ne change pas l'ensemble des solutions, il ameliore seulement les performances en evitant des calculs inutiles.
 
@@ -80,7 +80,7 @@ max(X, Y, Y).
 
 Le cut est vert car `X >= Y` et `X < Y` sont mutuellement exclusifs. Le cut evite juste de tester `X < Y` quand on sait deja que `X >= Y`.
 
-### Red cut (cut rouge) -- dangereux
+### Cut rouge (red cut) -- dangereux
 
 Un cut **rouge** change les solutions du programme. Supprimer le cut donnerait des resultats differents.
 
@@ -93,7 +93,7 @@ max_rouge(_, Y, Y).  % DEPEND du cut pour etre correct !
 % max_rouge(3, 1, 1) serait vrai ! (la 2eme clause matche toujours)
 ```
 
-**Regle** : eviter les red cuts autant que possible. Toujours documenter clairement quand un cut est rouge.
+**Regle** : eviter les cuts rouges autant que possible. Toujours documenter clairement quand un cut est rouge.
 
 ## 6.3 Utilisations courantes du cut
 
@@ -111,7 +111,7 @@ classify(_, negative).
 
 ### Negation par cut-fail
 
-Le pattern `!, fail` est la base de la negation en Prolog :
+Le schema `!, fail` est la base de la negation en Prolog :
 
 ```prolog noexec
 % "Il n'existe pas de piece de Lyon que F ne fournit pas"
@@ -260,7 +260,7 @@ pas_dans(_, _).
 
 ---
 
-## CHEAT SHEET -- Cut et Negation
+## AIDE-MEMOIRE -- Cut et Negation
 
 ```
 CUT (!)
@@ -268,8 +268,8 @@ CUT (!)
   - Supprime les points de choix :
     * autres clauses du meme predicat
     * backtracking a gauche du cut
-  - Green cut : ne change pas les solutions
-  - Red cut : change les solutions -> DANGEREUX
+  - Cut vert : ne change pas les solutions
+  - Cut rouge : change les solutions -> DANGEREUX
 
 NEGATION PAR ECHEC
   \+(Goal)  ou  not(Goal)
@@ -278,7 +278,7 @@ NEGATION PAR ECHEC
   - NE LIE JAMAIS de variables
   - Toujours instancier les variables AVANT \+
 
-PATTERN CUT-FAIL (negation manuelle)
+SCHEMA CUT-FAIL (negation manuelle)
   pas_p(X) :- p(X), !, fail.
   pas_p(_).
 
@@ -290,11 +290,11 @@ IF-THEN-ELSE
 
 ERREURS COMMUNES
   - \+ avec variable libre -> resultat inattendu
-  - Red cut sans documentation -> maintenance impossible
+  - Cut rouge sans documentation -> maintenance impossible
   - Oublier fail apres cut -> predicat toujours vrai
   - Cut trop tot -> solutions manquantes
 
-DOUBLE NEGATION (pour "pour tout")
+DOUBLE NEGATION (pour le quantificateur universel)
   "F fournit toutes les pieces de Lyon"
   = "il n'existe pas de piece de Lyon non fournie par F"
   division(F) :- fournisseur(F,_,_), \+(existe_non_fournie(F)).

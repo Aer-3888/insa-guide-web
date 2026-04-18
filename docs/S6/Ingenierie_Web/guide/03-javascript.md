@@ -8,7 +8,7 @@ sidebar_position: 3
 ## Table des matieres
 
 1. [Variables et types](#1-variables-et-types)
-2. [Fonctions et arrow functions](#2-fonctions-et-arrow-functions)
+2. [Fonctions et fonctions flechees](#2-fonctions-et-fonctions-flechees)
 3. [Objets et JSON](#3-objets-et-json)
 4. [Tableaux et methodes fonctionnelles](#4-tableaux-et-methodes-fonctionnelles)
 5. [Classes ES6](#5-classes-es6)
@@ -16,7 +16,7 @@ sidebar_position: 3
 7. [Programmation asynchrone](#7-programmation-asynchrone)
 8. [Modules](#8-modules)
 9. [Pieges courants](#9-pieges-courants)
-10. [Cheat Sheet](#10-cheat-sheet)
+10. [Aide-memoire](#10-aide-memoire)
 
 ---
 
@@ -60,7 +60,7 @@ typeof [1, 2];      // "object"   <-- tableaux = objets
 "1" === 1;      // false
 ```
 
-### Template strings
+### Chaines de caracteres avec gabarit (template strings)
 
 ```javascript
 const nom = "Alice";
@@ -69,7 +69,7 @@ const msg = `Bonjour ${nom}, 2+2 = ${2+2}`;   // backticks
 
 ---
 
-## 2. Fonctions et arrow functions
+## 2. Fonctions et fonctions flechees
 
 ```javascript noexec
 // Declaration classique (hoisted)
@@ -91,7 +91,7 @@ const somme = (...nombres) => nombres.reduce((acc, n) => acc + n, 0);
 const tab2 = [...tab1, 4, 5];   // copie + ajout
 ```
 
-### ATTENTION : this dans les arrow functions
+### ATTENTION : this dans les fonctions flechees
 
 ```javascript noexec
 const jeu = {
@@ -103,7 +103,7 @@ const jeu = {
 };
 ```
 
-> Utiliser `function` pour les methodes d'objets, arrow functions pour les callbacks.
+> Utiliser `function` pour les methodes d'objets, les fonctions flechees pour les callbacks.
 
 ---
 
@@ -329,7 +329,7 @@ import * as utils from './utils.js';
 ## 9. Pieges courants
 
 1. **== au lieu de ===** : toujours `===` et `!==`
-2. **this dans arrow functions** : ne pointe pas vers l'objet
+2. **this dans les fonctions flechees** : ne pointe pas vers l'objet
 3. **var au lieu de let/const** : `var` a une portee de fonction, fuite de variable
 4. **typeof null === "object"** : bug historique, utiliser `=== null`
 5. **Oublier await** : `fetch()` retourne une Promise, pas les donnees
@@ -337,13 +337,13 @@ import * as utils from './utils.js';
 
 ---
 
-## 10. Cheat Sheet
+## 10. Aide-memoire
 
 ```
 Variables : const (defaut), let (si mutation), JAMAIS var
 Types : number, string, boolean, null, undefined, object
 Comparaison : TOUJOURS ===
-Fonctions : arrow pour callbacks, function pour methodes
+Fonctions : flechees pour callbacks, function pour methodes
 Tableaux : map, filter, find, reduce, forEach, some, every
 JSON : stringify (objet->texte), parse (texte->objet)
 DOM : querySelector, textContent, classList, addEventListener

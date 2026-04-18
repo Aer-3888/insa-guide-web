@@ -1,9 +1,9 @@
 ---
-title: "CLP -- Conception Logique des Processeurs (Processor Logic Design)"
+title: "CLP -- Conception Logique des Processeurs"
 sidebar_position: 0
 ---
 
-# CLP -- Conception Logique des Processeurs (Processor Logic Design)
+# CLP -- Conception Logique des Processeurs
 
 - [Guide](guide/)
 - [Exercices](exercises/)

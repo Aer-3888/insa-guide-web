@@ -1,11 +1,11 @@
 ---
-title: "TP7 - QuadTrees et Compression d'Images (QuadTrees)"
+title: "TP7 - QuadTrees et Compression d'Images"
 sidebar_position: 7
 ---
 
-# TP7 - QuadTrees et Compression d'Images (QuadTrees)
+# TP7 - QuadTrees et Compression d'Images
 
-> Following teacher instructions from: `S5/SDD/data/moodle/tp/tp7_quadtrees/README.md`
+> D'apres les consignes de l'enseignant : `S5/SDD/data/moodle/tp/tp7_quadtrees/README.md`
 
 ## Objectif
 
@@ -39,7 +39,7 @@ Si tous les pixels d'une region ont la meme couleur (dans un seuil), la region d
 
 ### Definir la classe interne Node et les attributs de base
 
-**Answer:**
+**Reponse :**
 
 ```java
 package quadtree;
@@ -76,7 +76,7 @@ public class Tree implements QuadTree {
     private Node current;
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Chaque noeud peut avoir 0 (feuille) ou exactement 4 enfants. On utilise une ArrayList pour l'acces par index. La navigation se fait par curseur (`current`), comme un systeme de fichiers.
 
 ---
@@ -85,7 +85,7 @@ Chaque noeud peut avoir 0 (feuille) ou exactement 4 enfants. On utilise une Arra
 
 ### Implementer les constructeurs, la navigation et les operations de base
 
-**Answer:**
+**Reponse :**
 
 ```java
     public Tree() { }
@@ -165,7 +165,7 @@ Chaque noeud peut avoir 0 (feuille) ou exactement 4 enfants. On utilise une Arra
     public String toString() { return "nope"; }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Contrairement au TP6 (qui utilisait arbreG/arbreD), le quadtree utilise un curseur (`current`) qu'on deplace avec `goToRoot()`, `goToParent()`, `goToChild(i)`. Chaque `goToChild(i)` doit etre equilibre par un `goToParent()`.
 
 ---
@@ -176,7 +176,7 @@ Contrairement au TP6 (qui utilisait arbreG/arbreD), le quadtree utilise un curse
 
 Chaque region de 1x1 pixel devient un noeud feuille avec la couleur du pixel.
 
-**Answer:**
+**Reponse :**
 
 ```java
     private Node buildFromImageRec(Image u, int low_x, int low_y,
@@ -205,7 +205,7 @@ Chaque region de 1x1 pixel devient un noeud feuille avec la couleur du pixel.
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - Apres construction de l'arbre complet (chaque pixel est une feuille), on appelle `prune(0)` pour fusionner les freres avec des couleurs identiques. Cela produit le quadtree compact.
 - Ordre des quadrants (important -- doit correspondre a recreate) :
   - Enfant 0 : haut-gauche (NW)
@@ -221,7 +221,7 @@ Chaque region de 1x1 pixel devient un noeud feuille avec la couleur du pixel.
 
 Fusionner recursivement les enfants dans leur parent si les 4 enfants sont des feuilles avec des couleurs similaires (dans le seuil).
 
-**Answer:**
+**Reponse :**
 
 ```java
     public void prune(int threshold) {
@@ -262,7 +262,7 @@ Fusionner recursivement les enfants dans leur parent si les 4 enfants sont des f
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 1. Elaguer recursivement les enfants (de bas en haut)
 2. Si les 4 enfants sont des feuilles ET toutes les couleurs sont dans le `threshold` les unes des autres, remplacer les 4 enfants par une seule feuille avec la couleur moyenne
 3. Seuil plus eleve = compression plus agressive = plus de perte de qualite
@@ -280,7 +280,7 @@ Exemples de seuil :
 
 Parcourir le quadtree et remplir une image de sortie. Les noeuds feuilles remplissent toute leur region avec une seule couleur.
 
-**Answer:**
+**Reponse :**
 
 ```java
     private void recreateRec(Image out, int low_x, int low_y,
@@ -314,7 +314,7 @@ Parcourir le quadtree et remplir une image de sortie. Les noeuds feuilles rempli
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - L'ordre des quadrants dans `recreateRec` doit correspondre exactement a `buildFromImageRec`. Si l'enfant 0 est NW pendant la construction, il doit aussi etre NW pendant la reconstruction.
 - Apres avoir traite un enfant, on appelle `goToParent()` pour revenir au niveau courant. Le `goToParent()` final a la fin de la methode retourne au niveau de l'appelant.
 

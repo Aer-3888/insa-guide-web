@@ -1,11 +1,11 @@
 ---
-title: "TP2 - Listes avec Iterateurs (Lists with Iterators)"
+title: "TP2 - Listes avec Iterateurs"
 sidebar_position: 2
 ---
 
-# TP2 - Listes avec Iterateurs (Lists with Iterators)
+# TP2 - Listes avec Iterateurs
 
-> Following teacher instructions from: `S5/SDD/data/moodle/tp/tp2_iterators/README.md`
+> D'apres les consignes de l'enseignant : `S5/SDD/data/moodle/tp/tp2_iterators/README.md`
 
 ## Objectif pedagogique
 
@@ -51,7 +51,7 @@ La liste possede les donnees. L'iterateur detient une position (curseur) et effe
 
 ### Definir l'interface Iterateur -- quelles operations le curseur de parcours necessite-t-il ?
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -70,7 +70,7 @@ public interface Iterateur<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 L'iterateur rassemble toutes les operations de navigation et de modification positionnelle. Les operations `ajouterG()` et `modifec()` sont nouvelles par rapport au TP1.
 
 ---
@@ -79,7 +79,7 @@ L'iterateur rassemble toutes les operations de navigation et de modification pos
 
 ### Definir l'interface Liste -- quelles operations le conteneur a-t-il besoin (separement du parcours) ?
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -91,7 +91,7 @@ public interface Liste<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 La liste ne connait rien de la position du curseur. L'iterateur connait sa liste et la parcourt. Le code client obtient un iterateur via `liste.iterateur()` et effectue toutes les operations a travers lui.
 
 ---
@@ -102,7 +102,7 @@ La liste ne connait rien de la position du curseur. L'iterateur connait sa liste
 
 Reprendre le pattern du TP1 avec sentinelles, mais sans aucune logique de curseur.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -138,7 +138,7 @@ public class ListeDoubleChainee<T> implements Liste<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - Difference clef avec le TP1 : la liste n'a pas de champ `cursor`. Elle ne gere que la structure sentinelle.
 - La classe interne `Link` utilise `pred`/`succ` au lieu de `predecessor`/`successor`.
 - Les champs sont `protected` pour que l'iterateur puisse y acceder.
@@ -150,7 +150,7 @@ public class ListeDoubleChainee<T> implements Liste<T> {
 
 ### Implementer ListeDoubleChaineeIterateur -- le parcours par curseur sur la liste chainee
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -240,7 +240,7 @@ public class ListeDoubleChaineeIterateur<T> implements Iterateur<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - `estSorti()` detecte les sentinelles en verifiant `cursor.pred == null` (sentinelle head) ou `cursor.succ == null` (sentinelle tail).
 - `ajouterG()` est nouveau : insere a *gauche* du curseur. La logique de chainage est le miroir de `ajouterD()`. Quand la liste est vide, on ancre sur `tail` au lieu de `head`.
 - Toutes les insertions/suppressions sont O(1) grace au chainage double.
@@ -253,7 +253,7 @@ public class ListeDoubleChaineeIterateur<T> implements Iterateur<T> {
 
 Implementer la meme interface `Liste<T>` en utilisant un tableau au lieu de pointeurs.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -284,7 +284,7 @@ public class ListeTabulee<T> implements Liste<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - Taille maximale fixe (`TMAX = 1000`). Depasser lance `DebordementException`.
 - `occupation` compte le nombre de cases utilisees.
 - `internal_tab` et `occupation` sont `protected` pour que l'iterateur puisse y acceder.
@@ -295,7 +295,7 @@ public class ListeTabulee<T> implements Liste<T> {
 
 ### Implementer ListeTabuleeIterateur -- le parcours par index dans le tableau
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -389,7 +389,7 @@ public class ListeTabuleeIterateur<T> implements Iterateur<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - Difference critique avec la version chainee : `ajouterD()` et `oterec()` necessitent des decalages O(n) car les elements du tableau doivent etre contigus.
 - `index` commence a -1 (hors-limites). Apres `entete()` il vaut 0. Apres ajout d'un element et `succ()`, l'index vaut `occupation`, donc `estSorti()` retourne `true`.
 
@@ -401,7 +401,7 @@ public class ListeTabuleeIterateur<T> implements Iterateur<T> {
 
 Le framework de tests utilise un pattern de classe de base abstraite :
 
-**Answer:**
+**Reponse :**
 
 Les deux implementations doivent passer les *memes* tests, ce qui prouve qu'elles sont interchangeables via les interfaces `Liste`/`Iterateur`.
 
@@ -439,7 +439,7 @@ public class ListeTabuleeTest extends ListeTest {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Le pattern Template Method : la classe de base definit les tests, les sous-classes fournissent la factory. Si les deux implementations passent les memes tests, elles respectent le meme contrat.
 
 ---

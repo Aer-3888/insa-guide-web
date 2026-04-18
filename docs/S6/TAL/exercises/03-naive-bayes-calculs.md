@@ -270,7 +270,7 @@ Somme = 14/14 = 1.0000
 
 ---
 
-## Exercice 5 : Impact du prior p(c)
+## Exercice 5 : Impact de la probabilite a priori p(c)
 
 ### Enonce
 
@@ -288,15 +288,15 @@ score(negatif) = 0.25 * (4/24) * (8/24) = 0.25 * 0.05556 = 0.01389
 
 **Classification : toujours NEGATIF** (mais la marge est plus faible)
 
-Avec un prior encore plus desequilibre (p(positif)=0.9, p(negatif)=0.1) :
+Avec un a priori encore plus desequilibre (p(positif)=0.9, p(negatif)=0.1) :
 ```
 score(positif) = 0.9 * 0.01333 = 0.01200
 score(negatif) = 0.1 * 0.05556 = 0.00556
 ```
 
-**Classification : POSITIF** -- le prior a inverse la decision !
+**Classification : POSITIF** -- la probabilite a priori a inverse la decision !
 
-**Lecon** : le prior p(c) joue un role crucial quand les classes sont desequilibrees.
+**Lecon** : la probabilite a priori p(c) joue un role crucial quand les classes sont desequilibrees.
 
 ---
 
@@ -335,6 +335,6 @@ Le choix entre les deux depend de la tache. Le frequentiel est plus courant en c
 2. **|V| est le vocabulaire GLOBAL** : tous les mots distincts, pas juste ceux de la classe
 3. **Mots hors vocabulaire** : les ignorer dans le produit (ne pas les compter)
 4. **Logarithmes** : en pratique on utilise log(p) pour eviter les underflows, mais en DS on calcule directement les produits
-5. **Prior** : ne pas oublier p(c) dans le produit final
+5. **A priori** : ne pas oublier p(c) dans le produit final
 6. **Verification** : la somme des p(w|c) pour tous les w du vocabulaire doit faire 1
 7. **Zero sans lissage** : un seul mot avec p=0 annule tout le produit

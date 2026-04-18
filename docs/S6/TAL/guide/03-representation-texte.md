@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Chapitre 3 -- Representation du Texte
 
-## 3.1 Bag of Words (Sac de Mots)
+## 3.1 Sac de Mots (Bag of Words)
 
 ### Principe
 
@@ -47,12 +47,12 @@ Mot "syntaxe" : TF moyen, IDF eleve --> TF-IDF eleve  (discriminant)
 
 ### Formules
 
-**TF (Term Frequency)** :
+**TF (frequence du terme)** :
 ```
 tf(w, d) = n(w, d) / SUM_{v} n(v, d)
 ```
 
-**IDF (Inverse Document Frequency)** :
+**IDF (frequence inverse de document)** :
 ```
 idf(w) = log(|D| / df(w))
 ```
@@ -183,7 +183,7 @@ Embedding("where") = SUM des embeddings de ses n-grammes
 
 **Avantage majeur** : gere les mots inconnus (noms propres, neologismes, fautes).
 
-### BPE (Byte Pair Encoding) -- utilise dans GPT
+### BPE (encodage par paires d'octets) -- utilise dans GPT
 
 Algorithme :
 1. Decomposer tous les mots en lettres individuelles
@@ -225,7 +225,7 @@ cos(x, y) = (x . y) / (||x|| * ||y||)
 Wu_Palmer(c1, c2) = 2 * depth(LCS(c1, c2)) / (depth(c1) + depth(c2))
 ```
 
-LCS = Lowest Common Subsumer (ancetre commun le plus bas dans la hierarchie WordNet).
+LCS = ancetre commun le plus specifique dans la hierarchie WordNet.
 
 ## 3.8 Embeddings de documents
 

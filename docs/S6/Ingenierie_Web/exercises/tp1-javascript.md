@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # TP1 : JavaScript -- Introduction
 
-> Following teacher instructions from: `S6/Ingenierie_Web/data/moodle/tp/tp1_javascript/README.md`
+> D'apres les consignes de l'enseignant dans : `S6/Ingenierie_Web/data/moodle/tp/tp1_javascript/README.md`
 
 Ce TP couvre les fondamentaux de JavaScript a travers trois exercices progressifs issus du sujet `TP-intro-JS.pdf` :
 1. **First Step** : generateur d'histoires (variables, fonctions, DOM, evenements)
@@ -67,14 +67,14 @@ Le fichier `index.html` est fourni. Il contient un champ texte, deux boutons rad
 </html>
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `First Step/index.html` : fourni, aucune modification necessaire
 
 ---
 
 ### Q2 : Ecrire la logique JavaScript
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 // Fichier : First Step/main.js
@@ -136,9 +136,9 @@ function result() {
 }
 ```
 
-### Bug a corriger
+### Bogue a corriger
 
-Le code source original contient un bug intentionnel dans la conversion UK :
+Le code source original contient un bogue intentionnel dans la conversion UK :
 ```javascript noexec
 // BUG : newStory.replace() retourne une nouvelle chaine mais NE modifie PAS newStory
 newStory.replace("94 farenheit", temperature);   // resultat perdu !
@@ -149,9 +149,9 @@ newStory = newStory.replace("94 fahrenheit", temperature);
 newStory = newStory.replace("300 pounds", weight);
 ```
 
-Note : il y a aussi une faute d'orthographe dans le code original ("farenheit" au lieu de "fahrenheit") qui fait que le replace ne matche pas le texte du template.
+Note : il y a aussi une faute d'orthographe dans le code original ("farenheit" au lieu de "fahrenheit") qui fait que le replace ne correspond pas au texte du template.
 
-**File changes:**
+**Fichiers modifies :**
 - `First Step/main.js` : ecriture complete de la logique de generation
 
 ---
@@ -160,7 +160,7 @@ Note : il y a aussi une faute d'orthographe dans le code original ("farenheit" a
 
 ### Q1 : Creer dynamiquement les vignettes et gerer les interactions
 
-**Answer:**
+**Reponse :**
 
 ```html
 <!-- Fichier : Building Blocks/index.html (fourni) -->
@@ -259,13 +259,13 @@ btn.onclick = function(event) {
 }
 ```
 
-**Concepts cles :**
+**Concepts essentiels :**
 - `document.createElement('img')` : creation dynamique d'un element DOM
 - `thumbBar.appendChild(newImage)` : ajout au DOM
-- `thumbBar.onclick` avec `event.target.src` : delegation d'evenements (un seul handler sur le conteneur parent)
-- Toggle entre classes `dark`/`light` pour basculer l'etat
+- `thumbBar.onclick` avec `event.target.src` : delegation d'evenements (un seul gestionnaire sur le conteneur parent)
+- Basculement entre classes `dark`/`light` pour changer l'etat
 
-**File changes:**
+**Fichiers modifies :**
 - `Building Blocks/main.js` : ecriture complete de la galerie
 
 ---
@@ -278,7 +278,7 @@ btn.onclick = function(event) {
 
 ### Q3 : Creer les balles et la boucle d'animation
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 // Fichier : Intro Objects/main-finished.js
@@ -391,19 +391,19 @@ function loop() {
 loop();
 ```
 
-**Concepts cles :**
+**Concepts essentiels :**
 - `Shape.call(this, ...)` : heritage par prototype (equivalent pre-ES6 de `super()`)
 - `Ball.prototype = Object.create(Shape.prototype)` : chaine de prototypes
 - `ctx.arc(x, y, radius, 0, 2*PI)` : dessin d'un cercle
 - `requestAnimationFrame(loop)` : animation fluide a ~60fps
 - `Math.sqrt(dx*dx + dy*dy)` : distance euclidienne pour la detection de collision
 
-**File changes:**
+**Fichiers modifies :**
 - `Intro Objects/main-finished.js` : ecriture complete de l'animation
 
 ---
 
-## Exercice 4 : ES6 Babel -- Classes et Drag and Drop
+## Exercice 4 : ES6 Babel -- Classes et Glisser-deposer
 
 ### Q1 : Implementer Rectangle (guide par les tests)
 
@@ -425,7 +425,7 @@ test("testColor", () => { expect(rec.color).toBe('red'); });
 test("testLinewidth", () => { expect(rec.linewidth).toBe(11); });
 ```
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 export class Rectangle extends Shape {
@@ -451,7 +451,7 @@ test("testY1", () => { expect(line.y1).toBe(2); });
 test("testY2", () => { expect(line.y2).toBe(4); });
 ```
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 export class Line extends Shape {
@@ -474,7 +474,7 @@ export class Line extends Shape {
 test("testArray", () => { expect(drawing.shapes).toHaveLength(0); });
 ```
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 export class Drawing {
@@ -486,9 +486,9 @@ export class Drawing {
 
 ---
 
-### Q4 : Implementer DnD (guide par les tests)
+### Q4 : Implementer DnD (glisser-deposer, guide par les tests)
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 // Fichier : es6_babel/src/main/interaction.js
@@ -527,7 +527,7 @@ export class DnD {
 
 ---
 
-### Fichier model.js complet
+### Fichier model.js complet (solution)
 
 ```javascript noexec
 // Fichier : es6_babel/src/main/model.js (SOLUTION COMPLETE)
@@ -565,7 +565,7 @@ export class Drawing {
 }
 ```
 
-### Lancer les tests
+### Executer les tests
 
 ```bash
 cd es6_babel
@@ -574,7 +574,7 @@ npx jest                     # Lancer tous les tests
 npx jest Rectangle.test.js   # Lancer un test specifique
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `es6_babel/src/main/model.js` : ajout de Rectangle, Line, Drawing
 - `es6_babel/src/main/interaction.js` : nouveau fichier -- classe DnD
 

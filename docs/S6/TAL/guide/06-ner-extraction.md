@@ -7,7 +7,7 @@ sidebar_position: 6
 
 ## 6.1 NER : Definition
 
-La reconnaissance d'entites nommees (Named Entity Recognition) consiste a identifier et classifier les entites dans un texte.
+La reconnaissance d'entites nommees (NER) consiste a identifier et classifier les entites dans un texte.
 
 ```
 "Emmanuel Macron a visite la Tour Eiffel a Paris le 14 juillet"
@@ -23,7 +23,7 @@ La reconnaissance d'entites nommees (Named Entity Recognition) consiste a identi
 | ORG (organisation) | INSA, ONU, Google |
 | MISC / TIME | 14 juillet, 100 euros |
 
-## 6.2 Le systeme BIO (Begin-Inside-Outside)
+## 6.2 Le systeme BIO (Debut-Interieur-Exterieur)
 
 ```
 B = Beginning   (debut d'une entite)
@@ -66,13 +66,13 @@ Le NER est un cas particulier d'etiquetage de sequences. On utilise les memes mo
 | Modele | Application au NER |
 |--------|--------------------|
 | HMM | Performances moyennes, simple |
-| CRF | Bonnes performances, features manuelles (majuscule, suffixe...) |
-| BiLSTM-CRF | Etat de l'art, features apprises automatiquement |
+| CRF | Bonnes performances, caracteristiques manuelles (majuscule, suffixe...) |
+| BiLSTM-CRF | Etat de l'art, caracteristiques apprises automatiquement |
 
-### Features utiles pour le NER
+### Caracteristiques utiles pour le NER
 
-| Feature | Exemple | Utilite |
-|---------|---------|---------|
+| Caracteristique | Exemple | Utilite |
+|-----------------|---------|---------|
 | Majuscule initiale | "Paris" vs "paris" | Indice d'entite nommee |
 | Tout en majuscules | "ONU", "OTAN" | Sigle/organisation |
 | Contient des chiffres | "14 juillet" | Date/nombre |
@@ -82,7 +82,7 @@ Le NER est un cas particulier d'etiquetage de sequences. On utilise les memes mo
 
 ## 6.4 Extraction d'information
 
-### Relation Extraction
+### Extraction de relations
 
 Identifier les relations entre entites :
 ```
@@ -90,7 +90,7 @@ Identifier les relations entre entites :
 --> relation(president_de, Emmanuel_Macron, France)
 ```
 
-### Coreference Resolution
+### Resolution de coreferences
 
 Identifier quand deux expressions referent a la meme entite :
 ```
@@ -98,7 +98,7 @@ Identifier quand deux expressions referent a la meme entite :
 --> "Il" = "Le chat" (coreference)
 ```
 
-### Slot Filling
+### Remplissage de champs
 
 Remplir des champs predetermines a partir de texte :
 ```
@@ -134,13 +134,13 @@ TYPES D'ENTITES :
 NER = etiquetage de sequence :
   HMM < CRF < BiLSTM-CRF (etat de l'art)
 
-FEATURES UTILES :
+CARACTERISTIQUES UTILES :
   Majuscule, chiffres, contexte, gazetteers, morphologie
 
 EXTRACTION :
   Relations : lier entites par des predicats
   Coreference : "il" = "le chat"
-  Slot filling : remplir des champs structures
+  Remplissage de champs : remplir des champs structures
 
 EVALUATION :
   Precision, Rappel, F1 par type d'entite

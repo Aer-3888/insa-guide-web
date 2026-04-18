@@ -1,40 +1,38 @@
 ---
-title: "Chapter 2: PCA -- Principal Component Analysis (Analyse en Composantes Principales)"
+title: "Chapitre 2 : ACP -- Analyse en Composantes Principales"
 sidebar_position: 2
 ---
 
-# Chapter 2: PCA -- Principal Component Analysis (Analyse en Composantes Principales)
+# Chapitre 2 : ACP -- Analyse en Composantes Principales
 
-## Overview
+## Presentation
 
-PCA (ACP in French) is the central technique of the Data Analysis (AD) part of the course. It transforms a set of correlated variables into a smaller set of uncorrelated variables called **principal components** (composantes principales), while preserving as much variance (information) as possible.
+L'ACP (PCA en anglais) est la technique centrale de la partie Analyse de Donnees (AD) du cours. Elle transforme un ensemble de variables correlees en un ensemble plus petit de variables non correlees appelees **composantes principales**, tout en preservant autant de variance (information) que possible.
 
-**French term**: Analyse en Composantes Principales (ACP)
+## 1. Pourquoi l'ACP ?
 
-## 1. Why PCA?
+| Probleme | Comment l'ACP aide |
+|----------|--------------------|
+| Trop de variables (fleau de la dimension) | Reduit a 2-3 dimensions significatives |
+| Variables correlees | Cree des composantes non correlees |
+| Difficulte a visualiser des donnees en haute dimension | Projette sur des plans factoriels 2D |
+| Bruit dans les donnees | Conserve le signal (directions a forte variance), ecarte le bruit (faible variance) |
 
-| Problem | How PCA Helps |
-|---------|--------------|
-| Too many variables (curse of dimensionality) | Reduces to 2-3 meaningful dimensions |
-| Correlated variables | Creates uncorrelated components |
-| Hard to visualize high-dimensional data | Projects onto 2D factorial planes |
-| Noise in data | Keeps signal (high-variance directions), discards noise (low-variance) |
+**Intuition cle** : Si les variables sont correlees, la dimensionnalite effective est inferieure au nombre de variables. L'ACP trouve cette structure de dimension reduite.
 
-**Key insight**: If variables are correlated, the effective dimensionality is lower than the number of variables. PCA finds this lower-dimensional structure.
+## 2. Fondements mathematiques
 
-## 2. Mathematical Foundation
+### Algorithme etape par etape
 
-### Step-by-Step Algorithm
+**Entree** : Matrice de donnees X avec n individus (lignes) et p variables (colonnes).
 
-**Input**: Data matrix X with n individuals (rows) and p variables (columns).
+**Etape 1 -- Centrer (et eventuellement reduire) les donnees**
 
-**Step 1 -- Center (and optionally reduce) the data**
-
-ACP normee (normalized PCA) = center AND standardize. **Required when variables have different units.**
+ACP normee = centrer ET standardiser. **Necessaire quand les variables ont des unites differentes.**
 
 ```
-X_centered = X - mean(X)           # Centering (centrage)
-X_scaled = X_centered / std(X)     # Reduction (reduction)
+X_centre = X - moyenne(X)           # Centrage
+X_reduit = X_centre / ecart_type(X) # Reduction
 ```
 
 ```python noexec
@@ -43,97 +41,97 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 ```
 
-**Step 2 -- Compute the correlation (or covariance) matrix**
+**Etape 2 -- Calculer la matrice de correlation (ou de covariance)**
 
-For normalized PCA, this is the correlation matrix R:
-
-```
-R = (1/n) * X_scaled^T * X_scaled
-```
-
-R is a p x p symmetric matrix where R[i,j] = correlation between variable i and variable j.
-
-**Note**: The `1/n` convention is standard in French data analysis textbooks (ACP normee). In practice, `sklearn.decomposition.PCA` uses `1/(n-1)` (the unbiased sample covariance estimator), but the difference is negligible for large n. For exam purposes, use `1/n`.
-
-**Step 3 -- Compute eigenvalues and eigenvectors**
-
-Solve: R * v = lambda * v
-
-- **Eigenvalues** (valeurs propres) lambda_1 >= lambda_2 >= ... >= lambda_p
-- **Eigenvectors** (vecteurs propres) v_1, v_2, ..., v_p
-
-Each eigenvalue represents the variance captured by its corresponding eigenvector direction.
-
-**Step 4 -- Select the number of components**
-
-Keep the first k components that capture enough variance (typically 80-90%).
-
-**Step 5 -- Project the data**
+Pour l'ACP normee, c'est la matrice de correlation R :
 
 ```
-PC_scores = X_scaled * V_k    # V_k = matrix of first k eigenvectors
+R = (1/n) * X_reduit^T * X_reduit
 ```
 
-### Key Formulas
+R est une matrice symetrique p x p ou R[i,j] = correlation entre la variable i et la variable j.
 
-| Concept | Formula | Meaning |
-|---------|---------|---------|
-| **Eigenvalue** (valeur propre) | lambda_k | Variance explained by component k |
-| **Total inertia** (inertie totale) | Sum of all eigenvalues = p (for normalized PCA) | Total variance in the data |
-| **Explained variance ratio** | lambda_k / Sum(lambda_i) | % of information in component k |
-| **Cumulative variance** | Sum(lambda_1..k) / Sum(lambda_i) | % of information in first k components |
-| **Correlation variable-axis** | r(x_j, F_k) = v_jk * sqrt(lambda_k) | How strongly variable j relates to axis k |
-| **Contribution of individual** | (coord_i^2) / (n * lambda_k) | How much individual i contributes to axis k |
-| **Quality of representation** (cos^2) | coord_i^2 / Sum(coord_i^2 on all axes) | How well individual i is represented on the retained axes |
+**Note** : La convention `1/n` est standard dans les manuels francais d'analyse de donnees (ACP normee). En pratique, `sklearn.decomposition.PCA` utilise `1/(n-1)` (l'estimateur non biaise de la covariance), mais la difference est negligeable pour n grand. Pour les examens, utilisez `1/n`.
 
-## 3. Choosing the Number of Components
+**Etape 3 -- Calculer les valeurs propres et vecteurs propres**
 
-Three common rules:
+Resoudre : R * v = lambda * v
 
-### Rule 1: 80% Variance Rule (most used in this course)
-Keep the minimum number of components such that cumulative explained variance >= 80%.
+- **Valeurs propres** : lambda_1 >= lambda_2 >= ... >= lambda_p
+- **Vecteurs propres** : v_1, v_2, ..., v_p
 
-### Rule 2: Kaiser Criterion
-Keep components with eigenvalue > 1 (for normalized PCA). Rationale: a component should explain more variance than a single original variable.
+Chaque valeur propre represente la variance capturee par la direction de son vecteur propre correspondant.
 
-### Rule 3: Scree Plot (Diagramme des valeurs propres)
-Plot eigenvalues and look for an "elbow" -- a point where the decrease in eigenvalue slows significantly.
+**Etape 4 -- Choisir le nombre de composantes**
+
+Conserver les k premieres composantes qui capturent suffisamment de variance (generalement 80-90%).
+
+**Etape 5 -- Projeter les donnees**
+
+```
+Coordonnees_PC = X_reduit * V_k    # V_k = matrice des k premiers vecteurs propres
+```
+
+### Formules cles
+
+| Concept | Formule | Signification |
+|---------|---------|---------------|
+| **Valeur propre** | lambda_k | Variance expliquee par la composante k |
+| **Inertie totale** | Somme des valeurs propres = p (ACP normee) | Variance totale des donnees |
+| **Ratio de variance expliquee** | lambda_k / Somme(lambda_i) | % d'information dans la composante k |
+| **Variance cumulee** | Somme(lambda_1..k) / Somme(lambda_i) | % d'information dans les k premieres composantes |
+| **Correlation variable-axe** | r(x_j, F_k) = v_jk * sqrt(lambda_k) | Intensite du lien entre la variable j et l'axe k |
+| **Contribution d'un individu** | (coord_i^2) / (n * lambda_k) | Importance de l'individu i pour l'axe k |
+| **Qualite de representation** (cos^2) | coord_i^2 / Somme(coord_i^2 sur tous les axes) | Qualite de la representation de l'individu i sur les axes retenus |
+
+## 3. Choix du nombre de composantes
+
+Trois regles courantes :
+
+### Regle 1 : Regle des 80% de variance (la plus utilisee dans ce cours)
+Conserver le nombre minimal de composantes tel que la variance cumulee expliquee >= 80%.
+
+### Regle 2 : Critere de Kaiser
+Conserver les composantes dont la valeur propre > 1 (pour l'ACP normee). Justification : une composante doit expliquer plus de variance qu'une seule variable originale.
+
+### Regle 3 : Diagramme des valeurs propres (Scree plot)
+Tracer les valeurs propres et chercher un "coude" -- un point ou la decroissance de la valeur propre ralentit significativement.
 
 ```python noexec
 pca = PCA()
 pca.fit(X_scaled)
 
-# Scree plot
+# Diagramme des valeurs propres
 plt.bar(range(1, len(pca.explained_variance_ratio_)+1),
         pca.explained_variance_ratio_ * 100)
-plt.xlabel('Component')
-plt.ylabel('Explained Variance (%)')
-plt.title('Scree Plot')
+plt.xlabel('Composante')
+plt.ylabel('Variance expliquee (%)')
+plt.title('Diagramme des valeurs propres')
 ```
 
-### Example (from TP1 -- City Temperatures)
+### Exemple (issu du TP1 -- Temperatures des villes)
 
-| Component | Eigenvalue | Variance (%) | Cumulative (%) |
-|-----------|-----------|--------------|----------------|
+| Composante | Valeur propre | Variance (%) | Cumul (%) |
+|------------|---------------|--------------|-----------|
 | PC1 | ~8.5 | ~70% | 70% |
 | PC2 | ~2.0 | ~17% | 87% |
 | PC3 | ~0.7 | ~6% | 93% |
 | ... | ... | ... | ... |
 
-**Decision**: 2 components capture ~87% of information -- sufficient for analysis.
+**Decision** : 2 composantes capturent ~87% de l'information -- suffisant pour l'analyse.
 
-## 4. Interpreting the Factorial Plane of Individuals (Plan Factoriel des Individus)
+## 4. Interpretation du plan factoriel des individus
 
-The factorial plane plots each individual (observation) as a point in the space defined by two principal components.
+Le plan factoriel represente chaque individu (observation) comme un point dans l'espace defini par deux composantes principales.
 
-### Reading Rules
+### Regles de lecture
 
-1. **Proximity = Similarity**: Individuals close together have similar profiles across all original variables.
-2. **Distance from origin**: Individuals far from the center are "extreme" -- they strongly characterize the axes.
-3. **Opposition**: Individuals on opposite sides of an axis have opposite behaviors on the variables that define that axis.
-4. **Near the origin**: Individuals close to the center are "average" or poorly represented (check cos^2).
+1. **Proximite = Similarite** : Les individus proches ont des profils similaires sur toutes les variables originales.
+2. **Distance a l'origine** : Les individus eloignes du centre sont "extremes" -- ils caracterisent fortement les axes.
+3. **Opposition** : Les individus de part et d'autre d'un axe ont des comportements opposes sur les variables qui definissent cet axe.
+4. **Proches de l'origine** : Les individus proches du centre sont "moyens" ou mal representes (verifier le cos^2).
 
-### Example (TP1: French Cities by Temperature)
+### Exemple (TP1 : Villes francaises par temperature)
 
 ```
                         PC2 (Amplitude thermique)
@@ -149,50 +147,50 @@ The factorial plane plots each individual (observation) as a point in the space 
                                   (mediterraneen)
 ```
 
-**Interpretation**:
-- **PC1 (Axis 1, ~70%)**: North-South gradient = average temperature. Cities on the right (Marseille, Nice) are warmer overall. Cities on the left (Lille, Strasbourg) are cooler.
-- **PC2 (Axis 2, ~17%)**: East-West gradient = thermal amplitude. Cities at the top (Grenoble, Strasbourg) have large temperature differences between summer and winter. Cities at the bottom (Brest, Rennes) have mild, oceanic climates with small amplitude.
+**Interpretation** :
+- **PC1 (Axe 1, ~70%)** : Gradient Nord-Sud = temperature moyenne. Les villes a droite (Marseille, Nice) sont plus chaudes globalement. Les villes a gauche (Lille, Strasbourg) sont plus fraiches.
+- **PC2 (Axe 2, ~17%)** : Gradient Est-Ouest = amplitude thermique. Les villes en haut (Grenoble, Strasbourg) ont de grands ecarts de temperature entre ete et hiver. Les villes en bas (Brest, Rennes) ont des climats doux, oceaniques, avec une faible amplitude.
 
-## 5. The Correlation Circle (Cercle des Correlations)
+## 5. Le cercle des correlations
 
-**This is the single most important visualization in the course and the most tested topic on exams.**
+**C'est la visualisation la plus importante du cours et le sujet le plus teste aux examens.**
 
-The correlation circle plots each original variable as a point within a unit circle. The coordinates are the correlations between the variable and each principal component.
+Le cercle des correlations represente chaque variable originale comme un point a l'interieur d'un cercle unite. Les coordonnees sont les correlations entre la variable et chaque composante principale.
 
-### Reading Rules
+### Regles de lecture
 
-1. **Close to the circle edge** (length close to 1): The variable is well represented on these two axes.
-2. **Close to an axis**: The variable is strongly correlated with that component.
-3. **Two variables close together**: They are positively correlated.
-4. **Two variables diametrically opposite**: They are negatively correlated.
-5. **Two variables at 90 degrees**: They are uncorrelated (independent).
-6. **Close to the origin**: The variable is poorly represented on these axes -- look at other components.
+1. **Proche du bord du cercle** (longueur proche de 1) : La variable est bien representee sur ces deux axes.
+2. **Proche d'un axe** : La variable est fortement correlee avec cette composante.
+3. **Deux variables proches l'une de l'autre** : Elles sont positivement correlees.
+4. **Deux variables diametralement opposees** : Elles sont negativement correlees.
+5. **Deux variables a 90 degres** : Elles sont non correlees (independantes).
+6. **Proche de l'origine** : La variable est mal representee sur ces axes -- examiner d'autres composantes.
 
-### Computing Correlations (Loadings)
+### Calcul des correlations (loadings)
 
 ```python noexec
-# Method 1: From pca.components_ (true correlation between variable and axis)
+# Methode 1 : A partir de pca.components_ (vraie correlation entre variable et axe)
 loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
 
-# Method 2: Direct correlation formula
-# r(x_j, PC_k) = pca.components_[k, j] * sqrt(eigenvalue_k)
+# Methode 2 : Formule directe de correlation
+# r(x_j, PC_k) = pca.components_[k, j] * sqrt(valeur_propre_k)
 ```
 
-**Important note about the TP1 notebook**: The `correlation_circle_plotly` function provided in the TP uses `pcs[0, i]` and `pcs[1, i]` (i.e., `pca.components_[k, j]`) directly as coordinates, WITHOUT multiplying by `sqrt(eigenvalue_k)`. This means the arrows represent the eigenvector coordinates (weights in the principal component), not the true correlations. For exam interpretation purposes, use the formula with `sqrt(lambda_k)` for the actual correlation values.
+**Note importante sur le notebook du TP1** : La fonction `correlation_circle_plotly` fournie dans le TP utilise `pcs[0, i]` et `pcs[1, i]` (c.-a-d. `pca.components_[k, j]`) directement comme coordonnees, SANS multiplier par `sqrt(valeur_propre_k)`. Cela signifie que les fleches representent les coordonnees des vecteurs propres (poids dans la composante principale), pas les vraies correlations. Pour l'interpretation aux examens, utilisez la formule avec `sqrt(lambda_k)` pour les valeurs de correlation reelles.
 
-### Drawing the Correlation Circle
+### Tracer le cercle des correlations
 
 ```python noexec
 fig, ax = plt.subplots(figsize=(8, 8))
 
-# Unit circle
+# Cercle unite
 circle = plt.Circle((0, 0), 1, fill=False, color='gray', linestyle='--')
 ax.add_patch(circle)
 
-# Plot variables as arrows
+# Tracer les variables comme des fleches
 for i, var_name in enumerate(variable_names):
-    x = loadings[i, 0]  # Correlation with PC1
-    y = loadings[i, 1]  # Correlation with PC2
+    x = loadings[i, 0]  # Correlation avec PC1
+    y = loadings[i, 1]  # Correlation avec PC2
     ax.arrow(0, 0, x, y, head_width=0.05, color='red')
     ax.text(x * 1.15, y * 1.15, var_name, fontsize=10)
 
@@ -203,43 +201,43 @@ ax.set_ylabel(f'PC2 ({var_explained[1]*100:.1f}%)')
 ax.set_aspect('equal')
 ```
 
-### Example (TP1: Temperature Months)
+### Exemple (TP1 : Mois de temperature)
 
-On the correlation circle for city temperatures:
-- **All months point roughly in the same direction on PC1**: All temperatures are positively correlated (warmer cities are warmer in all months).
-- **Summer months (Juin, Juillet) are angled toward PC2**: They contribute to the amplitude dimension.
-- **Winter months (Decembre, Janvier) are angled away from PC2**: They highlight the oceanic vs continental distinction.
-- **March and October sit very close to the PC1 axis**: They are the best "average temperature" proxies.
+Sur le cercle des correlations des temperatures des villes :
+- **Tous les mois pointent approximativement dans la meme direction sur PC1** : Toutes les temperatures sont positivement correlees (les villes chaudes sont chaudes tous les mois).
+- **Les mois d'ete (Juin, Juillet) sont orientes vers PC2** : Ils contribuent a la dimension d'amplitude.
+- **Les mois d'hiver (Decembre, Janvier) s'ecartent de PC2** : Ils mettent en evidence la distinction oceanique vs continental.
+- **Mars et Octobre sont tres proches de l'axe PC1** : Ce sont les meilleurs indicateurs de la temperature moyenne.
 
-## 6. Contribution and Quality of Representation
+## 6. Contribution et qualite de representation
 
-### Contribution of an Individual to an Axis
+### Contribution d'un individu a un axe
 
 ```
 CTR(i, k) = (F_ik)^2 / (n * lambda_k)
 ```
 
-Where F_ik is the coordinate of individual i on axis k. If CTR > 1/n, the individual contributes more than average.
+Ou F_ik est la coordonnee de l'individu i sur l'axe k. Si CTR > 1/n, l'individu contribue plus que la moyenne.
 
-### Quality of Representation (cos^2)
-
-```
-cos^2(i, k) = (F_ik)^2 / sum_j(F_ij)^2
-```
-
-A high cos^2 means the individual is well represented on axis k. If cos^2 is low on both retained axes, the individual's position in the factorial plane is unreliable.
-
-### Variable Contributions
-
-For variables, the contribution to an axis is related to the squared correlation with that axis:
+### Qualite de representation (cos^2)
 
 ```
-CTR(var_j, axis_k) = r(x_j, F_k)^2 / lambda_k
+cos^2(i, k) = (F_ik)^2 / somme_j(F_ij)^2
 ```
 
-Since sum_j r(x_j, F_k)^2 = lambda_k (for normalized PCA), this gives a proportion that sums to 1 across all variables for a given axis. A variable contributes significantly if its contribution exceeds 1/p (where p is the number of variables).
+Un cos^2 eleve signifie que l'individu est bien represente sur l'axe k. Si le cos^2 est faible sur les deux axes retenus, la position de l'individu dans le plan factoriel n'est pas fiable.
 
-**Note on the TP1 notebook**: The `loadings` DataFrame in the TP stores `pca.components_.T` (the eigenvector weights, not the correlations). Squaring these gives the squared weights, which are proportional to contributions since each eigenvector is unit-norm (components sum to 1).
+### Contributions des variables
+
+Pour les variables, la contribution a un axe est liee au carre de la correlation avec cet axe :
+
+```
+CTR(var_j, axe_k) = r(x_j, F_k)^2 / lambda_k
+```
+
+Puisque somme_j r(x_j, F_k)^2 = lambda_k (pour l'ACP normee), cela donne une proportion qui somme a 1 pour toutes les variables d'un axe donne. Une variable contribue significativement si sa contribution depasse 1/p (ou p est le nombre de variables).
+
+**Note sur le notebook du TP1** : Le DataFrame `loadings` du TP stocke `pca.components_.T` (les poids des vecteurs propres, pas les correlations). Les elever au carre donne les poids carres, qui sont proportionnels aux contributions puisque chaque vecteur propre est de norme unite (les composantes somment a 1).
 
 ```python noexec
 loadings = pd.DataFrame(
@@ -248,108 +246,108 @@ loadings = pd.DataFrame(
     index=variable_names
 )
 
-# Contributions = squared loadings
+# Contributions = loadings au carre
 contributions = loadings ** 2
 ```
 
-## 7. Explaining Axes with Qualitative Variables
+## 7. Explication des axes par des variables qualitatives
 
-After PCA, you can color the factorial plane by a qualitative variable to see if it explains the axes:
+Apres l'ACP, on peut colorer le plan factoriel par une variable qualitative pour voir si elle explique les axes :
 
 ```python noexec
-# Color by SalePrice (quantitative)
+# Colorer par SalePrice (quantitative)
 plt.scatter(X_pca[:, 0], X_pca[:, 1], c=df['SalePrice'], cmap='viridis')
 
-# Color by OverallQual (qualitative)
+# Colorer par OverallQual (qualitative)
 for qual_value in df['OverallQual'].unique():
     mask = df['OverallQual'] == qual_value
     plt.scatter(X_pca[mask, 0], X_pca[mask, 1], label=str(qual_value))
 ```
 
-From TP1 (House Prices):
-- **SalePrice** is correlated with PC2: higher prices appear on one side.
-- **OverallQual**: Low quality (1-3) clusters on the left of PC1; high quality (8-10) on the right.
-- **Neighborhood**: Does NOT structure the data on PC1/PC2 -- the axes capture surface/structure, not location.
+Resultats du TP1 (House Prices) :
+- **SalePrice** est correlee avec PC2 : les prix eleves apparaissent d'un cote.
+- **OverallQual** : Les qualites basses (1-3) se regroupent a gauche de PC1 ; les qualites elevees (8-10) a droite.
+- **Neighborhood** : Ne structure PAS les donnees sur PC1/PC2 -- les axes capturent les surfaces/structures, pas la localisation.
 
-## 8. Connecting PCA to Classification
+## 8. Lien entre ACP et classification
 
-PCA results can be used as input for clustering (CAH, K-means):
+Les resultats de l'ACP peuvent servir d'entree au clustering (CAH, K-means) :
 
-1. Run PCA, keep k components (e.g., 2)
-2. Use the PC scores as new variables
-3. Apply CAH or K-means on these reduced coordinates
+1. Effectuer l'ACP, garder k composantes (ex. 2)
+2. Utiliser les coordonnees des PC comme nouvelles variables
+3. Appliquer la CAH ou K-means sur ces coordonnees reduites
 
-This is the **CAH-MIXTE** method covered in TP2. See [Chapter 3: Clustering](/S5/ADFD/guide/03-clustering).
+C'est la methode **CAH-MIXTE** traitee dans le TP2. Voir le [Chapitre 3 : Clustering](/S5/ADFD/guide/03-clustering).
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Using non-normalized PCA when variables have different units**: Always use ACP normee (StandardScaler) unless all variables are in the same unit.
-2. **Confusing PCA components with PCA loadings**: Components are the coordinates of individuals; loadings are the correlations of variables with axes.
-3. **Reading the correlation circle for variables close to origin**: If a variable is near the center of the circle, it is NOT well represented on these axes -- do not interpret its position.
-4. **Interpreting distance between an individual and a variable**: The factorial plane of individuals and the correlation circle are on different scales. Only compare individuals with individuals, and variables with variables.
-5. **Forgetting that PC axes are arbitrary in sign**: The direction (positive/negative) of a PC axis is arbitrary. What matters is relative positioning.
+1. **Utiliser l'ACP non normee quand les variables ont des unites differentes** : Utilisez toujours l'ACP normee (StandardScaler) sauf si toutes les variables sont dans la meme unite.
+2. **Confondre composantes et loadings** : Les composantes sont les coordonnees des individus ; les loadings sont les correlations des variables avec les axes.
+3. **Lire le cercle des correlations pour des variables proches de l'origine** : Si une variable est pres du centre du cercle, elle n'est PAS bien representee sur ces axes -- n'interpretez pas sa position.
+4. **Interpreter la distance entre un individu et une variable** : Le plan factoriel des individus et le cercle des correlations sont a des echelles differentes. Ne comparez que individus entre eux, et variables entre elles.
+5. **Oublier que le signe des axes de l'ACP est arbitraire** : La direction (positive/negative) d'un axe de PC est arbitraire. Ce qui compte, c'est le positionnement relatif.
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### PCA Pipeline
+### Pipeline ACP
 
 ```python noexec
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-# 1. Standardize
+# 1. Standardiser
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# 2. Fit PCA
-pca = PCA(n_components=2)  # or n_components=None for all
+# 2. Ajuster l'ACP
+pca = PCA(n_components=2)  # ou n_components=None pour toutes
 X_pca = pca.fit_transform(X_scaled)
 
-# 3. Results
-pca.explained_variance_ratio_    # % variance per component
-pca.explained_variance_          # eigenvalues
-pca.components_                  # eigenvectors (loadings matrix)
-np.cumsum(pca.explained_variance_ratio_)  # cumulative variance
+# 3. Resultats
+pca.explained_variance_ratio_    # % variance par composante
+pca.explained_variance_          # valeurs propres
+pca.components_                  # vecteurs propres (matrice des loadings)
+np.cumsum(pca.explained_variance_ratio_)  # variance cumulee
 ```
 
-### Quick Reference Table
+### Tableau de reference rapide
 
-| What You Want | How to Get It |
-|---------------|--------------|
-| Eigenvalues | `pca.explained_variance_` |
-| % variance per component | `pca.explained_variance_ratio_` |
-| Cumulative variance | `np.cumsum(pca.explained_variance_ratio_)` |
-| Individual coordinates on axes | `pca.transform(X_scaled)` or `X_pca` |
-| Variable correlations with axes | `pca.components_.T * np.sqrt(pca.explained_variance_)` |
-| Contribution of variable to axis k | `(pca.components_.T * np.sqrt(pca.explained_variance_))[:, k]**2` (squared correlations) |
+| Ce que vous voulez | Comment l'obtenir |
+|--------------------|-------------------|
+| Valeurs propres | `pca.explained_variance_` |
+| % variance par composante | `pca.explained_variance_ratio_` |
+| Variance cumulee | `np.cumsum(pca.explained_variance_ratio_)` |
+| Coordonnees des individus sur les axes | `pca.transform(X_scaled)` ou `X_pca` |
+| Correlations des variables avec les axes | `pca.components_.T * np.sqrt(pca.explained_variance_)` |
+| Contribution d'une variable a l'axe k | `(pca.components_.T * np.sqrt(pca.explained_variance_))[:, k]**2` (correlations au carre) |
 
-### Key Numbers to Remember
+### Nombres cles a retenir
 
-| Rule | Value |
-|------|-------|
-| Minimum cumulative variance to keep | 80% |
-| Kaiser criterion (eigenvalue threshold) | > 1 |
-| Good quality of representation (cos^2) | > 0.5 |
-| Significant contribution threshold | > 1/p (p = number of variables) |
+| Regle | Valeur |
+|-------|--------|
+| Variance cumulee minimale a conserver | 80% |
+| Critere de Kaiser (seuil de valeur propre) | > 1 |
+| Bonne qualite de representation (cos^2) | > 0.5 |
+| Seuil de contribution significative | > 1/p (p = nombre de variables) |
 
-### Correlation Circle Interpretation Quick Guide
+### Guide rapide d'interpretation du cercle des correlations
 
-| Position on Circle | Meaning |
-|-------------------|---------|
-| On the circle edge | Very well represented |
-| Close to PC1 axis | Strongly correlated with PC1 |
-| Close to PC2 axis | Strongly correlated with PC2 |
-| Two variables near each other | Positively correlated |
-| Two variables opposite | Negatively correlated |
-| Two variables at 90 degrees | Uncorrelated |
-| Near center | Poorly represented -- check other axes |
+| Position sur le cercle | Signification |
+|------------------------|---------------|
+| Sur le bord du cercle | Tres bien representee |
+| Proche de l'axe PC1 | Fortement correlee avec PC1 |
+| Proche de l'axe PC2 | Fortement correlee avec PC2 |
+| Deux variables proches l'une de l'autre | Positivement correlees |
+| Deux variables opposees | Negativement correlees |
+| Deux variables a 90 degres | Non correlees |
+| Proche du centre | Mal representee -- verifier d'autres axes |
 
-### Exam Keywords (French/English)
+### Vocabulaire d'examen (Francais/Anglais)
 
-| French | English |
-|--------|---------|
+| Francais | Anglais |
+|----------|---------|
 | Valeur propre | Eigenvalue |
 | Vecteur propre | Eigenvector |
 | Inertie | Variance / Inertia |

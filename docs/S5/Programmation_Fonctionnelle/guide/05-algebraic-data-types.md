@@ -268,12 +268,12 @@ RECORD AVEC FONCTIONS
   let r = {addition = (+); zero = 0}
   r.addition 3 4 = 7
 
-PATTERN MATCHING SUR VARIANTS
+PATTERN MATCHING SUR LES VARIANTS
   match expr with
   | Cercle r -> ...
   | Rect (w, h) -> ...
 
-PATTERN MATCHING SUR OPTION
+PATTERN MATCHING SUR LE TYPE OPTION
   match opt with
   | None -> ...
   | Some x -> ...

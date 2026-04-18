@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # TP1 - OpenMP : Prise en main
 
-> Following teacher instructions from: `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP1_OpenMP.pdf`
+> D'apres les consignes de l'enseignant : `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP1_OpenMP.pdf`
 
 ---
 
@@ -31,7 +31,7 @@ Le sujet rappelle les commandes de base :
 > - utiliser les fonctions suivantes : `int omp_get_thread_num()` pour obtenir le rang d'un thread, `int omp_get_num_threads()` pour connaitre le nombre de threads
 > - toujours compiler sous gcc avec l'option `-fopenmp` **en premier**
 
-**Answer:**
+**Reponse :**
 
 Le programme utilise `#pragma omp parallel` pour creer une region parallele. Chaque thread execute le bloc et affiche son rang via `omp_get_thread_num()`. A la fin de la region parallele, une barriere implicite synchronise tous les threads, puis le thread maitre affiche le message de terminaison.
 
@@ -51,7 +51,7 @@ int main(void)
 }
 ```
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc -fopenmp exo1.c -o exo1
@@ -59,7 +59,7 @@ export OMP_NUM_THREADS=10
 ./exo1
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 L'ordre d'affichage est non-deterministe (l'OS ordonnance les threads librement). "Fin de programme" apparait toujours en dernier grace a la barriere implicite.
 
@@ -91,7 +91,7 @@ Sans le flag `-fopenmp`, le programme compile et s'execute avec 1 seul thread sa
 >
 > Apres et **seulement apres** avoir reussi la premiere partie de la question, utilisez `#pragma omp parallel for` pour faire la meme chose.
 
-**Answer:**
+**Reponse :**
 
 ### Partie 1 : Decoupage manuel
 
@@ -153,7 +153,7 @@ int main(void)
 
 OpenMP gere automatiquement le decoupage. Meme si ITERNUM n'est pas divisible par le nombre de threads, toutes les iterations sont executees (par ex. 34+33+33=100 avec 3 threads). La variable de boucle `i` est automatiquement `private`.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc -fopenmp exo2.c -o exo2
@@ -161,7 +161,7 @@ export OMP_NUM_THREADS=10
 ./exo2
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 Les 100 iterations sont affichees dans un ordre non-deterministe. Avec la version manuelle et 3 threads, l'iteration 99 est manquante. Avec `parallel for`, toutes les iterations sont toujours presentes.
 
@@ -198,7 +198,7 @@ int main () {
 }
 ```
 
-**Answer:**
+**Reponse :**
 
 ### Probleme des race conditions
 
@@ -254,7 +254,7 @@ for (long i = 1; i <= nb_pas; i++) {
 
 Le `critical` serialise l'acces a `som` : un seul thread a la fois peut y acceder. Le resultat est correct mais le programme est plus lent que la version sequentielle a cause de l'overhead du verrou.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc -fopenmp exo3.c -o exo3 -lm
@@ -269,7 +269,7 @@ export OMP_NUM_THREADS=4
 ./exo3
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 La valeur de PI est toujours correcte (3.141592653589793...). Les temps diminuent quasi-lineairement :
 
@@ -298,7 +298,7 @@ Le speedup maximal correspond au nombre de coeurs physiques. Au-dela, l'hyperthr
 >
 > **Exercice :** Testez les performances de votre programme et faites une courbe de performance et de speedup pour 1 a 24 Threads. Que constatez-vous ? Pourquoi ?
 
-**Answer:**
+**Reponse :**
 
 ### Connexion et preparation
 
@@ -328,7 +328,7 @@ done
 srun -N1 -c24 ./exo3
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 | Threads | Temps (s) | Speedup | Efficacite |
 |---------|-----------|---------|------------|

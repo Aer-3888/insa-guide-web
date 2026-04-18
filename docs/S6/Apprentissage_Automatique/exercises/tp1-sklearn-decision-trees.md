@@ -1,21 +1,21 @@
 ---
-title: "TP1 - Introduction to scikit-learn, Decision Trees, and Bayesian Learning"
+title: "TP1 - Introduction a scikit-learn, arbres de decision et apprentissage bayesien"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction to scikit-learn, Decision Trees, and Bayesian Learning
+# TP1 - Introduction a scikit-learn, arbres de decision et apprentissage bayesien
 
-> Following teacher instructions from: `data/moodle/tp/tp1_sklearn_decision_trees/TP1_complete.ipynb`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp1_sklearn_decision_trees/TP1_complete.ipynb`
 
 ---
 
-## Part 1: Loading Pre-formatted Data (Iris)
+## Partie 1 : Chargement de donnees pre-formatees (Iris)
 
-### Q1: What type of machine learning problem is that?
+### Q1 : Quel type de probleme d'apprentissage automatique est-ce ?
 
-**Answer:**
+**Reponse :**
 
-Classification (supervised learning). We have labeled examples with 3 classes (setosa, versicolor, virginica) and we seek to predict the class of a new example from its features.
+Classification (apprentissage supervise). On dispose d'exemples etiquetes avec 3 classes (setosa, versicolor, virginica) et on cherche a predire la classe d'un nouvel exemple a partir de ses features.
 
 ```python noexec
 from sklearn.datasets import load_iris
@@ -28,7 +28,7 @@ print(irisData.target_names)
 print(irisData.feature_names)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [0 0 0 ... 2 2 2]
 ['setosa' 'versicolor' 'virginica']
@@ -37,11 +37,11 @@ print(irisData.feature_names)
 
 ---
 
-### Q2: How many features are there? What kind of features?
+### Q2 : Combien y a-t-il de features ? De quel type sont-elles ?
 
-**Answer:**
+**Reponse :**
 
-Four numeric continuous features:
+Quatre features numeriques continues :
 - sepal length (cm)
 - sepal width (cm)
 - petal length (cm)
@@ -49,15 +49,15 @@ Four numeric continuous features:
 
 ---
 
-### Q3: Can you see a problem with the way the data are prepared?
+### Q3 : Voyez-vous un probleme avec la facon dont les donnees sont preparees ?
 
-**Answer:**
+**Reponse :**
 
-The features (`irisData.data`) and class labels (`irisData.target`) are stored in separate data structures. The only link between them is the ordering (index). If you sort or shuffle one structure without applying the same operation to the other, all associations are broken and the model will learn from incorrect data.
+Les features (`irisData.data`) et les etiquettes de classe (`irisData.target`) sont stockees dans des structures de donnees separees. Le seul lien entre elles est l'ordre (l'indice). Si l'on trie ou melange l'une des structures sans appliquer la meme operation a l'autre, toutes les associations sont detruites et le modele apprendra a partir de donnees incorrectes.
 
 ---
 
-## Part 2: Plotting Parts of the Data
+## Partie 2 : Visualisation d'une partie des donnees
 
 ```python noexec
 %matplotlib inline
@@ -83,17 +83,17 @@ plt.title("Iris Data - size of the sepals only")
 plt.show()
 ```
 
-**Expected output:** A scatter plot with 150 points colored by class. Setosa (red) forms a well-separated cluster in the lower right. Versicolor (green) and virginica (blue) overlap strongly in the central region.
+**Sortie attendue :** Un nuage de points avec 150 points colores par classe. Setosa (rouge) forme un cluster bien separe en bas a droite. Versicolor (vert) et virginica (bleu) se chevauchent fortement dans la region centrale.
 
-### Q4: From the previous visualisation, what can you predict about the difficulty of this dataset?
+### Q4 : D'apres la visualisation precedente, que pouvez-vous predire sur la difficulte de ce jeu de donnees ?
 
-**Answer:**
+**Reponse :**
 
-Looking only at sepal length and sepal width, setosa is easily separable from the other two classes. However, versicolor and virginica overlap heavily for average values of these two features. A classifier using only these two dimensions will struggle to distinguish those two classes. Using all 4 features (petal length and petal width are much more discriminating) would improve separation.
+En ne regardant que la longueur et la largeur des sepales, setosa est facilement separable des deux autres classes. Cependant, versicolor et virginica se chevauchent fortement pour les valeurs moyennes de ces deux features. Un classifieur utilisant uniquement ces deux dimensions aura du mal a distinguer ces deux classes. L'utilisation des 4 features (la longueur et la largeur des petales sont bien plus discriminantes) ameliorerait la separation.
 
 ---
 
-## Part 3: Classifying with kNN
+## Partie 3 : Classification avec kNN
 
 ```python noexec
 from sklearn import neighbors
@@ -101,10 +101,10 @@ from sklearn import neighbors
 nb_neighb = 15
 clf = neighbors.KNeighborsClassifier(nb_neighb)
 
-clf.fit(X, y)  # training
+clf.fit(X, y)  # entrainement
 print('accuracy on X is', clf.score(X, y))
 
-# Predict on a specific example
+# Predire sur un exemple specifique
 print('class predicted is', clf.predict([[5.4, 3.2, 1.6, 0.4]]))
 print('proba of each class is', clf.predict_proba([[5.4, 3.2, 1.6, 0.4]]))
 
@@ -112,25 +112,25 @@ y_pred = clf.predict(X)
 print('misclassified training examples are:', X[y_pred != y])
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 accuracy on X is 0.98
 class predicted is [0]
 proba of each class is [[1. 0. 0.]]
-misclassified training examples are: [a few versicolor/virginica border cases]
+misclassified training examples are: [quelques cas limites versicolor/virginica]
 ```
 
-### Q5: What kind of problem do you see with the evaluation?
+### Q5 : Quel probleme voyez-vous avec cette evaluation ?
 
-**Answer:**
+**Reponse :**
 
-The accuracy is measured on the training set itself, which gives the empirical (or apparent) error. Since the model has already seen these data, it will necessarily have a better score than on new, unseen data -- it might be overfitting. With K=1, we would get 100% since each point is its own nearest neighbor. This is not representative of the model's generalization ability. We must evaluate on a separate test set to estimate the real error (generalization error).
+La precision est mesuree sur le jeu d'entrainement lui-meme, ce qui donne l'erreur empirique (ou apparente). Comme le modele a deja vu ces donnees, il obtient necessairement un meilleur score que sur des donnees nouvelles, jamais vues -- il peut etre en sur-apprentissage. Avec K=1, on obtiendrait 100% car chaque point est son propre plus proche voisin. Cela n'est pas representatif de la capacite de generalisation du modele. Il faut evaluer sur un jeu de test separe pour estimer l'erreur reelle (erreur de generalisation).
 
 ---
 
-## Part 4: About Training and Test Sets
+## Partie 4 : Jeux d'entrainement et de test
 
-### Train/test split and confusion matrix
+### Separation train/test et matrice de confusion
 
 ```python noexec
 from sklearn.model_selection import train_test_split
@@ -153,7 +153,7 @@ cm = confusion_matrix(y_test, y_pred)
 print('Confusion matrix\n', cm)
 ```
 
-**Expected output (varies with random seed):**
+**Sortie attendue (varie selon la graine aleatoire) :**
 ```
 size of train / test = 105 45
 nb of training data with class 0/1/2 = 35 35 35
@@ -163,29 +163,29 @@ Confusion matrix
   [ 0  1 14]]
 ```
 
-### Q6: What is on the diagonal of the confusion matrix?
+### Q6 : Que contient la diagonale de la matrice de confusion ?
 
-**Answer:**
+**Reponse :**
 
-The diagonal contains the number of correct predictions for each class: `confusion_matrix[i][i]` = number of examples of class `i` that were correctly predicted as class `i`. Off-diagonal elements are classification errors.
+La diagonale contient le nombre de predictions correctes pour chaque classe : `confusion_matrix[i][i]` = nombre d'exemples de la classe `i` correctement predits comme classe `i`. Les elements hors diagonale sont les erreurs de classification.
 
-### Q7: What is the real error rate (give details)?
+### Q7 : Quelle est l'erreur reelle (donnez les details) ?
 
-**Answer:**
+**Reponse :**
 
-The real error (or generalization error) is the probability that our model misclassifies an example randomly drawn from the true data distribution. It is defined as the expected error on unseen data. We can estimate it as:
+L'erreur reelle (ou erreur de generalisation) est la probabilite que notre modele classe incorrectement un exemple tire aleatoirement de la vraie distribution des donnees. Elle est definie comme l'erreur attendue sur des donnees jamais vues. On peut l'estimer ainsi :
 
 ```
-Real error estimate = number of misclassified examples on the test set / total number of test examples
+Estimation de l'erreur reelle = nombre d'exemples mal classes sur le jeu de test / nombre total d'exemples de test
 ```
 
-Whenever we overfit, the real error is significantly higher than the empirical error (measured on the training set). Using a train/test split or cross-validation provides a better estimate of the real error.
+Lorsqu'il y a sur-apprentissage, l'erreur reelle est significativement plus elevee que l'erreur empirique (mesuree sur le jeu d'entrainement). L'utilisation d'une separation train/test ou de la validation croisee fournit une meilleure estimation de l'erreur reelle.
 
 ---
 
-## Part 5: Cross-fold Validation
+## Partie 5 : Validation croisee K-Fold
 
-### Manual K-Fold
+### K-Fold manuel
 
 ```python noexec
 from sklearn.model_selection import KFold
@@ -207,12 +207,12 @@ for training_ind, test_ind in kf.split(X):
 print('average accuracy:', score / nb_folds)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 average accuracy: ~0.9733
 ```
 
-### One-liner with cross_val_score
+### En une ligne avec cross_val_score
 
 ```python noexec
 from sklearn.model_selection import cross_val_score
@@ -221,18 +221,18 @@ t_scores = cross_val_score(clf, X, y, cv=10)
 print(t_scores.mean())
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 0.9733333333333334
 ```
 
-**Explanation:** KNN with K=15 achieves about 97% accuracy in 10-fold cross-validation on Iris. Each fold uses 135 examples for training and 15 for testing. All examples are used exactly once as test. Cross-validation gives a better estimate of the real error than a single train/test split.
+**Explication :** KNN avec K=15 atteint environ 97% de precision en validation croisee 10-fold sur Iris. Chaque fold utilise 135 exemples pour l'entrainement et 15 pour le test. Tous les exemples sont utilises exactement une fois comme test. La validation croisee donne une meilleure estimation de l'erreur reelle qu'une simple separation train/test.
 
 ---
 
-## Part 6: Decision Tree (Heart Dataset)
+## Partie 6 : Arbre de decision (jeu de donnees Heart)
 
-### Loading the dataset
+### Chargement du jeu de donnees
 
 ```python noexec
 import pandas as pd
@@ -253,14 +253,14 @@ print(features)
 df.head()
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach',
        'exang', 'oldpeak', 'slope', 'ca', 'thal'],
       dtype='object')
 ```
 
-### Building Tmax and visualizing it
+### Construction de Tmax et visualisation
 
 ```python noexec
 from sklearn import tree
@@ -280,31 +280,31 @@ graph = Source(tree.export_graphviz(
 graph
 ```
 
-**Expected output:** A complete decision tree with many nodes and leaves. Each internal node shows the split question, entropy, sample count, and class distribution. Leaves are colored orange (heart disease) or blue (not).
+**Sortie attendue :** Un arbre de decision complet avec de nombreux noeuds et feuilles. Chaque noeud interne affiche la question de separation, l'entropie, le nombre d'echantillons et la distribution des classes. Les feuilles sont colorees en orange (maladie cardiaque) ou en bleu (pas de maladie).
 
-### Q8: Explain each line displayed in the nodes/leaves of the tree.
+### Q8 : Expliquez chaque ligne affichee dans les noeuds/feuilles de l'arbre.
 
-**Answer:**
+**Reponse :**
 
-| Label | Meaning |
-|-------|---------|
-| `feature <= threshold` | The question asked at this node to split the data (e.g., `ca <= 0.5`) |
-| `entropy` | Shannon entropy of the classes at this node (0 = pure, 1 = balanced binary) |
-| `samples` | How many training samples reach this node |
-| `value` | Distribution [n_class0, n_class1] of samples at this node |
-| `class` | The majority class at this node (the prediction if it were a leaf) |
+| Champ | Signification |
+|-------|-------------|
+| `feature <= seuil` | La question posee a ce noeud pour separer les donnees (ex : `ca <= 0.5`) |
+| `entropy` | Entropie de Shannon des classes a ce noeud (0 = pur, 1 = equilibre binaire) |
+| `samples` | Nombre d'echantillons d'entrainement atteignant ce noeud |
+| `value` | Distribution [n_classe0, n_classe1] des echantillons a ce noeud |
+| `class` | Classe majoritaire a ce noeud (la prediction si c'etait une feuille) |
 
-In the leaves, entropy is always 0 (or close to 0) because Tmax splits data until total purity. The class of a leaf is the final prediction for all examples reaching that leaf.
+Dans les feuilles, l'entropie est toujours 0 (ou proche de 0) car Tmax decoupe les donnees jusqu'a la purete totale. La classe d'une feuille est la prediction finale pour tous les exemples qui l'atteignent.
 
-### Q9: What is the name of this decision tree according to the course?
+### Q9 : Quel est le nom de cet arbre de decision d'apres le cours ?
 
-**Answer:**
+**Reponse :**
 
-This tree is called **Tmax** (the maximum tree). It is obtained by recursively asking questions and splitting until every single leaf perfectly matches one class and one class only. Tmax achieves 100% accuracy on the training set but overfits -- it memorizes the training data rather than learning generalizable patterns.
+Cet arbre s'appelle **Tmax** (l'arbre maximal). Il est obtenu en posant recursivement des questions et en decoupant jusqu'a ce que chaque feuille corresponde parfaitement a une seule classe. Tmax atteint 100% de precision sur le jeu d'entrainement mais fait du sur-apprentissage -- il memorise les donnees d'entrainement plutot que d'apprendre des regularites generalisables.
 
 ---
 
-### Alternative visualization with dtreeviz
+### Visualisation alternative avec dtreeviz
 
 ```python noexec
 from dtreeviz.trees import dtreeviz
@@ -318,29 +318,29 @@ graph = dtreeviz(
 graph
 ```
 
-### Q10: Explain what are the histograms displayed.
+### Q10 : Expliquez ce que representent les histogrammes affiches.
 
-**Answer:**
+**Reponse :**
 
-Each histogram at a node represents the distribution of the feature used for that split, colored by target class. The threshold value chosen for the split is indicated by a pointer under the value axis (e.g., 0.50 for feature `ca` on the root node). This lets you visually assess whether the split separates the classes well: a good split shows different color distributions on each side of the threshold.
+Chaque histogramme a un noeud represente la distribution de la feature utilisee pour la separation, coloree par classe cible. La valeur du seuil choisie pour la separation est indiquee par un pointeur sous l'axe des valeurs (ex : 0.50 pour la feature `ca` au noeud racine). Cela permet d'evaluer visuellement si la separation separe bien les classes : une bonne separation montre des distributions de couleurs differentes de chaque cote du seuil.
 
-### Q11: From the sklearn manual, explain what effect max_depth or min_samples will have on the decision tree. If time permits, show the effects experimentally.
+### Q11 : D'apres le manuel de sklearn, expliquez l'effet de max_depth ou min_samples sur l'arbre de decision. Si le temps le permet, montrez les effets experimentalement.
 
-**Answer:**
+**Reponse :**
 
-- `max_depth`: Sets a maximum depth for the tree. If the tree tries to go beyond that depth, it simply creates a leaf for the remaining individuals instead of splitting further.
-- `min_samples_leaf`: Minimum number of samples required in each leaf. Prevents very specific leaves with only 1-2 examples.
-- `min_samples_split`: Minimum number of samples required to split a node. If a node has fewer samples than this threshold, it becomes a leaf.
+- `max_depth` : Fixe une profondeur maximale pour l'arbre. Si l'arbre tente d'aller au-dela de cette profondeur, il cree simplement une feuille pour les individus restants au lieu de continuer a decouper.
+- `min_samples_leaf` : Nombre minimum d'echantillons requis dans chaque feuille. Empeche les feuilles tres specifiques avec seulement 1-2 exemples.
+- `min_samples_split` : Nombre minimum d'echantillons requis pour decouper un noeud. Si un noeud a moins d'echantillons que ce seuil, il devient une feuille.
 
-Note: `min_samples` no longer exists as a parameter. The two parameters `min_samples_leaf` and `min_samples_split` replaced it.
+Remarque : `min_samples` n'existe plus en tant que parametre. Les deux parametres `min_samples_leaf` et `min_samples_split` l'ont remplace.
 
-All three parameters control tree complexity. Restrictive values (small depth, large min_samples) produce simpler trees that generalize better but risk underfitting. Permissive values produce complex trees that risk overfitting.
+Ces trois parametres controlent la complexite de l'arbre. Des valeurs restrictives (faible profondeur, grands min_samples) produisent des arbres plus simples qui generalisent mieux mais risquent le sous-apprentissage. Des valeurs permissives produisent des arbres complexes qui risquent le sur-apprentissage.
 
 ---
 
-## Part 7: Pruning Tmax (Cost Complexity Pruning)
+## Partie 7 : Elagage de Tmax (Cost Complexity Pruning)
 
-### Step 1: Get alpha values
+### Etape 1 : Obtenir les valeurs d'alpha
 
 ```python noexec
 path = clf.cost_complexity_pruning_path(X_train, y_train)
@@ -348,7 +348,7 @@ ccp_alphas, impurities = path.ccp_alphas, path.impurities
 print(ccp_alphas)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [0.         0.0085133  0.01144989 0.01299475 0.01299475 0.01421593
  0.01508121 0.01530713 0.01750056 0.01788634 0.01800819 0.01839686
@@ -356,25 +356,25 @@ print(ccp_alphas)
  0.03913504 0.04860676 0.08661577 0.12325037 0.19175318]
 ```
 
-Each alpha value corresponds to a pruning level. Alpha=0 gives Tmax, the last alpha gives a trivial tree with a single node.
+Chaque valeur d'alpha correspond a un niveau d'elagage. Alpha=0 donne Tmax, le dernier alpha donne un arbre trivial a un seul noeud.
 
-### Step 2: Train a tree for each alpha and plot the curves
+### Etape 2 : Entrainer un arbre pour chaque alpha et tracer les courbes
 
 ```python noexec
 from sklearn.metrics import accuracy_score
 
-# Train a tree for each alpha
+# Entrainer un arbre pour chaque alpha
 t_clf = []
 for ccp_alpha in ccp_alphas:
     c = tree.DecisionTreeClassifier(random_state=0, ccp_alpha=ccp_alpha)
     c.fit(X_train, y_train)
     t_clf.append(c)
 
-# Remove the last (trivial single-node tree)
+# Supprimer le dernier (arbre trivial a un seul noeud)
 t_clf = t_clf[:-1]
 ccp_alphas = ccp_alphas[:-1]
 
-# --- Plot 1: Tree complexity vs alpha ---
+# --- Graphique 1 : Complexite de l'arbre vs alpha ---
 node_counts = [c.tree_.node_count for c in t_clf]
 depth = [c.tree_.max_depth for c in t_clf]
 
@@ -386,7 +386,7 @@ plt.legend()
 plt.title('Tree complexity vs alpha')
 plt.show()
 
-# --- Plot 2: Accuracy vs alpha ---
+# --- Graphique 2 : Precision vs alpha ---
 train_acc = []
 val_acc = []
 for c in t_clf:
@@ -404,21 +404,21 @@ plt.title('Accuracy vs alpha')
 plt.show()
 ```
 
-**Expected output:**
-- Plot 1: Two decreasing staircase curves. As alpha increases, node count and depth decrease.
-- Plot 2: `train_accuracy` starts at 100% (alpha=0, Tmax) and decreases. `val_accuracy` starts lower, peaks around alpha=0.02, then decreases. The gap between the two curves shows overfitting for small alpha and underfitting for large alpha.
+**Sortie attendue :**
+- Graphique 1 : Deux courbes en escalier decroissantes. A mesure qu'alpha augmente, le nombre de noeuds et la profondeur diminuent.
+- Graphique 2 : `train_accuracy` commence a 100% (alpha=0, Tmax) et diminue. `val_accuracy` commence plus bas, atteint un pic autour d'alpha=0.02, puis diminue. L'ecart entre les deux courbes montre le sur-apprentissage pour les petits alpha et le sous-apprentissage pour les grands alpha.
 
-### Q12: From the graph above, what is the best value for alpha.
+### Q12 : D'apres le graphique ci-dessus, quelle est la meilleure valeur d'alpha ?
 
-**Answer:**
+**Reponse :**
 
-The best alpha is approximately **0.020**. It gives the best accuracy on the validation set (`val_accuracy`) while limiting overfitting (the gap between `train_accuracy` and `val_accuracy`).
+Le meilleur alpha est approximativement **0.020**. Il donne la meilleure precision sur le jeu de validation (`val_accuracy`) tout en limitant le sur-apprentissage (l'ecart entre `train_accuracy` et `val_accuracy`).
 
-- Alpha too small (< 0.01): tree is too complex, overfitting (train >> val).
-- Alpha optimal (~0.02): good bias-variance tradeoff.
-- Alpha too large (> 0.05): tree is too simple, underfitting (both curves are low).
+- Alpha trop petit (< 0.01) : arbre trop complexe, sur-apprentissage (train >> val).
+- Alpha optimal (~0.02) : bon compromis biais-variance.
+- Alpha trop grand (> 0.05) : arbre trop simple, sous-apprentissage (les deux courbes sont basses).
 
-### Pruned tree with best alpha
+### Arbre elague avec le meilleur alpha
 
 ```python noexec
 best_alpha = 0.020
@@ -435,7 +435,7 @@ print(f'Validation score {accuracy_score(y_val_pred, y_val)}')
 print(confusion_matrix(y_val_pred, y_val))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Train score 0.8632075471698113
 [[ 75   7]
@@ -445,13 +445,13 @@ Validation score 0.8021978021978022
  [10 42]]
 ```
 
-**Explanation:** With alpha=0.02, the pruned tree gets 86% on train and 80% on validation. The 6-point gap indicates slight residual overfitting, but is much better than Tmax which got 100% train but only ~80% validation. The pruned tree has ~5-7 nodes instead of 35+, making it far more interpretable.
+**Explication :** Avec alpha=0.02, l'arbre elague obtient 86% sur le train et 80% en validation. L'ecart de 6 points indique un leger sur-apprentissage residuel, mais c'est bien mieux que Tmax qui obtenait 100% en train mais seulement ~80% en validation. L'arbre elague a environ 5-7 noeuds au lieu de 35+, ce qui le rend beaucoup plus interpretable.
 
 ---
 
-## Part 8: Bayesian Learning
+## Partie 8 : Apprentissage bayesien
 
-### Loading the weather.nominal.csv dataset
+### Chargement du jeu de donnees weather.nominal.csv
 
 ```python noexec
 data = 'weather.nominal.csv'
@@ -459,7 +459,7 @@ df = pd.read_csv(data)
 df.head()
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
     outlook temperature humidity  windy  play
 0     sunny         hot     high  False     0
@@ -469,19 +469,19 @@ df.head()
 4     rainy        cool   normal  False     1
 ```
 
-### Q13: Let us consider the weather_nominal dataset. What is the type of each feature?
+### Q13 : Considerons le jeu de donnees weather_nominal. Quel est le type de chaque feature ?
 
-**Answer:**
+**Reponse :**
 
 | Feature | Type |
 |---------|------|
-| `outlook` | Nominal (sunny, overcast, rainy) |
-| `temperature` | Nominal (hot, mild, cool) |
-| `humidity` | Nominal / boolean (high, normal) |
-| `windy` | Boolean (True, False) |
-| `play` | Boolean / target (0, 1) |
+| `outlook` | Nominale (sunny, overcast, rainy) |
+| `temperature` | Nominale (hot, mild, cool) |
+| `humidity` | Nominale / booleenne (high, normal) |
+| `windy` | Booleenne (True, False) |
+| `play` | Booleenne / cible (0, 1) |
 
-### Training a Categorical Naive Bayes
+### Entrainement d'un Naive Bayes categoriel
 
 ```python noexec
 from sklearn.preprocessing import OrdinalEncoder
@@ -493,11 +493,11 @@ y_train = df['play']
 features = X_train.columns
 classes = ['no play', 'play']
 
-# Convert nominal features to integers
+# Convertir les features nominales en entiers
 enc = OrdinalEncoder()
 X_train = enc.fit_transform(X_train)
 
-# Train
+# Entrainement
 clf = CategoricalNB().fit(X_train, y_train)
 
 y_train_pred = clf.predict(X_train)
@@ -506,18 +506,18 @@ print(f'Train score {accuracy_score(y_train_pred, y_train)}')
 print(confusion_matrix(y_train_pred, y_train))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Train score 0.9285714285714286
 [[4 0]
  [1 9]]
 ```
 
-**Explanation:** The model correctly classifies 13/14 training examples. Only one "play" case is misclassified as "no play".
+**Explication :** Le modele classe correctement 13/14 exemples d'entrainement. Un seul cas "play" est mal classe comme "no play".
 
 ---
 
-### Q14: Explain what is displayed by `clf.class_log_prior_` and `clf.feature_log_prob_` and link that with what you've seen during the course. Do these figures correspond to what you get when doing it by yourself (explain)?
+### Q14 : Expliquez ce qu'affichent `clf.class_log_prior_` et `clf.feature_log_prob_` et faites le lien avec ce que vous avez vu en cours. Ces chiffres correspondent-ils a ce que vous obtenez en calculant a la main (expliquez) ?
 
 ```python noexec
 from math import exp, log
@@ -526,7 +526,7 @@ print(clf.class_log_prior_)
 print(clf.feature_log_prob_)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [-1.02961942 -0.44183275]
 [array([[-2.07944154, -0.98082925, -0.69314718],
@@ -539,15 +539,15 @@ print(clf.feature_log_prob_)
        [-0.45198512, -1.01160091]])]
 ```
 
-**Answer:**
+**Reponse :**
 
-`class_log_prior_` contains the natural log of the prior probabilities P(class):
+`class_log_prior_` contient le logarithme neperien des probabilites a priori P(classe) :
 - P(no play) = 5/14 => ln(5/14) = -1.030
 - P(play) = 9/14 => ln(9/14) = -0.442
 
-`feature_log_prob_` contains the natural log of the likelihoods P(feature=v | class), organized as a list of arrays per feature. Each array has dimensions [n_classes, n_values_for_that_feature].
+`feature_log_prob_` contient le logarithme neperien des vraisemblances P(feature=v | classe), organise en une liste de tableaux par feature. Chaque tableau a les dimensions [n_classes, n_valeurs_pour_cette_feature].
 
-The OrdinalEncoder assigns the following ordinal values:
+L'OrdinalEncoder attribue les valeurs ordinales suivantes :
 
 | Feature | 0 | 1 | 2 |
 |---------|---|---|---|
@@ -556,16 +556,16 @@ The OrdinalEncoder assigns the following ordinal values:
 | Humidity | "high" | "normal" | -- |
 | Windy | False | True | -- |
 
-Manual computation of likelihoods (example for Outlook, class=0 / no play, 5 examples):
+Calcul manuel des vraisemblances (exemple pour Outlook, classe=0 / no play, 5 exemples) :
 
 | | overcast (0) | rainy (1) | sunny (2) |
 |---|---|---|---|
 | no play (5 ex.) | 0/5 | 2/5 | 3/5 |
 | play (9 ex.) | 4/9 | 2/9 | 2/9 |
 
-The sklearn values do not match exactly because sklearn applies **Laplace smoothing** (alpha=1 by default) to avoid zero probabilities. With smoothing:
-- P(overcast | no play) = (0+1)/(5+3) = 1/8 => ln(1/8) = -2.079 (matches)
-- P(rainy | no play) = (2+1)/(5+3) = 3/8 => ln(3/8) = -0.981 (matches)
+Les valeurs de sklearn ne correspondent pas exactement car sklearn applique le **lissage de Laplace** (alpha=1 par defaut) pour eviter les probabilites nulles. Avec lissage :
+- P(overcast | no play) = (0+1)/(5+3) = 1/8 => ln(1/8) = -2.079 (correspond)
+- P(rainy | no play) = (2+1)/(5+3) = 3/8 => ln(3/8) = -0.981 (correspond)
 
 ```python noexec
 # Verification
@@ -578,7 +578,7 @@ print("CLF:", clf.feature_log_prob_[2][0][1])
 print("Me:", log(1 / 5))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [-1.0296194171811581, -0.4418327522790392]
 Outlook = 2 for class = 1
@@ -589,29 +589,29 @@ CLF: -1.252762968495368
 Me: -1.6094379124341003
 ```
 
-The difference comes from Laplace smoothing: sklearn computes (2+1)/(9+3) = 3/12 = 0.25 => ln(0.25) = -1.386, while the naive calculation gives 2/9 => ln(2/9) = -1.504.
+La difference vient du lissage de Laplace : sklearn calcule (2+1)/(9+3) = 3/12 = 0.25 => ln(0.25) = -1.386, tandis que le calcul naif donne 2/9 => ln(2/9) = -1.504.
 
 ---
 
-### Q15: Let's consider the weather.csv dataset now. Explain what is the difference with the previous one.
+### Q15 : Considerons maintenant le jeu de donnees weather.csv. Quelle est la difference avec le precedent ?
 
-**Answer:**
+**Reponse :**
 
-The first dataset (`weather.nominal.csv`) was nominalized: the original values for its continuous features (Temperature, Humidity) were merged into discrete categories (hot/mild/cool, high/normal). In `weather.csv`, Temperature and Humidity are **continuous numeric** features (e.g., temperature=85, humidity=90).
+Le premier jeu de donnees (`weather.nominal.csv`) etait nominalise : les valeurs originales des features continues (Temperature, Humidity) avaient ete regroupees en categories discretes (hot/mild/cool, high/normal). Dans `weather.csv`, Temperature et Humidity sont des features **numeriques continues** (ex : temperature=85, humidity=90).
 
-For continuous features under the naive Bayesian hypothesis, we assume they follow a continuous probability law -- typically a **normal (Gaussian) distribution**. We estimate the parameters (mean mu and standard deviation sigma) from the training data per class, and use the Gaussian probability density function to compute likelihoods.
+Pour les features continues sous l'hypothese bayesienne naive, on suppose qu'elles suivent une loi de probabilite continue -- typiquement une **distribution normale (gaussienne)**. On estime les parametres (moyenne mu et ecart-type sigma) a partir des donnees d'entrainement par classe, et on utilise la fonction de densite de la loi normale pour calculer les vraisemblances.
 
 ---
 
-### Q16: Compute 'by hand' the a posteriori probability of each class for the following data sample: `x = ['sunny', 73, 81, 'TRUE']`
+### Q16 : Calculez "a la main" la probabilite a posteriori de chaque classe pour l'echantillon suivant : `x = ['sunny', 73, 81, 'TRUE']`
 
-**Answer:**
+**Reponse :**
 
-Using Bayes' law: P(class|x) = P(class) * P(x|class) / P(x)
+En utilisant la loi de Bayes : P(classe|x) = P(classe) * P(x|classe) / P(x)
 
-Under the naive hypothesis: P(x|class) = P(x1|class) * P(x2|class) * ... * P(xn|class)
+Sous l'hypothese naive : P(x|classe) = P(x1|classe) * P(x2|classe) * ... * P(xn|classe)
 
-#### Step 1: Load the data and compute prior probabilities
+#### Etape 1 : Charger les donnees et calculer les probabilites a priori
 
 ```python noexec
 import pandas as pd
@@ -626,7 +626,7 @@ classes = ['no play', 'play']
 
 X_test, y_test = [['sunny', 73, 81, 'TRUE']], [0]
 
-# Prior probabilities
+# Probabilites a priori
 a_priori_prob = [
     len(Y_train[Y_train == y].index) / len(Y_train.index)
     for y in [0, 1]
@@ -636,10 +636,10 @@ print("A priori probabilities:", a_priori_prob)
 # P(play)    = 9/14 = 0.643
 ```
 
-#### Step 2: Likelihoods for nominal features
+#### Etape 2 : Vraisemblances pour les features nominales
 
 ```python noexec
-# Outlook likelihoods
+# Vraisemblances pour Outlook
 likeli_outlook = [
     dict([
         (val, len(df[(df["play"] == y) & (df["outlook"] == val)].index)
@@ -652,7 +652,7 @@ print("Outlook likelihoods:", likeli_outlook)
 # no play: {'sunny': 0.6, 'overcast': 0.0, 'rainy': 0.4}
 # play:    {'sunny': 0.222, 'overcast': 0.444, 'rainy': 0.333}
 
-# Windy likelihoods
+# Vraisemblances pour Windy
 likeli_windy = [
     dict([
         (val, len(df[(df["play"] == y) & (df["windy"] == val)].index)
@@ -666,10 +666,10 @@ print("Windy likelihoods:", likeli_windy)
 # play:    {False: 0.667, True: 0.333}
 ```
 
-#### Step 3: Likelihoods for continuous features (Normal distribution)
+#### Etape 3 : Vraisemblances pour les features continues (distribution normale)
 
 ```python noexec
-# Temperature: compute mean and standard deviation per class
+# Temperature : calcul de la moyenne et de l'ecart-type par classe
 temp_mu = [
     sum(df[df["play"] == y]["temperature"]) / len(df[df["play"] == y].index)
     for y in [0, 1]
@@ -685,11 +685,11 @@ temp_sigma = [
 ]
 print("Standard deviation for temperature:", temp_sigma)  # [7.06, 5.81]
 
-# Using a normal distribution calculator for P(72 <= T <= 74):
+# En utilisant un calculateur de loi normale pour P(72 <= T <= 74) :
 likeli_temp_73 = [0.1098, 0.1366]
 print("P(temperature in 73 +/- 1):", likeli_temp_73)
 
-# Humidity: same approach
+# Humidity : meme approche
 hum_mu = [
     sum(df[df["play"] == y]["humidity"]) / len(df[df["play"] == y].index)
     for y in [0, 1]
@@ -705,24 +705,24 @@ hum_sigma = [
 ]
 print("Standard deviation for humidity:", hum_sigma)  # [8.70, 9.63]
 
-# Using a normal distribution calculator for P(80 <= H <= 82):
+# En utilisant un calculateur de loi normale pour P(80 <= H <= 82) :
 likeli_hum_81 = [0.0766, 0.0811]
 print("P(humidity in 81 +/- 1):", likeli_hum_81)
 ```
 
-**Parameters of the normal distributions:**
+**Parametres des distributions normales :**
 
-| Feature | Class | mu | sigma |
-|---------|-------|------|-------|
+| Feature | Classe | mu | sigma |
+|---------|--------|------|-------|
 | Temperature | no play | 74.6 | 7.06 |
 | Temperature | play | 73.0 | 5.81 |
 | Humidity | no play | 86.2 | 8.70 |
 | Humidity | play | 79.11 | 9.63 |
 
-#### Step 4: Combine with Bayes' theorem
+#### Etape 4 : Combiner avec le theoreme de Bayes
 
 ```python noexec
-# Likelihood = product of all individual likelihoods (naive hypothesis)
+# Vraisemblance = produit de toutes les vraisemblances individuelles (hypothese naive)
 likelihood = [
     likeli_hum_81[y] * likeli_temp_73[y]
     * likeli_windy[y][X_test[0][3] == 'TRUE']
@@ -733,17 +733,17 @@ print("Likelihood:", likelihood)
 # no play: 0.0766 * 0.1098 * 0.6 * 0.6 = 0.003028
 # play:    0.0811 * 0.1366 * 0.333 * 0.222 = 0.000821
 
-# A posteriori = prior * likelihood
+# A posteriori = prior * vraisemblance
 proba = [likelihood[y] * a_priori_prob[y] for y in [0, 1]]
 
-# Normalize by P(x) = sum of products
-# Since {play=0, play=1} is a partition, P(x) = P(x|0)*P(0) + P(x|1)*P(1)
+# Normaliser par P(x) = somme des produits
+# Puisque {play=0, play=1} est une partition, P(x) = P(x|0)*P(0) + P(x|1)*P(1)
 proba = [val / sum(proba) for val in proba]
 print("A posteriori probabilities:", proba)
 print("Prediction:", classes[proba.index(max(proba))])
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 Outlook likelihoods: [{'sunny': 0.6, 'overcast': 0.0, 'rainy': 0.4}, {'sunny': 0.222, 'overcast': 0.444, 'rainy': 0.333}]
 Windy likelihoods: [{False: 0.4, True: 0.6}, {False: 0.667, True: 0.333}]
@@ -757,10 +757,10 @@ A posteriori probabilities: [0.672, 0.328]
 The testing example will be classified as: no play
 ```
 
-**Explanation:**
-- Although the prior probability favors "play" (64.3% vs 35.7%), the likelihoods reverse the prediction.
-- The combination "sunny" + "windy=TRUE" is strongly associated with "no play" (P=0.6 each vs 0.222 and 0.333 for "play").
-- Temperature (73) is close to the mean of both classes, so not very discriminating.
-- Humidity (81) is closer to the "play" mean (79) than "no play" mean (86), but this effect is dominated by the nominal features.
-- Final ratio P(no play)/P(play) = 0.672/0.328 ~ 2:1, so the prediction is fairly confident.
-- The prediction ("no play") is correct according to the test label.
+**Explication :**
+- Bien que la probabilite a priori favorise "play" (64.3% vs 35.7%), les vraisemblances inversent la prediction.
+- La combinaison "sunny" + "windy=TRUE" est fortement associee a "no play" (P=0.6 chacun vs 0.222 et 0.333 pour "play").
+- La temperature (73) est proche de la moyenne des deux classes, donc peu discriminante.
+- L'humidite (81) est plus proche de la moyenne "play" (79) que de la moyenne "no play" (86), mais cet effet est domine par les features nominales.
+- Le ratio final P(no play)/P(play) = 0.672/0.328 ~ 2:1, la prediction est donc assez confiante.
+- La prediction ("no play") est correcte selon l'etiquette de test.

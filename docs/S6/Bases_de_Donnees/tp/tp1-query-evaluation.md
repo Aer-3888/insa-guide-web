@@ -1,274 +1,276 @@
 ---
-title: "TP: Evaluation de Requetes (Query Evaluation)"
+title: "TP : Evaluation de Requetes"
 sidebar_position: 1
 ---
 
-# TP: Evaluation de Requetes (Query Evaluation)
+# TP : Evaluation de Requetes
 
-**Course**: Bases de Donnees (Databases)  
-**Institution**: INSA Rennes, 3rd year CS  
-**Academic Year**: 2017-2018
+**Cours** : Bases de Donnees  
+**Etablissement** : INSA Rennes, 3e annee informatique  
+**Annee universitaire** : 2017-2018
 
-## Overview
+## Presentation
 
-This lab explores SQL query performance, indexing strategies, and query optimization using SQLite. Students learn to:
-- Measure query execution time
-- Analyze query execution plans with EXPLAIN QUERY PLAN
-- Understand the impact of indexes on performance
-- Compare different SQL query structures for the same problem
-- Optimize queries using appropriate indexing strategies
+Ce TP explore la performance des requetes SQL, les strategies d'indexation et l'optimisation des requetes avec SQLite. Les etudiants apprennent a :
+- Mesurer le temps d'execution des requetes
+- Analyser les plans d'execution avec EXPLAIN QUERY PLAN
+- Comprendre l'impact des index sur la performance
+- Comparer differentes formulations de requetes SQL pour un meme probleme
+- Optimiser les requetes avec des strategies d'indexation appropriees
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-1. **SQLite Basics**: Master essential SQLite commands and operations
-2. **Performance Measurement**: Use `.timer ON` to measure query execution time
-3. **Indexing**: Understand B+ tree indexes and their dramatic performance impact
-4. **Query Plans**: Analyze execution strategies with EXPLAIN QUERY PLAN
-5. **Query Optimization**: Compare query structures and optimize with indexes
+1. **Prise en main de SQLite** : maitriser les commandes essentielles de SQLite
+2. **Mesure de performance** : utiliser `.timer ON` pour mesurer le temps d'execution
+3. **Indexation** : comprendre les index B+ tree et leur impact sur la performance
+4. **Plans d'execution** : analyser les strategies d'execution avec EXPLAIN QUERY PLAN
+5. **Optimisation** : comparer les formulations de requetes et optimiser avec des index
 
-## Lab Structure
+## Structure du TP
 
-### Part 1: Introduction to SQLite (7.1)
+### Partie 1 : Prise en main de SQLite (7.1)
 
-**Files**: `src/01_basic_queries.sql`, `src/02_create_tables.sql`
+**Fichiers** : `src/01_basic_queries.sql`, `src/02_create_tables.sql`
 
-**Key Concepts**:
-- SQLite command-line interface
-- Creating tables for students, professors, courses, and enrollments
-- Basic SELECT queries with WHERE and LIKE operators
-- Cartesian products and joins
+**Concepts cles** :
+- Interface en ligne de commande SQLite
+- Creation de tables pour etudiants, professeurs, cours et inscriptions
+- Requetes SELECT de base avec WHERE et LIKE
+- Produits cartesiens et jointures
 
-**Database Schema**:
+**Schema de la base** :
 ```sql noexec
-etudiant(etudId, nom, prenom)              -- Students
-professeur(profId, nom, prenom)            -- Professors
-enseignement(ensId, sujet)                 -- Courses
-enseignementSuivi(ensId, etudId, profId)   -- Student-Course-Professor relationships
+etudiant(etudId, nom, prenom)              -- Etudiants
+professeur(profId, nom, prenom)            -- Professeurs
+enseignement(ensId, sujet)                 -- Cours
+enseignementSuivi(ensId, etudId, profId)   -- Relations etudiant-cours-professeur
 ```
 
-**Sample Queries**:
-- List all students
-- Find professors with 'a' in their name
-- Cartesian product of students and professors
+**Exemples de requetes** :
+- Lister tous les etudiants
+- Trouver les professeurs dont le nom contient 'a'
+- Produit cartesien etudiants-professeurs
 
-### Part 2: Large Database and Indexing (7.2.2)
+### Partie 2 : Base de donnees volumineuse et indexation (7.2.2)
 
-**Files**: `src/03_index_analysis.sql`, `src/DBgenerator.java`
+**Fichiers** : `src/03_index_analysis.sql`, `src/DBgenerator.java`
 
-**Key Concepts**:
-- Generating large test databases (1M+ rows)
-- Measuring query performance with and without indexes
-- Understanding B+ tree index structure
-- Analyzing execution plans: SCAN vs SEARCH
+**Concepts cles** :
+- Generation de bases de test volumineuses (1M+ lignes)
+- Mesure de performance avec et sans index
+- Comprehension de la structure d'index B+ tree
+- Analyse des plans d'execution : SCAN vs SEARCH
 
-**Performance Results** (1 million rows):
+**Resultats de performance** (1 million de lignes) :
 
-| Query Type | Without Index | With Index | Speedup |
-|------------|--------------|------------|---------|
-| Existing value (=) | 0.1-0.2s | 0.0001s | 1000x |
-| Non-existing value (=) | 0.05-0.08s | 0.0001s | 800x |
-| Range query (>) | 5-7s | 0.0004s | 15000x |
+| Type de requete | Sans index | Avec index | Acceleration |
+|-----------------|-----------|------------|-------------|
+| Valeur existante (=) | 0.1-0.2s | 0.0001s | 1000x |
+| Valeur inexistante (=) | 0.05-0.08s | 0.0001s | 800x |
+| Requete d'intervalle (>) | 5-7s | 0.0004s | 15000x |
 
-**Execution Plan Changes**:
+**Changement du plan d'execution** :
 ```
-Before: SCAN TABLE demo                    (O(n) - linear scan)
-After:  SEARCH TABLE demo USING INDEX      (O(log n) - binary search)
+Avant : SCAN TABLE demo                    (O(n) - parcours lineaire)
+Apres : SEARCH TABLE demo USING INDEX      (O(log n) - recherche arborescente)
 ```
 
-**Key Insight**: Indexes transform full table scans into efficient tree searches, providing 800-15000x performance improvement.
+**Point cle** : les index transforment les parcours complets de table en recherches arborescentes efficaces, avec un gain de performance de 800 a 15000x.
 
-### Part 3: Query Optimization (7.2.3)
+### Partie 3 : Optimisation de requetes (7.2.3)
 
-**Files**: `src/04_query_optimization.sql`, `src/DBgenerator1.java`
+**Fichiers** : `src/04_query_optimization.sql`, `src/DBgenerator1.java`
 
-**Key Concepts**:
-- Comparing different SQL approaches to the same problem
-- Understanding query complexity (O(n), O(n*m), O(n+m))
-- Subqueries vs. JOINs
-- Composite indexes
-- Natural joins overhead
+**Concepts cles** :
+- Comparaison de differentes formulations SQL pour un meme probleme
+- Comprehension de la complexite des requetes (O(n), O(n*m), O(n+m))
+- Sous-requetes vs jointures
+- Index composites
+- Surcout du NATURAL JOIN
 
-**Problem**: Find customers with invoices > 999 euros
+**Probleme** : trouver les clients ayant des factures > 999 euros
 
-**Database**:
-- `facture(factureId, customerId, amount)` - 1M+ invoices
-- `customer(customerId, name)` - 1M+ customers
+**Base de donnees** :
+- `facture(factureId, customerId, amount)` - 1M+ factures
+- `customer(customerId, name)` - 1M+ clients
 
-**Query Comparison**:
+**Comparaison des requetes** :
 
-| Query | Strategy | Time (no index) | Time (with index) | Complexity |
-|-------|----------|-----------------|-------------------|------------|
-| 1. JOIN + WHERE | Join then filter | 200s | 3s | O(n*m) |
-| 2. Subquery + IN | Filter then lookup | 0.996s | 0.787s | O(n+m) |
-| 3. NATURAL JOIN | Implicit join | 283s | 4.5s | O(n*m) + overhead |
-| 4. Subquery with JOIN | Complex nesting | 219s | 5.3s | O(n*m) |
+| Requete | Strategie | Temps (sans index) | Temps (avec index) | Complexite |
+|---------|----------|-------------------|-------------------|------------|
+| 1. JOIN + WHERE | Jointure puis filtrage | 200s | 3s | O(n*m) |
+| 2. Sous-requete + IN | Filtrage puis recherche | 0.996s | 0.787s | O(n+m) |
+| 3. NATURAL JOIN | Jointure implicite | 283s | 4.5s | O(n*m) + surcout |
+| 4. Sous-requete avec JOIN | Imbrication complexe | 219s | 5.3s | O(n*m) |
 
-**Winner**: Query 2 (Subquery with IN) - 200x faster than other approaches!
+**Gagnante** : la requete 2 (sous-requete avec IN) -- 200x plus rapide que les autres approches !
 
-**Why Query 2 Wins**:
-1. Subquery executes once, returns set of customerIds
-2. Main query does simple set membership lookup (IN operator)
-3. Linear complexity O(n+m) instead of quadratic O(n*m)
-4. Even without index, this approach is optimal
+**Pourquoi la requete 2 gagne** :
+1. La sous-requete s'execute une seule fois et retourne l'ensemble des customerId
+2. La requete principale fait un simple test d'appartenance (operateur IN)
+3. Complexite lineaire O(n+m) au lieu de quadratique O(n*m)
+4. Meme sans index, cette approche est optimale
 
-**Optimization Strategy**:
+**Strategie d'optimisation** :
 ```sql noexec
 CREATE INDEX IamSpeeed ON facture(customerId, amount);
 ```
-- Composite index supports both JOIN (customerId) and filtering (amount)
-- Improves JOIN queries by 67x, but Query 2 was already optimal
+- L'index composite supporte a la fois le JOIN (customerId) et le filtrage (amount)
+- Ameliore les requetes JOIN de 67x, mais la requete 2 etait deja optimale
 
-## Files
+## Fichiers
 
-### SQL Scripts
-- `01_basic_queries.sql` - Basic SELECT, WHERE, LIKE queries
-- `02_create_tables.sql` - Database schema creation
-- `03_index_analysis.sql` - Index performance demonstration
-- `04_query_optimization.sql` - Query comparison and optimization
+### Scripts SQL
+- `01_basic_queries.sql` -- Requetes SELECT, WHERE, LIKE de base
+- `02_create_tables.sql` -- Creation du schema de la base
+- `03_index_analysis.sql` -- Demonstration de performance des index
+- `04_query_optimization.sql` -- Comparaison et optimisation de requetes
 
-### Java Generators
-- `DBgenerator.java` - Generates demo table with random integer codes
-- `DBgenerator1.java` - Generates customer/invoice tables with realistic data
+### Generateurs Java
+- `DBgenerator.java` -- Genere une table demo avec des codes entiers aleatoires
+- `DBgenerator1.java` -- Genere des tables client/facture avec des donnees realistes
 
-### Data Files
-- `etudiants.txt` - Student list (73 students, format: E1,LASTNAME,Firstname)
-- `profs.txt` - Professor list (25 professors, format: P1,LASTNAME,Firstname)
+### Fichiers de donnees
+- `etudiants.txt` -- Liste des etudiants (73 etudiants, format : E1,NOM,Prenom)
+- `profs.txt` -- Liste des professeurs (25 professeurs, format : P1,NOM,Prenom)
 
-## Key Takeaways
+## Points a retenir
 
-### 1. Indexes Are Critical
-- Without indexes: O(n) full table scans
-- With indexes: O(log n) tree searches
-- Performance improvement: 800-15000x on large datasets
+### 1. Les index sont essentiels
+- Sans index : parcours complet O(n)
+- Avec index : recherche arborescente O(log n)
+- Gain de performance : 800 a 15000x sur de grands jeux de donnees
 
-### 2. Query Structure Matters
-- Subqueries with IN can be more efficient than JOINs
-- Filtering before joining reduces complexity
-- Avoid NATURAL JOIN due to column resolution overhead
+### 2. La formulation de la requete compte
+- Les sous-requetes avec IN peuvent etre plus efficaces que les JOIN
+- Filtrer avant de joindre reduit la complexite
+- Eviter le NATURAL JOIN a cause du surcout de resolution des noms de colonnes
 
-### 3. EXPLAIN QUERY PLAN Is Your Friend
-- Reveals SCAN vs SEARCH strategies
-- Shows index usage
-- Helps identify optimization opportunities
+### 3. EXPLAIN QUERY PLAN est votre allie
+- Revele les strategies SCAN vs SEARCH
+- Montre l'utilisation des index
+- Aide a identifier les pistes d'optimisation
 
-### 4. Composite Indexes
-- Can optimize multiple conditions simultaneously
-- Format: `CREATE INDEX name ON table(col1, col2)`
-- Useful for JOINs with additional WHERE conditions
+### 4. Index composites
+- Peuvent optimiser plusieurs conditions simultanement
+- Format : `CREATE INDEX nom ON table(col1, col2)`
+- Utiles pour les JOIN avec des conditions WHERE supplementaires
 
-### 5. Transactions for Bulk Inserts
-- Wrap multiple INSERTs in BEGIN/COMMIT
-- Dramatically faster than individual commits
-- Essential for generating large test databases
+### 5. Transactions pour les insertions en masse
+- Encadrer les INSERT multiples avec BEGIN/COMMIT
+- Beaucoup plus rapide que des commits individuels
+- Indispensable pour generer de grandes bases de test
 
-## Running the Lab
+## Execution du TP
 
-### Generate Test Databases
+### Generer les bases de test
+
+
 ```bash
-# Compile Java generators
+# Compiler les generateurs
 javac DBgenerator.java DBgenerator1.java
 
-# Generate 1 million row demo table
+# Generer une table demo avec 1 million de lignes
 java DBgenerator 1000000
 
-# Generate 1 million customer/invoice pairs
+# Generer 1 million de paires client-facture
 java DBgenerator1 1000000
 
-# Load into SQLite
+# Importer dans SQLite
 sqlite3 test.db < database.sql
 sqlite3 test1.db < database1.sql
 ```
 
-### Execute Queries with Timing
+### Executer les requetes avec chronometrage
 ```bash
 sqlite3 test.db
 .timer ON
 .read src/03_index_analysis.sql
 ```
 
-### Analyze Query Plans
+### Analyser les plans d'execution
 ```bash
 sqlite3 test1.db
 EXPLAIN QUERY PLAN SELECT ... ;
 ```
 
-## SQLite Commands Reference
+## Reference des commandes SQLite
 
-| Command | Description |
-|---------|-------------|
-| `.echo ON\|OFF` | Display executed commands |
-| `.exit` | Exit SQLite |
-| `.help` | Show all commands |
-| `.import file table` | Import CSV data into table |
-| `.mode csv\|column\|etc` | Set output format |
-| `.output file` | Redirect output to file |
-| `.open database` | Open/create database |
-| `.print text` | Print text to screen |
-| `.read file` | Execute SQL from file |
-| `.stats ON\|OFF` | Show memory statistics |
-| `.tables` | List all tables |
-| `.tables %pattern%` | List tables matching pattern |
-| `.timer ON\|OFF` | Measure query execution time |
-| `.schema table` | Show table structure |
-| `.index` | List all indexes |
+| Commande | Description |
+|----------|-------------|
+| `.echo ON\|OFF` | Afficher les commandes executees |
+| `.exit` | Quitter SQLite |
+| `.help` | Afficher toutes les commandes disponibles |
+| `.import fichier table` | Importer des donnees CSV dans une table |
+| `.mode csv\|column\|etc` | Definir le format de sortie |
+| `.output fichier` | Rediriger la sortie vers un fichier |
+| `.open base` | Ouvrir ou creer une base de donnees |
+| `.print texte` | Afficher du texte a l'ecran |
+| `.read fichier` | Executer du SQL depuis un fichier |
+| `.stats ON\|OFF` | Afficher les statistiques memoire |
+| `.tables` | Lister toutes les tables |
+| `.tables %motif%` | Lister les tables correspondant au motif |
+| `.timer ON\|OFF` | Chronometrer l'execution des requetes |
+| `.schema table` | Afficher la structure d'une table |
+| `.index` | Lister tous les index |
 
-## PRAGMA Commands
+## Commandes PRAGMA
 
 ```sql noexec
-PRAGMA page_size;              -- Show page/block size (default: 4096 bytes)
-PRAGMA automatic_index = 0;    -- Disable automatic index creation
-PRAGMA journal_mode = OFF;     -- Disable journaling (faster, less safe)
-PRAGMA synchronous = OFF;      -- Disable synchronous writes (faster, less safe)
+PRAGMA page_size;              -- Afficher la taille de page/bloc (defaut : 4096 octets)
+PRAGMA automatic_index = 0;    -- Desactiver la creation automatique d'index
+PRAGMA journal_mode = OFF;     -- Desactiver la journalisation (plus rapide, moins fiable)
+PRAGMA synchronous = OFF;      -- Desactiver les ecritures synchrones (plus rapide, moins fiable)
 ```
 
-## Performance Tips
+## Conseils de performance
 
-1. **Always use transactions for bulk inserts**
+1. **Toujours encadrer les insertions en masse dans une transaction**
    ```sql noexec
    BEGIN TRANSACTION;
-   -- Multiple INSERT statements
+   -- Instructions INSERT multiples
    COMMIT;
    ```
 
-2. **Create indexes on frequently queried columns**
-   - JOIN columns
-   - WHERE clause columns
-   - ORDER BY columns
+2. **Creer des index sur les colonnes frequemment interrogees**
+   - Colonnes utilisees dans les JOIN
+   - Colonnes presentes dans la clause WHERE
+   - Colonnes utilisees dans ORDER BY
 
-3. **Use EXPLAIN QUERY PLAN to verify index usage**
-   - Look for "SEARCH" instead of "SCAN"
-   - Look for "USING INDEX" in the plan
+3. **Utiliser EXPLAIN QUERY PLAN pour verifier l'utilisation des index**
+   - Chercher "SEARCH" au lieu de "SCAN"
+   - Chercher "USING INDEX" dans le plan
 
-4. **Prefer subqueries with IN for filtering before joining**
-   - Reduces complexity from O(n*m) to O(n+m)
-   - Especially effective when filtering significantly reduces result set
+4. **Preferer les sous-requetes avec IN pour filtrer avant de joindre**
+   - Reduit la complexite de O(n*m) a O(n+m)
+   - Particulierement efficace quand le filtrage reduit significativement le jeu de resultats
 
-5. **Avoid NATURAL JOIN**
-   - Has overhead from column name resolution
-   - Less explicit, harder to optimize
-   - Use explicit JOIN ... ON instead
+5. **Eviter le NATURAL JOIN**
+   - Surcout lie a la resolution des noms de colonnes
+   - Moins explicite, plus difficile a optimiser
+   - Utiliser plutot un JOIN ... ON explicite
 
-## Further Reading
+## Pour aller plus loin
 
-- [SQLite Query Planner](https://www.sqlite.org/queryplanner.html)
-- [SQLite Indexes](https://www.sqlite.org/lang_createindex.html)
+- [Planificateur de requetes SQLite](https://www.sqlite.org/queryplanner.html)
+- [Index SQLite](https://www.sqlite.org/lang_createindex.html)
 - [EXPLAIN QUERY PLAN](https://www.sqlite.org/eqp.html)
-- [SQLite Performance Tuning](https://www.sqlite.org/speed.html)
+- [Optimisation des performances SQLite](https://www.sqlite.org/speed.html)
 
-## Results Summary
+## Resume des resultats
 
-Question 5(a): All students listed  
-Question 5(b): Professors with 'a' in name (e.g., ARNALDI, GARCIA, MARCHAL)  
-Question 5(c): 73 students × 25 professors = 1,825 combinations  
-Question 6: Page size = 4096 bytes  
+Question 5(a) : tous les etudiants listes  
+Question 5(b) : professeurs avec 'a' dans le nom (ex. : ARNALDI, GARCIA, MARCHAL)  
+Question 5(c) : 73 etudiants x 25 professeurs = 1 825 combinaisons  
+Question 6 : taille de page = 4096 octets  
 
-Index Analysis:
-- Index creation: `CREATE INDEX demoIDX ON demo(code);`
-- Performance boost: 800-15000x faster with index
-- Execution plan: Changed from SCAN to SEARCH USING INDEX
+Analyse des index :
+- Creation d'index : `CREATE INDEX demoIDX ON demo(code);`
+- Gain de performance : 800 a 15000x plus rapide avec index
+- Plan d'execution : passage de SCAN a SEARCH USING INDEX
 
-Query Optimization:
-- Best query: Subquery with IN (0.996s)
-- Worst query: NATURAL JOIN (283s)
-- Index optimization: Composite index on (customerId, amount)
-- Final performance: Query 2 remains fastest at 0.787s
+Optimisation des requetes :
+- Meilleure requete : sous-requete avec IN (0.996s)
+- Pire requete : NATURAL JOIN (283s)
+- Optimisation par index : index composite sur (customerId, amount)
+- Performance finale : la requete 2 reste la plus rapide a 0.787s

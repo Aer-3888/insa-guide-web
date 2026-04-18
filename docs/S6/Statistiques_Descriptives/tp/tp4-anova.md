@@ -7,10 +7,10 @@ sidebar_position: 4
 
 ## Objectifs
 
-Maîtriser l'ANOVA pour comparer des moyennes entre groupes:
-- ANOVA à 1 facteur (one-way)
-- ANOVA à 2 facteurs avec/sans interaction (two-way)
-- Interpréter les tables d'ANOVA
+Maitriser l'ANOVA pour comparer des moyennes entre groupes :
+- ANOVA a 1 facteur (one-way)
+- ANOVA a 2 facteurs avec/sans interaction (two-way)
+- Interpreter les tables d'ANOVA
 - Tests de comparaisons multiples
 - Utilisation du package `emmeans`
 
@@ -19,14 +19,14 @@ Maîtriser l'ANOVA pour comparer des moyennes entre groupes:
 ```
 TP4/
 ├── README.md                    # Ce fichier
-├── Sujet TP4.pdf               # Énoncé officiel
+├── Sujet TP4.pdf               # Enonce officiel
 ├── src/
-│   └── TP4_solutions.R         # Solutions commentées et nettoyées
-├── TP4_Donnees/                # Jeux de données
+│   └── TP4_solutions.R         # Solutions commentees et nettoyees
+├── TP4_Donnees/                # Jeux de donnees
 │   ├── hotdogs.txt
 │   ├── cafe.csv
 │   └── resistance_textile.txt
-└── (fichiers originaux)        # Déplacés vers _originals/
+└── (fichiers originaux)        # Deplaces vers _originals/
 ```
 
 ## Package requis
@@ -36,54 +36,54 @@ install.packages("emmeans")
 library(emmeans)
 ```
 
-## ANOVA: Principes
+## ANOVA : Principes
 
 ### Objectif
-Comparer les moyennes de plusieurs groupes (≥ 2) pour déterminer si au moins une diffère des autres.
+Comparer les moyennes de plusieurs groupes ($\geq 2$) pour determiner si au moins une differe des autres.
 
-### Hypothèses
-- **H₀:** μ₁ = μ₂ = ... = μₖ (toutes les moyennes sont égales)
-- **H₁:** ∃i,j tel que μᵢ ≠ μⱼ (au moins une moyenne diffère)
+### Hypotheses
+- **$H_0$ :** $\mu_1 = \mu_2 = \cdots = \mu_k$ (toutes les moyennes sont egales)
+- **$H_1$ :** $\exists\, i,j$ tel que $\mu_i \neq \mu_j$ (au moins une moyenne differe)
 
 ### Conditions d'application
-1. **Indépendance:** observations indépendantes
-2. **Normalité:** distributions normales dans chaque groupe
-3. **Homoscédasticité:** variances égales entre groupes
+1. **Independance :** observations independantes
+2. **Normalite :** distributions normales dans chaque groupe
+3. **Homoscedasticite :** variances egales entre groupes
 
-### Vérification
-- Graphiques de diagnostic: `plot(modele)`
-- Tests formels (si nécessaire):
-  - Normalité: `shapiro.test()`
-  - Homoscédasticité: `bartlett.test()`, `leveneTest()`
+### Verification
+- Graphiques de diagnostic : `plot(modele)`
+- Tests formels (si necessaire) :
+  - Normalite : `shapiro.test()`
+  - Homoscedasticite : `bartlett.test()`, `leveneTest()`
 
-## ANOVA à 1 facteur
+## ANOVA a 1 facteur
 
-### Modèle
-Pour tout i = 1,...,k (groupes) et j = 1,...,nᵢ (observations):
+### Modele
+Pour tout $i = 1, \ldots, k$ (groupes) et $j = 1, \ldots, n_i$ (observations) :
 
-**Yᵢⱼ = μ + αᵢ + εᵢⱼ**
+$$Y_{ij} = \mu + \alpha_i + \varepsilon_{ij}$$
 
-où:
-- μ: moyenne générale
-- αᵢ: effet du groupe i
-- εᵢⱼ iid ~ N(0, σ²): erreur aléatoire
+ou :
+- $\mu$ : moyenne generale
+- $\alpha_i$ : effet du groupe $i$
+- $\varepsilon_{ij} \overset{iid}{\sim} \mathcal{N}(0, \sigma^2)$ : erreur aleatoire
 
 ### Contraintes
-1. **Contrainte naturelle:** Σαᵢ = 0
-2. **Contrainte témoin (défaut R):** α₁ = 0
+1. **Contrainte naturelle :** $\sum \alpha_i = 0$
+2. **Contrainte temoin (defaut R) :** $\alpha_1 = 0$
 
 ### Syntaxe R
 ```r noexec
-# Créer un modèle
+# Creer un modele
 mod <- lm(Y ~ Facteur, data=df)
 
-# Convertir en facteur si nécessaire
+# Convertir en facteur si necessaire
 df$Facteur <- as.factor(df$Facteur)
 
 # Table d'ANOVA
 anova(mod)
 
-# Résumé des coefficients
+# Resume des coefficients
 summary(mod)
 
 # Graphiques de diagnostic
@@ -96,61 +96,61 @@ par(mfrow=c(1,1))
 
 | Source | Df | Sum Sq | Mean Sq | F value | Pr(>F) |
 |--------|-----|--------|---------|---------|--------|
-| Facteur | k-1 | SCM | CCM | F₀ | p-value |
-| Residuals | n-k | SCR | CCR | | |
+| Facteur | $k-1$ | SCM | CCM | $F_0$ | p-value |
+| Residuals | $n-k$ | SCR | CCR | | |
 
-- **Df:** degrés de liberté
-- **Sum Sq:** sommes des carrés
-  - SCM: somme des carrés du modèle (between-group variability)
-  - SCR: somme des carrés résiduelle (within-group variability)
-- **Mean Sq:** carrés moyens
-  - CCM = SCM / (k-1)
-  - CCR = SCR / (n-k)
-- **F value:** F₀ = CCM / CCR
-- **Pr(>F):** probabilité critique (p-value)
+- **Df :** degres de liberte
+- **Sum Sq :** sommes des carres
+  - SCM : somme des carres du modele (variabilite inter-groupes)
+  - SCR : somme des carres residuelle (variabilite intra-groupes)
+- **Mean Sq :** carres moyens
+  - $CCM = SCM / (k-1)$
+  - $CCR = SCR / (n-k)$
+- **F value :** $F_0 = CCM / CCR$
+- **Pr(>F) :** probabilite critique (p-value)
 
-### Décision
-- Si p < α (souvent 0.05): **rejeter H₀** → au moins une moyenne diffère
-- Si p ≥ α: **ne pas rejeter H₀** → pas de différence significative
+### Decision
+- Si $p < \alpha$ (souvent 0.05) : **rejeter $H_0$** -- au moins une moyenne differe
+- Si $p \geq \alpha$ : **ne pas rejeter $H_0$** -- pas de difference significative
 
-## ANOVA à 2 facteurs
+## ANOVA a 2 facteurs
 
 ### Sans interaction
-**Yᵢⱼₖ = μ + αᵢ + βⱼ + εᵢⱼₖ**
+$$Y_{ijk} = \mu + \alpha_i + \beta_j + \varepsilon_{ijk}$$
 
 ```r noexec
 mod <- lm(Y ~ FacteurA + FacteurB, data=df)
 ```
 
 ### Avec interaction
-**Yᵢⱼₖ = μ + αᵢ + βⱼ + (αβ)ᵢⱼ + εᵢⱼₖ**
+$$Y_{ijk} = \mu + \alpha_i + \beta_j + (\alpha\beta)_{ij} + \varepsilon_{ijk}$$
 
 ```r noexec
 mod <- lm(Y ~ FacteurA * FacteurB, data=df)
-# Équivalent à:
+# Equivalent a :
 mod <- lm(Y ~ FacteurA + FacteurB + FacteurA:FacteurB, data=df)
 ```
 
 ### Interaction
-- **Définition:** L'effet d'un facteur dépend du niveau de l'autre facteur
-- **Test:** H₀: pas d'interaction vs H₁: interaction significative
-- **Si interaction significative:** ne pas interpréter les effets principaux séparément
+- **Definition :** L'effet d'un facteur depend du niveau de l'autre facteur
+- **Test :** $H_0$ : pas d'interaction vs $H_1$ : interaction significative
+- **Si interaction significative :** ne pas interpreter les effets principaux separement
 
 ## Exercices
 
-### Exercice 1: Hotdogs (ANOVA à 1 facteur)
-Comparer les caractéristiques nutritionnelles de 3 types de hotdogs.
+### Exercice 1 : Hotdogs (ANOVA a 1 facteur)
+Comparer les caracteristiques nutritionnelles de 3 types de hotdogs.
 
-**Types:**
+**Types :**
 1. Boeuf
-2. Mélange (boeuf + porc)
+2. Melange (boeuf + porc)
 3. Volaille
 
-**Variables:** Calories, Sodium
+**Variables :** Calories, Sodium
 
-**Workflow:**
+**Demarche :**
 
-#### 1. Nettoyage des données
+#### 1. Nettoyage des donnees
 ```r noexec
 tab <- tab[-which(tab$Type == 4), ]  # Supprimer Type=4 (aberrant)
 tab$Type <- as.factor(tab$Type)      # Convertir en facteur
@@ -163,22 +163,22 @@ by(tab, tab$Type, summary)
 boxplot(Calories ~ Type)
 ```
 
-**Observations:**
-- Boeuf et mélange: riches en calories
-- Volaille: moins calorique
-- Boeuf: moins riche en sel (en moyenne)
+**Observations :**
+- Boeuf et melange : riches en calories
+- Volaille : moins calorique
+- Boeuf : moins riche en sel (en moyenne)
 
-#### 3. Modèle ANOVA
+#### 3. Modele ANOVA
 ```r noexec
 mod1 <- lm(Calories ~ Type, data=tab)
 anova(mod1)
 ```
 
-**Test:**
-- H₀: α₁ = α₂ = α₃ = 0 (pas d'effet du type)
-- H₁: ∃i tel que αᵢ ≠ 0 (effet du type)
+**Test :**
+- $H_0 : \alpha_1 = \alpha_2 = \alpha_3 = 0$ (pas d'effet du type)
+- $H_1 : \exists\, i$ tel que $\alpha_i \neq 0$ (effet du type)
 
-**Résultat:** p < 0.05 → le type de hotdog a un effet significatif
+**Resultat :** $p < 0.05$ -- le type de hotdog a un effet significatif
 
 #### 4. Graphiques de diagnostic
 ```r noexec
@@ -186,59 +186,59 @@ par(mfrow=c(2,2))
 plot(mod1)
 ```
 
-**Interprétation:**
-- **Residuals vs Fitted:** 3 valeurs alignées (3 niveaux du facteur)
-- Résidus homogènes autour de 0 ✓
-- Homoscédasticité vérifiée ✓
-- **Q-Q plot:** léger écart aux extrémités (acceptable)
+**Interpretation :**
+- **Residuals vs Fitted :** 3 valeurs alignees (3 niveaux du facteur)
+- Residus homogenes autour de 0
+- Homoscedasticite verifiee
+- **QQ-plot :** leger ecart aux extremites (acceptable)
 
-#### 5. Estimation des paramètres
+#### 5. Estimation des parametres
 ```r noexec
 summary(mod1)
 ```
 
-**Contrainte témoin (α₁ = 0):**
-- μ̂ = 156.85: moyenne des calories pour Type 1 (boeuf)
-- α̂₂ = 1.86: différence Type 2 - Type 1
-- α̂₃ = -38.09: différence Type 3 - Type 1
+**Contrainte temoin ($\alpha_1 = 0$) :**
+- $\hat{\mu} = 156.85$ : moyenne des calories pour le Type 1 (boeuf)
+- $\hat{\alpha}_2 = 1.86$ : difference Type 2 - Type 1
+- $\hat{\alpha}_3 = -38.09$ : difference Type 3 - Type 1
 
-**Prédictions:**
-- Type 1: 156.85 calories
-- Type 2: 156.85 + 1.86 = 158.71 calories
-- Type 3: 156.85 - 38.09 = 118.76 calories
+**Predictions :**
+- Type 1 : 156.85 calories
+- Type 2 : $156.85 + 1.86 = 158.71$ calories
+- Type 3 : $156.85 - 38.09 = 118.76$ calories
 
-**R² = 0.387:** 38.7% de variabilité expliquée
+**$R^2 = 0.387$ :** 38.7% de variabilite expliquee
 
 #### 6. Comparaisons multiples
 ```r noexec
 emmeans(mod1, pairwise ~ Type, adjust="bonferroni")
 ```
 
-**Méthode de Bonferroni:**
+**Methode de Bonferroni :**
 - Ajuste le niveau de confiance pour comparaisons multiples
-- Contrôle le taux d'erreur global
+- Controle le taux d'erreur global
 
-**Résultats:**
-- Comparaison 1-2: différence non significative
-- Comparaison 1-3: **-38.09 calories** (significatif)
-- Comparaison 2-3: **-39.94 calories** (significatif)
+**Resultats :**
+- Comparaison 1-2 : difference non significative
+- Comparaison 1-3 : **-38.09 calories** (significatif)
+- Comparaison 2-3 : **-39.94 calories** (significatif)
 
-**Conclusion:** La volaille est significativement moins calorique
+**Conclusion :** La volaille est significativement moins calorique
 
-#### 7. Même analyse pour le Sodium
-- Résultats similaires
-- Identifier le type le moins salé
+#### 7. Meme analyse pour le Sodium
+- Resultats similaires
+- Identifier le type le moins sale
 
-### Exercice 2: Cafés (ANOVA à 2 facteurs)
-Comparer l'acidité de 3 cafés évaluée par 6 juges.
+### Exercice 2 : Cafes (ANOVA a 2 facteurs)
+Comparer l'acidite de 3 cafes evaluee par 6 juges.
 
-**Facteurs:**
-- FacteurA: Café (3 niveaux)
-- FacteurB: Juge (6 niveaux)
+**Facteurs :**
+- Facteur A : Cafe (3 niveaux)
+- Facteur B : Juge (6 niveaux)
 
-**Question:** Est-ce que le type de café influence l'acidité perçue?
+**Question :** Est-ce que le type de cafe influence l'acidite percue ?
 
-**Workflow:**
+**Demarche :**
 
 #### 1. Convertir en facteurs
 ```r noexec
@@ -246,57 +246,57 @@ cafe$cafe <- as.factor(cafe$cafe)
 cafe$juge <- as.factor(cafe$juge)
 ```
 
-#### 2. Modèle sans interaction
+#### 2. Modele sans interaction
 ```r noexec
 mod <- lm(acidite ~ cafe + juge, data=cafe)
 anova(mod)
 ```
 
-**Tests:**
-- **Effet café:** H₀: α₁ = α₂ = α₃ = 0
-- **Effet juge:** H₀: β₁ = ... = β₆ = 0
+**Tests :**
+- **Effet cafe :** $H_0 : \alpha_1 = \alpha_2 = \alpha_3 = 0$
+- **Effet juge :** $H_0 : \beta_1 = \cdots = \beta_6 = 0$
 
-**Résultats:**
-- Effet café: p < 0.05 → significatif
-- Effet juge: p < 0.05 → significatif
+**Resultats :**
+- Effet cafe : $p < 0.05$ -- significatif
+- Effet juge : $p < 0.05$ -- significatif
 
-**Interprétation:**
-- Le type de café influence l'acidité
-- Les juges notent différemment (biais individuel)
-- **Intérêt d'inclure le juge:** contrôler la variabilité due aux juges pour mieux estimer l'effet café
+**Interpretation :**
+- Le type de cafe influence l'acidite
+- Les juges notent differemment (biais individuel)
+- **Interet d'inclure le juge :** controler la variabilite due aux juges pour mieux estimer l'effet cafe
 
-#### 3. Modèle avec interaction
+#### 3. Modele avec interaction
 ```r noexec
 mod_inter <- lm(acidite ~ cafe * juge, data=cafe)
 anova(mod_inter)
 ```
 
-**Test d'interaction:**
-- H₀: pas d'interaction
-- H₁: interaction significative
+**Test d'interaction :**
+- $H_0$ : pas d'interaction
+- $H_1$ : interaction significative
 
-**Si interaction significative:**
-- L'effet du café dépend du juge
-- Un café peut être jugé plus acide par certains juges et moins par d'autres
+**Si interaction significative :**
+- L'effet du cafe depend du juge
+- Un cafe peut etre juge plus acide par certains juges et moins par d'autres
 
 #### 4. Comparaisons multiples
 ```r noexec
 emmeans(mod, pairwise ~ cafe, adjust="bonferroni")
 ```
 
-**Recommandation:** Choisir le café perçu comme le moins acide
+**Recommandation :** Choisir le cafe percu comme le moins acide
 
-### Exercice 3: Résistance textile (ANOVA à 3 facteurs)
-Évaluer l'effet du type de textile sur la résistance à l'usure en contrôlant position et cycle.
+### Exercice 3 : Resistance textile (ANOVA a 3 facteurs)
+Evaluer l'effet du type de textile sur la resistance a l'usure en controlant position et cycle.
 
-**Facteurs:**
-- Textile: A, B, C, D (4 niveaux)
-- Position: 4 positions dans le testeur (4 niveaux)
-- Cycle: ordre de passage (4 niveaux)
+**Facteurs :**
+- Textile : A, B, C, D (4 niveaux)
+- Position : 4 positions dans le testeur (4 niveaux)
+- Cycle : ordre de passage (4 niveaux)
 
-**Variable réponse:** Perte de poids (dixièmes de mg)
+**Variable reponse :** Perte de poids (dixiemes de mg)
 
-**Workflow:**
+**Demarche :**
 
 #### 1. Convertir en facteurs
 ```r noexec
@@ -312,86 +312,86 @@ boxplot(perte_poids ~ textile, data=resistance,
 abline(h=mean(perte_poids), col="red", lwd=3)
 ```
 
-**Observations:**
-- Textile A: perd moins de poids → plus résistant
-- Textile B: perd le plus de poids → moins résistant
+**Observations :**
+- Textile A : perd moins de poids -- plus resistant
+- Textile B : perd le plus de poids -- moins resistant
 
-#### 3. ANOVA à 1 facteur (textile uniquement)
+#### 3. ANOVA a 1 facteur (textile uniquement)
 ```r noexec
 mod1 <- lm(perte_poids ~ textile, data=resistance)
 anova(mod1)
 ```
 
-**Résultat:** p < 0.05 → effet significatif du textile
+**Resultat :** $p < 0.05$ -- effet significatif du textile
 
-#### 4. ANOVA à 3 facteurs
+#### 4. ANOVA a 3 facteurs
 ```r noexec
 mod2 <- lm(perte_poids ~ textile + position + cycle, data=resistance)
 anova(mod2)
 ```
 
-**Résultats:**
-- Textile: p < 0.05 → significatif
-- Position: p < 0.05 → significatif
-- Cycle: p < 0.05 → significatif
+**Resultats :**
+- Textile : $p < 0.05$ -- significatif
+- Position : $p < 0.05$ -- significatif
+- Cycle : $p < 0.05$ -- significatif
 
-**Interprétation:**
+**Interpretation :**
 - Les 3 facteurs influencent la perte de poids
-- **Avantage du modèle à 3 facteurs:** contrôle la variabilité due à position et cycle pour mieux estimer l'effet textile
+- **Avantage du modele a 3 facteurs :** controle la variabilite due a la position et au cycle pour mieux estimer l'effet textile
 
-#### 5. Test d'un coefficient spécifique
+#### 5. Test d'un coefficient specifique
 ```r noexec
 summary(mod2)$coefficients["textileD", 4] < 0.05
 ```
 
-Vérifie si le coefficient du textile D est significativement différent de 0
+Verifie si le coefficient du textile D est significativement different de 0
 
 #### 6. Comparaisons multiples
 ```r noexec
 emmeans(mod2, pairwise ~ textile, adjust="bonferroni")
 ```
 
-**Identifier:**
-- Quelles paires de textiles diffèrent significativement?
-- Quel textile est le plus résistant?
+**Identifier :**
+- Quelles paires de textiles different significativement ?
+- Quel textile est le plus resistant ?
 
-**Recommandation:** Choisir le textile A (perte de poids minimale)
+**Recommandation :** Choisir le textile A (perte de poids minimale)
 
 ## Comparaisons multiples
 
-### Problème
-Faire k tests à α=5% augmente le risque d'erreur global:
-- 1 test: risque = 5%
-- 10 tests: risque ≈ 40%
+### Probleme
+Faire $k$ tests a $\alpha = 5\%$ augmente le risque d'erreur global :
+- 1 test : risque = 5%
+- 10 tests : risque $\approx$ 40%
 
-### Solution: Correction de Bonferroni
-Ajuster le seuil de significativité: α' = α / nombre de comparaisons
+### Solution : Correction de Bonferroni
+Ajuster le seuil de significativite : $\alpha' = \alpha / \text{nombre de comparaisons}$
 
-### Fonction emmeans
+### Fonction `emmeans`
 ```r noexec
 library(emmeans)
 
-# Moyennes estimées avec IC
+# Moyennes estimees avec IC
 emmeans(mod, ~ Facteur)
 
-# Comparaisons deux à deux
+# Comparaisons deux a deux
 emmeans(mod, pairwise ~ Facteur, adjust="bonferroni")
 
-# Autres méthodes d'ajustement
-adjust="tukey"        # Tukey HSD (recommandé)
+# Autres methodes d'ajustement
+adjust="tukey"        # Tukey HSD (recommande)
 adjust="bonferroni"   # Bonferroni (conservateur)
-adjust="none"         # Pas d'ajustement (risqué)
+adjust="none"         # Pas d'ajustement (risque)
 ```
 
-### Interprétation
+### Interpretation
 ```
-$emmeans: intervalles de confiance sur les moyennes de chaque groupe
+$emmeans : intervalles de confiance sur les moyennes de chaque groupe
 
-$contrasts: comparaisons deux à deux
-- estimate: différence estimée
-- SE: erreur standard
-- t.ratio: statistique de test
-- p.value: probabilité critique (ajustée)
+$contrasts : comparaisons deux a deux
+- estimate : difference estimee
+- SE : erreur standard
+- t.ratio : statistique de test
+- p.value : probabilite critique (ajustee)
 ```
 
 ## Graphiques de diagnostic
@@ -403,27 +403,27 @@ par(mfrow=c(1,1))
 ```
 
 ### 1. Residuals vs Fitted
-- **Bon:** points aléatoires autour de 0, forme rectangulaire
-- **Problème:**
-  - Structure systématique → modèle inadapté
-  - Forme en entonnoir → hétéroscédasticité
+- **Bon :** points aleatoires autour de 0, forme rectangulaire
+- **Probleme :**
+  - Structure systematique -- modele inadapte
+  - Forme en entonnoir -- heteroscedasticite
 
-### 2. Q-Q plot
-- **Bon:** points alignés sur la droite
-- **Problème:** écarts aux extrémités → non-normalité
+### 2. QQ-plot
+- **Bon :** points alignes sur la droite
+- **Probleme :** ecarts aux extremites -- non-normalite
 
 ### 3. Scale-Location
-- **Bon:** ligne horizontale
-- **Problème:** tendance → hétéroscédasticité
+- **Bon :** ligne horizontale
+- **Probleme :** tendance -- heteroscedasticite
 
 ### 4. Residuals vs Leverage
-- **Identifier:** observations influentes (au-delà des lignes de Cook)
-- Distance de Cook > 1 → observation très influente
+- **Identifier :** observations influentes (au-dela des lignes de Cook)
+- Distance de Cook > 1 -- observation tres influente
 
 ## Commandes essentielles
 
 ```r noexec
-# Modèle
+# Modele
 mod <- lm(Y ~ Facteur, data=df)
 mod <- lm(Y ~ Facteur1 + Facteur2, data=df)
 mod <- lm(Y ~ Facteur1 * Facteur2, data=df)
@@ -445,54 +445,54 @@ library(emmeans)
 emmeans(mod, ~ Facteur)
 emmeans(mod, pairwise ~ Facteur, adjust="bonferroni")
 
-# Prédictions
+# Predictions
 predict(mod, newdata=df_new)
 
-# Extraire les résultats
+# Extraire les resultats
 anova_table <- anova(mod)
 anova_table["Facteur", "Pr(>F)"]  # p-value
 ```
 
-## Choix du modèle
+## Choix du modele
 
-### ANOVA vs Régression
-- **ANOVA:** variable explicative catégorielle (facteur)
-- **Régression:** variable explicative quantitative
-- **ANCOVA:** mélange des deux
+### ANOVA vs Regression
+- **ANOVA :** variable explicative categorielle (facteur)
+- **Regression :** variable explicative quantitative
+- **ANCOVA :** melange des deux
 
-### Interaction: oui ou non?
+### Interaction : oui ou non ?
 1. Tester avec interaction
-2. Si interaction non significative (p > 0.05):
-   - Refaire sans interaction (modèle plus simple)
-3. Si interaction significative:
+2. Si interaction non significative ($p > 0.05$) :
+   - Refaire sans interaction (modele plus simple)
+3. Si interaction significative :
    - Garder l'interaction
-   - Ne pas interpréter les effets principaux séparément
+   - Ne pas interpreter les effets principaux separement
 
 ### Validation
 1. Graphiques de diagnostic
-2. Si hypothèses non vérifiées:
-   - Transformation (log, √)
-   - Tests non paramétriques (Kruskal-Wallis)
+2. Si hypotheses non verifiees :
+   - Transformation (log, $\sqrt{}$)
+   - Tests non parametriques (Kruskal-Wallis)
 
-## Pièges à éviter
+## Pieges a eviter
 
-1. **Oublier de convertir en facteur:**
+1. **Oublier de convertir en facteur :**
    ```r noexec
    df$Facteur <- as.factor(df$Facteur)
    ```
 
-2. **Ne pas vérifier les hypothèses:** toujours tracer `plot(mod)`
+2. **Ne pas verifier les hypotheses :** toujours tracer `plot(mod)`
 
-3. **Interpréter les effets principaux quand interaction significative**
+3. **Interpreter les effets principaux quand l'interaction est significative**
 
-4. **Comparaisons multiples sans ajustement:** augmente le risque d'erreur
+4. **Comparaisons multiples sans ajustement :** augmente le risque d'erreur
 
-5. **Confondre significativité et importance pratique**
+5. **Confondre significativite et importance pratique**
 
 ## Ressources
 
-- `?lm` pour la régression/ANOVA
+- `?lm` pour la regression/ANOVA
 - `?anova` pour la table d'ANOVA
 - `?emmeans` pour les comparaisons multiples
-- Package `multcomp` pour tests avancés
-- Package `car` pour diagnostics (Levene test, etc.)
+- Package `multcomp` pour tests avances
+- Package `car` pour diagnostics (test de Levene, etc.)

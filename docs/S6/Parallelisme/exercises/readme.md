@@ -14,7 +14,7 @@ Chaque fichier contient :
 - Des tableaux de performance avec calculs de speedup et efficacite
 - L'analyse des race conditions et comment elles sont evitees
 - La transformation sequentiel vers parallele pour chaque exercice
-- Les techniques de debugging specifiques au paradigme
+- Les techniques de debogage specifiques au paradigme
 
 | TP | Sujet | Technologie | Fichier |
 |----|-------|-------------|---------|
@@ -22,4 +22,4 @@ Chaque fichier contient :
 | TP2-3 | Chaleur + Crible + Jacobi | OpenMP | [tp2_3_openmp_avance.md](/S6/Parallelisme/exercises/tp2-3-openmp-avance) |
 | TP4 | Calcul de PI distribue (Bcast, Reduce) | MPI | [tp4_mpi_pi.md](/S6/Parallelisme/exercises/tp4-mpi-pi) |
 | TP5 | Produit matrice-vecteur (Scatter, Gather) | MPI | [tp5_mpi_matvec.md](/S6/Parallelisme/exercises/tp5-mpi-matvec) |
-| TP6 | Chaleur distribuee (SPMD, ghost zones, Isend) | MPI | [tp6_mpi_chaleur.md](/S6/Parallelisme/exercises/tp6-mpi-chaleur) |
+| TP6 | Chaleur distribuee (SPMD, zones fantomes, Isend) | MPI | [tp6_mpi_chaleur.md](/S6/Parallelisme/exercises/tp6-mpi-chaleur) |

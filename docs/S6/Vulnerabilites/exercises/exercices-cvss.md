@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Exercices -- Qualification de vulnerabilites et CVSS
 
-> Following teacher instructions from: S6/Vulnerabilites/data/moodle/guide/01_intro_securite.md
+> Conforme aux consignes du cours : S6/Vulnerabilites/data/moodle/guide/01_intro_securite.md
 > Sources du cours : 2026-Vulnerabilities.pdf, C1-annotated.pdf
 
 ---
@@ -14,7 +14,7 @@ sidebar_position: 2
 
 ### Pour chaque scenario, identifiez la ou les proprietes CIA violees
 
-**Answer:**
+**Reponse :**
 
 | Scenario | C | I | A | Justification |
 |----------|---|---|---|---------------|
@@ -33,7 +33,7 @@ sidebar_position: 2
 - **I** : les fichiers sont modifies (chiffres), leur contenu original est altere
 - **A** : les fichiers ne sont plus accessibles sans la cle de dechiffrement
 
-**Security explanation:**
+**Explication de securite :**
 
 La triade CIA est le modele fondamental pour evaluer la securite. Chaque vulnerabilite viole une ou plusieurs proprietes :
 - **Confidentialite** : empecher l'acces non autorise a l'information
@@ -59,7 +59,7 @@ La triade CIA est le modele fondamental pour evaluer la securite. Chaque vulnera
 
 ### Methode pour le DS : poser la question cle pour chaque metrique
 
-**Answer:**
+**Reponse :**
 
 ```
 AV : D'ou l'attaquant lance-t-il l'attaque ?
@@ -95,7 +95,7 @@ A  : Quel est l'impact sur la disponibilite ?
 
 **Contexte :** un formulaire de recherche sur un site web est vulnerable a l'injection SQL. L'attaquant peut extraire toute la base de donnees mais ne peut pas modifier les donnees.
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N  -- formulaire web accessible via internet
@@ -118,7 +118,7 @@ Score : 7.5 (HIGH)
 
 ### Cas B : Injection SQL avec stacking (lecture + ecriture)
 
-**Answer:**
+**Reponse :**
 
 Si l'attaquant peut aussi executer INSERT/UPDATE/DELETE/DROP :
 
@@ -133,7 +133,7 @@ A:H -- l'attaquant peut detruire la base (DROP TABLE)
 
 ### Cas C : XSS reflete
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N  -- attaque via un lien envoye par email/messagerie
@@ -153,7 +153,7 @@ Score : 6.1 (MEDIUM)
 
 ### Cas D : XSS stocke ciblant les administrateurs
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N  -- forum accessible via internet
@@ -173,7 +173,7 @@ Score : 9.3 (CRITICAL)
 
 **Contexte :** elevation de privileges locale via polkit.
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:L  -- l'attaquant doit avoir un acces local au systeme (shell)
@@ -193,7 +193,7 @@ Score : 7.8 (HIGH)
 
 ### Cas F : CSRF sur changement de mot de passe
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N  -- page malicieuse sur internet
@@ -211,7 +211,7 @@ Score : 6.5 (MEDIUM)
 
 ### Cas G : Injection de commande avec reverse shell
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N  -- formulaire web accessible via internet
@@ -227,7 +227,7 @@ Vecteur : AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H
 Score : 10.0 (CRITICAL)
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 Ce score maximum est atteint quand toutes les metriques sont au pire. AV:N + AC:L + PR:N + UI:N = exploitabilite maximale. S:C + C:H + I:H + A:H = impact maximal.
 
@@ -242,7 +242,7 @@ Ce score maximum est atteint quand toutes les metriques sont au pire. AV:N + AC:
 
 ### Q1 : Pourquoi le score augmente entre les versions ?
 
-**Answer:**
+**Reponse :**
 
 ```
 CVSS v2 : Impact "Partial" sur la confidentialite
@@ -262,7 +262,7 @@ CVSS v4 : Nouvelles metriques
 
 ### Q2 : Decomposition du vecteur v3.1
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N
@@ -279,7 +279,7 @@ A:N   = pas d'impact sur la disponibilite
 
 ### Q3 : Nouvelles metriques CVSS v4
 
-**Answer:**
+**Reponse :**
 
 | Metrique v4 | Description | Nouveaute |
 |------------|------------|-----------|
@@ -299,7 +299,7 @@ A:N   = pas d'impact sur la disponibilite
 
 ### Q1 : Proprietes CIA violees
 
-**Answer:**
+**Reponse :**
 
 | Propriete | Violee ? | Justification |
 |-----------|---------|---------------|
@@ -309,7 +309,7 @@ A:N   = pas d'impact sur la disponibilite
 
 ### Q2 : CVSS selon le contexte
 
-**Answer:**
+**Reponse :**
 
 **Scenario 1 : camera sur LAN uniquement**
 ```
@@ -339,7 +339,7 @@ Score : 9.8 (CRITICAL)
 
 ### Q3 : Remediation
 
-**Answer:**
+**Reponse :**
 
 | Priorite | Action | Impact CVSS |
 |----------|--------|-------------|
@@ -356,7 +356,7 @@ Score : 9.8 (CRITICAL)
 
 ### Log4Shell est une vulnerabilite dans la librairie Java Log4j permettant l'execution de code a distance via une chaine JNDI injectee dans un champ logge. Calculez le CVSS.
 
-**Answer:**
+**Reponse :**
 
 ```
 AV:N  -- l'attaque est lancee via le reseau (requete HTTP avec payload)
@@ -385,7 +385,7 @@ Vecteur : AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H
 Score : 10.0 (CRITICAL)
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 Log4Shell a le score maximum (10.0) car toutes les metriques sont au pire : exploitabilite maximale (reseau, facile, aucun privilege, aucune interaction) et impact maximal (scope change, acces complet en C/I/A). C'est l'une des vulnerabilites les plus graves de l'histoire.
 
@@ -403,7 +403,7 @@ Log4Shell a le score maximum (10.0) car toutes les metriques sont au pire : expl
 | D | CSRF sur suppression de compte | Suppression via page piege |
 | E | Mot de passe admin par defaut (IoT) | Camera exposee sur internet |
 
-**Answer:**
+**Reponse :**
 
 | # | Vecteur CVSS | Score | Severite |
 |---|-------------|-------|----------|
@@ -421,7 +421,7 @@ Log4Shell a le score maximum (10.0) car toutes les metriques sont au pire : expl
 - L'elevation de privileges (B) est HIGH malgre C:H/I:H/A:H car AV:L + PR:L
 - Le XSS reflete (C) a le score le plus bas car UI:R + impact limite (C:L, I:L)
 
-**Security explanation:**
+**Explication de securite :**
 
 CVSS est une mesure de **severite**, pas de **risque**. Le risque depend aussi de l'exploitabilite en contexte reel et de la valeur de l'actif. Un XSS reflete (6.1) sur un site bancaire peut representer un risque plus eleve qu'un mot de passe par defaut (9.8) sur une camera non critique.
 
@@ -431,11 +431,11 @@ CVSS est une mesure de **severite**, pas de **risque**. Le risque depend aussi d
 
 ```
 Score        Severite        Exemples typiques
-0.0          NONE            Pas de vulnerabilite
-0.1 - 3.9    LOW             Information disclosure mineure
-4.0 - 6.9    MEDIUM          XSS reflete, CSRF simple
-7.0 - 8.9    HIGH            Injection SQL en lecture, elevation de privileges
-9.0 - 10.0   CRITICAL        RCE a distance (Log4Shell), injection SQL complete
+0.0          AUCUNE          Pas de vulnerabilite
+0.1 - 3.9    FAIBLE          Fuite d'information mineure
+4.0 - 6.9    MOYENNE         XSS reflete, CSRF simple
+7.0 - 8.9    HAUTE           Injection SQL en lecture, elevation de privileges
+9.0 - 10.0   CRITIQUE        Execution de code a distance (Log4Shell), injection SQL complete
 ```
 
 ---

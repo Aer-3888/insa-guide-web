@@ -1,53 +1,53 @@
 ---
-title: "TP08 - Priority Queues, Heaps & Dijkstra's Algorithm"
+title: "TP08 - Files de Priorite, Tas et Algorithme de Dijkstra"
 sidebar_position: 8
 ---
 
-# TP08 - Priority Queues, Heaps & Dijkstra's Algorithm
+# TP08 - Files de Priorite, Tas et Algorithme de Dijkstra
 
-## Objective
+## Objectif
 
-Implement **heap-based priority queues** and apply them to solve real-world problems:
-1. **Dijkstra's Algorithm** - Shortest path in graphs
-2. **Le Compte Est Bon** - Number puzzle solver
-3. **Seam Carving** - Content-aware image resizing
+Implementer des **files de priorite basees sur des tas** et les appliquer a des problemes concrets :
+1. **Algorithme de Dijkstra** - Plus court chemin dans un graphe
+2. **Le Compte Est Bon** - Solveur de puzzle arithmetique
+3. **Seam Carving** - Redimensionnement intelligent d'images
 
-This is the most comprehensive TP, combining multiple data structures and algorithms.
+Ce TP est le plus complet, combinant plusieurs structures de donnees et algorithmes.
 
-## Theory: Priority Queues
+## Theorie : Files de Priorite
 
-### What is a Priority Queue?
+### Qu'est-ce qu'une file de priorite ?
 
-A **priority queue** is an abstract data type where:
-- Elements have associated **priorities**
-- **Highest priority** element is always served first
-- Operations: `add`, `peek` (view top), `poll` (remove top)
+Une **file de priorite** est un type abstrait de donnees ou :
+- Les elements ont des **priorites** associees
+- L'element de **plus haute priorite** est toujours servi en premier
+- Operations : `add`, `peek` (consulter le sommet), `poll` (retirer le sommet)
 
-**Applications:**
-- Task scheduling (OS kernels)
-- Event simulation
-- Dijkstra's shortest path
-- A* pathfinding
-- Huffman coding
+**Applications :**
+- Ordonnancement de taches (noyaux d'OS)
+- Simulation d'evenements
+- Plus court chemin de Dijkstra
+- Recherche A*
+- Codage de Huffman
 
-### Implementation Strategies
+### Strategies d'implementation
 
 | Implementation | `add` | `peek` | `poll` | Notes |
 |----------------|-------|--------|--------|-------|
-| Unsorted Array | O(1) | O(n) | O(n) | Find min on removal |
-| Sorted Array | O(n) | O(1) | O(1) | Insert maintains order |
-| Linked List | O(n) | O(1) | O(1) | Similar to sorted array |
-| **Binary Heap** | **O(log n)** | **O(1)** | **O(log n)** | **Best balance!** |
+| Tableau non trie | O(1) | O(n) | O(n) | Chercher le min au retrait |
+| Tableau trie | O(n) | O(1) | O(1) | L'insertion maintient l'ordre |
+| Liste chainee | O(n) | O(1) | O(1) | Similaire au tableau trie |
+| **Tas binaire** | **O(log n)** | **O(1)** | **O(log n)** | **Meilleur compromis !** |
 
-## Binary Heap
+## Tas Binaire
 
 ### Structure
 
-A **binary heap** is a **complete binary tree** satisfying the **heap property**:
-- **Min-heap**: Parent ≤ Children
-- **Max-heap**: Parent ≥ Children
+Un **tas binaire** est un **arbre binaire complet** satisfaisant la **propriete de tas** :
+- **Min-tas** : Parent <= Enfants
+- **Max-tas** : Parent >= Enfants
 
-Visual (min-heap):
+Visualisation (min-tas) :
 ```
         1
        / \
@@ -56,26 +56,26 @@ Visual (min-heap):
     7  5 4  6
 ```
 
-Array representation: `[1, 3, 2, 7, 5, 4, 6]`
+Representation en tableau : `[1, 3, 2, 7, 5, 4, 6]`
 
-### Array-Based Implementation
+### Implementation basee sur un tableau
 
-For element at index `i`:
-- **Parent**: `(i - 1) / 2`
-- **Left child**: `2 * i + 1`
-- **Right child**: `2 * i + 2`
+Pour l'element a l'index `i` :
+- **Parent** : `(i - 1) / 2`
+- **Enfant gauche** : `2 * i + 1`
+- **Enfant droit** : `2 * i + 2`
 
-Benefits:
-- No pointers needed
-- Compact memory
-- Cache-friendly
-- Simple index arithmetic
+Avantages :
+- Pas de pointeurs necessaires
+- Memoire compacte
+- Compatible avec le cache
+- Arithmetique d'index simple
 
-### Heap Operations
+### Operations sur le tas
 
-#### 1. Bubble Up (Sift Up)
+#### 1. Percolation vers le haut (Bubble Up)
 
-After inserting at the end, restore heap property by moving upward:
+Apres insertion en fin de tableau, restaurer la propriete de tas en remontant :
 
 ```java
 private void bubbleUp(int index) {
@@ -93,9 +93,9 @@ private void bubbleUp(int index) {
 }
 ```
 
-#### 2. Bubble Down (Sift Down)
+#### 2. Percolation vers le bas (Bubble Down)
 
-After removing root, restore heap property by moving downward:
+Apres suppression de la racine, restaurer la propriete de tas en descendant :
 
 ```java
 private void bubbleDown(int index) {
@@ -122,7 +122,7 @@ private void bubbleDown(int index) {
 }
 ```
 
-## Interface: `PriorityQueue<T>`
+## Interface : `PriorityQueue<T>`
 
 ```java
 public interface PriorityQueue<T> {
@@ -134,7 +134,7 @@ public interface PriorityQueue<T> {
 }
 ```
 
-## Implementation: `HeapPQ<T>`
+## Implementation : `HeapPQ<T>`
 
 ```java
 public class HeapPQ<T> implements PriorityQueue<T> {
@@ -255,29 +255,29 @@ public class HeapPQ<T> implements PriorityQueue<T> {
 }
 ```
 
-## Application 1: Dijkstra's Algorithm
+## Application 1 : Algorithme de Dijkstra
 
-### Problem
+### Probleme
 
-Find the **shortest path** from a source vertex to all other vertices in a **weighted graph**.
+Trouver le **plus court chemin** depuis un sommet source vers tous les autres sommets dans un **graphe pondere**.
 
-### Algorithm
+### Algorithme
 
 ```
-1. Initialize distances to infinity, except source (0)
-2. Put source in priority queue with distance 0
-3. While queue not empty:
-   a. Poll vertex u with smallest distance
-   b. If u already visited, skip
-   c. Mark u as visited
-   d. For each neighbor v of u:
-      i. Calculate distance via u: dist[u] + weight(u, v)
-      ii. If less than current dist[v], update and enqueue
+1. Initialiser les distances a l'infini, sauf la source (0)
+2. Placer la source dans la file de priorite avec distance 0
+3. Tant que la file n'est pas vide :
+   a. Retirer le sommet u de plus petite distance
+   b. Si u deja visite, passer
+   c. Marquer u comme visite
+   d. Pour chaque voisin v de u :
+      i. Calculer la distance via u : dist[u] + poids(u, v)
+      ii. Si inferieure a dist[v] actuelle, mettre a jour et enfiler
 ```
 
 ### Implementation
 
-#### Graph Interface
+#### Interface du graphe
 
 ```java
 public interface Graph<T> {
@@ -299,7 +299,7 @@ public class VertexAndWeight<T> {
 }
 ```
 
-#### Dijkstra Implementation
+#### Implementation de Dijkstra
 
 ```java
 public class Dijkstra<T> {
@@ -389,10 +389,10 @@ class DijkstraNode<T> implements Comparable<DijkstraNode<T>> {
 }
 ```
 
-### Usage Example
+### Exemple d'utilisation
 
 ```java
-// Build graph
+// Construire le graphe
 Graph<Integer> g = new IndexedGraph(5);
 g.addEdge(0, 1, 3);
 g.addEdge(0, 3, 10);
@@ -400,41 +400,41 @@ g.addEdge(1, 2, 4);
 g.addEdge(1, 3, 1);
 g.addEdge(3, 4, 3);
 
-// Run Dijkstra from vertex 0
+// Executer Dijkstra depuis le sommet 0
 Dijkstra<Integer> dijkstra = new Dijkstra<>(g, 0);
 
-// Get shortest path to vertex 4
+// Obtenir le plus court chemin vers le sommet 4
 Deque<Integer> path = dijkstra.getPathTo(4);
 System.out.println("Path: " + path);  // [0, 1, 3, 4]
 System.out.println("Cost: " + dijkstra.getCost(4));  // 7.0
 ```
 
-### Complexity
+### Complexite
 
-- **Time**: O((V + E) log V) with binary heap
-  - Each vertex added/removed from PQ: O(V log V)
-  - Each edge relaxed: O(E log V)
-- **Space**: O(V) for distances and predecessors
-- **With Fibonacci heap**: O(E + V log V) - theoretical optimum
+- **Temps** : O((V + E) log V) avec un tas binaire
+  - Chaque sommet ajoute/retire de la FP : O(V log V)
+  - Chaque arete relachee : O(E log V)
+- **Espace** : O(V) pour les distances et predecesseurs
+- **Avec tas de Fibonacci** : O(E + V log V) - optimum theorique
 
-## Application 2: Le Compte Est Bon
+## Application 2 : Le Compte Est Bon
 
-### Problem
+### Probleme
 
-French number puzzle: Given 6 numbers and a target, find arithmetic expression that equals (or gets closest to) the target.
+Puzzle arithmetique francais : etant donnes 6 nombres et une cible, trouver une expression arithmetique qui donne (ou s'approche au plus pres de) la cible.
 
-Example:
-- **Numbers**: 1, 2, 7, 9, 25, 100
-- **Target**: 349
-- **Solution**: `(100 + 25) * 2 + 9 * 7 = 313` (close!)
+Exemple :
+- **Nombres** : 1, 2, 7, 9, 25, 100
+- **Cible** : 349
+- **Solution** : `(100 + 25) * 2 + 9 * 7 = 313` (proche !)
 
-### Approach: Graph Search
+### Approche : Recherche dans un graphe
 
-Model as a graph where:
-- **States**: Stacks of numbers and operators (RPN notation)
-- **Transitions**: Add a number or operator
-- **Goal**: State that evaluates to target
-- **Cost**: Prefer simpler solutions (fewer operations)
+Modeliser comme un graphe ou :
+- **Etats** : Piles de nombres et operateurs (notation NPI)
+- **Transitions** : Ajouter un nombre ou un operateur
+- **But** : Etat dont l'evaluation vaut la cible
+- **Cout** : Preferer les solutions simples (moins d'operations)
 
 ### Implementation
 
@@ -559,7 +559,7 @@ public class LeCompteEstBonGraph implements Graph<State> {
 }
 ```
 
-### Solver
+### Solveur
 
 ```java
 public class LeCompteEstBonSolver {
@@ -608,7 +608,7 @@ public class LeCompteEstBonSolver {
 }
 ```
 
-### Usage
+### Utilisation
 
 ```
 $ java LeCompteEstBonSolver
@@ -619,15 +619,15 @@ Steps: 8
 Expression: (100 + 25) * 2 + 9 * 7
 ```
 
-## Application 3: Seam Carving
+## Application 3 : Seam Carving
 
-### Problem
+### Probleme
 
-Resize images intelligently by removing/adding **seams** (connected paths of pixels) with least visual importance.
+Redimensionner des images intelligemment en supprimant/ajoutant des **seams** (chemins connectes de pixels) de moindre importance visuelle.
 
-### Energy Function
+### Fonction d'energie
 
-Define pixel "energy" (importance) using gradient:
+Definir l'"energie" (importance) d'un pixel via le gradient :
 
 ```java
 public double energy(int x, int y) {
@@ -650,9 +650,9 @@ private double colorDiff(Color c1, Color c2) {
 }
 ```
 
-### Find Vertical Seam
+### Trouver un seam vertical
 
-Use Dijkstra to find minimum-energy path from top to bottom:
+Utiliser Dijkstra pour trouver le chemin d'energie minimale du haut vers le bas :
 
 ```java
 public int[] findVerticalSeam() {
@@ -694,7 +694,7 @@ public int[] findVerticalSeam() {
 }
 ```
 
-### Remove Seam
+### Supprimer un seam
 
 ```java
 public void removeVerticalSeam(int[] seam) {
@@ -719,7 +719,7 @@ public void removeVerticalSeam(int[] seam) {
 }
 ```
 
-### Content-Aware Resize
+### Redimensionnement adaptatif
 
 ```java
 public void resize(int targetWidth) {
@@ -730,7 +730,7 @@ public void resize(int targetWidth) {
 }
 ```
 
-### Usage
+### Utilisation
 
 ```java
 SeamCarver carver = new SeamCarver("landscape.png");
@@ -742,11 +742,11 @@ carver.save("landscape_resized.png");
 System.out.println("Resized: " + carver.width() + "x" + carver.height());
 ```
 
-**Result**: Image shrinks horizontally while preserving important content!
+**Resultat** : L'image retrecit horizontalement tout en preservant le contenu important !
 
-## Performance Comparison
+## Comparaison de performance
 
-Run benchmarks:
+Executer des benchmarks :
 
 ```java
 public class PoorBenchmarkPQ {
@@ -782,18 +782,18 @@ public class PoorBenchmarkPQ {
 }
 ```
 
-Output:
+Sortie :
 ```
 OrderedArrayPQ: 12453 ms
 HeapPQ: 87 ms
 Speedup: 143x
 ```
 
-Heap is **100x+ faster** for large datasets!
+Le tas est **100x+ plus rapide** pour les grands jeux de donnees !
 
-## Testing
+## Tests
 
-### Unit Tests
+### Tests unitaires
 
 ```java
 @Test
@@ -811,7 +811,7 @@ public void testHeapPQBasic() {
 }
 ```
 
-### Property-Based Testing (QuickCheck)
+### Tests bases sur les proprietes (QuickCheck)
 
 ```java
 @RunWith(JUnitQuickcheck.class)
@@ -833,42 +833,42 @@ public class HeapPQQuickCheckTest {
 }
 ```
 
-## Running the Project
+## Executer le projet
 
 ```bash
-# Compile
+# Compiler
 mvn compile
 
-# Run tests
+# Executer les tests
 mvn test
 
-# Run specific test
+# Executer un test specifique
 mvn -Dtest=HeapPQTest test
 
-# Run Le Compte Est Bon
+# Executer Le Compte Est Bon
 mvn exec:java -Dexec.mainClass="fr.insa_rennes.sdd.dijkstra.LeCompteEstBonSolver"
 
-# Package JAR
+# Creer le JAR
 mvn package
 
-# Run JAR
+# Executer le JAR
 java -jar target/sdd-tp08-1.0.jar
 ```
 
 ## Extensions
 
-1. **Fibonacci Heap**: Faster amortized operations
-2. **Bidirectional Dijkstra**: Search from both ends
-3. **A* Algorithm**: Heuristic-guided search
-4. **Parallel Dijkstra**: Multi-threaded implementation
-5. **Horizontal Seams**: Remove rows instead of columns
-6. **Object Removal**: Mark objects to remove, compute seams avoiding them
-7. **Energy Functions**: Try different gradient methods
+1. **Tas de Fibonacci** : Operations amorties plus rapides
+2. **Dijkstra bidirectionnel** : Recherche depuis les deux extremites
+3. **Algorithme A*** : Recherche guidee par heuristique
+4. **Dijkstra parallele** : Implementation multi-thread
+5. **Seams horizontaux** : Supprimer des lignes au lieu de colonnes
+6. **Suppression d'objets** : Marquer les objets a supprimer, calculer les seams en les evitant
+7. **Fonctions d'energie** : Essayer differentes methodes de gradient
 
-## See Also
+## Voir aussi
 
-- [Priority Queue](https://en.wikipedia.org/wiki/Priority_queue)
-- [Binary Heap](https://en.wikipedia.org/wiki/Binary_heap)
-- [Dijkstra's Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+- [File de priorite](https://en.wikipedia.org/wiki/Priority_queue)
+- [Tas binaire](https://en.wikipedia.org/wiki/Binary_heap)
+- [Algorithme de Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 - [Seam Carving](https://en.wikipedia.org/wiki/Seam_carving)
 - [algs4 Princeton](https://algs4.cs.princeton.edu/24pq/)

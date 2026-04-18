@@ -1,42 +1,42 @@
 ---
-title: "TP8 - Card Game (Graphics Variant)"
+title: "TP8 - Jeu de cartes (variante graphique)"
 sidebar_position: 8
 ---
 
-# TP8 - Card Game (Graphics Variant)
+# TP8 - Jeu de cartes (variante graphique)
 
-> Following teacher instructions from: `data/moodle/tp/tp8/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp8/README.md`
 
-Similar to TP3 but with tuple variant `Carte of haut * coul` instead of record `{h: haut; c: coul}`.
+Similaire au TP3 mais avec un variant de type tuple `Carte of haut * coul` au lieu du record `{h: haut; c: coul}`.
 
 ---
 
-## Type Definitions
+## Definitions de types
 
 ```ocaml
 type coul = Coeur | Trefle | Pique | Carreau
 type haut = Sept | Huit | Neuf | Dix | Valet | Dame | Roi | As
-type carte = Carte of haut * coul    (* tuple variant instead of record *)
+type carte = Carte of haut * coul    (* variant avec tuple au lieu de record *)
 ```
 
 ---
 
-## Exercise 1
+## Exercice 1
 
-### Card construction with tuple variants
+### Construction de cartes avec variants de type tuple
 
-Accessors use `let Carte (_, col) = c in col` instead of `c.c`.
+Les accesseurs utilisent `let Carte (_, col) = c in col` au lieu de `c.c`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Extract suit from card *)
+(* Extraire la couleur d'une carte *)
 let coul c = let Carte (_, col) = c in col
 
-(* Extract height from card *)
+(* Extraire la hauteur d'une carte *)
 let haut c = let Carte (h, _) = c in h
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # coul (Carte (As, Coeur));;
 - : coul = Coeur
@@ -46,29 +46,29 @@ let haut c = let Carte (h, _) = c in h
 
 ---
 
-## Exercise 2
+## Exercice 2
 
-### Conversion functions and card constructor
+### Fonctions de conversion et constructeur de carte
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Convert integer to card height *)
+(* Convertir un entier en hauteur de carte *)
 let haut_of_int i = match i with
   | 7 -> Sept | 8 -> Huit | 9 -> Neuf | 10 -> Dix
   | 11 -> Valet | 12 -> Dame | 13 -> Roi | 14 -> As
   | _ -> failwith "Invalid card height"
 
-(* Convert string to card suit *)
+(* Convertir une chaine en couleur de carte *)
 let coul_of_string s = match s with
   | "Coeur" -> Coeur | "Trefle" -> Trefle
   | "Pique" -> Pique | "Carreau" -> Carreau
   | _ -> failwith "Invalid card suit"
 
-(* Create a card using Carte constructor *)
+(* Creer une carte avec le constructeur Carte *)
 let carte i s = Carte (haut_of_int i, coul_of_string s)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # carte 8 "Trefle";;
 - : carte = Carte (Huit, Trefle)
@@ -80,15 +80,15 @@ let carte i s = Carte (haut_of_int i, coul_of_string s)
 
 ---
 
-## Exercise 3
+## Exercice 3
 
-### Solitaire game logic with pattern matching on card tuples
+### Logique du jeu de reussite avec pattern matching sur les tuples de cartes
 
-`string_of_carte` matches directly on `Carte (h, col)`. Random generation uses `List.mem` instead of hand-written `exist`.
+`string_of_carte` fait du pattern matching directement sur `Carte (h, col)`. La generation aleatoire utilise `List.mem` au lieu de la fonction `exist` ecrite a la main.
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Pretty-print a card using pattern matching on Carte *)
+(* Afficher une carte avec pattern matching sur Carte *)
 let string_of_carte c = match c with
   | Carte (h, col) ->
       let hstring = match h with
@@ -100,7 +100,7 @@ let string_of_carte c = match c with
       in
       hstring ^ " de " ^ cstring
 
-(* Generate a random card *)
+(* Generer une carte aleatoire *)
 let random_carte () =
   Carte (
     haut_of_int ((Random.int 8) + 7),
@@ -109,7 +109,7 @@ let random_carte () =
     | _ -> failwith "Invalid random suit"
   )
 
-(* Add a unique random card using List.mem *)
+(* Ajouter une carte aleatoire unique avec List.mem *)
 let rec ajtcarte l =
   if List.length l = 32 then l
   else
@@ -117,7 +117,7 @@ let rec ajtcarte l =
     if List.mem rouxscard l then ajtcarte l
     else rouxscard :: l
 
-(* Create a deck with n cards *)
+(* Creer un jeu avec n cartes *)
 let rec faitjeu n =
   if n > 32 then failwith "Maximum 32 cards"
   else if n < 0 then failwith "Negative card count"
@@ -125,7 +125,7 @@ let rec faitjeu n =
   else ajtcarte (faitjeu (n - 1))
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # string_of_carte (carte 11 "Pique");;
 - : string = "Valet de Pique"
@@ -139,15 +139,15 @@ let rec faitjeu n =
 
 ---
 
-## Exercise 4
+## Exercice 4
 
-### Reduction with deep pattern matching on Carte constructor
+### Reduction avec pattern matching profond sur le constructeur Carte
 
-The pattern matches directly into `Carte (ah, ac)` instead of extracting via record fields.
+Le pattern matche directement dans `Carte (ah, ac)` au lieu d'extraire via les champs du record.
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* One reduction step: pattern matches Carte (ah, ac) directly *)
+(* Une etape de reduction : pattern matching directement sur Carte (ah, ac) *)
 let rec reduc l = match l with
   | (Carte (ah, ac) :: abody) :: bbody :: (Carte (ch, cc) :: cbody) :: rest_of_set ->
       if ah = ch || ac = cc then
@@ -158,14 +158,14 @@ let rec reduc l = match l with
         (reduc (bbody :: (Carte (ch, cc) :: cbody) :: rest_of_set))
   | x -> x
 
-(* Apply reductions until stable (compare by list length) *)
+(* Appliquer les reductions jusqu'a stabilite (comparer par longueur de liste) *)
 let rec reussite l =
   let newl = reduc l in
   if List.length newl = List.length l then newl
   else reussite newl
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # let p1 = [carte 14 "Trefle"; carte 10 "Coeur"];;
 # let p2 = [carte 7 "Pique"; carte 11 "Carreau"];;
@@ -181,17 +181,17 @@ let rec reussite l =
 
 ---
 
-## Graphics Display (Optional)
+## Affichage graphique (Optionnel)
 
-Requires the Graphics library:
+Necessite la bibliotheque Graphics :
 ```ocaml noexec
 #use "topfind";;
 #require "graphics";;
 open Graphics;;
 ```
 
-Key graphics functions:
-- `draw_carte`: draws a single card at current position
-- `draw_pile`: draws a vertical pile of cards
-- `draw_jeu`: draws all piles horizontally
-- `draw_reussite`: interactive game loop (press 'q' to quit)
+Fonctions graphiques principales :
+- `draw_carte` : dessine une carte a la position courante
+- `draw_pile` : dessine une pile de cartes verticalement
+- `draw_jeu` : dessine toutes les piles horizontalement
+- `draw_reussite` : boucle de jeu interactive (appuyer sur 'q' pour quitter)

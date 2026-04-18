@@ -1,63 +1,63 @@
 ---
-title: "TP2 - Advanced Recursion and Numerical Methods"
+title: "TP2 - Recursion avancee et methodes numeriques"
 sidebar_position: 2
 ---
 
-# TP2 - Advanced Recursion and Numerical Methods
+# TP2 - Recursion avancee et methodes numeriques
 
-## Overview
+## Vue d'ensemble
 
-This lab explores advanced recursive techniques including:
-- Mutual recursion
-- Higher-order functions with accumulation
-- Numerical integration
-- Function optimization
+Ce TP explore des techniques de recursion avancees :
+- Recursion mutuelle
+- Fonctions d'ordre superieur avec accumulation
+- Integration numerique
+- Optimisation de fonctions
 
-## Exercises
+## Exercices
 
-### 1. Mutual Recursion (`pair`, `impair`)
-Determine if a number is even or odd using mutual recursion.
+### 1. Recursion mutuelle (`pair`, `impair`)
+Determiner si un nombre est pair ou impair par recursion mutuelle.
 
-**Concepts**: Mutually recursive functions with `and` keyword
+**Concepts** : Fonctions mutuellement recursives avec le mot-cle `and`
 
-### 2. Summation (`sigma`)
-Compute the sum of integers from `a` to `b`.
+### 2. Sommation (`sigma`)
+Calculer la somme des entiers de `a` a `b`.
 
-**Concepts**: Basic recursion with accumulation
+**Concepts** : Recursion simple avec accumulation
 
-### 3. Generalized Summation (`sigma2`)
-Sum the results of applying a function to each integer in a range.
+### 3. Sommation generalisee (`sigma2`)
+Sommer les resultats de l'application d'une fonction a chaque entier d'un intervalle.
 
-**Concepts**: Higher-order functions, function parameters
+**Concepts** : Fonctions d'ordre superieur, fonctions en parametre
 
-### 4. Parameterized Accumulation (`sigma3`)
-Generic accumulation with custom function and combiner.
+### 4. Accumulation parametre (`sigma3`)
+Accumulation generique avec fonction et combinateur personnalises.
 
-**Concepts**: Fold-like operations, flexible accumulation patterns
+**Concepts** : Operations de type fold, patterns d'accumulation flexibles
 
-### 5. Predicate-Based Iteration (`sigma4`)
-Iterate until a predicate is satisfied, with custom increment.
+### 5. Iteration basee sur un predicat (`sigma4`)
+Iterer jusqu'a satisfaire un predicat, avec increment personnalise.
 
-**Concepts**: Predicates, general iteration patterns
+**Concepts** : Predicats, patterns d'iteration generaux
 
-### 6. Numerical Summation (`cum`)
-Cumulative sum over a floating-point interval.
+### 6. Sommation numerique (`cum`)
+Somme cumulative sur un intervalle en virgule flottante.
 
-**Concepts**: Floating-point arithmetic, numerical methods
+**Concepts** : Arithmetique en virgule flottante, methodes numeriques
 
-### 7. Numerical Integration (`integre`)
-Approximate definite integrals using the rectangle method.
+### 7. Integration numerique (`integre`)
+Approximer des integrales definies par la methode des rectangles.
 
-**Concepts**: Calculus, numerical integration, dx precision
+**Concepts** : Calcul integral, integration numerique, precision dx
 
-### 8. Function Maximization (`maxi`)
-Find the maximum of a function over an interval using ternary search.
+### 8. Maximisation de fonction (`maxi`)
+Trouver le maximum d'une fonction sur un intervalle par recherche ternaire.
 
-**Concepts**: Optimization algorithms, recursive search
+**Concepts** : Algorithmes d'optimisation, recherche recursive
 
-## Key OCaml Concepts
+## Concepts cles OCaml
 
-### Mutual Recursion
+### Recursion mutuelle
 ```ocaml
 let rec pair n = 
   if n = 0 then true else impair (pred n)
@@ -65,19 +65,19 @@ and impair n =
   if n = 0 then false else pair (pred n)
 ```
 
-### Higher-Order Accumulation
+### Accumulation d'ordre superieur
 ```ocaml
 let rec sigma3 (f, fc) i acc (a, b) =
   if a > b then acc
   else fc (f a) (sigma3 (f, fc) i acc (a + i, b))
 ```
 
-### Numerical Integration
+### Integration numerique
 ```ocaml noexec
 let integre f (a, b, dx) = dx *. cum f (a, b) dx
 ```
 
-### Ternary Search
+### Recherche ternaire
 ```ocaml
 let rec maxi f (a, b) p =
   if abs_float (a -. b) < p then f a
@@ -87,25 +87,25 @@ let rec maxi f (a, b) p =
     else maxi f ((2. *. a +. b) /. 3., b) p
 ```
 
-## Mathematical Background
+## Contexte mathematique
 
-### Numerical Integration
-The rectangle method approximates:
+### Integration numerique
+La methode des rectangles approxime :
 ```
 ∫[a,b] f(x)dx ≈ Σ f(xi) * dx
 ```
 
-### Ternary Search
-Finds the maximum of a unimodal function by dividing the search space into thirds and recursively searching the portion containing the maximum.
+### Recherche ternaire
+Trouve le maximum d'une fonction unimodale en divisant l'espace de recherche en tiers et en cherchant recursivement dans la portion contenant le maximum.
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp2.ml";;
 ```
 
-## Expected Results
+## Resultats attendus
 
 - `sigma (-2, 4)` → 7
 - `sigma2 (fun x -> 2 * x) (-2, 4)` → 14

@@ -20,7 +20,7 @@ Un **sequent** est une expression de la forme :
 ou :
 - **Γ** (Gamma) est un multiensemble de formules (les hypotheses / antecedents)
 - **Δ** (Delta) est un multiensemble de formules (les conclusions / succedents)
-- Le symbole **⊢** (turnstile) separe hypotheses et conclusions
+- Le symbole **⊢** (taquet) separe hypotheses et conclusions
 
 ### Interpretation
 
@@ -55,7 +55,7 @@ A ⊢ A
 
 Toute formule est consequence d'elle-meme.
 
-### Affaiblissement (weakening)
+### Affaiblissement
 
 On peut ajouter des formules sans changer la validite.
 
@@ -169,7 +169,7 @@ Si ¬A est une hypothese, on doit prouver A.
 
 ---
 
-## 4. La regle de coupure (Cut)
+## 4. La regle de coupure
 
 ```
     Γ ⊢ Δ, A      Γ, A ⊢ Δ
@@ -251,7 +251,7 @@ Le calcul des sequents est plus **symetrique** que la deduction naturelle : chaq
 | Affaiblissement | Ajouter des formules |
 | Contraction | Fusionner les doublons |
 | Echange | Permuter l'ordre |
-| Coupure (Cut) | Utiliser un lemme intermediaire |
+| Coupure | Utiliser un lemme intermediaire |
 
 ### Regles logiques
 

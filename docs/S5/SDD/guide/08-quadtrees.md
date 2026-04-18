@@ -5,37 +5,37 @@ sidebar_position: 8
 
 # Quadtrees
 
-## Theory
+## Theorie
 
-A **quadtree** is a tree data structure where each internal node has exactly four children, representing the four quadrants of a 2D space. They are used for spatial partitioning, image compression, and geographic information systems.
+Un **quadtree** est une structure de donnees arborescente ou chaque noeud interne a exactement quatre enfants, representant les quatre quadrants d'un espace 2D. Ils sont utilises pour le partitionnement spatial, la compression d'images et les systemes d'information geographique.
 
-### Types of Quadtrees
+### Types de Quadtrees
 
-1. **Point Quadtree**: stores points in 2D space
-2. **Region Quadtree**: recursively subdivides a square region into four equal quadrants (used in TP7)
+1. **Quadtree de points** : stocke des points dans un espace 2D
+2. **Quadtree de region** : subdivise recursivement une region carree en quatre quadrants egaux (utilise dans le TP7)
 
-### Region Quadtree (from TP7)
+### Quadtree de Region (du TP7)
 
-Each node either:
-- Is a **leaf** with a uniform color (the entire region is one color)
-- Has **4 children** (the region is subdivided into quadrants)
+Chaque noeud est soit :
+- Une **feuille** avec une couleur uniforme (toute la region est d'une seule couleur)
+- Un noeud avec **4 enfants** (la region est subdivisee en quadrants)
 
-Quadrant numbering (as used in TP7):
+Numerotation des quadrants (telle qu'utilisee dans le TP7) :
 ```
   +-------+-------+
   |       |       |
-  |  NW   |  NE   |
+  |  NO   |  NE   |
   |  (0)  |  (1)  |
   +-------+-------+
   |       |       |
-  |  SW   |  SE   |
+  |  SO   |  SE   |
   |  (3)  |  (2)  |
   +-------+-------+
 ```
 
-### Image Compression Example
+### Exemple de Compression d'Image
 
-Original 4x4 image (each cell is a pixel color):
+Image originale 4x4 (chaque cellule est un pixel de couleur) :
 ```
   +--+--+--+--+
   |R |R |B |B |
@@ -48,25 +48,25 @@ Original 4x4 image (each cell is a pixel color):
   +--+--+--+--+
 ```
 
-Quadtree representation:
+Representation en quadtree :
 ```
-           [null]           <- root (not uniform)
+           [null]           <- racine (non uniforme)
           /  |  \  \
         /    |    \  \
-      [R]  [B]  [G]  [G]   <- children are uniform
-      NW    NE   SE   SW
+      [R]  [B]  [G]  [G]   <- les enfants sont uniformes
+      NO    NE   SE   SO
 ```
 
-The top-left 2x2 is all Red -> leaf [R].
-The top-right 2x2 is all Blue -> leaf [B].
-The bottom-right 2x2 and bottom-left 2x2 are all Green -> leaf [G].
+Le carre 2x2 en haut a gauche est entierement Rouge -> feuille [R].
+Le carre 2x2 en haut a droite est entierement Bleu -> feuille [B].
+Les carres 2x2 en bas a droite et en bas a gauche sont entierement Verts -> feuille [G].
 
-Without quadtree: 16 pixels to store.
-With quadtree: 4 leaf nodes. Compression!
+Sans quadtree : 16 pixels a stocker.
+Avec quadtree : 4 noeuds feuilles. Compression !
 
-### Non-uniform Region
+### Region Non Uniforme
 
-If a quadrant is not uniform, subdivide recursively:
+Si un quadrant n'est pas uniforme, subdiviser recursivement :
 ```
   +--+--+--+--+
   |R |R |B |G |
@@ -78,7 +78,7 @@ If a quadrant is not uniform, subdivide recursively:
   |G |G |G |G |
   +--+--+--+--+
 
-Top-right 2x2 is NOT uniform (B,G,G,B), so subdivide:
+Le carre 2x2 en haut a droite N'EST PAS uniforme (B,G,G,B), donc on subdivise :
 
              [null]
             /  |   \    \
@@ -89,9 +89,9 @@ Top-right 2x2 is NOT uniform (B,G,G,B), so subdivide:
 ```
 
 
-## Java Implementation (from TP7)
+## Implementation Java (du TP7)
 
-### QuadTree Interface
+### Interface QuadTree
 
 ```java
 public interface QuadTree {
@@ -113,7 +113,7 @@ public interface QuadTree {
 }
 ```
 
-### Tree Implementation (Cursor-based navigation)
+### Implementation Tree (navigation par curseur)
 
 ```java
 public class Tree implements QuadTree {
@@ -140,7 +140,7 @@ public class Tree implements QuadTree {
     private Node current;  // cursor for navigation
 ```
 
-### Building from Image (recursive subdivision)
+### Construction a Partir d'une Image (subdivision recursive)
 
 ```java
     private Node buildFromImageRec(Image u,
@@ -168,9 +168,9 @@ public class Tree implements QuadTree {
     }
 ```
 
-### Pruning (Compression)
+### Elagage (Compression)
 
-Pruning merges children into their parent if they are similar enough:
+L'elagage fusionne les enfants dans leur parent s'ils sont suffisamment similaires :
 
 ```java
     public void prune(int threshold) {
@@ -202,10 +202,10 @@ Pruning merges children into their parent if they are similar enough:
     }
 ```
 
-threshold = 0: only merge if all children are exactly the same color
-threshold > 0: merge if colors are "close enough" (lossy compression)
+threshold = 0 : ne fusionner que si tous les enfants ont exactement la meme couleur
+threshold > 0 : fusionner si les couleurs sont "suffisamment proches" (compression avec perte)
 
-### Recreating Image from Tree
+### Recreation de l'Image a Partir de l'Arbre
 
 ```java
     private void recreateRec(Image out,
@@ -229,32 +229,32 @@ threshold > 0: merge if colors are "close enough" (lossy compression)
 ```
 
 
-## Complexity
+## Complexite
 
-| Operation | Complexity | Notes |
+| Operation | Complexite | Notes |
 |-----------|-----------|-------|
-| Build from n x n image | O(n^2) | Visit every pixel |
-| Prune (threshold=0) | O(n^2) | Visit all nodes |
-| Query point | O(log n) | Depth = log4(n^2) = log2(n) |
-| Recreate image | O(n^2) | Write every pixel |
-| Space (worst) | O(n^2) | No compression |
-| Space (best) | O(1) | Entire image one color |
-| Space (typical) | O(n) | Depends on image |
+| Construction depuis image n x n | O(n^2) | Visite chaque pixel |
+| Elagage (threshold=0) | O(n^2) | Visite tous les noeuds |
+| Requete ponctuelle | O(log n) | Profondeur = log4(n^2) = log2(n) |
+| Recreation d'image | O(n^2) | Ecrit chaque pixel |
+| Espace (pire cas) | O(n^2) | Pas de compression |
+| Espace (meilleur cas) | O(1) | Image entierement d'une seule couleur |
+| Espace (cas typique) | O(n) | Depend de l'image |
 
-Tree depth for an n x n image: log4(n^2) = log2(n)
+Profondeur de l'arbre pour une image n x n : log4(n^2) = log2(n)
 
-### Comparison with Raw Image
+### Comparaison avec une Image Brute
 
-| Representation | Space | Point query | Region query |
+| Representation | Espace | Requete ponctuelle | Requete de region |
 |---------------|-------|-------------|--------------|
-| Raw pixel array | O(n^2) | O(1) | O(region_size) |
-| Quadtree (uncompressed) | O(n^2) | O(log n) | O(log n + result) |
-| Quadtree (compressed) | O(k) << O(n^2) | O(log n) | O(log n + result) |
+| Tableau de pixels brut | O(n^2) | O(1) | O(taille_region) |
+| Quadtree (non compresse) | O(n^2) | O(log n) | O(log n + resultat) |
+| Quadtree (compresse) | O(k) << O(n^2) | O(log n) | O(log n + resultat) |
 
 
-## Color Distance and Averaging
+## Distance et Moyenne des Couleurs
 
-From the Color class (TP7):
+Depuis la classe Color (TP7) :
 
 ```java
 // Euclidean distance per channel
@@ -288,28 +288,28 @@ public Color average(final Color c, final double weight) {
 ```
 
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
 QUADTREE (REGION)
 =================
-Each node: either LEAF (uniform color) or 4 CHILDREN (subdivided)
+Chaque noeud : soit FEUILLE (couleur uniforme) soit 4 ENFANTS (subdivise)
 
-Quadrants:     +----+----+
-               | NW | NE |
+Quadrants :    +----+----+
+               | NO | NE |
                | 0  | 1  |
                +----+----+
-               | SW | SE |
+               | SO | SE |
                | 3  | 2  |
                +----+----+
 
-BUILD:  recursive subdivision until single pixel -> O(n^2)
-PRUNE:  merge similar children into parent leaf -> compression
-RECREATE: walk tree, paint regions -> O(n^2)
+CONSTRUCTION :  subdivision recursive jusqu'au pixel unique -> O(n^2)
+ELAGAGE :       fusionner les enfants similaires dans le parent -> compression
+RECREATION :    parcourir l'arbre, peindre les regions -> O(n^2)
 
-NAVIGATION: cursor-based (goToRoot, goToChild(i), goToParent)
-DEPTH: log2(n) for n x n image
-SPACE: O(k) where k = number of distinct regions
+NAVIGATION : par curseur (goToRoot, goToChild(i), goToParent)
+PROFONDEUR : log2(n) pour une image n x n
+ESPACE :     O(k) ou k = nombre de regions distinctes
 
-IMAGE SIZE MUST BE POWER OF 2 (2^k x 2^k)
+LA TAILLE DE L'IMAGE DOIT ETRE UNE PUISSANCE DE 2 (2^k x 2^k)
 ```

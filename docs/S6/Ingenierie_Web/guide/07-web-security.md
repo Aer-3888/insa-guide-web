@@ -12,7 +12,7 @@ sidebar_position: 7
 3. [Authentification et sessions](#3-authentification-et-sessions)
 4. [Proteger les donnees utilisateur](#4-proteger-les-donnees-utilisateur)
 5. [Failles de securite courantes](#5-failles-de-securite-courantes)
-6. [Cheat Sheet](#6-cheat-sheet)
+6. [Aide-memoire](#6-aide-memoire)
 
 ---
 
@@ -149,7 +149,7 @@ public class PrivateTodoController {
 }
 ```
 
-### Roles et droits
+### Roles et droits d'acces
 
 Pour le DS 2022-2023 (gestion des notes) :
 - **Etudiant** : peut consulter uniquement SES copies
@@ -211,7 +211,7 @@ Controle quels domaines peuvent appeler l'API.
 
 ---
 
-## 6. Cheat Sheet
+## 6. Aide-memoire
 
 ```
 Routes :

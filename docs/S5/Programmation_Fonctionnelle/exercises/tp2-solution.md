@@ -1,21 +1,21 @@
 ---
-title: "TP2 - Advanced Recursion and Numerical Methods"
+title: "TP2 - Recursion avancee et methodes numeriques"
 sidebar_position: 2
 ---
 
-# TP2 - Advanced Recursion and Numerical Methods
+# TP2 - Recursion avancee et methodes numeriques
 
-> Following teacher instructions from: `data/moodle/tp/tp2/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp2/README.md`
 
 ---
 
-## Exercise 1
+## Exercice 1
 
-### Mutual recursion: determine if a number is even or odd (`pair`, `impair`)
+### Recursion mutuelle : determiner si un nombre est pair ou impair (`pair`, `impair`)
 
-Use mutually recursive functions with the `and` keyword, without using `mod`.
+Utilisation de fonctions mutuellement recursives avec le mot-cle `and`, sans utiliser `mod`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec pair n =
   if n = 0 then true else impair (pred n)
@@ -24,7 +24,7 @@ and impair n =
   if n = 0 then false else pair (pred n)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # pair 12;;
 - : bool = true
@@ -38,18 +38,18 @@ and impair n =
 
 ---
 
-## Exercise 2
+## Exercice 2
 
-### Compute the sum of integers from `a` to `b` (`sigma`)
+### Calculer la somme des entiers de `a` a `b` (`sigma`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec sigma (a, b) =
   if a > b then 0
   else a + sigma (succ a, b)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # sigma (-2, 4);;
 - : int = 7
@@ -61,20 +61,20 @@ let rec sigma (a, b) =
 
 ---
 
-## Exercise 3
+## Exercice 3
 
-### Sum the results of applying a function to each integer in a range (`sigma2`)
+### Sommer les resultats de l'application d'une fonction a chaque entier d'un intervalle (`sigma2`)
 
-Generalization of `sigma`: instead of summing `a`, sum `f(a)`.
+Generalisation de `sigma` : au lieu de sommer `a`, on somme `f(a)`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec sigma2 f (a, b) =
   if a > b then 0
   else f a + sigma2 f (succ a, b)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # sigma2 (fun x -> 2 * x) (-2, 4);;
 - : int = 14
@@ -86,24 +86,24 @@ let rec sigma2 f (a, b) =
 
 ---
 
-## Exercise 4
+## Exercice 4
 
-### Generic accumulation with custom function and combiner (`sigma3`)
+### Accumulation generique avec fonction et combinateur personnalises (`sigma3`)
 
-Generalizes `sigma2` with:
-- `f`: transformation applied to each value
-- `fc`: combiner function (replaces `+`)
-- `i`: increment step (replaces `1`)
-- `acc`: initial accumulator value (replaces `0`)
+Generalise `sigma2` avec :
+- `f` : transformation appliquee a chaque valeur
+- `fc` : fonction combinatrice (remplace `+`)
+- `i` : pas d'increment (remplace `1`)
+- `acc` : valeur initiale de l'accumulateur (remplace `0`)
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec sigma3 (f, fc) i acc (a, b) =
   if a > b then acc
   else fc (f a) (sigma3 (f, fc) i acc (a + i, b))
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # sigma3 ((fun x -> 2 * x), fun v acc -> v + acc) 2 0 (2, 6);;
 - : int = 24
@@ -115,20 +115,20 @@ let rec sigma3 (f, fc) i acc (a, b) =
 
 ---
 
-## Exercise 5
+## Exercice 5
 
-### Iterate until a predicate is satisfied, with custom increment (`sigma4`)
+### Iterer jusqu'a satisfaire un predicat, avec increment personnalise (`sigma4`)
 
-Final generalization: replaces the bound `b` and step `i` with a stopping predicate `p` and an increment function `fi`.
+Derniere generalisation : remplace la borne `b` et le pas `i` par un predicat d'arret `p` et une fonction d'increment `fi`.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec sigma4 (f, fc) (p, fi) acc a =
   if p a then acc
   else fc (f a) (sigma4 (f, fc) (p, fi) acc (fi a))
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # sigma4 ((fun x -> 2 * x), fun v acc -> v + acc)
          ((fun v -> v > 6), fun v -> v + 2) 0 2;;
@@ -140,13 +140,13 @@ let rec sigma4 (f, fc) (p, fi) acc a =
 
 ---
 
-## Exercise 6
+## Exercice 6
 
-### Cumulative sum over a floating-point interval (`cum`)
+### Somme cumulative sur un intervalle en virgule flottante (`cum`)
 
-Instantiation of `sigma4` for floating-point numerical summation.
+Instanciation de `sigma4` pour la sommation numerique en virgule flottante.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let cum f (a, b) dx =
   sigma4 (f, fun a b -> a +. b)
@@ -155,7 +155,7 @@ let cum f (a, b) dx =
          a
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # cum (fun x -> 2. *. x) (0.2, 0.7) 0.2;;
 - : float = 2.4
@@ -163,18 +163,18 @@ let cum f (a, b) dx =
 
 ---
 
-## Exercise 7
+## Exercice 7
 
-### Approximate definite integrals using the rectangle method (`integre`)
+### Approximation d'integrales definies par la methode des rectangles (`integre`)
 
-Multiplies the cumulative sum by `dx` (rectangle method: integral of f from a to b is approximately dx * sum of f(x_i)).
+Multiplie la somme cumulative par `dx` (methode des rectangles : l'integrale de f de a a b est approximativement dx * somme des f(x_i)).
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let integre f (a, b, dx) = dx *. cum f (a, b) dx
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # integre (fun x -> 1. /. x) (1., 2., 0.001);;
 - : float = 0.693897243059959257
@@ -184,13 +184,13 @@ let integre f (a, b, dx) = dx *. cum f (a, b) dx
 
 ---
 
-## Exercise 8
+## Exercice 8
 
-### Find the maximum of a function over an interval using ternary search (`maxi`)
+### Trouver le maximum d'une fonction sur un intervalle par recherche ternaire (`maxi`)
 
-Divides the interval into thirds. Compares f at the two third-points and eliminates the portion that cannot contain the maximum. Works for unimodal functions.
+Divise l'intervalle en tiers. Compare f aux deux points tiers et elimine la portion qui ne peut pas contenir le maximum. Fonctionne pour les fonctions unimodales.
 
-**Answer:**
+**Reponse :**
 ```ocaml
 let rec maxi f (a, b) p =
   if abs_float (a -. b) < p then f a
@@ -202,7 +202,7 @@ let rec maxi f (a, b) p =
     else maxi f (m1, b) p
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # maxi (fun x -> 1. -. (x *. x)) (0., 2.) 0.0001;;
 - : float = 0.999999999...

@@ -482,6 +482,6 @@ tp5/
 
 ## Ressources
 
-- MPI-3.1 Standard: https://www.mpi-forum.org/docs/mpi-3.1/mpi31-report.pdf
-- Tutoriel MPI collectives: https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/
-- Algorithmes parallèles matriciels: "Parallel Scientific Computing in C++ and MPI" (Karniadakis)
+- Standard MPI-3.1 : https://www.mpi-forum.org/docs/mpi-3.1/mpi31-report.pdf
+- Tutoriel collectives MPI : https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/
+- Algorithmes paralleles matriciels : "Parallel Scientific Computing in C++ and MPI" (Karniadakis)

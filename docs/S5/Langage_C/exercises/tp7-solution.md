@@ -5,7 +5,7 @@ sidebar_position: 7
 
 # TP7 - Gestionnaire de Memoire Dynamique Personnalise
 
-> Following teacher instructions from: `S5/Langage_C/data/moodle/tp/tp7/README.md`
+> D'apres les instructions du TP : `S5/Langage_C/data/moodle/tp/tp7/README.md`
 
 ## Contexte
 
@@ -28,7 +28,7 @@ Chaque bloc alloue a :
 
 ### Definir les structures de donnees -- myalloc.h avec le descripteur de bloc, les macros de remplacement et les prototypes
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -119,7 +119,7 @@ Pour chaque bloc du heap:
 Echec: plus de memoire disponible
 ```
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -316,7 +316,7 @@ Marquer le bloc comme LIBRE
 Parcourir le tas pour fusionner les blocs libres adjacents
 ```
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*
@@ -435,7 +435,7 @@ Apres regroupement_libre() :
 
 ### Implementer `Mon_calloc()` -- Allouer et initialiser a zero
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*
@@ -486,7 +486,7 @@ void *Mon_calloc(size_t count, size_t size) {
 4. `newsize > size` et le bloc suivant est libre et suffisant : etendre
 5. `newsize > size` sinon : allouer nouveau, copier, liberer ancien
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*
@@ -612,7 +612,7 @@ void *Mon_realloc(void *ptr, size_t newsize) {
 
 ### Fonctions de test et programme principal
 
-**Answer pour test.h :**
+**Reponse pour test.h :**
 
 ```c noexec
 #include <stdio.h>
@@ -628,7 +628,7 @@ void procedure_test(Type_test t, int nb);
 #endif /* TEST_H */
 ```
 
-**Answer pour test.c (extraits des procedures de test) :**
+**Reponse pour test.c (extraits des procedures de test) :**
 
 ```c noexec
 #include <stdio.h>
@@ -731,7 +731,7 @@ void procedure_test(Type_test t, int nb) {
 }
 ```
 
-**Answer pour main.c :**
+**Reponse pour main.c :**
 
 ```c noexec
 #include <stdio.h>
@@ -782,7 +782,7 @@ run: $(TARGET)
 .PHONY: all clean run
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 cd tp7/src
@@ -790,7 +790,7 @@ make
 ./main
 ```
 
-**Expected output (extrait, avec DEBUG active) :**
+**Sortie attendue (extrait, avec DEBUG active) :**
 
 ```
 initialisation memoire dynamique effectuee !
@@ -811,7 +811,7 @@ zone n1
 
 ---
 
-## Mode debug
+## Mode debogage
 
 Le fichier `myalloc.h` contient des flags de compilation conditionnelle :
 

@@ -1,48 +1,48 @@
 ---
-title: "TP CPOO1 - UML to Java: Associations and Composition"
+title: "TP CPOO1 - UML vers Java : Associations et Composition"
 sidebar_position: 1
 ---
 
-# TP CPOO1 - UML to Java: Associations and Composition
+# TP CPOO1 - UML vers Java : Associations et Composition
 
-## Overview
+## Apercu
 
-This lab focuses on implementing UML class diagrams in Java, exploring different types of associations between objects: simple associations, bidirectional associations, and composition relationships.
+Ce TP se concentre sur l'implementation de diagrammes de classes UML en Java, en explorant les differents types d'associations entre objets : associations simples, associations bidirectionnelles et relations de composition.
 
-## Learning Objectives
+## Objectifs d'apprentissage
 
-- Convert UML class diagrams to Java code
-- Implement unidirectional and bidirectional associations
-- Understand and implement composition relationships
-- Maintain referential integrity in bidirectional associations
-- Write comprehensive JUnit tests for object relationships
-- Use IntelliJ IDEA for Java development
+- Convertir des diagrammes de classes UML en code Java
+- Implementer des associations unidirectionnelles et bidirectionnelles
+- Comprendre et implementer des relations de composition
+- Maintenir l'integrite referentielle dans les associations bidirectionnelles
+- Ecrire des tests JUnit complets pour les relations entre objets
+- Utiliser IntelliJ IDEA pour le developpement Java
 
-## Prerequisites
+## Prerequis
 
-- Java 11 or higher
-- IntelliJ IDEA configured for Java development
-- JUnit 5 for testing
+- Java 11 ou superieur
+- IntelliJ IDEA configure pour le developpement Java
+- JUnit 5 pour les tests
 
-## Project Structure
+## Structure du projet
 
 ```
 tp1/
-├── q1/          # Exercise 1: Simple unidirectional association (Velo → Guidon)
-├── q2/          # Exercise 2: Bidirectional association with referential integrity
-├── q3/          # Exercise 3: Removing bidirectional access (Guidon cannot access Velo)
-├── q4/          # Exercise 4: One-to-many association (Velo → Roue[*])
-├── q5/          # Exercise 5: Composition with bidirectional navigation (Velo ↔ Roue)
-└── q6/          # Exercise 6: Running tests with Moodle test suite
+├── q1/          # Exercice 1 : Association unidirectionnelle simple (Velo → Guidon)
+├── q2/          # Exercice 2 : Association bidirectionnelle avec integrite referentielle
+├── q3/          # Exercice 3 : Suppression de l'acces bidirectionnel (Guidon ne peut plus acceder a Velo)
+├── q4/          # Exercice 4 : Association un-vers-plusieurs (Velo → Roue[*])
+├── q5/          # Exercice 5 : Composition avec navigation bidirectionnelle (Velo ↔ Roue)
+└── q6/          # Exercice 6 : Execution des tests avec la suite de tests Moodle
 ```
 
-## Exercises
+## Exercices
 
-### Q.1 - Simple Association (0..1)
+### Q.1 - Association simple (0..1)
 
-**Objective**: Create a simple unidirectional association between `Velo` and `Guidon`.
+**Objectif** : Creer une association unidirectionnelle simple entre `Velo` et `Guidon`.
 
-**UML Diagram**:
+**Diagramme UML** :
 ```
 ┌─────────────┐         guidon    ┌─────────────┐
 │    Velo     │ ──────────────────>│   Guidon    │
@@ -53,31 +53,31 @@ tp1/
 └─────────────┘                    └─────────────┘
 ```
 
-**Implementation Details**:
-- A `Velo` can have 0 or 1 `Guidon`
-- A `Guidon` can be associated with 0 or 1 `Velo`
-- Both classes have getters and setters
+**Details d'implementation** :
+- Un `Velo` peut avoir 0 ou 1 `Guidon`
+- Un `Guidon` peut etre associe a 0 ou 1 `Velo`
+- Les deux classes ont des getters et setters
 
-**File**: `q1/src/main/java/q1/Velo.java`, `q1/src/main/java/q1/Guidon.java`
+**Fichier** : `q1/src/main/java/q1/Velo.java`, `q1/src/main/java/q1/Guidon.java`
 
-### Q.2 - Bidirectional Association with Referential Integrity
+### Q.2 - Association bidirectionnelle avec integrite referentielle
 
-**Objective**: Ensure referential integrity when adding a `Guidon` to a `Velo`.
+**Objectif** : Assurer l'integrite referentielle lors de l'ajout d'un `Guidon` a un `Velo`.
 
-**Key Concept**: When you add a `Guidon` to a `Velo`, the `Guidon` should automatically reference the `Velo` (principle of referential integrity).
+**Concept cle** : Quand on ajoute un `Guidon` a un `Velo`, le `Guidon` devrait automatiquement referencer le `Velo` (principe d'integrite referentielle).
 
-**Implementation**:
-- Copy classes from q1 to package q2
-- Modify `setGuidon()` to maintain referential integrity
-- When `velo.setGuidon(guidon)` is called, `guidon.setVelo(velo)` should be automatically called
+**Implementation** :
+- Copier les classes de q1 vers le package q2
+- Modifier `setGuidon()` pour maintenir l'integrite referentielle
+- Quand `velo.setGuidon(guidon)` est appele, `guidon.setVelo(velo)` devrait etre appele automatiquement
 
-**File**: `q2/src/main/java/q2/Velo.java`, `q2/src/main/java/q2/Guidon.java`
+**Fichier** : `q2/src/main/java/q2/Velo.java`, `q2/src/main/java/q2/Guidon.java`
 
-### Q.3 - Removing Bidirectional Access
+### Q.3 - Suppression de l'acces bidirectionnel
 
-**Objective**: Prevent `Guidon` from accessing its parent `Velo`.
+**Objectif** : Empecher `Guidon` d'acceder a son `Velo` parent.
 
-**UML Diagram**:
+**Diagramme UML** :
 ```
 ┌─────────────┐         guidon    ┌─────────────┐
 │    Velo     │ ──────────────────>│   Guidon    │
@@ -87,18 +87,18 @@ tp1/
 └─────────────┘                    └─────────────┘
 ```
 
-**Implementation**:
-- Copy classes from q2 to package q3
-- Remove `velo` field and related methods from `Guidon`
-- Update `Velo.setGuidon()` accordingly
+**Implementation** :
+- Copier les classes de q2 vers le package q3
+- Supprimer le champ `velo` et les methodes associees de `Guidon`
+- Mettre a jour `Velo.setGuidon()` en consequence
 
-**File**: `q3/src/main/java/q3/Velo.java`, `q3/src/main/java/q3/Guidon.java`
+**Fichier** : `q3/src/main/java/q3/Velo.java`, `q3/src/main/java/q3/Guidon.java`
 
-### Q.4 - One-to-Many Association
+### Q.4 - Association un-vers-plusieurs
 
-**Objective**: Implement a one-to-many association where a `Velo` has multiple `Roue` (wheels).
+**Objectif** : Implementer une association un-vers-plusieurs ou un `Velo` a plusieurs `Roue` (roues).
 
-**UML Diagram**:
+**Diagramme UML** :
 ```
 ┌─────────────────┐      roues     ┌─────────────┐
 │      Velo       │ ──────────────>│    Roue     │
@@ -109,18 +109,18 @@ tp1/
 └─────────────────┘                └─────────────┘
 ```
 
-**Implementation**:
-- Create `Velo` with a `List<Roue>` (using multiple association)
-- Create `Roue` class
-- Implement methods to add/remove wheels
+**Implementation** :
+- Creer `Velo` avec une `List<Roue>` (association multiple)
+- Creer la classe `Roue`
+- Implementer les methodes pour ajouter/retirer des roues
 
-**File**: `q4/src/main/java/q4/Velo.java`, `q4/src/main/java/q4/Roue.java`
+**Fichier** : `q4/src/main/java/q4/Velo.java`, `q4/src/main/java/q4/Roue.java`
 
-### Q.5 - Composition with Bidirectional Navigation
+### Q.5 - Composition avec navigation bidirectionnelle
 
-**Objective**: Implement composition where `Roue` belongs to exactly one `Velo`, and `Velo` can access its wheels.
+**Objectif** : Implementer la composition ou `Roue` appartient a exactement un `Velo`, et `Velo` peut acceder a ses roues.
 
-**UML Diagram**:
+**Diagramme UML** :
 ```
 ┌─────────────────┐       velo     ┌─────────────┐
 │      Velo       │ ───────────────│    Roue     │
@@ -131,32 +131,32 @@ tp1/
 └─────────────────┘                └─────────────┘
 ```
 
-**Key Concept**: Respect referential integrity of the `roues` role in the composition.
+**Concept cle** : Respecter l'integrite referentielle du role `roues` dans la composition.
 
-**Implementation**:
-- Copy classes from q4 to package q5
-- Add bidirectional navigation
-- Ensure when adding a `Roue` to a `Velo`, the `Roue` automatically references the `Velo`
-- Handle removal properly (set `velo` to null when removed)
+**Implementation** :
+- Copier les classes de q4 vers le package q5
+- Ajouter la navigation bidirectionnelle
+- S'assurer que lors de l'ajout d'une `Roue` a un `Velo`, la `Roue` reference automatiquement le `Velo`
+- Gerer correctement le retrait (mettre `velo` a null lors du retrait)
 
-**File**: `q5/src/main/java/q5/Velo.java`, `q5/src/main/java/q5/Roue.java`
+**Fichier** : `q5/src/main/java/q5/Velo.java`, `q5/src/main/java/q5/Roue.java`
 
-### Q.6 - Testing with Moodle Test Suite
+### Q.6 - Tests avec la suite de tests Moodle
 
-**Objective**: Execute tests provided by Moodle and correct any issues.
+**Objectif** : Executer les tests fournis par Moodle et corriger les eventuels problemes.
 
-**Steps**:
-1. Download test archive from Moodle
-2. Extract to `test/java2` directory
-3. In IntelliJ: right-click on `java2` → "Mark directory as" → "Test Sources Root"
-4. Run tests and fix any issues
+**Etapes** :
+1. Telecharger l'archive de tests depuis Moodle
+2. Extraire dans le repertoire `test/java2`
+3. Dans IntelliJ : clic droit sur `java2` -> "Mark directory as" -> "Test Sources Root"
+4. Executer les tests et corriger les problemes
 
-## Compilation and Execution
+## Compilation et execution
 
-### Compile All Exercises
+### Compiler tous les exercices
 
 ```bash
-# From tp1 directory
+# Depuis le repertoire tp1
 javac q1/src/main/java/q1/*.java
 javac q2/src/main/java/q2/*.java
 javac q3/src/main/java/q3/*.java
@@ -164,48 +164,48 @@ javac q4/src/main/java/q4/*.java
 javac q5/src/main/java/q5/*.java
 ```
 
-### Run Tests
+### Executer les tests
 
 ```bash
-# Using IntelliJ: Right-click on test class → Run
-# Or use command line with JUnit:
+# Avec IntelliJ : Clic droit sur la classe de test → Run
+# Ou en ligne de commande avec JUnit :
 java -cp .:junit-platform-console-standalone.jar org.junit.platform.console.ConsoleLauncher --scan-classpath
 ```
 
-## Key OOP Concepts
+## Concepts POO cles
 
 ### 1. Association
-- Represents a "uses" or "has" relationship
-- Can be unidirectional or bidirectional
-- Multiplicity defines how many objects can be involved
+- Represente une relation "utilise" ou "possede"
+- Peut etre unidirectionnelle ou bidirectionnelle
+- La multiplicite definit combien d'objets peuvent etre impliques
 
 ### 2. Composition
-- Strong form of aggregation
-- Child object cannot exist without parent
-- Parent has exclusive ownership
+- Forme forte d'agregation
+- L'objet enfant ne peut pas exister sans le parent
+- Le parent a la propriete exclusive
 
-### 3. Referential Integrity
-- Ensuring consistency in bidirectional relationships
-- When object A references object B, B should reference A
-- Critical for maintaining data consistency
+### 3. Integrite referentielle
+- Assurer la coherence dans les relations bidirectionnelles
+- Quand l'objet A reference l'objet B, B devrait referencer A
+- Essentiel pour maintenir la coherence des donnees
 
 ### 4. Encapsulation
-- Using private fields with public getters/setters
-- Controlling access to internal state
-- Validating data before modification
+- Utiliser des champs prives avec des getters/setters publics
+- Controler l'acces a l'etat interne
+- Valider les donnees avant modification
 
-## Common Issues and Solutions
+## Problemes courants et solutions
 
-### Issue 1: ConcurrentModificationException in couperArbre()
+### Probleme 1 : ConcurrentModificationException dans couperArbre()
 ```java
-// WRONG: Modifying list while iterating
+// INCORRECT : Modifier la liste pendant l'iteration
 for (Arbre arbre : arbres) {
     if (condition) {
         arbres.remove(arbre); // ConcurrentModificationException!
     }
 }
 
-// CORRECT: Use iterator or index-based loop
+// CORRECT : Utiliser un iterateur ou une boucle par indice
 for (int i = arbres.size() - 1; i >= 0; i--) {
     if (condition) {
         arbres.remove(i);
@@ -213,12 +213,12 @@ for (int i = arbres.size() - 1; i >= 0; i--) {
 }
 ```
 
-### Issue 2: Forgetting Referential Integrity
+### Probleme 2 : Oubli de l'integrite referentielle
 ```java
-// WRONG: Only updating one side
-velo.setGuidon(guidon); // guidon.velo is still null!
+// INCORRECT : Mise a jour d'un seul cote
+velo.setGuidon(guidon); // guidon.velo est toujours null !
 
-// CORRECT: Update both sides
+// CORRECT : Mettre a jour les deux cotes
 public void setGuidon(Guidon guidon) {
     this.guidon = guidon;
     if (guidon != null) {
@@ -227,31 +227,31 @@ public void setGuidon(Guidon guidon) {
 }
 ```
 
-### Issue 3: Null Checks
+### Probleme 3 : Verifications de null
 ```java
-// Always check for null before operations
+// Toujours verifier null avant les operations
 public Boolean addRoue(Roue r) {
     if (r == null || this.roues.contains(r)) {
         return false;
     }
-    // ... rest of the code
+    // ... suite du code
 }
 ```
 
-## Testing Strategy
+## Strategie de test
 
-1. **Test Creation**: Write tests for each method
-2. **Test Edge Cases**: null values, empty collections, duplicate entries
-3. **Test Referential Integrity**: Verify bidirectional relationships are maintained
-4. **Test State Changes**: Verify object state after operations
+1. **Tester la creation** : Ecrire des tests pour chaque methode
+2. **Tester les cas limites** : valeurs null, collections vides, doublons
+3. **Tester l'integrite referentielle** : Verifier que les relations bidirectionnelles sont maintenues
+4. **Tester les changements d'etat** : Verifier l'etat des objets apres les operations
 
-## Resources
+## Ressources
 
-- [Java Collections Framework](https://docs.oracle.com/javase/8/docs/technotes/guides/collections/)
-- [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
-- [UML Class Diagrams](https://www.uml-diagrams.org/class-diagrams-overview.html)
+- [Framework Collections Java](https://docs.oracle.com/javase/8/docs/technotes/guides/collections/)
+- [Guide utilisateur JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
+- [Diagrammes de classes UML](https://www.uml-diagrams.org/class-diagrams-overview.html)
 
-## Author
+## Auteur
 
-INSA Rennes - Arnaud Blouin  
-Course: CPOO (Conception et Programmation Orientee Objet) - 3rd Year CS
+INSA Rennes - Arnaud Blouin
+Cours : CPOO (Conception et Programmation Orientee Objet) - 3e annee Informatique

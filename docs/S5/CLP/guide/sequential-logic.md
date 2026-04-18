@@ -1,338 +1,338 @@
 ---
-title: "Chapter 2 -- Sequential Logic"
+title: "Chapitre 2 -- Logique sequentielle"
 sidebar_position: 7
 ---
 
-# Chapter 2 -- Sequential Logic
+# Chapitre 2 -- Logique sequentielle
 
-## 2.1 Foundations
+## 2.1 Fondements
 
-A **sequential circuit** has outputs that depend on both the current inputs AND the internal state (memory). Unlike combinational circuits, sequential circuits have a clock signal and feedback paths.
+Un **circuit sequentiel** a des sorties qui dependent a la fois des entrees actuelles ET de l'etat interne (memoire). Contrairement aux circuits combinatoires, les circuits sequentiels possedent un signal d'horloge et des chemins de retour.
 
-**Key difference from combinational**: Sequential circuits have memory. They "remember" past inputs.
+**Difference cle avec le combinatoire** : Les circuits sequentiels ont de la memoire. Ils "se souviennent" des entrees passees.
 
-### Two Models of Sequential Machines
+### Deux modeles de machines sequentielles
 
-| Property | Moore Machine | Mealy Machine |
-|----------|--------------|---------------|
-| Output depends on | State only | State + Input |
-| Output changes | Only at clock edge | Anytime input changes |
-| Generally needs | More states | Fewer states |
-| Output timing | Synchronized to clock | May have glitches |
+| Propriete | Machine de Moore | Machine de Mealy |
+|-----------|-----------------|------------------|
+| La sortie depend de | L'etat uniquement | L'etat + l'entree |
+| La sortie change | Uniquement au front d'horloge | A chaque changement d'entree |
+| Necessite generalement | Plus d'etats | Moins d'etats |
+| Synchronisation de la sortie | Synchronisee sur l'horloge | Peut avoir des glitchs |
 
 ---
 
-## 2.2 Flip-Flops
+## 2.2 Bascules
 
-Flip-flops are the fundamental memory elements of sequential circuits. Each stores exactly **one bit** of information.
+Les bascules sont les elements de memoire fondamentaux des circuits sequentiels. Chacune stocke exactement **un bit** d'information.
 
-### D Flip-Flop (Data)
+### Bascule D (Donnee)
 
-The most commonly used flip-flop. On each rising clock edge, the output Q takes the value of input D.
+La bascule la plus couramment utilisee. A chaque front montant d'horloge, la sortie Q prend la valeur de l'entree D.
 
 ```
-Truth table:
+Table de verite :
   D | Q(t+1)
   --|-------
   0 |   0
   1 |   1
 ```
 
-Characteristic equation: Q(t+1) = D
+Equation caracteristique : Q(t+1) = D
 
-**Key property**: D flip-flops are the simplest -- output follows input with one clock delay.
+**Propriete cle** : Les bascules D sont les plus simples -- la sortie suit l'entree avec un retard d'un coup d'horloge.
 
-### T Flip-Flop (Toggle)
+### Bascule T (Toggle / Basculement)
 
-Toggles its output when T=1, holds when T=0.
+Bascule sa sortie quand T=1, maintient quand T=0.
 
 ```
-Truth table:
+Table de verite :
   T | Q(t+1)
   --|-------
-  0 |  Q(t)     (hold)
-  1 | /Q(t)     (toggle)
+  0 |  Q(t)     (maintien)
+  1 | /Q(t)     (basculement)
 ```
 
-Characteristic equation: Q(t+1) = T XOR Q(t)
+Equation caracteristique : Q(t+1) = T XOR Q(t)
 
-**Building T from D**: D = T XOR Q (feed XOR of T and current Q into D input)
+**Construire T a partir de D** : D = T XOR Q (injecter le XOR de T et du Q courant dans l'entree D)
 
-### JK Flip-Flop
+### Bascule JK
 
-The most versatile flip-flop. J=set, K=reset, J=K=1 toggles.
+La bascule la plus polyvalente. J=mise a 1, K=mise a 0, J=K=1 bascule.
 
 ```
-Truth table:
+Table de verite :
   J | K | Q(t+1)
   --|---|-------
-  0 | 0 | Q(t)      (hold)
-  0 | 1 |  0         (reset)
-  1 | 0 |  1         (set)
-  1 | 1 | /Q(t)      (toggle)
+  0 | 0 | Q(t)      (maintien)
+  0 | 1 |  0         (remise a zero)
+  1 | 0 |  1         (mise a un)
+  1 | 1 | /Q(t)      (basculement)
 ```
 
-Characteristic equation: Q(t+1) = J./Q(t) + /K.Q(t)
+Equation caracteristique : Q(t+1) = J./Q(t) + /K.Q(t)
 
-### RS Flip-Flop (Set-Reset)
+### Bascule RS (Set-Reset / Mise a un-Remise a zero)
 
-Basic latch. S=1 sets output to 1, R=1 resets to 0. S=R=1 is FORBIDDEN.
+Verrou de base. S=1 met la sortie a 1, R=1 remet a 0. S=R=1 est INTERDIT.
 
 ```
-Truth table:
+Table de verite :
   R | S | Q(t+1)
   --|---|-------
-  0 | 0 | Q(t)      (hold)
-  0 | 1 |  1         (set)
-  1 | 0 |  0         (reset)
-  1 | 1 | FORBIDDEN
+  0 | 0 | Q(t)      (maintien)
+  0 | 1 |  1         (mise a un)
+  1 | 0 |  0         (remise a zero)
+  1 | 1 | INTERDIT
 ```
 
-### Converting Between Flip-Flops (from TD3)
+### Conversions entre bascules (du TD3)
 
-| Build | From | Method |
-|-------|------|--------|
-| RS from D | D flip-flop + gates | D = S + /R.Q |
-| JK from D | D flip-flop + gates | D = J./Q + /K.Q |
-| D from T | T flip-flop + XOR | T = D XOR Q |
-| D from JK | JK flip-flop | J = D, K = /D |
-| T from JK | JK flip-flop | J = T, K = T |
-
----
-
-## 2.3 Registers
-
-A **register** is a group of flip-flops that stores a multi-bit value.
-
-### Parallel Register
-
-All bits loaded simultaneously on clock edge. Used to hold data values (addresses, operands, results).
-
-### Shift Register (from Logisim circuit 3-registre-decalage)
-
-Bits shift left or right on each clock edge. The vacated position gets a new input bit.
-
-**Applications**:
-- Serial-to-parallel conversion
-- Parallel-to-serial conversion
-- Multiplication/division by powers of 2
-- Delay lines
-
-### Shift Register Operations
-
-- **Shift Left**: Multiply by 2 (for unsigned). MSB is lost, 0 enters from right.
-- **Shift Right**: Divide by 2 (for unsigned). LSB is lost, 0 enters from left.
-- **Arithmetic Shift Right**: For signed numbers. MSB (sign bit) is replicated.
+| Construire | A partir de | Methode |
+|------------|-------------|---------|
+| RS a partir de D | Bascule D + portes | D = S + /R.Q |
+| JK a partir de D | Bascule D + portes | D = J./Q + /K.Q |
+| D a partir de T | Bascule T + XOR | T = D XOR Q |
+| D a partir de JK | Bascule JK | J = D, K = /D |
+| T a partir de JK | Bascule JK | J = T, K = T |
 
 ---
 
-## 2.4 Counters
+## 2.3 Registres
 
-A **counter** is a register that increments (or decrements) its value on each clock edge.
+Un **registre** est un groupe de bascules qui stocke une valeur multi-bits.
 
-### Binary Counter (from Logisim circuit 4-compteur-decompteur)
+### Registre parallele
 
-Counts in natural binary sequence: 0, 1, 2, ..., 2^n-1, 0, 1, ...
+Tous les bits sont charges simultanement au front d'horloge. Utilise pour conserver des valeurs de donnees (adresses, operandes, resultats).
 
-**Modulo-N counter**: Counts from 0 to N-1, then wraps to 0.
+### Registre a decalage (du circuit Logisim 3-registre-decalage)
 
-### Up/Down Counter
+Les bits se decalent a gauche ou a droite a chaque front d'horloge. La position liberee recoit un nouveau bit d'entree.
 
-Can count up or down based on a control signal. From the course circuit 4-compteur-decompteur, a single control bit selects the counting direction.
+**Applications** :
+- Conversion serie-parallele
+- Conversion parallele-serie
+- Multiplication/division par des puissances de 2
+- Lignes a retard
 
-### Loadable Counter
+### Operations du registre a decalage
 
-Can be loaded with an arbitrary value (used in control units as a sequencer). Critical for implementing jumps in microcode.
-
-### Clock Dividers (from Logisim circuit 2-diviseur6-7-9-v2)
-
-A counter that divides the clock frequency by N. The output toggles every N clock cycles.
-
-**Example**: Divider by 6 -- counter counts 0,1,2,3,4,5 then resets. Output goes high for one cycle every 6 cycles.
+- **Decalage a gauche** : Multiplication par 2 (pour les non-signes). Le MSB est perdu, 0 entre par la droite.
+- **Decalage a droite** : Division par 2 (pour les non-signes). Le LSB est perdu, 0 entre par la gauche.
+- **Decalage arithmetique a droite** : Pour les nombres signes. Le MSB (bit de signe) est replique.
 
 ---
 
-## 2.5 Finite State Machines (FSMs)
+## 2.4 Compteurs
 
-An FSM is the fundamental abstraction for sequential circuit design. It consists of:
-- **States**: A finite set of internal configurations
-- **Inputs**: External signals
-- **Outputs**: Results computed by the machine
-- **Transition function**: Maps (current state, input) to next state
-- **Output function**: Maps state (Moore) or (state, input) (Mealy) to output
+Un **compteur** est un registre qui incremente (ou decremente) sa valeur a chaque front d'horloge.
 
-### Design Methodology
+### Compteur binaire (du circuit Logisim 4-compteur-decompteur)
 
-1. **Understand the problem** -- what behavior is needed?
-2. **Identify states** -- what does the machine need to "remember"?
-3. **Draw state diagram** -- bubbles for states, arrows for transitions
-4. **Assign state codes** -- binary encoding for each state
-5. **Build transition table** -- inputs + current state -> next state
-6. **Build output table** -- state (+ input for Mealy) -> output
-7. **Simplify** with Karnaugh maps
-8. **Implement** with flip-flops and combinational logic
+Compte en sequence binaire naturelle : 0, 1, 2, ..., 2^n-1, 0, 1, ...
 
-### Worked Example: Positive Edge Detector (from TD3 Exercise 3)
+**Compteur modulo N** : Compte de 0 a N-1, puis revient a 0.
 
-**Problem**: Input e is 0 or 1 for complete cycles. Output s1=1 for one cycle after 0->1 transition. Output s2=1 for one cycle after 1->0 transition.
+### Compteur/decompteur
 
-**States**: Two states based on previous input value:
-- State 0: Previous input was 0
-- State 1: Previous input was 1
+Peut compter en montant ou en descendant selon un signal de commande. Du circuit de cours 4-compteur-decompteur, un seul bit de commande selectionne la direction de comptage.
 
-**This is a Mealy machine** because the output depends on both the state (previous value) and the current input.
+### Compteur chargeable
 
-**Transition/output table**:
+Peut etre charge avec une valeur arbitraire (utilise dans les unites de commande comme sequenceur). Essentiel pour implementer les sauts en microcode.
 
-| State | Input e | Next State | s1 | s2 |
-|-------|---------|------------|----|----|
+### Diviseurs de frequence (du circuit Logisim 2-diviseur6-7-9-v2)
+
+Un compteur qui divise la frequence d'horloge par N. La sortie bascule tous les N cycles d'horloge.
+
+**Exemple** : Diviseur par 6 -- le compteur compte 0,1,2,3,4,5 puis se reinitialise. La sortie passe a l'etat haut pendant un cycle tous les 6 cycles.
+
+---
+
+## 2.5 Machines a etats finis (MEF)
+
+Une MEF est l'abstraction fondamentale pour la conception de circuits sequentiels. Elle se compose de :
+- **Etats** : Un ensemble fini de configurations internes
+- **Entrees** : Signaux externes
+- **Sorties** : Resultats calcules par la machine
+- **Fonction de transition** : Fait correspondre (etat courant, entree) a l'etat suivant
+- **Fonction de sortie** : Fait correspondre l'etat (Moore) ou (etat, entree) (Mealy) a la sortie
+
+### Methodologie de conception
+
+1. **Comprendre le probleme** -- quel comportement est requis ?
+2. **Identifier les etats** -- de quoi la machine doit-elle "se souvenir" ?
+3. **Dessiner le diagramme d'etats** -- des bulles pour les etats, des fleches pour les transitions
+4. **Assigner les codes d'etat** -- encodage binaire pour chaque etat
+5. **Construire la table de transitions** -- entrees + etat courant -> etat suivant
+6. **Construire la table de sorties** -- etat (+ entree pour Mealy) -> sortie
+7. **Simplifier** avec les tableaux de Karnaugh
+8. **Implementer** avec des bascules et de la logique combinatoire
+
+### Exemple detaille : Detecteur de front montant (du TD3 exercice 3)
+
+**Probleme** : L'entree e vaut 0 ou 1 pendant des cycles complets. La sortie s1=1 pendant un cycle apres une transition 0->1. La sortie s2=1 pendant un cycle apres une transition 1->0.
+
+**Etats** : Deux etats bases sur la valeur precedente de l'entree :
+- Etat 0 : L'entree precedente etait 0
+- Etat 1 : L'entree precedente etait 1
+
+**C'est une machine de Mealy** car la sortie depend a la fois de l'etat (valeur precedente) et de l'entree courante.
+
+**Table de transitions/sorties** :
+
+| Etat | Entree e | Etat suivant | s1 | s2 |
+|------|----------|-------------|----|----|
 | 0 | 0 | 0 | 0 | 0 |
 | 0 | 1 | 1 | 1 | 0 |
 | 1 | 0 | 0 | 0 | 1 |
 | 1 | 1 | 1 | 0 | 0 |
 
-**Implementation**: One D flip-flop stores the previous input. s1 = e AND /Q. s2 = /e AND Q.
+**Implementation** : Une bascule D stocke l'entree precedente. s1 = e AND /Q. s2 = /e AND Q.
 
-### Worked Example: LED Toggle Button (from TD4 Exercise 1)
+### Exemple detaille : Bouton de basculement de LED (du TD4 exercice 1)
 
-**Problem**: Button press toggles LED. LED stays in its state when button is released.
+**Probleme** : L'appui sur un bouton bascule la LED. La LED reste dans son etat quand le bouton est relache.
 
-**States** (4 states, 2 bits m1,m2):
-- (0,0): LED off, button released
-- (0,1): LED off, button pressed
-- (1,0): LED on, button released
-- (1,1): LED on, button pressed
+**Etats** (4 etats, 2 bits m1,m2) :
+- (0,0) : LED eteinte, bouton relache
+- (0,1) : LED eteinte, bouton appuye
+- (1,0) : LED allumee, bouton relache
+- (1,1) : LED allumee, bouton appuye
 
-**Output**: LED = m1 (first memory bit directly)
+**Sortie** : LED = m1 (premier bit de memoire directement)
 
-**Transition function** (from Karnaugh simplification):
+**Fonction de transition** (apres simplification par Karnaugh) :
 ```
 m1(t+1) = /BP . m1 + BP . (m1.m2 + /m1./m2)
 m2(t+1) = BP
 ```
 
-### Worked Example: Sequence Detector (from TD4 Exercise 2)
+### Exemple detaille : Detecteur de sequence (du TD4 exercice 2)
 
-**Problem**: Detect sequence 00, 01, 00, 10 on two inputs (e1, e2). Output S=1 for one cycle when sequence is detected.
+**Probleme** : Detecter la sequence 00, 01, 00, 10 sur deux entrees (e1, e2). La sortie S=1 pendant un cycle quand la sequence est detectee.
 
-**States** (4 states, 2 bits d2,d1):
-- (0,0): Waiting for 00
-- (0,1): Read 00, waiting for 01
-- (1,0): Read 00+01, waiting for 00
-- (1,1): Read 00+01+00, waiting for 10
+**Etats** (4 etats, 2 bits d2,d1) :
+- (0,0) : Attente du 00
+- (0,1) : Recu 00, attente du 01
+- (1,0) : Recu 00+01, attente du 00
+- (1,1) : Recu 00+01+00, attente du 10
 
-**Transition equations** (after Karnaugh simplification):
+**Equations de transition** (apres simplification par Karnaugh) :
 ```
 d1(t+1) = /e1 . /e2
 d2(t+1) = /e1 . (/e2.d2./d1 + d1.e2)
-Output S = d2.d1.e1./e2
+Sortie S = d2.d1.e1./e2
 ```
 
-### Worked Example: Divisibility by 5 Detector (from TD3 Exercise 4)
+### Exemple detaille : Detecteur de divisibilite par 5 (du TD3 exercice 4)
 
-**Problem**: Bits arrive MSB first. After each bit, output whether the number formed so far is divisible by 5.
+**Probleme** : Les bits arrivent MSB en premier. Apres chaque bit, indiquer si le nombre forme jusqu'ici est divisible par 5.
 
-**Key insight**: Receiving a 0 bit means N -> 2N. Receiving a 1 bit means N -> 2N+1. Track remainder mod 5.
+**Idee cle** : Recevoir un bit 0 signifie N -> 2N. Recevoir un bit 1 signifie N -> 2N+1. Il suffit de suivre le reste modulo 5.
 
-**States**: 5 states (remainders 0-4), encoded on 3 bits.
+**Etats** : 5 etats (restes 0 a 4), encodes sur 3 bits.
 
-**Transition table**:
+**Table de transitions** :
 
-| R(N) | R(2N) (input 0) | R(2N+1) (input 1) |
-|------|------------------|--------------------|
+| R(N) | R(2N) (entree 0) | R(2N+1) (entree 1) |
+|------|-------------------|---------------------|
 | 0 | 0 | 1 |
 | 1 | 2 | 3 |
 | 2 | 4 | 0 |
 | 3 | 1 | 2 |
 | 4 | 3 | 4 |
 
-**Output**: Est_div = 1 when state = 0 (remainder is 0).
+**Sortie** : Est_div = 1 quand l'etat = 0 (le reste est 0).
 
 ---
 
-## 2.6 Timing Diagrams
+## 2.6 Chronogrammes
 
-A timing diagram shows the evolution of signals over time. For sequential circuits:
+Un chronogramme montre l'evolution des signaux au cours du temps. Pour les circuits sequentiels :
 
-1. Draw the clock signal (square wave)
-2. For each clock rising edge, compute the next state using the transition function
-3. Compute outputs from the state (Moore) or state+input (Mealy)
-4. Draw all signals aligned to the clock
+1. Tracer le signal d'horloge (signal carre)
+2. Pour chaque front montant d'horloge, calculer l'etat suivant en utilisant la fonction de transition
+3. Calculer les sorties a partir de l'etat (Moore) ou de l'etat+entree (Mealy)
+4. Tracer tous les signaux alignes sur l'horloge
 
-**Example** (from TD3 Exercise 2, two D flip-flops with AND gates):
+**Exemple** (du TD3 exercice 2, deux bascules D avec portes ET) :
 
 ```
-Input sequence R = 0, 1, 1, 0, 1
+Sequence d'entree R = 0, 1, 1, 0, 1
 
-Clock:  _|--|__|--|__|--|__|--|__|--|__
-R:      0     1     1     0     1
-S1:     0     0     1     1     0
-S2:     0     0     0     1     1
+Horloge : _|--|__|--|__|--|__|--|__|--|__
+R:        0     1     1     0     1
+S1:       0     0     1     1     0
+S2:       0     0     0     1     1
 ```
 
-Where S1 and S2 are the D flip-flop outputs, fed back through AND gates with R.
+Ou S1 et S2 sont les sorties des bascules D, rebouclees a travers des portes ET avec R.
 
 ---
 
-## 2.7 Common Pitfalls
+## 2.7 Pieges courants
 
-1. **Forgetting the clock**: All state changes happen at clock edges. Outputs in a Moore machine do NOT change between clock edges.
+1. **Oublier l'horloge** : Tous les changements d'etat se produisent aux fronts d'horloge. Les sorties dans une machine de Moore NE changent PAS entre les fronts d'horloge.
 
-2. **State encoding**: The number of bits needed = ceil(log2(number of states)). With 5 states you need 3 bits (not 2).
+2. **Encodage des etats** : Le nombre de bits necessaires = ceil(log2(nombre d'etats)). Avec 5 etats il faut 3 bits (pas 2).
 
-3. **Missing transitions**: Every state must have a defined transition for every possible input. Missing transitions lead to undefined behavior.
+3. **Transitions manquantes** : Chaque etat doit avoir une transition definie pour chaque entree possible. Les transitions manquantes menent a un comportement indefini.
 
-4. **Mealy vs Moore confusion**: If the exam says "Moore machine," the output must depend only on the state, not on the input.
+4. **Confusion Mealy vs Moore** : Si l'examen dit "machine de Moore", la sortie doit dependre uniquement de l'etat, pas de l'entree.
 
-5. **Off-by-one in sequence detectors**: Be careful about whether the output occurs on the same cycle as the last input or one cycle later. Use an extra flip-flop if needed to delay output by one clock.
+5. **Erreur de decalage dans les detecteurs de sequence** : Attention a savoir si la sortie a lieu au meme cycle que la derniere entree ou un cycle plus tard. Utiliser une bascule supplementaire si necessaire pour retarder la sortie d'un coup d'horloge.
 
-6. **Self-loops**: Do not forget self-loops (state staying in itself) when drawing state diagrams. They are transitions too.
+6. **Boucles sur soi** : Ne pas oublier les boucles sur soi (etat restant dans lui-meme) en dessinant les diagrammes d'etat. Ce sont des transitions aussi.
 
 ---
 
-## CHEAT SHEET -- Sequential Logic
+## AIDE-MEMOIRE -- Logique sequentielle
 
 ```
-FLIP-FLOP EQUATIONS:
-  D:  Q(t+1) = D
-  T:  Q(t+1) = T XOR Q(t)
-  JK: Q(t+1) = J./Q(t) + /K.Q(t)
-  RS: Q(t+1) = S + /R.Q(t)  [S.R = 0 required]
+EQUATIONS DES BASCULES :
+  D :  Q(t+1) = D
+  T :  Q(t+1) = T XOR Q(t)
+  JK : Q(t+1) = J./Q(t) + /K.Q(t)
+  RS : Q(t+1) = S + /R.Q(t)  [S.R = 0 obligatoire]
 
-CONVERSIONS:
-  D from JK:  J=D, K=/D
-  T from JK:  J=T, K=T
-  D from T:   T = D XOR Q
-  JK from D:  D = J./Q + /K.Q
+CONVERSIONS :
+  D a partir de JK :  J=D, K=/D
+  T a partir de JK :  J=T, K=T
+  D a partir de T :   T = D XOR Q
+  JK a partir de D :  D = J./Q + /K.Q
 
-FSM DESIGN STEPS:
-  1. Identify states
-  2. Draw state diagram
-  3. Assign binary codes to states
-  4. Build transition table
-  5. Build output table
-  6. Karnaugh simplification
-  7. Implement with flip-flops + gates
+ETAPES DE CONCEPTION D'UNE MEF :
+  1. Identifier les etats
+  2. Dessiner le diagramme d'etats
+  3. Assigner des codes binaires aux etats
+  4. Construire la table de transitions
+  5. Construire la table de sorties
+  6. Simplification par Karnaugh
+  7. Implementer avec bascules + portes
 
-MOORE vs MEALY:
-  Moore: output = f(state)         -- synchronized, more states
-  Mealy: output = f(state, input)  -- fewer states, async output
+MOORE vs MEALY :
+  Moore : sortie = f(etat)          -- synchronisee, plus d'etats
+  Mealy : sortie = f(etat, entree)  -- moins d'etats, sortie asynchrone
 
-STATE ENCODING:
-  n states -> ceil(log2(n)) flip-flops
-  2 states -> 1 bit
-  3-4 states -> 2 bits
-  5-8 states -> 3 bits
+ENCODAGE DES ETATS :
+  n etats -> ceil(log2(n)) bascules
+  2 etats -> 1 bit
+  3-4 etats -> 2 bits
+  5-8 etats -> 3 bits
 
-COUNTER TYPES:
-  Binary:     0,1,2,...,2^n-1,0,1,...
-  Modulo-N:   0,1,...,N-1,0,1,...
-  Up/Down:    direction controlled by input
-  Loadable:   can jump to any value (for sequencer)
+TYPES DE COMPTEURS :
+  Binaire :     0,1,2,...,2^n-1,0,1,...
+  Modulo N :    0,1,...,N-1,0,1,...
+  Compteur/decompteur : direction controlee par une entree
+  Chargeable :  peut sauter a n'importe quelle valeur (pour le sequenceur)
 
-TIMING DIAGRAM RULES:
-  - State changes on clock RISING edge
-  - Moore outputs: change ONLY at clock edge
-  - Mealy outputs: can change between edges (when input changes)
-  - D flip-flop: output is previous input (1 clock delay)
+REGLES DES CHRONOGRAMMES :
+  - Les changements d'etat se produisent au FRONT MONTANT de l'horloge
+  - Sorties Moore : changent UNIQUEMENT au front d'horloge
+  - Sorties Mealy : peuvent changer entre les fronts (quand l'entree change)
+  - Bascule D : la sortie est l'entree precedente (retard d'1 coup d'horloge)
 ```

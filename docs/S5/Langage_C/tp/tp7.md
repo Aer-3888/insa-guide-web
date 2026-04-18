@@ -1,75 +1,75 @@
 ---
-title: "TP7 - Gestionnaire de Mémoire Dynamique Personnalisé"
+title: "TP7 - Gestionnaire de Memoire Dynamique Personnalise"
 sidebar_position: 7
 ---
 
-# TP7 - Gestionnaire de Mémoire Dynamique Personnalisé
+# TP7 - Gestionnaire de Memoire Dynamique Personnalise
 
 ## Objectifs
 - Comprendre le fonctionnement interne de `malloc()` et `free()`
-- Implémenter un allocateur de mémoire personnalisé
-- Gérer un tas (heap) avec des descripteurs de blocs
-- Manipuler des listes chaînées de zones mémoire
-- Déboguer les fuites et corruptions mémoire
+- Implementer un allocateur de memoire personnalise
+- Gerer un tas (heap) avec des descripteurs de blocs
+- Manipuler des listes chainees de zones memoire
+- Deboguer les fuites et corruptions memoire
 
-## Concept: Allocateur de Mémoire
+## Concept : Allocateur de Memoire
 
-Les fonctions `malloc()` et `free()` gèrent l'allocation dynamique de mémoire.
-Ce TP implémente ces fonctions pour comprendre leur fonctionnement.
+Les fonctions `malloc()` et `free()` gerent l'allocation dynamique de memoire.
+Ce TP implemente ces fonctions pour comprendre leur fonctionnement.
 
 ### Principe
 ```
 [Heap de 1 000 000 octets]
 |
-+--[Descripteur1]--[Données1]--[Descripteur2]--[Données2]--[Libre]--+
++--[Descripteur1]--[Donnees1]--[Descripteur2]--[Donnees2]--[Libre]--+
 ```
 
-Chaque bloc alloué a:
-- Un **descripteur** contenant: taille, statut (LIBRE/OCCUPE), pointeur vers le suivant
-- Une **zone de données** de la taille demandée
+Chaque bloc alloue a :
+- Un **descripteur** contenant : taille, statut (LIBRE/OCCUPE), pointeur vers le suivant
+- Une **zone de donnees** de la taille demandee
 
-## Structure de Données
+## Structure de Donnees
 
 ```c noexec
 typedef enum {LIBRE, OCCUPE} Statut_memoire;
 
 typedef struct descript {
     size_t size;              /* Taille du bloc en octets */
-    Statut_memoire statut;    /* Libre ou occupé */
-    struct descript *suiv;    /* Chaînage vers le bloc suivant */
+    Statut_memoire statut;    /* Libre ou occupe */
+    struct descript *suiv;    /* Chainage vers le bloc suivant */
 } Descript_mem;
 ```
 
-## Fonctions à Implémenter
+## Fonctions a Implementer
 
 ### Allocation
-- `Mon_malloc(size)` - Alloue un bloc de taille donnée
+- `Mon_malloc(size)` - Alloue un bloc de taille donnee
   - Cherche un bloc libre suffisant (first-fit)
-  - Découpe le bloc si nécessaire
+  - Decoupe le bloc si necessaire
   - Marque le bloc comme OCCUPE
-  - Retourne un pointeur vers la zone de données
+  - Retourne un pointeur vers la zone de donnees
 
-### Libération
-- `Mon_free(ptr)` - Libère un bloc alloué
+### Liberation
+- `Mon_free(ptr)` - Libere un bloc alloue
   - Marque le bloc comme LIBRE
   - Fusionne avec les blocs libres adjacents (coalescence)
 
 ### Autres Fonctions
-- `Mon_calloc(count, size)` - Alloue et initialise à zéro
-- `Mon_realloc(ptr, new_size)` - Réalloue avec une nouvelle taille
-- `stat_memoire_dyn()` - Affiche la cartographie mémoire (débogage)
+- `Mon_calloc(count, size)` - Alloue et initialise a zero
+- `Mon_realloc(ptr, new_size)` - Realloue avec une nouvelle taille
+- `stat_memoire_dyn()` - Affiche la cartographie memoire (debogage)
 
 ## Algorithmes
 
 ### First-Fit (Mon_malloc)
 ```
 Pour chaque bloc du heap:
-    Si bloc.statut == LIBRE ET bloc.size >= taille_demandée:
-        Si bloc.size > taille_demandée + taille_min:
-            Découper le bloc en deux (alloué + reste libre)
+    Si bloc.statut == LIBRE ET bloc.size >= taille_demandee:
+        Si bloc.size > taille_demandee + taille_min:
+            Decouper le bloc en deux (alloue + reste libre)
         Marquer le bloc comme OCCUPE
-        Retourner pointeur vers les données
-Échec: plus de mémoire disponible
+        Retourner pointeur vers les donnees
+Echec: plus de memoire disponible
 ```
 
 ### Coalescence (Mon_free)
@@ -77,10 +77,10 @@ Pour chaque bloc du heap:
 Marquer le bloc comme LIBRE
 Si le bloc suivant est LIBRE:
     Fusionner les deux blocs (additionner les tailles)
-Parcourir pour fusionner avec le précédent si LIBRE
+Parcourir pour fusionner avec le precedent si LIBRE
 ```
 
-## Compilation et Exécution
+## Compilation et Execution
 
 ```bash
 cd tp7/src
@@ -88,16 +88,16 @@ make
 ./main
 ```
 
-## Mode Débogage
+## Mode Debogage
 
-Le fichier `myalloc.h` contient des flags:
+Le fichier `myalloc.h` contient des flags :
 
 ```c noexec
-#define DEBUG           /* Affiche les messages de débogage */
+#define DEBUG           /* Affiche les messages de debogage */
 #define ALLOC_PERSO     /* Utilise Mon_malloc au lieu de malloc */
 ```
 
-Décommenter `DEBUG` pour voir les opérations d'allocation/libération.
+Decommenter `DEBUG` pour voir les operations d'allocation/liberation.
 
 ## Exemple d'Utilisation
 
@@ -105,13 +105,13 @@ Décommenter `DEBUG` pour voir les opérations d'allocation/libération.
 #include "myalloc.h"
 
 int main() {
-    /* malloc est automatiquement remplacé par Mon_malloc */
+    /* malloc est automatiquement remplace par Mon_malloc */
     int *tab = malloc(10 * sizeof(int));
     
-    /* Afficher l'état du tas */
+    /* Afficher l'etat du tas */
     stat_memoire_dyn();
     
-    /* Libération */
+    /* Liberation */
     free(tab);
     
     return 0;
@@ -120,15 +120,15 @@ int main() {
 
 ## Points Importants
 
-### 1. Pointeur Arithmétique
+### 1. Arithmetique de Pointeurs
 ```c noexec
-/* Calculer l'adresse des données après le descripteur */
+/* Calculer l'adresse des donnees apres le descripteur */
 void *donnees = (void*)((char*)descripteur + sizeof(Descript_mem));
 ```
 
 ### 2. Retrouver le Descripteur depuis un Pointeur
 ```c noexec
-/* L'utilisateur a un pointeur vers les données */
+/* L'utilisateur a un pointeur vers les donnees */
 /* Le descripteur est juste avant */
 Descript_mem *desc = (Descript_mem*)((char*)ptr - sizeof(Descript_mem));
 ```
@@ -142,39 +142,39 @@ if (bloc->suiv != NULL && bloc->suiv->statut == LIBRE) {
 ```
 
 ### 4. Fragmentation
-La mémoire peut se fragmenter (plein de petits blocs libres non contigus).
-Solutions: coalescence, compactage (non implémenté ici).
+La memoire peut se fragmenter (plein de petits blocs libres non contigus).
+Solutions : coalescence, compactage (non implemente ici).
 
-## Tests à Effectuer
+## Tests a Effectuer
 
-1. **Allocation simple:** `malloc(100)`, vérifier l'état
-2. **Allocations multiples:** plusieurs `malloc()` successifs
-3. **Libération:** `free()` et vérifier la coalescence
-4. **Réallocation:** `realloc()` avec taille plus grande/petite
-5. **Cas limites:** allocation de 0, libération de NULL
-6. **Fuites mémoire:** oublier `free()` et observer
+1. **Allocation simple :** `malloc(100)`, verifier l'etat
+2. **Allocations multiples :** plusieurs `malloc()` successifs
+3. **Liberation :** `free()` et verifier la coalescence
+4. **Reallocation :** `realloc()` avec taille plus grande/petite
+5. **Cas limites :** allocation de 0, liberation de NULL
+6. **Fuites memoire :** oublier `free()` et observer
 
-## Concepts C Abordés
+## Concepts C Abordes
 
 - Gestion du tas (heap)
-- Arithmétique de pointeurs
-- Structures chaînées
+- Arithmetique de pointeurs
+- Structures chainees
 - Macros de remplacement (`#define malloc Mon_malloc`)
 - Compilation conditionnelle (`#ifdef DEBUG`)
 - `size_t` (type pour les tailles)
-- Cast de pointeurs génériques (`void*`)
+- Cast de pointeurs generiques (`void*`)
 
-## Problèmes Courants
+## Problemes Courants
 
-1. **Corruption de tas:** écriture hors limites
-2. **Double free:** libérer deux fois le même pointeur
-3. **Fuite mémoire:** ne pas libérer la mémoire allouée
-4. **Fragmentation:** tas fragmenté sans grand bloc disponible
+1. **Corruption de tas :** ecriture hors limites
+2. **Double free :** liberer deux fois le meme pointeur
+3. **Fuite memoire :** ne pas liberer la memoire allouee
+4. **Fragmentation :** tas fragmente sans grand bloc disponible
 
 ## Extensions Possibles
 
 - Algorithme best-fit (chercher le plus petit bloc suffisant)
-- Compactage du tas (défragmentation)
-- Pools de mémoire (blocs de taille fixe)
+- Compactage du tas (defragmentation)
+- Pools de memoire (blocs de taille fixe)
 - Garbage collector simple
-- Statistiques d'utilisation mémoire
+- Statistiques d'utilisation memoire

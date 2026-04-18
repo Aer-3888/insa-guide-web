@@ -1,17 +1,17 @@
 ---
-title: "Assembly Exam Walkthroughs"
+title: "Corrections detaillees d'annales d'assembleur"
 sidebar_position: 2
 ---
 
-# Assembly Exam Walkthroughs
+# Corrections detaillees d'annales d'assembleur
 
-## 2017 Exam -- String Processing
+## Annale 2017 -- Traitement de chaines
 
-### Exercise 1: Count Character Occurrences
+### Exercice 1 : Compter les occurrences d'un caractere
 
-**Problem** (reconstructed from solution code): Count the number of 'e' characters in the string "Ouvroir de litterature potentielle". Note: the source file `Exercice1 Theo.s` uses the accented spelling "litterature", which means the accented character is NOT counted by ASCII comparison.
+**Probleme** (reconstitue a partir du code de correction) : Compter le nombre de caracteres 'e' dans la chaine "Ouvroir de litterature potentielle". Remarque : le fichier source `Exercice1 Theo.s` utilise l'orthographe accentuee "litterature", ce qui signifie que le caractere accentue N'EST PAS compte par la comparaison ASCII.
 
-**Given code** (`Exercice1 Theo.s`):
+**Code donne** (`Exercice1 Theo.s`) :
 
 ```arm
 .data
@@ -36,45 +36,45 @@ _Start:
   str r1, [r0]             @ store count in variable 'a'
 ```
 
-**Note on encoding**: The original source string contains the accented character "e" in "litterature". Since ARM `LDRB` compares raw byte values, the accented "e" (UTF-8: 0xC3 0xA9) does NOT match ASCII 'e' (0x65). This affects the count.
+**Remarque sur l'encodage** : La chaine source originale contient le caractere accentue "e" dans "litterature". Puisque `LDRB` d'ARM compare les valeurs brutes d'octets, le "e" accentue (UTF-8 : 0xC3 0xA9) NE correspond PAS au 'e' ASCII (0x65). Cela affecte le compte.
 
-### Step-by-Step Methodology
+### Methodologie pas a pas
 
-**Step 1: Identify the data structures**
-- `a`: 4-byte space for the result
-- `b`: Null-terminated string
+**Etape 1 : Identifier les structures de donnees**
+- `a` : Espace de 4 octets pour le resultat
+- `b` : Chaine terminee par null
 
-**Step 2: Trace the registers**
-- r0: Pointer walking through the string
-- r1: Counter (accumulates result)
-- r2: Current character being examined
+**Etape 2 : Tracer les registres**
+- r0 : Pointeur parcourant la chaine
+- r1 : Compteur (accumule le resultat)
+- r2 : Caractere courant examine
 
-**Step 3: Understand the loop pattern**
-This is the standard string traversal pattern:
-1. Load byte with post-increment (`LDRB r2, [r0], #1`)
-2. Process the character (compare with target)
-3. Use conditional execution for counting (`ADDEQ`)
-4. Check for null terminator
-5. Loop back
+**Etape 3 : Comprendre le patron de boucle**
+C'est le patron standard de parcours de chaine :
+1. Charger un octet avec post-increment (`LDRB r2, [r0], #1`)
+2. Traiter le caractere (comparer avec la cible)
+3. Utiliser l'execution conditionnelle pour le comptage (`ADDEQ`)
+4. Verifier le terminateur null
+5. Revenir en boucle
 
-**Step 4: Count the result**
-String: "Ouvroir de litterature potentielle" (note: the accented e in "litterature" is NOT matched by `cmp r2, #'e'`)
-Occurrences of 'e': d**e**, literatur**e**, pot**e**nti**e**ll**e** = 5
+**Etape 4 : Compter le resultat**
+Chaine : "Ouvroir de litterature potentielle" (remarque : le e accentue dans "litterature" N'EST PAS reconnu par `cmp r2, #'e'`)
+Occurrences de 'e' : d**e**, literatur**e**, pot**e**nti**e**ll**e** = 5
 
-**Key exam techniques demonstrated**:
-- Post-increment addressing for string traversal
-- Conditional execution (`ADDEQ`) avoids branches
-- Null-terminated string convention
+**Techniques d'examen cles demontrees** :
+- Adressage post-increment pour le parcours de chaines
+- Execution conditionnelle (`ADDEQ`) evite les branchements
+- Convention de chaine terminee par null
 
 ---
 
-## 2018 Exam -- Structures and Vectors
+## Annale 2018 -- Structures et vecteurs
 
-### Context
+### Contexte
 
-The exam works with mathematical structures:
+L'examen travaille avec des structures mathematiques :
 
-**Line** (Droite): ax + by + c = 0
+**Droite** : ax + by + c = 0
 ```
 Structure Droite {
     int a;       @ offset 0
@@ -83,7 +83,7 @@ Structure Droite {
 }
 ```
 
-**Direction Vector** (VectDir): (-b, a) for line ax + by + c = 0
+**Vecteur directeur** (VectDir) : (-b, a) pour la droite ax + by + c = 0
 ```
 Structure VectDir {
     int x;       @ offset 0
@@ -91,11 +91,11 @@ Structure VectDir {
 }
 ```
 
-### Exercise: GenerationVectDir
+### Exercice : GenerationVectDir
 
-**Problem**: Given an array of lines, compute the direction vector for each line. The direction vector of ax + by + c = 0 is (-b, a).
+**Probleme** : Etant donne un tableau de droites, calculer le vecteur directeur de chaque droite. Le vecteur directeur de ax + by + c = 0 est (-b, a).
 
-**Data setup**:
+**Donnees :**
 ```arm
 .data
 D1: .word 3, 2, 12         @ Line: 3x + 2y + 12 = 0
@@ -111,7 +111,7 @@ v2: .space 8                @ Direction vector for D2
 v3: .space 8                @ Direction vector for D3
 ```
 
-**Solution code** (annotated version of `Annale 2018 GenerationVectDir.s`):
+**Code de correction** (version annotee de `Annale 2018 GenerationVectDir.s`) :
 
 ```arm
 GenerationVectDir:
@@ -160,17 +160,17 @@ fin_boucle:
     bx lr
 ```
 
-### Key Exam Techniques
+### Techniques d'examen cles
 
-1. **Array of pointers to structures**: `ldr r5, [r8, r4, lsl #2]` gets the i-th pointer, then `ldr r6, [r5, #4]` dereferences the structure field.
+1. **Tableau de pointeurs vers des structures** : `ldr r5, [r8, r4, lsl #2]` obtient le i-eme pointeur, puis `ldr r6, [r5, #4]` dereference le champ de la structure.
 
-2. **RSB for negation**: `rsb r6, r6, #0` computes 0 - r6 = -r6. This is the standard way to negate in ARM.
+2. **RSB pour la negation** : `rsb r6, r6, #0` calcule 0 - r6 = -r6. C'est la maniere standard de nier en ARM.
 
-3. **Scaled indexing**: `ldr r5, [r8, r4, lsl #2]` means r5 = memory[r8 + r4*4]. The `lsl #2` multiplies the index by 4 for word-sized pointers.
+3. **Indexation avec echelle** : `ldr r5, [r8, r4, lsl #2]` signifie r5 = memory[r8 + r4*4]. Le `lsl #2` multiplie l'index par 4 pour des pointeurs de taille mot.
 
-### Exercise: Collinearity Test
+### Exercice : Test de colinearite
 
-**Problem**: Test if two vectors are collinear. Vectors (x1,y1) and (x2,y2) are collinear if x1*y2 - y1*x2 = 0.
+**Probleme** : Tester si deux vecteurs sont colineaires. Les vecteurs (x1,y1) et (x2,y2) sont colineaires si x1*y2 - y1*x2 = 0.
 
 ```arm
 Colinearite:
@@ -210,19 +210,19 @@ Colinearite:
     bx lr
 ```
 
-**Note on the source code**: The original student solution (`assembleur_2018.s`) contains a bug in the collinearity check: the `STR` instructions lack conditional suffixes (`STREQ`/`STRNE`), so the result is always overwritten unconditionally. The version shown above corrects this by using `STREQ` and `STRNE`. The source also uses indexed addressing (`ldr r5, [r0, r4, LSL #2]`) with a loop counter to access vector fields, rather than the simpler direct-offset approach shown here.
+**Remarque sur le code source** : La correction originale de l'etudiant (`assembleur_2018.s`) contient un bug dans le test de colinearite : les instructions `STR` n'ont pas de suffixes conditionnels (`STREQ`/`STRNE`), donc le resultat est toujours ecrase inconditionnellement. La version presentee ci-dessus corrige cela en utilisant `STREQ` et `STRNE`. Le code source utilise aussi l'adressage indexe (`ldr r5, [r0, r4, LSL #2]`) avec un compteur de boucle pour acceder aux champs des vecteurs, plutot que l'approche plus simple par decalage direct presentee ici.
 
-**Expected results**:
-- D1 direction: (-2, 3), D2 direction: (-4, 6)
-- Cross product: (-2)*6 - 3*(-4) = -12 + 12 = 0 -> Collinear (D1 parallel to D2)
+**Resultats attendus** :
+- Direction D1 : (-2, 3), direction D2 : (-4, 6)
+- Produit vectoriel : (-2)*6 - 3*(-4) = -12 + 12 = 0 -> Colineaires (D1 parallele a D2)
 
 ---
 
-## 2019 Exam -- Structures and String Processing
+## Annale 2019 -- Structures et traitement de chaines
 
-### Context
+### Contexte
 
-The exam works with ingredient structures for a recipe:
+L'examen travaille avec des structures d'ingredients pour une recette :
 
 ```
 Structure Ingredient {
@@ -232,9 +232,9 @@ Structure Ingredient {
 }
 ```
 
-Total size: 16 bytes per ingredient.
+Taille totale : 16 octets par ingredient.
 
-**Data**:
+**Donnees** :
 ```arm
 i1: .byte 1, 5, 0   @ grammage = 150
     .align
@@ -251,9 +251,9 @@ i6: .asciz ""        @ empty name = sentinel (end of list)
 TabIngredients: .word i1, i2, i3, i4, i5, i6
 ```
 
-### Exercise: CompterIngredients (Count Ingredients)
+### Exercice : CompterIngredients
 
-**Problem**: Count the number of ingredients in the table (stop at sentinel with empty name).
+**Probleme** : Compter le nombre d'ingredients dans le tableau (s'arreter a la sentinelle avec un nom vide).
 
 ```arm
 CompterIngredients:
@@ -288,11 +288,11 @@ fin:
     bx lr
 ```
 
-**Key technique**: Using `LDRB` to read the first byte of each ingredient's data. For the sentinel (empty string), the first byte is the null terminator (0).
+**Technique cle** : Utiliser `LDRB` pour lire le premier octet des donnees de chaque ingredient. Pour la sentinelle (chaine vide), le premier octet est le terminateur null (0).
 
-### Exercise: TrouverNb (Extract Number from Grammage)
+### Exercice : TrouverNb (extraire le nombre du grammage)
 
-**Problem**: Extract the 3-byte grammage of ingredient i as an integer. The grammage is stored as 3 separate bytes representing digits (BCD-like encoding).
+**Probleme** : Extraire le grammage sur 3 octets de l'ingredient i sous forme d'entier. Le grammage est stocke sous forme de 3 octets separes representant des chiffres (encodage de type BCD).
 
 ```arm
 TrouverNb:
@@ -335,7 +335,7 @@ finloop1:
     bx lr
 ```
 
-**Execution for ingredient i1 (BEURRE, grammage bytes: 1, 5, 0)**:
+**Execution pour l'ingredient i1 (BEURRE, octets de grammage : 1, 5, 0)** :
 ```
 j=0: nb = 0*10 + 1 = 1
 j=1: nb = 1*10 + 5 = 15
@@ -345,26 +345,26 @@ Result: 150 (grams of butter)
 
 ---
 
-## General Exam-Taking Strategy for Assembly
+## Strategie generale pour les examens d'assembleur
 
-### Reading Code (Comprehension Questions)
+### Lecture de code (questions de comprehension)
 
-1. **Identify the data**: Read `.data` and `.bss` sections first. Understand what variables exist and their types.
-2. **Note the constants**: `.equ` and `.set` definitions tell you structure offsets and sizes.
-3. **Trace registers**: For each instruction, write down what register holds what value.
-4. **Draw the stack**: For function calls, draw the stack frame at the function entry point.
+1. **Identifier les donnees** : Lire les sections `.data` et `.bss` en premier. Comprendre quelles variables existent et leurs types.
+2. **Noter les constantes** : Les definitions `.equ` et `.set` indiquent les decalages et tailles des structures.
+3. **Tracer les registres** : Pour chaque instruction, noter quel registre contient quelle valeur.
+4. **Dessiner la pile** : Pour les appels de fonctions, dessiner le cadre de pile au point d'entree de la fonction.
 
-### Writing Code (Production Questions)
+### Ecriture de code (questions de production)
 
-1. **Start with the prologue**: Always write the standard prologue first (save LR, FP, set FP, allocate locals, save registers).
-2. **Define offsets**: Write `.equ` for all stack offsets before coding the body.
-3. **Translate line by line**: Convert each pseudocode line to 2-4 ARM instructions.
-4. **End with the epilogue**: Reverse the prologue exactly (restore registers, free locals, restore FP and LR, bx lr).
-5. **Verify**: Check that every STMFD has a matching LDMFD with the same register list.
+1. **Commencer par le prologue** : Toujours ecrire le prologue standard d'abord (sauvegarder LR, FP, etablir FP, allouer les locales, sauvegarder les registres).
+2. **Definir les decalages** : Ecrire les `.equ` pour tous les decalages de pile avant de coder le corps.
+3. **Traduire ligne par ligne** : Convertir chaque ligne de pseudocode en 2 a 4 instructions ARM.
+4. **Terminer par l'epilogue** : Inverser exactement le prologue (restaurer les registres, liberer les locales, restaurer FP et LR, bx lr).
+5. **Verifier** : S'assurer que chaque STMFD a un LDMFD correspondant avec la meme liste de registres.
 
-### Common Patterns to Memorize
+### Patrons courants a memoriser
 
-**String traversal**:
+**Parcours de chaine** :
 ```arm
 ldr r0, =string
 loop:
@@ -375,14 +375,14 @@ loop:
     b loop
 ```
 
-**Array of pointers to structures**:
+**Tableau de pointeurs vers des structures** :
 ```arm
 ldr r0, =table             @ r0 = table base
 ldr r1, [r0, r2, lsl #2]   @ r1 = table[r2] (pointer)
 ldr r3, [r1, #offset]       @ r3 = table[r2]->field
 ```
 
-**Standard function frame**:
+**Cadre de fonction standard** :
 ```arm
 func:
     stmfd sp!, {fp, lr}
@@ -396,12 +396,12 @@ func:
     bx lr
 ```
 
-### Self-Check Before Submitting
+### Auto-verification avant de rendre
 
-- [ ] Every function saves and restores LR (if it calls other functions)
-- [ ] Stack is balanced (total pushed = total popped)
-- [ ] Correct use of LDRB for bytes, LDR for words
-- [ ] Scaled indexing (lsl #2) used for word arrays
-- [ ] All structure offsets correct (draw the structure layout)
-- [ ] Loop terminates (counter compared correctly, branch direction correct)
-- [ ] Conditional execution conditions match the preceding CMP
+- [ ] Chaque fonction sauvegarde et restaure LR (si elle appelle d'autres fonctions)
+- [ ] La pile est equilibree (total empile = total depile)
+- [ ] Utilisation correcte de LDRB pour les octets, LDR pour les mots
+- [ ] Indexation avec echelle (lsl #2) utilisee pour les tableaux de mots
+- [ ] Tous les decalages de structure corrects (dessiner l'organisation de la structure)
+- [ ] La boucle se termine (compteur compare correctement, direction de branchement correcte)
+- [ ] Les conditions d'execution conditionnelle correspondent au CMP precedent

@@ -1,25 +1,25 @@
 ---
-title: "SQL & SQLite"
+title: "SQL et SQLite"
 sidebar_position: 9
 ---
 
-# SQL & SQLite
+# SQL et SQLite
 
-## Overview
+## Apercu
 
-SQLite is a lightweight, file-based relational database. The LDS course uses it to teach database concepts and Python integration. Unlike MySQL or PostgreSQL, SQLite requires no server -- the entire database is a single file.
+SQLite est une base de donnees relationnelle legere, basee sur un fichier. Le cours LDS l'utilise pour enseigner les concepts de bases de donnees et l'integration avec Python. Contrairement a MySQL ou PostgreSQL, SQLite ne necessite pas de serveur -- la base de donnees entiere est un seul fichier.
 
-## SQL Fundamentals
+## Fondamentaux du SQL
 
-### Data Types in SQLite
+### Types de donnees en SQLite
 
-| Type | Description | Example |
+| Type | Description | Exemple |
 |------|-------------|---------|
-| `INTEGER` | Whole numbers | 42, -7, 0 |
-| `REAL` | Floating point | 3.14, -0.5 |
-| `TEXT` | String | 'Alice', "hello" |
-| `BLOB` | Binary data | Images, files |
-| `NULL` | No value | NULL |
+| `INTEGER` | Nombres entiers | 42, -7, 0 |
+| `REAL` | Nombres a virgule flottante | 3.14, -0.5 |
+| `TEXT` | Chaine de caracteres | 'Alice', "hello" |
+| `BLOB` | Donnees binaires | Images, fichiers |
+| `NULL` | Pas de valeur | NULL |
 
 ### CREATE TABLE
 
@@ -39,7 +39,7 @@ CREATE TABLE courses (
     credits INTEGER CHECK(credits > 0)
 );
 
--- Many-to-many relationship table
+-- Table de relation plusieurs-a-plusieurs
 CREATE TABLE enrollments (
     student_id INTEGER,
     course_id INTEGER,
@@ -49,24 +49,24 @@ CREATE TABLE enrollments (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
--- Create only if not exists
+-- Creer seulement si elle n'existe pas
 CREATE TABLE IF NOT EXISTS items (
     id INTEGER PRIMARY KEY,
     name TEXT
 );
 ```
 
-### Constraints
+### Contraintes
 
-| Constraint | Purpose |
-|-----------|---------|
-| `PRIMARY KEY` | Unique identifier for each row |
-| `AUTOINCREMENT` | Auto-generate sequential IDs |
-| `NOT NULL` | Value required |
-| `UNIQUE` | No duplicates allowed |
-| `DEFAULT value` | Default value if not specified |
-| `CHECK(expr)` | Validate value against expression |
-| `FOREIGN KEY` | Reference to another table |
+| Contrainte | Objectif |
+|-----------|----------|
+| `PRIMARY KEY` | Identifiant unique pour chaque ligne |
+| `AUTOINCREMENT` | Generation automatique d'ID sequentiels |
+| `NOT NULL` | Valeur obligatoire |
+| `UNIQUE` | Pas de doublons autorises |
+| `DEFAULT value` | Valeur par defaut si non specifiee |
+| `CHECK(expr)` | Valider la valeur selon une expression |
+| `FOREIGN KEY` | Reference vers une autre table |
 
 ### INSERT
 
@@ -77,7 +77,7 @@ VALUES ('Alice', 20, 15.5);
 INSERT INTO students (name, age, grade)
 VALUES ('Bob', 21, 12.0), ('Carol', 19, 17.0);
 
--- Insert from another query
+-- Inserer depuis une autre requete
 INSERT INTO archive_students
 SELECT * FROM students WHERE grade < 10;
 ```
@@ -85,49 +85,49 @@ SELECT * FROM students WHERE grade < 10;
 ### SELECT
 
 ```sql noexec
--- Basic
+-- Basique
 SELECT * FROM students;
 SELECT name, grade FROM students;
 
--- Filtering
+-- Filtrage
 SELECT * FROM students WHERE age > 18;
-SELECT * FROM students WHERE name LIKE 'A%';       -- Starts with A
-SELECT * FROM students WHERE name LIKE '%son';      -- Ends with son
+SELECT * FROM students WHERE name LIKE 'A%';       -- Commence par A
+SELECT * FROM students WHERE name LIKE '%son';      -- Finit par son
 SELECT * FROM students WHERE grade BETWEEN 10 AND 15;
 SELECT * FROM students WHERE age IN (19, 20, 21);
 SELECT * FROM students WHERE email IS NOT NULL;
 
--- Sorting
+-- Tri
 SELECT * FROM students ORDER BY grade DESC;
 SELECT * FROM students ORDER BY name ASC, grade DESC;
 
--- Limiting
+-- Limitation
 SELECT * FROM students LIMIT 10;
 SELECT * FROM students LIMIT 10 OFFSET 20;         -- Pagination
 
 -- Distinct
 SELECT DISTINCT age FROM students;
 
--- Aliases
+-- Alias
 SELECT name AS student_name, grade AS note FROM students;
 ```
 
-### Aggregate Functions
+### Fonctions d'agregation
 
 ```sql noexec
-SELECT COUNT(*) FROM students;                      -- Count rows
-SELECT COUNT(DISTINCT age) FROM students;           -- Count unique ages
-SELECT AVG(grade) FROM students;                    -- Average
-SELECT SUM(grade) FROM students;                    -- Sum
+SELECT COUNT(*) FROM students;                      -- Compter les lignes
+SELECT COUNT(DISTINCT age) FROM students;           -- Compter les ages uniques
+SELECT AVG(grade) FROM students;                    -- Moyenne
+SELECT SUM(grade) FROM students;                    -- Somme
 SELECT MIN(grade), MAX(grade) FROM students;        -- Min/Max
-SELECT ROUND(AVG(grade), 2) FROM students;          -- Rounded average
+SELECT ROUND(AVG(grade), 2) FROM students;          -- Moyenne arrondie
 
 -- GROUP BY
 SELECT age, COUNT(*), AVG(grade)
 FROM students
 GROUP BY age;
 
--- HAVING (filter after grouping)
+-- HAVING (filtrer apres le regroupement)
 SELECT age, AVG(grade) as avg_grade
 FROM students
 GROUP BY age
@@ -139,7 +139,7 @@ HAVING avg_grade > 14;
 ```sql noexec
 UPDATE students SET grade = 16.0 WHERE id = 1;
 UPDATE students SET grade = grade + 1 WHERE grade < 10;
-UPDATE students SET age = age + 1;                  -- All rows
+UPDATE students SET age = age + 1;                  -- Toutes les lignes
 ```
 
 ### DELETE
@@ -147,24 +147,24 @@ UPDATE students SET age = age + 1;                  -- All rows
 ```sql noexec
 DELETE FROM students WHERE id = 1;
 DELETE FROM students WHERE grade < 5;
-DELETE FROM students;                               -- Delete ALL rows
+DELETE FROM students;                               -- Supprimer TOUTES les lignes
 ```
 
 ### JOIN
 
 ```sql noexec
--- INNER JOIN: Only matching rows from both tables
+-- INNER JOIN : uniquement les lignes correspondantes des deux tables
 SELECT students.name, courses.title, enrollments.grade
 FROM students
 INNER JOIN enrollments ON students.id = enrollments.student_id
 INNER JOIN courses ON enrollments.course_id = courses.id;
 
--- LEFT JOIN: All rows from left table, matching from right
+-- LEFT JOIN : toutes les lignes de la table de gauche, correspondances de la droite
 SELECT students.name, enrollments.course_id
 FROM students
 LEFT JOIN enrollments ON students.id = enrollments.student_id;
 
--- Shorthand with aliases
+-- Raccourci avec alias
 SELECT s.name, c.title, e.grade
 FROM students s
 JOIN enrollments e ON s.id = e.student_id
@@ -173,14 +173,14 @@ WHERE e.grade > 14
 ORDER BY e.grade DESC;
 ```
 
-### Subqueries
+### Sous-requetes
 
 ```sql noexec
--- Subquery in WHERE
+-- Sous-requete dans WHERE
 SELECT name FROM students
 WHERE grade > (SELECT AVG(grade) FROM students);
 
--- Subquery in FROM
+-- Sous-requete dans FROM
 SELECT avg_by_age.age, avg_by_age.avg_grade
 FROM (
     SELECT age, AVG(grade) as avg_grade
@@ -190,7 +190,7 @@ FROM (
 WHERE avg_by_age.avg_grade > 14;
 ```
 
-### ALTER TABLE and DROP
+### ALTER TABLE et DROP
 
 ```sql noexec
 ALTER TABLE students ADD COLUMN phone TEXT;
@@ -198,7 +198,7 @@ ALTER TABLE students RENAME TO alumni;
 DROP TABLE IF EXISTS temp_data;
 ```
 
-### Indexes
+### Index
 
 ```sql noexec
 CREATE INDEX idx_student_name ON students(name);
@@ -206,18 +206,18 @@ CREATE UNIQUE INDEX idx_student_email ON students(email);
 DROP INDEX idx_student_name;
 ```
 
-## Python sqlite3 Module
+## Module sqlite3 de Python
 
-### Basic Connection
+### Connexion de base
 
 ```python noexec
 import sqlite3
 
-# Connect (creates file if doesn't exist)
+# Se connecter (cree le fichier s'il n'existe pas)
 conn = sqlite3.connect('database.db')
 cursor = conn.cursor()
 
-# Execute SQL
+# Executer du SQL
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -226,46 +226,46 @@ cursor.execute("""
     )
 """)
 
-# Insert data (ALWAYS use parameterized queries)
+# Inserer des donnees (TOUJOURS utiliser des requetes parametrees)
 cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)",
                ("Alice", "alice@example.com"))
 
-# Commit changes (required for writes)
+# Valider les modifications (obligatoire pour les ecritures)
 conn.commit()
 
-# Query data
+# Interroger les donnees
 cursor.execute("SELECT * FROM users")
-rows = cursor.fetchall()         # List of tuples
+rows = cursor.fetchall()         # Liste de tuples
 for row in rows:
     print(f"ID: {row[0]}, Name: {row[1]}, Email: {row[2]}")
 
-# Single row
+# Une seule ligne
 cursor.execute("SELECT * FROM users WHERE id = ?", (1,))
-user = cursor.fetchone()         # Single tuple or None
+user = cursor.fetchone()         # Un seul tuple ou None
 
-# Close connection
+# Fermer la connexion
 conn.close()
 ```
 
-### Parameterized Queries (CRITICAL)
+### Requetes parametrees (ESSENTIEL)
 
 ```python noexec
-# WRONG -- vulnerable to SQL injection
+# FAUX -- vulnerable a l'injection SQL
 cursor.execute(f"SELECT * FROM users WHERE name = '{user_input}'")
 
-# CORRECT -- safe, parameterized
+# CORRECT -- securise, parametre
 cursor.execute("SELECT * FROM users WHERE name = ?", (user_input,))
 
-# Multiple parameters
+# Plusieurs parametres
 cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)",
                (name, email))
 
-# Execute many rows
+# Executer pour plusieurs lignes
 data = [("Alice", "a@b.com"), ("Bob", "b@b.com")]
 cursor.executemany("INSERT INTO users (name, email) VALUES (?, ?)", data)
 ```
 
-### Database Class Pattern
+### Patron de classe Database
 
 ```python noexec
 import sqlite3
@@ -316,7 +316,7 @@ class Database:
         self.conn.close()
 ```
 
-### Context Manager Pattern
+### Patron gestionnaire de contexte
 
 ```python noexec
 import sqlite3
@@ -334,66 +334,66 @@ class Database:
             self.conn.commit()
         self.conn.close()
 
-# Usage
+# Utilisation
 with Database('db.sqlite') as cursor:
     cursor.execute("SELECT * FROM items")
     rows = cursor.fetchall()
 ```
 
-## Qt Database Integration
+## Integration Qt avec les bases de donnees
 
 ```python noexec
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
 from PyQt5.QtCore import Qt
 
-# Connect
+# Connexion
 db = QSqlDatabase.addDatabase('QSQLITE')
 db.setDatabaseName('database.db')
 if not db.open():
     print("Error opening database")
 
-# Execute query
+# Executer une requete
 query = QSqlQuery()
 query.exec_("SELECT * FROM students")
 while query.next():
     print(f"{query.value(0)}: {query.value(1)}")
 
-# Table model for QTableView
+# Modele de table pour QTableView
 model = QSqlTableModel()
 model.setTable('students')
 model.setEditStrategy(QSqlTableModel.OnFieldChange)
 model.select()
 
-# Set column headers
+# Definir les en-tetes de colonnes
 model.setHeaderData(0, Qt.Horizontal, "ID")
 model.setHeaderData(1, Qt.Horizontal, "Name")
 
-# Connect to view
+# Connecter a la vue
 table_view.setModel(model)
-table_view.hideColumn(0)    # Hide ID column
+table_view.hideColumn(0)    # Masquer la colonne ID
 ```
 
-## Database Design
+## Conception de bases de donnees
 
-### Normalization Rules
+### Regles de normalisation
 
-1. **1NF**: Each column contains atomic values (no lists)
-2. **2NF**: No partial dependency on composite key
-3. **3NF**: No transitive dependencies (non-key depends on non-key)
+1. **1NF** : chaque colonne contient des valeurs atomiques (pas de listes)
+2. **2NF** : pas de dependance partielle sur une cle composite
+3. **3NF** : pas de dependances transitives (un non-cle depend d'un autre non-cle)
 
-### Design Tips
+### Conseils de conception
 
-- Every table should have a PRIMARY KEY
-- Use AUTOINCREMENT for surrogate keys
-- Use FOREIGN KEYs to enforce relationships
-- Create indexes on frequently queried columns
-- Avoid storing calculated values (compute them with queries)
+- Chaque table doit avoir une PRIMARY KEY
+- Utiliser AUTOINCREMENT pour les cles de substitution
+- Utiliser des FOREIGN KEYs pour imposer les relations
+- Creer des index sur les colonnes frequemment interrogees
+- Eviter de stocker des valeurs calculees (les calculer avec des requetes)
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### SQL Quick Reference
+### Reference rapide SQL
 ```sql noexec
 CREATE TABLE t (id INTEGER PRIMARY KEY, name TEXT);
 INSERT INTO t (name) VALUES ('val');
@@ -408,15 +408,15 @@ SELECT col, COUNT(*) FROM t GROUP BY col HAVING COUNT(*) > 1;
 ```python noexec
 conn = sqlite3.connect('db.db')
 cursor = conn.cursor()
-cursor.execute("SQL", (params,))     # ALWAYS use ? params
-conn.commit()                         # After writes
-rows = cursor.fetchall()              # Get results
-conn.close()                          # Clean up
+cursor.execute("SQL", (params,))     # TOUJOURS utiliser les parametres ?
+conn.commit()                         # Apres les ecritures
+rows = cursor.fetchall()              # Obtenir les resultats
+conn.close()                          # Nettoyer
 ```
 
-### Key Rules
-- ALWAYS use parameterized queries (? placeholders)
-- ALWAYS commit after INSERT/UPDATE/DELETE
-- ALWAYS close connections
-- Use `with` statements for safety
-- Create indexes on columns used in WHERE clauses
+### Regles cles
+- TOUJOURS utiliser des requetes parametrees (marqueurs ?)
+- TOUJOURS valider apres INSERT/UPDATE/DELETE
+- TOUJOURS fermer les connexions
+- Utiliser les instructions `with` pour la securite
+- Creer des index sur les colonnes utilisees dans les clauses WHERE

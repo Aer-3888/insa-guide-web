@@ -1,17 +1,17 @@
 ---
-title: "TP 2 — REST API"
+title: "TP 2 — API REST"
 sidebar_position: 2
 ---
 
-# TP 2 — REST API
+# TP 2 — API REST
 
-Building RESTful web services with Jersey.
+Construction de services Web RESTful avec Jersey.
 
-## Directories
+## Repertoires
 
-- `jersey_calendar_api/` — Calendar API implementation
-- `jersey_example/` — Jersey example project
+- `jersey_calendar_api/` -- Implementation de l'API d'agenda
+- `jersey_example/` -- Projet d'exemple Jersey
 
-## Files
+## Fichiers
 
-- `sujet_rest.pdf` — REST API lab instructions
+- `sujet_rest.pdf` -- Enonce du TP sur les API REST

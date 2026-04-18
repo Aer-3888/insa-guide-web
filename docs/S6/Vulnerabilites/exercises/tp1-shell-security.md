@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # TP1 -- Shell for Security : Analyse de fichier
 
-> Following teacher instructions from: S6/Vulnerabilites/data/moodle/tp/TP1/TP-Shell-1.pdf
+> Conforme aux consignes du cours : S6/Vulnerabilites/data/moodle/tp/TP1/TP-Shell-1.pdf
 > Fichier analyse : `pixgame.html.prep` (tire de `prep.zip`)
 
 ---
@@ -26,7 +26,7 @@ Dans ce TP il s'agit de qualifier / decrire des donnees et d'evaluer leurs carac
 
 ### Decompression et selection aleatoire
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Decompresser l'archive
@@ -48,7 +48,7 @@ Le fichier selectionne est `pixgame.html.prep`.
 
 ### Le nom du fichier est-il parlant ? Si oui quelle langue ?
 
-**Answer:**
+**Reponse :**
 
 Le nom `pixgame.html.prep` est parlant :
 - `pixgame` suggere un site web lie au jeu video (pixels + game)
@@ -59,7 +59,7 @@ La langue est le francais (le site `pixgame.fr` est enregistre aupres de la FRNI
 
 ### L'extension du fichier suggere-t-elle un format ?
 
-**Answer:**
+**Reponse :**
 
 Oui, l'extension `.html` indique un document HTML (page web). Confirmation avec `file` :
 
@@ -72,7 +72,7 @@ Le fichier est un document HTML encode en UTF-8 avec des lignes tres longues.
 
 ### Evaluer la taille et le nombre d'items dans le fichier
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Taille du fichier
@@ -94,7 +94,7 @@ Le fichier fait 656 028 octets et contient 16 368 lignes. La derniere modificati
 
 ### Visualiser des portions du fichier
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Debut du fichier
@@ -111,7 +111,7 @@ $ tail -20 pixgame.html.prep
 
 ### Penser une commande permettant de visualiser quelques lignes au milieu du fichier
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Afficher 10 lignes autour de la ligne 8000 (milieu du fichier)
@@ -121,9 +121,9 @@ $ sed -n '7995,8005p' pixgame.html.prep
 $ head -8005 pixgame.html.prep | tail -10
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
-L'evaluation du contenu est la premiere etape de toute analyse de securite. Le type de fichier determine les techniques d'analyse a appliquer. Un fichier HTML de site WordPress necessite une attention particuliere aux patterns d'administration, aux scripts JavaScript embarques, et aux credentials potentiellement exposes.
+L'evaluation du contenu est la premiere etape de toute analyse de securite. Le type de fichier determine les techniques d'analyse a appliquer. Un fichier HTML de site WordPress necessite une attention particuliere aux schemas d'administration, aux scripts JavaScript embarques, et aux identifiants potentiellement exposes.
 
 ---
 
@@ -131,7 +131,7 @@ L'evaluation du contenu est la premiere etape de toute analyse de securite. Le t
 
 ### Calculer les frequences des caracteres
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Frequence de tous les caracteres (un par ligne, tries par occurrence)
@@ -148,7 +148,7 @@ Les caracteres les plus frequents seront probablement les espaces, les lettres m
 
 ### Rechercher le/les principaux separateurs
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Compter les occurrences de chaque separateur courant
@@ -164,7 +164,7 @@ Pour un fichier HTML, les principaux separateurs structurels sont les sauts de l
 
 ### Decrire brievement la structure des donnees
 
-**Answer:**
+**Reponse :**
 
 Le fichier est une page HTML complete d'un site WordPress francophone (pixgame.fr). Sa structure est :
 1. En-tete HTML (`<head>`) avec metadonnees, liens CSS, et scripts
@@ -176,7 +176,7 @@ Le site utilise des assets externes comme la font "Montserrat" chargee via le CD
 
 ### Calculer les tailles des principaux elements structurants (lignes, termes, ou autres). Indiquez les tailles typiques (ou moyenne, normale, maxi, esperee) d'une ligne, d'un item, etc.
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Nombre de lignes non vides
@@ -216,7 +216,7 @@ $ sed -n '9825p' pixgame.html.prep | sed 's/x//g' | wc -c
 
 ### Calculer la frequence des termes
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Frequence des termes (mots separes par des espaces)
@@ -264,7 +264,7 @@ $ grep -v '^\s*$' pixgame.html.prep \
 
 **Note :** ce decoupage produit du bruit parasite (des comparaisons JavaScript comme `a<b` peuvent etre interpretees comme des balises). On filtre manuellement les faux positifs.
 
-**Security explanation:**
+**Explication de securite :**
 
 L'analyse des balises HTML cartographie la **surface d'attaque** du site :
 - Les 63 `<script>` representent du code executable potentiellement vulnerable
@@ -277,10 +277,10 @@ L'analyse des balises HTML cartographie la **surface d'attaque** du site :
 
 ### Chercher des termes comme password ou login etc. Chercher dans les quelques lignes qui precedent et qui suivent.
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
-# Recherche de termes lies aux credentials (insensible a la casse, avec contexte)
+# Recherche de termes lies aux identifiants (insensible a la casse, avec contexte)
 $ fgrep -in 'password' pixgame.html.prep
 830:password=ohsuo6xae7Th
 
@@ -303,12 +303,12 @@ $ fgrep -in -C 2 'temporary' pixgame.html.prep
 
 **Mots de passe trouves en clair :**
 
-| Ligne(s) | Contexte | Credential |
+| Ligne(s) | Contexte | Identifiant |
 |----------|---------|------------|
 | 830 | Parametre explicite | `password=ohsuo6xae7Th` |
 | 1469-1471 | Texte libre en francais | `Mot de Passe` / `ip6ooja6Eize` |
 | 6779, 6781 | Couple login/password | `Login` / `aiv1Xaet4vee` |
-| 2554, 2557 | Couple credential | `va5eijih9OPe` / `CREDential` |
+| 2554, 2557 | Couple identifiant | `va5eijih9OPe` / `CREDential` |
 | 6889, 8691 | Couple temporaire | `temporary` / `eich7So5xo4a` |
 
 ### Recherche de l'interface admin WordPress
@@ -328,11 +328,11 @@ Vers la ligne 127, la definition de la structure `twdGlobal` de l'objet JavaScri
 $ sed -n '125,130p' pixgame.html.prep
 ```
 
-**Impact critique :** la presence du nonce est *gravissime*. Un nonce est par definition utilise dans une seule session de protocole et aleatoire. Meme si ce dernier est remplace a chaque rafraichissement de page, il est tres inquietant qu'un simple visiteur du site puisse avoir acces aussi simplement a une valeur censee rester privee. Cela permet potentiellement des appels API authentifies.
+**Impact critique :** la presence du nonce est *gravissime*. Un nonce est par definition utilise dans une seule session de protocole et aleatoire. Meme si ce dernier est remplace a chaque rafraichissement de page, il est tres inquietant qu'un simple visiteur du site puisse avoir acces aussi simplement a une valeur censee rester privee. Cela permet potentiellement des appels a l'API authentifies.
 
 ### Reperer des possibles mots de passe parmi les termes de frequence 3, 4 ou 5
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Lister les termes qui apparaissent exactement 3, 4 ou 5 fois
@@ -344,7 +344,7 @@ Les termes de faible frequence (3 a 5 occurrences) sont des candidats interessan
 
 ### Rechercher des elements manifestement atypiques dans les donnees (des "monstres")
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Lignes anormalement longues (plus de 1000 caracteres)
@@ -365,7 +365,7 @@ La ligne ne contient rien d'autre que des 'x' -- aucun contenu utile. C'est peut
 
 ### Reflechir aux autres elements interessant a rechercher : url, nombres, etc.
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Extraire les URLs
@@ -399,7 +399,7 @@ $ grep -o 'ey.*=' pixgame.html.prep | base64 -d
 **Resultats du decodage :**
 
 | Lignes | Contenu decode | Dangereux ? |
-|--------|---------------|------------|
+|--------|---------------|-------------|
 | 2563 | `tdc_css` : JSON avec marges et tailles CSS | Non |
 | 2564 | `f_article_font_size` : `{"portrait":"13"}` | Non |
 | 3765, 3770-3772 | Configurations CSS supplementaires | Non |
@@ -407,7 +407,7 @@ $ grep -o 'ey.*=' pixgame.html.prep | base64 -d
 
 Toutes les chaines Base64 decodees sont des configurations CSS inoffensives.
 
-**Security explanation:**
+**Explication de securite :**
 
 L'obfuscation n'est PAS du chiffrement. Base64 est un encodage reversible en une seule commande. Il ne fournit aucune protection de confidentialite. Un attaquant peut decoder n'importe quelle chaine Base64 instantanement. Si des donnees sensibles etaient encodees en Base64, elles seraient tout aussi exposees qu'en clair.
 
@@ -417,7 +417,7 @@ L'obfuscation n'est PAS du chiffrement. Base64 est un encodage reversible en une
 
 ### Analyse des points d'entree
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Trouver les formulaires
@@ -435,11 +435,11 @@ Les deux formulaires font partie du systeme de recherche de contenu du site (lig
 $ grep -o 'src="http[^"]*"' pixgame.html.prep | sort -u | head -20
 ```
 
-Identifier les CDN utilises (Google APIs, etc.) et les scripts tiers potentiellement compromis (attaque de type supply chain).
+Identifier les CDN utilises (Google APIs, etc.) et les scripts tiers potentiellement compromis (attaque de type chaine d'approvisionnement).
 
-**Security explanation:**
+**Explication de securite :**
 
-Chaque formulaire et chaque script externe represente un point d'entree potentiel pour un attaquant. Les formulaires de recherche sont particulierement sensibles aux XSS reflete si la saisie utilisateur est renvoyee dans la page sans echappement. Les scripts charges depuis des CDN tiers introduisent un risque de supply chain : si le CDN est compromis, tous les sites qui l'utilisent le sont aussi.
+Chaque formulaire et chaque script externe represente un point d'entree potentiel pour un attaquant. Les formulaires de recherche sont particulierement sensibles aux XSS reflete si la saisie utilisateur est renvoyee dans la page sans echappement. Les scripts charges depuis des CDN tiers introduisent un risque de chaine d'approvisionnement : si le CDN est compromis, tous les sites qui l'utilisent le sont aussi.
 
 ---
 
@@ -447,7 +447,7 @@ Chaque formulaire et chaque script externe represente un point d'entree potentie
 
 ### Rechercher des termes ayant les proprietes suivantes : le terme apparait le plus souvent possible dans votre fichier et le moins souvent possible dans tous les autres
 
-**Answer:**
+**Reponse :**
 
 ```bash noexec
 # Etape 1 : calculer la frequence des termes dans notre fichier
@@ -467,7 +467,7 @@ L'idee est de trouver des termes qui sont a la fois tres frequents dans notre fi
 
 ### Reflechir a un script qui recherche automatiquement de tels termes dans un corpus de donnees. En quoi le bash et les commandes de base sont bien adaptes a ce type de recherches ?
 
-**Answer:**
+**Reponse :**
 
 Bash est bien adapte car :
 1. Les pipes (`|`) permettent de chainer des transformations sans fichiers intermediaires
@@ -477,7 +477,7 @@ Bash est bien adapte car :
 
 ### Certaines commandes utilisees notamment pour calculer des frequences peuvent etre tres lentes (sur des gros fichiers). Penser des moyens d'accelerer ca.
 
-**Answer:**
+**Reponse :**
 
 Moyens d'acceleration :
 1. **Utiliser `LC_ALL=C`** pour eviter les comparaisons Unicode dans `sort` (gain de 2-10x)
@@ -492,8 +492,8 @@ Moyens d'acceleration :
 
 | # | Vulnerabilite | Severite | Lignes | Defense recommandee |
 |---|--------------|----------|--------|---------------------|
-| 1 | Nonce API REST expose dans JavaScript client | CRITICAL | 127 | Ne jamais exposer de nonces/tokens dans le JS client ; utiliser des sessions server-side |
-| 2 | Mots de passe en clair dans le HTML | CRITICAL | 830, 1469-1471, 6779-6781, 2554-2557, 6889-8691 | Supprimer immediatement ; changer tous les mots de passe compromis ; ne jamais stocker de credentials en clair |
+| 1 | Nonce API REST expose dans JavaScript client | CRITIQUE | 127 | Ne jamais exposer de nonces/jetons dans le JS client ; utiliser des sessions cote serveur |
+| 2 | Mots de passe en clair dans le HTML | CRITIQUE | 830, 1469-1471, 6779-6781, 2554-2557, 6889-8691 | Supprimer immediatement ; changer tous les mots de passe compromis ; ne jamais stocker d'identifiants en clair |
 | 3 | URL admin WordPress exposee | HIGH | 127 | Restreindre `/wp-admin/` par IP ou VPN ; utiliser un plugin de securite WordPress |
 | 4 | Attributs obfusques en Base64 (pas de donnee sensible) | INFO | 2563-3788 | N/A -- mais rappeler que Base64 n'est pas du chiffrement |
 | 5 | Ligne anormalement longue de 32k 'x' | INFO | 9825 | Investiguer l'origine ; anomalie a comprendre |
@@ -529,7 +529,7 @@ script -a session.log
 
 ## Lecons cles du TP
 
-1. **Exposition client-side** : ne jamais embarquer de tokens d'authentification (nonces, API keys) dans le JavaScript cote client -- ils sont visibles par tous les visiteurs
+1. **Exposition cote client** : ne jamais embarquer de jetons d'authentification (nonces, cles API) dans le JavaScript cote client -- ils sont visibles par tous les visiteurs
 2. **Stockage des mots de passe** : les mots de passe en clair dans le HTML sont catastrophiques -- une seule visite du site suffit pour les collecter
 3. **Obfuscation =/= securite** : Base64 est un encodage reversible, pas du chiffrement -- il ne fournit aucune protection
 4. **Analyse de surface avec le shell** : les commandes shell permettent de cartographier rapidement la surface d'attaque (formulaires, scripts, liens externes)

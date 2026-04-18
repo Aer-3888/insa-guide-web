@@ -273,7 +273,7 @@ float val = tableau[threadIdx.x * 32];
 
 ---
 
-## CHEAT SHEET -- CUDA
+## AIDE-MEMOIRE -- CUDA
 
 ```c noexec
 /* Allocation et copie */

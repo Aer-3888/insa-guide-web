@@ -1,9 +1,9 @@
 ---
-title: "SDD -- Structures de Donnees (Data Structures)"
+title: "SDD -- Structures de Donnees"
 sidebar_position: 0
 ---
 
-# SDD -- Structures de Donnees (Data Structures)
+# SDD -- Structures de Donnees
 
 - [Guide](guide/)
 - [Exercices](exercises/)

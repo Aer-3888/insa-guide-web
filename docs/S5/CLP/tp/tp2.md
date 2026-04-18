@@ -1,15 +1,15 @@
 ---
-title: "TP2 - Matrix Operations in ARM Assembly"
+title: "TP2 - Operations matricielles en assembleur ARM"
 sidebar_position: 2
 ---
 
-# TP2 - Matrix Operations in ARM Assembly
+# TP2 - Operations matricielles en assembleur ARM
 
-## Overview
+## Presentation
 
-This lab focuses on multi-dimensional array manipulation in ARM assembly. Two implementations of matrix multiplication are provided, demonstrating different approaches to memory layout, address calculation, and nested loop structures.
+Ce TP se concentre sur la manipulation de tableaux multi-dimensionnels en assembleur ARM. Deux implementations de la multiplication matricielle sont fournies, illustrant differentes approches pour l'organisation memoire, le calcul d'adresses et les structures de boucles imbriquees.
 
-## Exercises
+## Exercices
 
 ### 1. matrix.s
 Matrix multiplication with English-style comments and clear structure.
@@ -17,7 +17,7 @@ Matrix multiplication with English-style comments and clear structure.
 ### 2. produitMatrices.s
 French-style implementation with detailed inline comments showing offset calculations.
 
-## Matrix Multiplication Algorithm
+## Algorithme de multiplication matricielle
 
 Given two 3×3 matrices M1 and M2, compute result matrix RES where:
 
@@ -34,7 +34,7 @@ for i = 0 to N-1:
             RES[i][j] += M1[i][k] × M2[k][j]
 ```
 
-## Key ARM Concepts Demonstrated
+## Concepts ARM cles illustres
 
 ### 1. Two-Dimensional Array Memory Layout
 
@@ -180,7 +180,7 @@ str r7, [r8]            @ Store back to res[i][j]
 2. Add: result + previous sum
 3. Store in destination register
 
-## Test Data
+## Donnees de test
 
 Both implementations use:
 
@@ -215,7 +215,7 @@ RES = [ 14  14  14 ]
 - Row 1: (1+4+9) + (2+10+18) + (3+16+27) = 14 + 30 + 46 = 90 (sum check)
 - Row 2: (4+10+18) + (8+20+36) + (12+30+54) = 32 + 64 + 96 = 192
 
-## Memory Sections
+## Sections memoire
 
 ### .data Section
 ```assembly
@@ -238,7 +238,7 @@ res: .space (4*N*N)    @ Reserve 4*3*3 = 36 bytes
 .set size, 4           @ Size of one element (word = 4 bytes)
 ```
 
-## Key Instructions Used
+## Instructions cles utilisees
 
 ### Data Movement
 - `LDR` - Load word from memory
@@ -264,7 +264,7 @@ res: .space (4*N*N)    @ Reserve 4*3*3 = 36 bytes
 - `STMFD sp!, {regs}` - Push multiple registers
 - `LDMFD sp!, {regs}` - Pop multiple registers
 
-## Building and Running
+## Compilation et execution
 
 ### Compilation
 ```bash
@@ -277,7 +277,7 @@ arm-linux-gnueabi-as -o produit.o src/produitMatrices.s
 arm-linux-gnueabi-ld -o produit produit.o
 ```
 
-### Debugging
+### Debogage
 ```bash
 arm-linux-gnueabi-gdb ./matrix
 (gdb) break produit
@@ -292,7 +292,7 @@ Expected output in memory:
 0x0032 (50)  0x0032 (50)  0x0032 (50)
 ```
 
-## Study Exercises
+## Exercices d'entrainement
 
 1. **Trace Inner Loop**: Manually trace the k loop for computing res[0][0]
 2. **Change Matrix Size**: Modify N to 2 or 4 and adjust test data
@@ -300,7 +300,7 @@ Expected output in memory:
 4. **Transpose**: Implement matrix transpose (swap rows and columns)
 5. **Optimization**: The current code recalculates addresses. Can you cache some?
 
-## Performance Considerations
+## Considerations de performance
 
 ### Current Implementation
 - Recalculates array addresses every iteration
@@ -313,7 +313,7 @@ Expected output in memory:
 3. **Block Matrix Multiplication**: Better cache locality for large matrices
 4. **NEON SIMD**: Use ARM NEON instructions for parallel multiplication (advanced)
 
-## Common Errors
+## Erreurs courantes
 
 ### Wrong Address Calculation
 **Problem**: Accessing wrong matrix elements

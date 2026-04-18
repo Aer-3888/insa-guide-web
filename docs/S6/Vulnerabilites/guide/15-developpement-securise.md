@@ -17,24 +17,24 @@ sidebar_position: 15
 2. **Verifier les parametres** : en entree ET en sortie, au moment de l'usage
 3. **Changer les configs par defaut** : mots de passe, a l'installation ET apres les mises a jour
 
-### "The Six Dumbest Ideas in Computer Security"
+### Les six idees les plus stupides en securite informatique
 
-Le cours reference cet article classique :
+Le cours reference cet article classique de Marcus Ranum :
 
 | Mauvaise idee | Explication |
 |--------------|-------------|
-| Default Permit | Autoriser par defaut au lieu d'interdire |
-| Enumerating Badness | Lister le "mal" (blacklist) au lieu du "bien" (whitelist) |
-| Penetrate and Patch | Corriger les failles une par une au lieu de concevoir correctement |
-| Hacking is Cool | Glorifier l'attaque au lieu de la defense |
-| Educating Users | Compter sur la formation des utilisateurs comme seule defense |
-| Action is Better Than Inaction | Agir sans reflexion prealable |
+| Autoriser par defaut | Autoriser par defaut au lieu d'interdire |
+| Lister le "mal" | Lister le "mal" (liste noire) au lieu du "bien" (liste blanche) |
+| Penetrer et corriger | Corriger les failles une par une au lieu de concevoir correctement |
+| Le piratage, c'est cool | Glorifier l'attaque au lieu de la defense |
+| Former les utilisateurs | Compter sur la formation des utilisateurs comme seule defense |
+| Agir vaut mieux que ne rien faire | Agir sans reflexion prealable |
 
 ---
 
-## 15.2 Validation des entrees (Input Validation)
+## 15.2 Validation des entrees
 
-### Principe : Never Trust an Input
+### Principe : ne jamais faire confiance a une entree
 
 **Toutes** les entrees doivent etre validees :
 
@@ -55,11 +55,11 @@ Sources d'entrees non fiables :
 ```
 Meilleure strategie
     v
-1. Whitelist (n'accepter que les valeurs connues)
+1. Liste blanche (n'accepter que les valeurs connues)
 2. Regex stricte (pattern matching)
 3. Forcer le type (int, float, date)
 4. Echapper les caracteres speciaux
-5. Blacklist (rejeter les valeurs dangereuses)
+5. Liste noire (rejeter les valeurs dangereuses)
     v
 Pire strategie
 ```
@@ -86,7 +86,7 @@ stmt.execute(user_id)
 
 ---
 
-## 15.3 Encodage des sorties (Output Encoding)
+## 15.3 Encodage des sorties
 
 ### Principe : Never Trust an Output
 
@@ -151,15 +151,15 @@ except Exception as e:
 
 | Rang | Categorie | Action de prevention |
 |------|----------|---------------------|
-| A01 | Broken Access Control | Verifier les autorisations cote serveur pour chaque requete |
-| A02 | Cryptographic Failures | TLS partout, hash sale (bcrypt), pas de donnees sensibles en clair |
+| A01 | Controle d'acces defaillant | Verifier les autorisations cote serveur pour chaque requete |
+| A02 | Defaillances cryptographiques | TLS partout, hash sale (bcrypt), pas de donnees sensibles en clair |
 | A03 | Injection | Requetes preparees, validation d'entrees, encodage des sorties |
-| A04 | Insecure Design | Modelisation des menaces, principes de securite des la conception |
-| A05 | Security Misconfiguration | Configs par defaut changees, headers de securite, pas de services inutiles |
-| A06 | Vulnerable Components | Audit regulier des dependances, mises a jour |
-| A07 | Auth Failures | MFA, rate limiting, sessions securisees |
-| A08 | Data Integrity | Verification des signatures, deserialization securisee |
-| A09 | Logging Failures | Logger les echecs d'authentification, les acces suspects |
+| A04 | Conception non securisee | Modelisation des menaces, principes de securite des la conception |
+| A05 | Mauvaise configuration | Configs par defaut changees, headers de securite, pas de services inutiles |
+| A06 | Composants vulnerables | Audit regulier des dependances, mises a jour |
+| A07 | Defaillances d'authentification | MFA, rate limiting, sessions securisees |
+| A08 | Defaillances d'integrite | Verification des signatures, deserialization securisee |
+| A09 | Defaillances de journalisation | Logger les echecs d'authentification, les acces suspects |
 | A10 | SSRF | Whitelist de destinations, validation d'URL |
 
 ---
@@ -178,14 +178,14 @@ Permissions-Policy: geolocation=(), camera=()
 
 ---
 
-## 15.7 Secure SDLC (cycle de vie securise)
+## 15.7 SDLC securise (cycle de vie securise)
 
 ```
-Requirements     --> Modelisation des menaces
-Design           --> Principes de securite (moindre privilege, defense en profondeur)
-Implementation   --> Coding standards, revue de code
-Testing          --> Tests de securite (SAST, DAST, pentest)
-Deployment       --> Hardening, configuration securisee
+Exigences        --> Modelisation des menaces
+Conception       --> Principes de securite (moindre privilege, defense en profondeur)
+Implementation   --> Standards de codage, revue de code
+Tests            --> Tests de securite (SAST, DAST, pentest)
+Deploiement      --> Durcissement, configuration securisee
 Maintenance      --> Mises a jour, monitoring, reponse aux incidents
 ```
 
@@ -195,13 +195,13 @@ Maintenance      --> Mises a jour, monitoring, reponse aux incidents
 
 | Attaque | Protection cle | Phrase cle |
 |---------|---------------|-----------|
-| SQL Injection | Requetes preparees | "Never trust an input" |
-| XSS | Echapper les sorties + CSP | "Never trust an output" |
+| Injection SQL | Requetes preparees | "Ne jamais faire confiance a une entree" |
+| XSS | Echapper les sorties + CSP | "Ne jamais faire confiance a une sortie" |
 | CSRF | SameSite + token anti-CSRF | "Verifier l'origine" |
-| CMD Injection | Eviter les appels OS + whitelist | "Never trust an input" |
-| Buffer Overflow | strncpy + compilation securisee | "Verifier les tailles" |
-| MitM | TLS + verification certificat | "Chiffrer + authentifier" |
-| Password Attack | bcrypt + sel + MFA | "Hash sale + MFA" |
+| Injection de commandes | Eviter les appels OS + whitelist | "Ne jamais faire confiance a une entree" |
+| Debordement de tampon | strncpy + compilation securisee | "Verifier les tailles" |
+| Homme du milieu | TLS + verification certificat | "Chiffrer + authentifier" |
+| Attaque sur les mots de passe | bcrypt + sel + MFA | "Hash sale + MFA" |
 
 ---
 
@@ -209,7 +209,7 @@ Maintenance      --> Mises a jour, monitoring, reponse aux incidents
 
 ```
 VALIDATION ENTREES :
-  Whitelist > Regex > Type > Echapper > Blacklist
+  Liste blanche > Regex > Type > Echapper > Liste noire
   TOUTES les sources : GET, POST, cookies, headers, BDD, API
 
 ENCODAGE SORTIES :
@@ -226,15 +226,15 @@ HEADERS HTTP :
   CSP, X-Content-Type-Options, HSTS, X-Frame-Options
 
 OWASP TOP 10 :
-  A01 Access Control : verifier les autorisations serveur
+  A01 Controle d'acces : verifier les autorisations serveur
   A02 Crypto : TLS + bcrypt + pas de clair
-  A03 Injection : prepared statements + output encoding
-  A04 Design : threat modeling
-  A05 Config : changer les defauts, supprimer le superflu
-  A06 Components : auditer et mettre a jour
-  A07 Auth : MFA + rate limiting
-  A08 Integrity : signatures + deserialization securisee
-  A09 Logging : logger les echecs
+  A03 Injection : requetes preparees + encodage des sorties
+  A04 Conception : modelisation des menaces
+  A05 Configuration : changer les defauts, supprimer le superflu
+  A06 Composants : auditer et mettre a jour
+  A07 Authentification : MFA + rate limiting
+  A08 Integrite : signatures + deserialization securisee
+  A09 Journalisation : logger les echecs
   A10 SSRF : whitelist de destinations
 
 PRINCIPES :

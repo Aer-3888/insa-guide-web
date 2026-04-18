@@ -1,25 +1,25 @@
 ---
-title: "FUS6 - Advanced Debugging & Profiling"
+title: "FUS6 - Debogage et profilage avances"
 sidebar_position: 6
 ---
 
-# FUS6 - Advanced Debugging & Profiling
+# FUS6 - Debogage et profilage avances
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-This TP extends FUS5 with advanced debugging and profiling techniques in real-world scenarios.
+Ce TP etend FUS5 avec des techniques avancees de debogage et de profilage dans des scenarios reels.
 
-## Topics Covered
+## Sujets abordes
 
-- Advanced gdb features (watchpoints, conditional breakpoints)
-- Memory debugging with valgrind
-- Performance analysis on larger codebases
-- Optimization trade-offs
-- Debugging multi-threaded programs
+- Fonctionnalites avancees de gdb (points de surveillance, points d'arret conditionnels)
+- Debogage memoire avec valgrind
+- Analyse de performance sur des bases de code plus importantes
+- Compromis d'optimisation
+- Debogage de programmes multi-threades
 
-## Key Concepts
+## Concepts cles
 
-### Advanced GDB Features
+### Fonctionnalites avancees de GDB
 
 **Watchpoints**: Break when a variable changes
 ```gdb
@@ -46,31 +46,31 @@ end
 
 ### Valgrind
 
-Memory error detection tool:
+Outil de detection d'erreurs memoire :
 ```bash
 valgrind --leak-check=full ./program
 ```
 
-Detects:
-- Memory leaks
-- Use of uninitialized memory
-- Invalid memory access
-- Double frees
+Detecte :
+- Fuites memoire
+- Utilisation de memoire non initialisee
+- Acces memoire invalide
+- Double liberation
 
-### Performance Analysis
+### Analyse de performance
 
-Compare optimization levels:
-- Code size impact
-- Execution time differences
-- Debugging difficulty with optimizations
+Comparer les niveaux d'optimisation :
+- Impact sur la taille du code
+- Differences de temps d'execution
+- Difficulte de debogage avec les optimisations
 
-## Reference Material
+## Materiel de reference
 
-See the included PDF for detailed exercises and examples.
+Voir le PDF inclus pour les exercices et exemples detailles.
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Use the right tool** - gdb for logic bugs, valgrind for memory issues
-2. **Watchpoints are powerful** - Find when/where data gets corrupted
-3. **Optimization != Always faster** - Profile to verify
-4. **Debug builds vs Release builds** - Different trade-offs
+1. **Utiliser le bon outil** - gdb pour les bugs logiques, valgrind pour les problemes memoire
+2. **Les points de surveillance sont puissants** - Trouver quand/ou les donnees sont corrompues
+3. **Optimisation != Toujours plus rapide** - Profiler pour verifier
+4. **Builds de debogage vs builds de production** - Compromis differents

@@ -51,16 +51,16 @@ PP --> Prep NP
 
 ### Ambiguite syntaxique -- SUJET CLASSIQUE EN DS
 
-"I saw the man with the telescope" admet 2 arbres :
+"I saw the man with the telescope" (J'ai vu l'homme avec le telescope) admet 2 arbres :
 
-**Arbre 1** : VP --> V NP PP (j'ai vu avec le telescope)
+**Arbre 1** : VP --> V NP PP (j'ai vu en utilisant le telescope)
 ```
        VP
       / | \
      V  NP  PP
 ```
 
-**Arbre 2** : NP --> NP PP (l'homme avec le telescope)
+**Arbre 2** : NP --> NP PP (l'homme qui a le telescope)
 ```
        VP
       / \
@@ -278,7 +278,7 @@ dog --> lazy (amod)
 - Etape 6 : sleeps est la tete de dog (Left-Arc, arc sleeps-->dog)
 - Etape 7 : ROOT est la tete de sleeps (Right-Arc, arc ROOT-->sleeps)
 
-## 5.7 Chunking (analyse partielle)
+## 5.7 Segmentation en chunks (analyse partielle)
 
 Les chunks sont des constituants **non-recursifs** (pas d'imbrication).
 
@@ -286,7 +286,7 @@ Les chunks sont des constituants **non-recursifs** (pas d'imbrication).
 [NP Le vol AF210] [PP de] [NP Paris] [PP a] [NP New-York]
 ```
 
-Encode avec le systeme IOB (= BIO) :
+Annote avec le systeme IOB (= BIO) :
 ```
 The    AF210   flight   from    Paris
 B_NP   I_NP    I_NP     O      B_NP
@@ -329,5 +329,5 @@ PIEGES :
   - CKY necessite la CNF (pas toute CFG)
   - P(arbre PCFG) = PRODUIT, pas somme
   - UAS >= LAS (LAS plus strict)
-  - Chunking != parsing complet (pas recursif)
+  - Segmentation en chunks != analyse complete (pas recursif)
 ```

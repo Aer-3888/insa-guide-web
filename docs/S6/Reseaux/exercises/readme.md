@@ -1,9 +1,9 @@
 ---
-title: "Exercises -- Reseaux (S6)"
+title: "Exercices -- Reseaux (S6)"
 sidebar_position: 0
 ---
 
-# Exercises -- Reseaux (S6)
+# Exercices -- Reseaux (S6)
 
 Solutions detaillees et annotees des TPs de programmation reseau.
 Chaque fichier contient le code source complet, les commandes de compilation, les sessions terminal et l'analyse reseau.

@@ -253,7 +253,7 @@ UNIFIER(E1, E2):
   Sinon : ECHEC
 ```
 
-### Test d'occurrence (occur check)
+### Test d'occurrence
 
 On ne peut **jamais** substituer x par un terme contenant x (evite les termes infinis).
 

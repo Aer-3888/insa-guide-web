@@ -5,46 +5,46 @@ sidebar_position: 0
 
 # CPOO -- Conception et Programmation Orientees Objet
 
-## Course Overview
+## Apercu du cours
 
-**CPOO1** (Object-Oriented Design and Programming) is a 3rd-year Computer Science course at INSA Rennes, taught by Arnaud Blouin. The course covers the foundations of object-oriented programming in Java, UML modeling, unit testing, and software design principles.
+**CPOO1** (Conception et Programmation Orientees Objet) est un cours de 3e annee Informatique a l'INSA Rennes, enseigne par Arnaud Blouin. Le cours couvre les fondements de la programmation orientee objet en Java, la modelisation UML, les tests unitaires et les principes de conception logicielle.
 
-**Exam format**: 2-hour written exam (paper), course notes allowed. The exam consistently includes three pillars: unit testing / code analysis, UML diagrams, and OOP theory questions.
+**Format de l'examen** : epreuve ecrite de 2 heures (sur papier), notes de cours autorisees. L'examen comporte systematiquement trois piliers : tests unitaires / analyse de code, diagrammes UML, et questions theoriques sur la POO.
 
-## Topics
+## Sujets
 
-| # | Topic | File | Key Concepts |
-|---|-------|------|-------------|
-| 1 | [OOP Fundamentals](/S5/CPOO/guide/01-oop-fundamentals) | Classes, objects, encapsulation, constructors, `this` keyword |
-| 2 | [Inheritance and Polymorphism](/S5/CPOO/guide/02-inheritance-polymorphism) | `extends`, abstract classes, interfaces, dynamic binding |
-| 3 | [Design Patterns](/S5/CPOO/guide/03-design-patterns) | Strategy, Observer, Factory, Singleton, MVC, Decorator, Composite |
-| 4 | [UML Diagrams](/S5/CPOO/guide/04-uml-diagrams) | Class diagrams, sequence diagrams, use case diagrams |
-| 5 | [Collections and Generics](/S5/CPOO/guide/05-collections-generics) | List, Map, Set, iterators, generics in Java |
-| 6 | [Exception Handling](/S5/CPOO/guide/06-exception-handling) | try/catch, custom exceptions, checked vs unchecked |
-| 7 | [Java Best Practices and Testing](/S5/CPOO/guide/07-best-practices-testing) | SOLID, clean code, JUnit 5, Mockito, mutation testing |
+| # | Sujet | Fichier | Concepts cles |
+|---|-------|---------|---------------|
+| 1 | [Fondamentaux de la POO](/S5/CPOO/guide/01-oop-fundamentals) | Classes, objets, encapsulation, constructeurs, mot-cle `this` |
+| 2 | [Heritage et polymorphisme](/S5/CPOO/guide/02-inheritance-polymorphism) | `extends`, classes abstraites, interfaces, liaison dynamique |
+| 3 | [Patrons de conception](/S5/CPOO/guide/03-design-patterns) | Strategy, Observer, Factory, Singleton, MVC, Decorator, Composite |
+| 4 | [Diagrammes UML](/S5/CPOO/guide/04-uml-diagrams) | Diagrammes de classes, diagrammes de sequence, diagrammes de cas d'utilisation |
+| 5 | [Collections et generiques](/S5/CPOO/guide/05-collections-generics) | List, Map, Set, iterateurs, generiques en Java |
+| 6 | [Gestion des exceptions](/S5/CPOO/guide/06-exception-handling) | try/catch, exceptions personnalisees, checked vs unchecked |
+| 7 | [Bonnes pratiques Java et tests](/S5/CPOO/guide/07-best-practices-testing) | SOLID, code propre, JUnit 5, Mockito, tests de mutation |
 
-## Course Structure (Semester 5)
+## Structure du cours (Semestre 5)
 
-| Weeks | Topics | Lab |
-|-------|--------|-----|
-| 1-2 | Introduction to OOP, classes, objects | -- |
-| 3-4 | Associations and UML | TP1: Velo/Guidon/Roue |
-| 5-6 | Inheritance and polymorphism | TP2: Foret/Arbre |
-| 7-8 | Collections and generics | TP2 advanced |
-| 9-10 | Unit testing, mocking, coverage | TP3: Testing exercises |
-| 11-12 | Advanced testing, mutation testing | TP3 continued |
+| Semaines | Sujets | TP |
+|----------|--------|-----|
+| 1-2 | Introduction a la POO, classes, objets | -- |
+| 3-4 | Associations et UML | TP1 : Velo/Guidon/Roue |
+| 5-6 | Heritage et polymorphisme | TP2 : Foret/Arbre |
+| 7-8 | Collections et generiques | TP2 avance |
+| 9-10 | Tests unitaires, mocking, couverture | TP3 : Exercices de tests |
+| 11-12 | Tests avances, tests de mutation | TP3 suite |
 
-## Related Materials
+## Ressources associees
 
-- [Exercise Solutions](../exercises/) -- Worked solutions for all TPs and TDs
-- [Exam Preparation](../exam-prep/) -- Past exam analysis and strategies
+- [Solutions des exercices](../exercises/) -- Solutions detaillees pour tous les TP et TD
+- [Preparation examen](../exam-prep/) -- Analyse des examens passes et strategies
 
-## Tools
+## Outils
 
 - **Java 11+** (JDK)
-- **IntelliJ IDEA** (recommended IDE)
-- **Maven** (build tool)
-- **JUnit 5** (testing framework)
-- **Mockito** (mocking framework)
-- **JaCoCo** (code coverage)
-- **Pitest** (mutation testing)
+- **IntelliJ IDEA** (IDE recommande)
+- **Maven** (outil de build)
+- **JUnit 5** (framework de tests)
+- **Mockito** (framework de mocking)
+- **JaCoCo** (couverture de code)
+- **Pitest** (tests de mutation)

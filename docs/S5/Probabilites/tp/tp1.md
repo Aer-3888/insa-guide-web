@@ -1,141 +1,141 @@
 ---
-title: "TP1: Introduction to R and Probability Distributions"
+title: "TP1 : Introduction a R et distributions de probabilite"
 sidebar_position: 1
 ---
 
-# TP1: Introduction to R and Probability Distributions
+# TP1 : Introduction a R et distributions de probabilite
 
-## Overview
-This lab introduces fundamental R programming concepts and basic probability distribution functions. Students learn data manipulation, type conversion, and how to work with common probability distributions.
+## Presentation
+Ce TP introduit les concepts fondamentaux de la programmation R et les fonctions de base des distributions de probabilite. Les etudiants apprennent la manipulation de donnees, la conversion de types et comment travailler avec les distributions de probabilite courantes.
 
-## Learning Objectives
-- Master R basic syntax and data structures
-- Understand type conversion and string manipulation
-- Work with vectors and data frames
-- Apply probability distribution functions (d*, p*, q*, r*)
-- Visualize exponential distributions
-- Simulate random processes
+## Objectifs pedagogiques
+- Maitriser la syntaxe de base de R et les structures de donnees
+- Comprendre la conversion de types et la manipulation de chaines
+- Travailler avec les vecteurs et les data frames
+- Appliquer les fonctions de distributions de probabilite (d*, p*, q*, r*)
+- Visualiser les distributions exponentielles
+- Simuler des processus aleatoires
 
-## Key Concepts
+## Concepts cles
 
-### 1. Type Conversion and String Manipulation
-- **Type Conversion**: Use `as.integer()`, `as.numeric()`, etc. to convert between types
-- **Type Checking**: Use `is.integer()`, `is.numeric()` to verify types
-- **String Operations**: `paste()` for concatenation, `nchar()` for string length
+### 1. Conversion de types et manipulation de chaines
+- **Conversion de type** : Utiliser `as.integer()`, `as.numeric()`, etc. pour convertir entre types
+- **Verification de type** : Utiliser `is.integer()`, `is.numeric()` pour verifier les types
+- **Operations sur les chaines** : `paste()` pour la concatenation, `nchar()` pour la longueur de chaine
 
-### 2. Special Values
-- `Inf`: Result of division by zero (e.g., `3/0`)
-- `NA`: Not Assigned/Not Available - missing values
+### 2. Valeurs speciales
+- `Inf` : Resultat d'une division par zero (ex. `3/0`)
+- `NA` : Non attribue / Non disponible - valeurs manquantes
 
-### 3. Vectors
-Four main ways to create vectors:
-- `c()`: Combine elements explicitly
-- `seq(from, to, by)`: Generate sequences with step
-- `start:end`: Generate integer sequences (inclusive bounds)
-- `rep(values, times)`: Repeat values
+### 3. Vecteurs
+Quatre methodes principales pour creer des vecteurs :
+- `c()` : Combiner des elements explicitement
+- `seq(from, to, by)` : Generer des sequences avec un pas
+- `start:end` : Generer des sequences d'entiers (bornes inclusives)
+- `rep(values, times)` : Repeter des valeurs
 
-**Important**: R loops use inclusive bounds: `for(i in 1:10)` includes both 1 and 10.
+**Important** : Les boucles R utilisent des bornes inclusives : `for(i in 1:10)` inclut a la fois 1 et 10.
 
-### 4. Data Frames
-Essential structure for statistical analysis:
-- Create with `data.frame(column1=vector1, column2=vector2, ...)`
-- Access columns: `df$columnName` or `df[,"columnName"]`
-- Get column names: `names(df)`
-- Export: `write.table(df, "file.csv", sep=";", row.names=FALSE, col.names=FALSE)`
+### 4. Data frames
+Structure essentielle pour l'analyse statistique :
+- Creer avec `data.frame(colonne1=vecteur1, colonne2=vecteur2, ...)`
+- Acceder aux colonnes : `df$nomColonne` ou `df[,"nomColonne"]`
+- Obtenir les noms de colonnes : `names(df)`
+- Exporter : `write.table(df, "fichier.csv", sep=";", row.names=FALSE, col.names=FALSE)`
 
-### 5. Probability Distribution Functions
+### 5. Fonctions de distributions de probabilite
 
-R uses a consistent naming scheme for distributions:
+R utilise un schema de nommage coherent pour les distributions :
 
-| Prefix | Function | Description |
+| Prefixe | Fonction | Description |
 |--------|----------|-------------|
-| `d*` | Density | Probability density/mass function |
-| `p*` | Probability | Cumulative distribution function (CDF) |
-| `q*` | Quantile | Inverse CDF (percentiles) |
-| `r*` | Random | Generate random samples |
+| `d*` | Densite | Fonction de densite/masse de probabilite |
+| `p*` | Probabilite | Fonction de repartition (CDF) |
+| `q*` | Quantile | CDF inverse (percentiles) |
+| `r*` | Aleatoire | Generer des echantillons aleatoires |
 
-**Common distributions**:
-- `norm`: Normal distribution
-- `binom`: Binomial distribution
-- `unif`: Uniform distribution
-- `exp`: Exponential distribution
-- `pois`: Poisson distribution
-- `geom`: Geometric distribution
-- `t`: Student's t-distribution
-- `chisq`: Chi-squared distribution
-- `f`: F distribution
+**Distributions courantes** :
+- `norm` : Loi normale
+- `binom` : Loi binomiale
+- `unif` : Loi uniforme
+- `exp` : Loi exponentielle
+- `pois` : Loi de Poisson
+- `geom` : Loi geometrique
+- `t` : Loi de Student
+- `chisq` : Loi du chi-deux
+- `f` : Loi de Fisher
 
-**Example**: For normal distribution N(μ, σ):
+**Exemple** : Pour la loi normale N(mu, sigma) :
 ```r noexec
-dnorm(x, mean=μ, sd=σ)  # Density at x
+dnorm(x, mean=μ, sd=σ)  # Densite en x
 pnorm(x, mean=μ, sd=σ)  # P(X ≤ x)
-qnorm(p, mean=μ, sd=σ)  # Value x where P(X ≤ x) = p
-rnorm(n, mean=μ, sd=σ)  # Generate n random samples
+qnorm(p, mean=μ, sd=σ)  # Valeur x ou P(X ≤ x) = p
+rnorm(n, mean=μ, sd=σ)  # Generer n echantillons aleatoires
 ```
 
-## Exercises
+## Exercices
 
-### Exercise 1: Exponential Distribution Simulation
+### Exercice 1 : Simulation de la loi exponentielle
 
-**Theory**: Exponential distribution with parameter λ:
-- Mean: 1/λ
-- Standard deviation: 1/λ
-- PDF: f(x) = λe^(-λx) for x ≥ 0
+**Theorie** : Loi exponentielle de parametre lambda :
+- Moyenne : 1/lambda
+- Ecart-type : 1/lambda
+- Densite : f(x) = lambda*e^(-lambda*x) pour x >= 0
 
-**Task**: Visualize exponential curves for λ = 0.5, 1, 2 and simulate samples.
+**Tache** : Visualiser les courbes exponentielles pour lambda = 0.5, 1, 2 et simuler des echantillons.
 
-**Key Functions**:
-- `curve()`: Plot mathematical functions
-- `rexp(n, rate=λ)`: Generate exponential random samples
-- `hist()`: Create histograms
-- `legend()`: Add plot legends
+**Fonctions cles** :
+- `curve()` : Tracer des fonctions mathematiques
+- `rexp(n, rate=lambda)` : Generer des echantillons exponentiels aleatoires
+- `hist()` : Creer des histogrammes
+- `legend()` : Ajouter des legendes
 
-### Exercise 2: Urn Problem
+### Exercice 2 : Probleme de l'urne
 
-**Scenario**: An urn contains p red balls and q black balls. Draw k balls without replacement.
+**Scenario** : Une urne contient p boules rouges et q boules noires. Tirer k boules sans remise.
 
-**Key Concepts**:
-- `rep(value, times)`: Repeat elements to create urn
-- `sample(x, size, replace=FALSE)`: Random sampling
-- `table()`: Count occurrences
-- `barplot()`: Visualize frequencies
+**Concepts cles** :
+- `rep(value, times)` : Repeter des elements pour creer l'urne
+- `sample(x, size, replace=FALSE)` : Echantillonnage aleatoire
+- `table()` : Compter les occurrences
+- `barplot()` : Visualiser les frequences
 
-### Exercise 3: Dice Frequency
+### Exercice 3 : Frequence du de
 
-**Theory**: Law of Large Numbers - as sample size increases, empirical frequency converges to theoretical probability.
+**Theorie** : Loi des grands nombres - lorsque la taille de l'echantillon augmente, la frequence empirique converge vers la probabilite theorique.
 
-**Task**: Simulate dice rolls and observe convergence of frequency to 1/6.
+**Tache** : Simuler des lancers de de et observer la convergence de la frequence vers 1/6.
 
-## R Functions Reference
+## Reference des fonctions R
 
-| Function | Purpose | Example |
+| Fonction | Objectif | Exemple |
 |----------|---------|---------|
-| `help(function)` | Get documentation | `help(curve)` |
-| `curve(expr, from, to, add)` | Plot function | `curve(exp(x), 0, 5)` |
-| `hist(x, freq, breaks)` | Histogram | `hist(data, freq=FALSE)` |
-| `plot(x, y, type, xlim, ylim)` | Generic plotting | `plot(x, y, type="l")` |
-| `legend(position, legend, col)` | Add legend | `legend("topright", ...)` |
-| `sample(x, size, replace)` | Random sampling | `sample(1:6, 100, TRUE)` |
-| `table(x)` | Frequency table | `table(rolls)` |
-| `barplot(height, names.arg)` | Bar plot | `barplot(counts)` |
+| `help(function)` | Obtenir la documentation | `help(curve)` |
+| `curve(expr, from, to, add)` | Tracer une fonction | `curve(exp(x), 0, 5)` |
+| `hist(x, freq, breaks)` | Histogramme | `hist(data, freq=FALSE)` |
+| `plot(x, y, type, xlim, ylim)` | Graphique generique | `plot(x, y, type="l")` |
+| `legend(position, legend, col)` | Ajouter une legende | `legend("topright", ...)` |
+| `sample(x, size, replace)` | Echantillonnage aleatoire | `sample(1:6, 100, TRUE)` |
+| `table(x)` | Tableau de frequences | `table(rolls)` |
+| `barplot(height, names.arg)` | Diagramme en barres | `barplot(counts)` |
 
-## Tips and Common Pitfalls
+## Conseils et pieges courants
 
-1. **Loop Bounds**: Remember R loops are inclusive on both ends
-2. **Data Frames vs Vectors**: Use `$` for columns, `[]` for rows
-3. **Density vs Frequency**: Set `freq=FALSE` in `hist()` to plot density
-4. **Adding to Plots**: Use `add=TRUE` in `curve()` to overlay on existing plot
-5. **Working Directory**: Use `setwd()` or check current directory with `getwd()`
+1. **Bornes des boucles** : Les boucles R sont inclusives aux deux bornes
+2. **Data frames vs vecteurs** : Utiliser `$` pour les colonnes, `[]` pour les lignes
+3. **Densite vs effectifs** : Mettre `freq=FALSE` dans `hist()` pour tracer la densite
+4. **Ajouter a un graphique** : Utiliser `add=TRUE` dans `curve()` pour superposer sur un graphique existant
+5. **Repertoire de travail** : Utiliser `setwd()` ou verifier le repertoire courant avec `getwd()`
 
-## Further Practice
+## Pour aller plus loin
 
-1. Try different distributions (binomial, Poisson, uniform)
-2. Compare theoretical vs empirical distributions with increasing sample sizes
-3. Explore the Central Limit Theorem by summing random variables
-4. Create custom functions for repeated tasks
+1. Essayer differentes distributions (binomiale, Poisson, uniforme)
+2. Comparer distributions theoriques et empiriques avec des tailles d'echantillon croissantes
+3. Explorer le theoreme central limite en sommant des variables aleatoires
+4. Creer des fonctions personnalisees pour les taches repetitives
 
-## Resources
+## Ressources
 
-- R Documentation: `help(function_name)` or `?function_name`
-- Distribution parameters: Check each distribution's help page
-- Visualization: Experiment with `col`, `lwd`, `lty` parameters for better plots
+- Documentation R : `help(nom_fonction)` ou `?nom_fonction`
+- Parametres des distributions : Consulter la page d'aide de chaque distribution
+- Visualisation : Experimenter avec les parametres `col`, `lwd`, `lty` pour de meilleurs graphiques

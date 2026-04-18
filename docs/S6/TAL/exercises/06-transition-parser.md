@@ -431,7 +431,7 @@ Etat initial : pile = [ROOT], buffer = [w1, w2, ..., wn], arcs = {}
 Condition d'arret : buffer vide ET pile = [ROOT]
 
 Oracle : classifieur (SVM, reseau de neurones) qui decide l'action
-         Entree : features de la pile et du buffer
+         Entree : caracteristiques de la pile et du buffer
          Sortie : Shift, Left-Arc(label), ou Right-Arc(label)
 
 Complexite : O(2n) -- lineaire ! (chaque mot est empile une fois et retire une fois)

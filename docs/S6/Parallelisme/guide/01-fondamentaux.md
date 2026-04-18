@@ -192,7 +192,7 @@ Thread 3: ecrire le resultat
 
 ---
 
-## CHEAT SHEET -- Fondamentaux
+## AIDE-MEMOIRE -- Fondamentaux
 
 ```
 Speedup :           S(p) = T(1) / T(p)

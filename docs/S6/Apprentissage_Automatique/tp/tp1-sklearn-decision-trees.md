@@ -1,97 +1,97 @@
 ---
-title: "TP1: Introduction to scikit-learn, Decision Trees, and Bayesian Learning"
+title: "TP1 : Introduction a scikit-learn, arbres de decision et apprentissage bayesien"
 sidebar_position: 1
 ---
 
-# TP1: Introduction to scikit-learn, Decision Trees, and Bayesian Learning
+# TP1 : Introduction a scikit-learn, arbres de decision et apprentissage bayesien
 
-## Overview
-This practical introduces fundamental machine learning concepts using scikit-learn, focusing on:
-- Basic dataset manipulation and visualization
-- k-Nearest Neighbors (kNN) classification
-- Decision trees (construction, pruning, visualization)
-- Naive Bayes classification with nominal and continuous features
+## Presentation
+Ce TP introduit les concepts fondamentaux de l'apprentissage automatique avec scikit-learn, en se concentrant sur :
+- La manipulation et la visualisation de jeux de donnees
+- La classification par k plus proches voisins (kNN)
+- Les arbres de decision (construction, elagage, visualisation)
+- La classification par Naive Bayes avec des features nominales et continues
 
-## Datasets
-- **iris**: Classic iris flower dataset (150 samples, 4 features, 3 classes)
-- **heart.csv**: Heart disease prediction dataset
-- **weather.csv**: Weather data with continuous features
-- **weather.nominal.csv**: Weather data with categorical features
+## Jeux de donnees
+- **iris** : Jeu de donnees classique des fleurs d'iris (150 echantillons, 4 features, 3 classes)
+- **heart.csv** : Jeu de donnees de prediction de maladies cardiaques
+- **weather.csv** : Donnees meteorologiques avec features continues
+- **weather.nominal.csv** : Donnees meteorologiques avec features categorielles
 
-## Exercises Covered
+## Exercices couverts
 
-### Part 1: scikit-learn Basics
-- Loading and exploring datasets
-- Understanding data representation issues
-- Visualizing feature relationships
-- Train/test splitting and cross-validation
+### Partie 1 : Les bases de scikit-learn
+- Chargement et exploration des jeux de donnees
+- Comprehension des problemes de representation des donnees
+- Visualisation des relations entre features
+- Separation train/test et validation croisee
 
-### Part 2: k-Nearest Neighbors
-- Implementing kNN classifier
-- Understanding training vs test error
-- Cross-fold validation techniques
-- Evaluating accuracy with confusion matrices
+### Partie 2 : k plus proches voisins
+- Implementation du classifieur kNN
+- Comprehension de l'erreur d'entrainement vs l'erreur de test
+- Techniques de validation croisee K-Fold
+- Evaluation de la precision avec les matrices de confusion
 
-### Part 3: Decision Trees
-- Building decision trees with entropy criterion
-- Visualizing trees with Graphviz
-- Understanding tree parameters (max_depth, min_samples)
-- Cost complexity pruning to prevent overfitting
-- Finding optimal alpha parameter
+### Partie 3 : Arbres de decision
+- Construction d'arbres de decision avec le critere d'entropie
+- Visualisation des arbres avec Graphviz
+- Comprehension des parametres de l'arbre (max_depth, min_samples)
+- Elagage par complexite de cout (Cost Complexity Pruning) pour prevenir le sur-apprentissage
+- Recherche du parametre alpha optimal
 
-### Part 4: Bayesian Learning
-**Q16 Exercise**: Manual computation of posterior probabilities for weather data
-- Understanding naive Bayes assumptions
-- Computing likelihoods for nominal features (multinomial distribution)
-- Computing likelihoods for continuous features (normal distribution)
-- Applying Bayes' theorem: P(class|x) = P(class) * P(x|class) / P(x)
+### Partie 4 : Apprentissage bayesien
+**Exercice Q16** : Calcul manuel des probabilites a posteriori pour les donnees meteorologiques
+- Comprehension des hypotheses du Naive Bayes
+- Calcul des vraisemblances pour les features nominales (distribution multinomiale)
+- Calcul des vraisemblances pour les features continues (distribution normale)
+- Application du theoreme de Bayes : P(classe|x) = P(classe) * P(x|classe) / P(x)
 
-Example calculation for `x = ['sunny', 73, 81, 'TRUE']`:
-- Compute prior probabilities: P(class=0) = 5/14, P(class=1) = 9/14
-- Compute likelihoods for nominal features (outlook, windy)
-- Compute likelihoods for continuous features (temperature, humidity) using normal distribution
-- Combine using Bayes' rule and normalize
+Exemple de calcul pour `x = ['sunny', 73, 81, 'TRUE']` :
+- Calculer les probabilites a priori : P(classe=0) = 5/14, P(classe=1) = 9/14
+- Calculer les vraisemblances pour les features nominales (outlook, windy)
+- Calculer les vraisemblances pour les features continues (temperature, humidity) avec la distribution normale
+- Combiner avec la regle de Bayes et normaliser
 
-#### Handling Different Feature Types
-- **Categorical features**: Use `CategoricalNB` with encoded features
-- **Mixed features**: Scale continuous features into discrete categories
+#### Gestion des differents types de features
+- **Features categorielles** : Utiliser `CategoricalNB` avec les features encodees
+- **Features mixtes** : Discretiser les features continues en categories
 
-## Key Concepts
+## Concepts cles
 
-### Decision Tree Pruning
-Cost complexity pruning balances tree accuracy with complexity:
-- Generate alpha values using `cost_complexity_pruning_path`
-- Train trees for each alpha
-- Evaluate on validation set to find optimal alpha
-- Best alpha typically around 0.02 for heart dataset
+### Elagage des arbres de decision
+L'elagage par complexite de cout (CCP) equilibre la precision de l'arbre avec sa complexite :
+- Generer les valeurs d'alpha avec `cost_complexity_pruning_path`
+- Entrainer un arbre pour chaque alpha
+- Evaluer sur un jeu de validation pour trouver l'alpha optimal
+- Le meilleur alpha est generalement autour de 0.02 pour le jeu de donnees heart
 
-### Naive Bayes Assumptions
-- Features are conditionally independent given the class
-- Nominal features follow multinomial distributions
-- Continuous features follow normal distributions with parameters estimated from training data
+### Hypotheses du Naive Bayes
+- Les features sont conditionnellement independantes sachant la classe
+- Les features nominales suivent des distributions multinomiales
+- Les features continues suivent des distributions normales dont les parametres sont estimes a partir des donnees d'entrainement
 
-## Results Summary
-- **kNN**: ~97% accuracy on iris (10-fold CV)
-- **Decision Tree (pruned)**: ~80% validation accuracy on heart dataset
-- **Naive Bayes**: ~93% training accuracy on weather dataset
+## Resume des resultats
+- **kNN** : ~97% de precision sur iris (validation croisee 10-fold)
+- **Arbre de decision (elague)** : ~80% de precision en validation sur le jeu heart
+- **Naive Bayes** : ~93% de precision sur le jeu d'entrainement weather
 
-## Files
-- `TP1_complete.ipynb`: Original completed notebook with all exercises
-- `heart.csv`: Heart disease dataset
-- `weather.csv`: Weather dataset with continuous features
-- `weather.nominal.csv`: Weather dataset with categorical features
+## Fichiers
+- `TP1_complete.ipynb` : Notebook original avec tous les exercices
+- `heart.csv` : Jeu de donnees de maladies cardiaques
+- `weather.csv` : Jeu de donnees meteorologiques avec features continues
+- `weather.nominal.csv` : Jeu de donnees meteorologiques avec features categorielles
 
-## Running the Code
+## Lancer le code
 ```bash noexec
-# Ensure dependencies are installed
+# Installer les dependances
 pip install scikit-learn pandas numpy matplotlib graphviz dtreeviz
 
-# Launch Jupyter notebook
+# Lancer le notebook Jupyter
 jupyter notebook TP1_complete.ipynb
 ```
 
-## Notes
-- Graphviz must be installed system-wide for tree visualization
-- dtreeviz provides enhanced decision tree visualizations with histograms
-- Cross-validation helps estimate real error (generalization performance)
-- Empirical error on training set typically underestimates real error
+## Remarques
+- Graphviz doit etre installe au niveau du systeme pour la visualisation des arbres
+- dtreeviz fournit des visualisations ameliorees des arbres de decision avec des histogrammes
+- La validation croisee permet d'estimer l'erreur reelle (performance de generalisation)
+- L'erreur empirique sur le jeu d'entrainement sous-estime generalement l'erreur reelle

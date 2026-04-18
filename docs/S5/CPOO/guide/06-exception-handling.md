@@ -1,36 +1,36 @@
 ---
-title: "Exception Handling"
+title: "Gestion des exceptions"
 sidebar_position: 6
 ---
 
-# Exception Handling
+# Gestion des exceptions
 
-## Theory
+## Theorie
 
-### Exception Hierarchy
+### Hierarchie des exceptions
 
 ```
              Throwable
             /         \
        Error         Exception
-    (do not catch)    /        \
-                RuntimeException  Checked Exceptions
-                (unchecked)       (must be declared)
+    (ne pas attraper) /        \
+                RuntimeException  Exceptions verifiees
+                (non verifiees)   (doivent etre declarees)
                   |                    |
           NullPointerException    IOException
-          IllegalArgumentException NetworkException (custom)
-          IndexOutOfBoundsException AnException (custom)
+          IllegalArgumentException NetworkException (personnalisee)
+          IndexOutOfBoundsException AnException (personnalisee)
           SecurityException
           NumberFormatException
           ConcurrentModificationException
 ```
 
-### Checked vs Unchecked Exceptions
+### Exceptions verifiees vs non verifiees
 
-| Type | Must declare (`throws`) | Must catch | Examples |
-|------|------------------------|------------|----------|
-| **Checked** | Yes | Yes (or declare) | `IOException`, `NetworkException`, `AnException` |
-| **Unchecked** (RuntimeException) | No | No (optional) | `NullPointerException`, `IllegalArgumentException` |
+| Type | Doit declarer (`throws`) | Doit attraper | Exemples |
+|------|--------------------------|---------------|----------|
+| **Verifiee** | Oui | Oui (ou declarer) | `IOException`, `NetworkException`, `AnException` |
+| **Non verifiee** (RuntimeException) | Non | Non (optionnel) | `NullPointerException`, `IllegalArgumentException` |
 
 ### try/catch/finally
 
@@ -50,7 +50,7 @@ public boolean connectServer(final String address) {
 }
 ```
 
-### Throwing Exceptions
+### Lancer des exceptions
 
 ```java
 public A(final B b) {
@@ -61,14 +61,14 @@ public A(final B b) {
 }
 ```
 
-### Custom Exception Classes
+### Classes d'exceptions personnalisees
 
 ```java
-// Checked exception (extends Exception)
+// Exception verifiee (etend Exception)
 public class NetworkException extends Exception {
 }
 
-// Checked exception with message
+// Exception verifiee avec message
 public class AnException extends Exception {
     public AnException(String e) {
         super(e);
@@ -76,13 +76,13 @@ public class AnException extends Exception {
 }
 ```
 
-### Declaring Exceptions with `throws`
+### Declarer des exceptions avec `throws`
 
-When a method can throw a checked exception, it must declare it:
+Lorsqu'une methode peut lancer une exception verifiee, elle doit la declarer :
 
 ```java
 public interface B {
-    int getB1() throws AnException;        // declares checked exception
+    int getB1() throws AnException;        // declare une exception verifiee
 }
 
 public int al(final boolean value) throws SecurityException, NumberFormatException, AnException {
@@ -90,13 +90,13 @@ public int al(final boolean value) throws SecurityException, NumberFormatExcepti
     if (str == null || !value) {
         return 0;
     }
-    return str.length() * b.getB1();       // b.getB1() may throw AnException
+    return str.length() * b.getB1();       // b.getB1() peut lancer AnException
 }
 ```
 
-### Static Factory Methods and Exception Handling
+### Methodes fabriques statiques et gestion des exceptions
 
-A common pattern is to wrap constructor exceptions in a factory method:
+Un patron courant consiste a encapsuler les exceptions du constructeur dans une methode fabrique :
 
 ```java
 public static A create(final B b) {
@@ -108,9 +108,9 @@ public static A create(final B b) {
 }
 ```
 
-### Exception Handling in Tests
+### Gestion des exceptions dans les tests
 
-**Testing that an exception is thrown**:
+**Tester qu'une exception est lancee** :
 ```java
 @Test
 void testConstructWithNull() {
@@ -120,7 +120,7 @@ void testConstructWithNull() {
 }
 ```
 
-**Testing that an exception is NOT thrown (normal flow)**:
+**Tester qu'une exception n'est PAS lancee (flux normal)** :
 ```java
 @Test
 void testNormalFlow() throws AnException {
@@ -129,9 +129,9 @@ void testNormalFlow() throws AnException {
 }
 ```
 
-**Common exam mistake -- wrapping in try/catch instead of assertThrows**:
+**Erreur courante d'examen -- encapsuler dans try/catch au lieu d'utiliser assertThrows** :
 ```java
-// WRONG (verbose, error-prone)
+// INCORRECT (verbeux, source d'erreurs)
 @Test
 void testBad() {
     try {
@@ -149,9 +149,9 @@ void testGood() {
 }
 ```
 
-### The Bug in Exo9: IndexOutOfBoundsException
+### Le bug de l'Exo9 : IndexOutOfBoundsException
 
-The course includes a deliberate bug to teach about exception boundaries:
+Le cours inclut un bug delibere pour enseigner les limites d'indices :
 
 ```java
 public boolean contient(String str) {
@@ -165,13 +165,13 @@ public boolean contient(String str) {
 }
 ```
 
-When `i == taille`, `maListe.get(i)` throws `IndexOutOfBoundsException`. The fix: change `<=` to `<`.
+Quand `i == taille`, `maListe.get(i)` lance un `IndexOutOfBoundsException`. La correction : remplacer `<=` par `<`.
 
 ---
 
-## Exception Patterns from Exams
+## Patrons d'exceptions tires des examens
 
-### Pattern 1: Short-circuit evaluation and exceptions
+### Patron 1 : evaluation en court-circuit et exceptions
 
 ```java
 // In A.al():
@@ -181,9 +181,9 @@ if (str == null || !value) {
 return str.length() * b.getB1();    // b.getB1() may throw AnException
 ```
 
-The `||` operator short-circuits: if `str == null` is true, `!value` is not evaluated. Similarly, if `str != null` and `value == true`, then `str.length()` is safe (no NPE) and `b.getB1()` is called (may throw `AnException`).
+L'operateur `||` effectue un court-circuit : si `str == null` est vrai, `!value` n'est pas evalue. De meme, si `str != null` et `value == true`, alors `str.length()` est sur (pas de NPE) et `b.getB1()` est appele (peut lancer `AnException`).
 
-### Pattern 2: Multiple exception types
+### Patron 2 : types d'exceptions multiples
 
 ```java
 public int al(final boolean value) throws SecurityException, NumberFormatException, AnException {
@@ -191,9 +191,9 @@ public int al(final boolean value) throws SecurityException, NumberFormatExcepti
 }
 ```
 
-A method can declare multiple exception types. In tests, you should verify which exceptions are actually reachable.
+Une methode peut declarer plusieurs types d'exceptions. Dans les tests, vous devez verifier quelles exceptions sont effectivement atteignables.
 
-### Pattern 3: Exception from mocked objects
+### Patron 3 : exception depuis des objets mockes
 
 ```java
 B beh = Mockito.mock(B.class);
@@ -208,55 +208,55 @@ assertThrows(AnException.class, () -> {
 
 ---
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Catching too broadly**: `catch (Exception e)` hides specific errors. Catch the most specific exception type.
-2. **Silently swallowing exceptions**: an empty `catch` block hides failures. At minimum, log the error.
-3. **Off-by-one in loops**: `i <= size` instead of `i < size` causes `IndexOutOfBoundsException` (as in Exo9).
-4. **Not testing exception paths**: achieving 100% coverage requires testing both normal and exception paths.
-5. **Using `fail()` instead of `assertThrows()`**: the modern JUnit 5 way is `assertThrows()`, which is cleaner and less error-prone.
+1. **Attraper trop largement** : `catch (Exception e)` masque les erreurs specifiques. Attrapez le type d'exception le plus precis.
+2. **Avaler silencieusement les exceptions** : un bloc `catch` vide cache les defaillances. Au minimum, tracez l'erreur dans les logs.
+3. **Erreur de un (off-by-one) dans les boucles** : `i <= size` au lieu de `i < size` provoque un `IndexOutOfBoundsException` (comme dans l'Exo9).
+4. **Ne pas tester les chemins d'exception** : atteindre 100% de couverture necessite de tester les chemins normaux et les chemins d'exception.
+5. **Utiliser `fail()` au lieu de `assertThrows()`** : la maniere moderne avec JUnit 5 est `assertThrows()`, plus propre et moins sujette aux erreurs.
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-EXCEPTION HIERARCHY
-  Throwable > Exception > RuntimeException (unchecked)
-  Throwable > Exception > [custom] (checked if extends Exception directly)
-  Throwable > Error (do not catch: OutOfMemoryError, StackOverflowError)
+HIERARCHIE DES EXCEPTIONS
+  Throwable > Exception > RuntimeException (non verifiee)
+  Throwable > Exception > [personnalisee] (verifiee si etend directement Exception)
+  Throwable > Error (ne pas attraper : OutOfMemoryError, StackOverflowError)
 
-CHECKED EXCEPTIONS
-  Must declare: throws ExType in method signature
-  Must handle: try/catch or propagate with throws
-  Examples: IOException, custom exceptions extending Exception
+EXCEPTIONS VERIFIEES
+  Doit declarer : throws ExType dans la signature de la methode
+  Doit gerer : try/catch ou propager avec throws
+  Exemples : IOException, exceptions personnalisees etendant Exception
 
-UNCHECKED EXCEPTIONS (RuntimeException)
-  No declaration required
-  Examples: NullPointerException, IllegalArgumentException,
+EXCEPTIONS NON VERIFIEES (RuntimeException)
+  Aucune declaration requise
+  Exemples : NullPointerException, IllegalArgumentException,
             IndexOutOfBoundsException, ClassCastException
 
-SYNTAX
-  throw new ExceptionType("message");     // throw an exception
-  throws ExType1, ExType2                 // declare in signature
+SYNTAXE
+  throw new ExceptionType("message");     // lancer une exception
+  throws ExType1, ExType2                 // declarer dans la signature
 
   try {
       riskyCode();
   } catch (SpecificException e) {
       handleIt();
   } finally {
-      alwaysRuns();                        // cleanup code
+      alwaysRuns();                        // code de nettoyage
   }
 
-TESTING EXCEPTIONS (JUnit 5)
+TESTER LES EXCEPTIONS (JUnit 5)
   assertThrows(ExType.class, () -> code());
   assertDoesNotThrow(() -> code());
 
-CUSTOM EXCEPTION
-  public class MyException extends Exception {      // checked
+EXCEPTION PERSONNALISEE
+  public class MyException extends Exception {      // verifiee
       public MyException(String msg) { super(msg); }
   }
-  public class MyRTException extends RuntimeException { // unchecked
+  public class MyRTException extends RuntimeException { // non verifiee
       ...
   }
 ```

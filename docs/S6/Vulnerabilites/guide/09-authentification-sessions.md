@@ -30,7 +30,7 @@ Weak aliveness (la plus faible)
 
 > "Mon interlocuteur B est bien vivant et a participe au protocole."
 
-### Attaque par miroir (mirror attack)
+### Attaque par miroir
 
 ```
 Bob                    Eve (se fait passer pour Alice)
@@ -85,7 +85,7 @@ En plus de l'accord, l'ordre du protocole est respecte. C'est la propriete la pl
 | **Miroir** | Renvoyer un message a son emetteur | Signatures |
 | **Rejeu** | Rejouer un ancien message | Nonces frais |
 | **MitM** | Relayer entre deux sessions | Identite dans les messages |
-| **Brute force** | Essayer toutes les combinaisons | Rate limiting, lock-out |
+| **Brute force** | Essayer toutes les combinaisons | Limitation de debit, verrouillage |
 | **Dictionnaire** | Essayer des mots connus | Mots de passe forts, MFA |
 
 ---
@@ -129,7 +129,7 @@ Verification :
 
 ---
 
-## 9.8 Password cracking
+## 9.8 Cassage de mots de passe
 
 ### Types d'attaques
 
@@ -140,7 +140,7 @@ Verification :
 | **Dictionnaire** | Liste de mots connus | Rapide sur mdp faibles |
 | **Dictionnaire + regles** | Transformations sur le dictionnaire | Tres efficace |
 
-### Regles de mangling (hashcat, John the Ripper)
+### Regles de transformation (hashcat, John the Ripper)
 
 - Premiere lettre en majuscule
 - Ajouter des chiffres a la fin
@@ -169,13 +169,13 @@ Avec un entrainement adequat :
 
 ---
 
-## 9.9 Session hijacking
+## 9.9 Detournement de session
 
 ### Mecanismes
 
 1. **Vol de cookie de session** (via XSS) : `document.cookie`
-2. **Fixation de session** : l'attaquant impose un ID de session connu
-3. **Prediction de session** : IDs de session previsibles (sequentiels)
+2. **Fixation de session** : l'attaquant impose un identifiant de session connu
+3. **Prediction de session** : identifiants de session previsibles (sequentiels)
 
 ### Protection
 

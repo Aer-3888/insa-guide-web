@@ -174,7 +174,7 @@ let _ = appliquepaire (fun x -> not x) (false, true)
 (* = (true, false) *)
 ```
 
-### Annee bissextile -- Exemple complet
+### Annee bissextile -- exemple complet
 
 ```ocaml
 let bissext y =
@@ -199,7 +199,7 @@ let bissext y =
 (* = false                                     *)
 ```
 
-## Regles d'inference de types -- Methode
+## Regles d'inference de types -- methode
 
 Pour inferer le type d'une expression :
 
@@ -234,13 +234,13 @@ TYPES PRIMITIFS
   unit    : ()
 
 LET BINDINGS
-  let x = expr               Global binding
-  let x = expr in body       Local binding
-  let f x y = expr           Function definition
+  let x = expr               Liaison globale
+  let x = expr in body       Liaison locale
+  let f x y = expr           Definition de fonction
   let f = fun x -> expr      Lambda (equivalent)
 
 TUPLES
-  (1, "a", true)              Type: int * string * bool
+  (1, "a", true)              Type : int * string * bool
   fst (a, b) = a              Seulement pour paires
   snd (a, b) = b              Seulement pour paires
   let (a, b, c) = triplet     Destructuration
@@ -251,7 +251,7 @@ RECORDS
   p.x                         Acces au champ
 
 CONDITIONNELS
-  if cond then e1 else e2     Expression (pas statement!)
+  if cond then e1 else e2     Expression (pas instruction !)
   e1 et e2 doivent avoir le meme type
 
 INFERENCE DE TYPES

@@ -23,7 +23,7 @@ Cet exercice introduit les calculs stencil 2D, un pattern fondamental en HPC uti
 - Traitement d'images (convolutions, filtres)
 - Résolution d'équations aux dérivées partielles
 
-**Code source**: `../tp2/src/exo1.c`
+**Code source** : `../tp2/src/exo1.c`
 
 ---
 
@@ -37,7 +37,7 @@ Algorithme classique de théorie des nombres avec des défis de parallélisation
 - False sharing intense
 - Déséquilibre de charge
 
-**Code source**: `../tp2/src/exo2.c`
+**Code source** : `../tp2/src/exo2.c`
 
 ---
 
@@ -101,7 +101,7 @@ for (int i = 0; i < N; i++) {
     }
     A[i][i] = sum + 10;  // Diagonale dominante
     b[i] = rand() % 100;
-    x_old[i] = 0;  // Guess initial
+    x_old[i] = 0;  // Estimation initiale
 }
 
 // Itérations de Jacobi
@@ -381,7 +381,7 @@ Pour algorithmes non-réguliers (arbres, graphes) :
 
 ---
 
-## Debugging et profilage OpenMP
+## Debogage et profilage OpenMP
 
 ### 1. Variables d'environnement utiles
 
@@ -436,7 +436,7 @@ Note: Les exercices 1 et 2 partagent le code avec TP2. L'exercice 3 (Jacobi) n'a
 1. **Jacobi = pattern double buffering** : Comme la propagation de chaleur
 2. **Algorithmes itératifs** : Bien adaptés à la parallélisation
 3. **Convergence** : Peut varier selon les méthodes (Jacobi vs Gauss-Seidel)
-4. **Méthodes directes vs itératives** : Trade-off précision vs temps de calcul
+4. **Methodes directes vs iteratives** : Compromis precision vs temps de calcul
 5. **Optimisation matricielle** : Stockage, localité, vectorisation
 6. **Scheduling** : Adapter à la régularité du problème
 
@@ -444,7 +444,7 @@ Note: Les exercices 1 et 2 partagent le code avec TP2. L'exercice 3 (Jacobi) n'a
 
 ## Ressources
 
-- OpenMP 4.5 specification: https://www.openmp.org/specifications/
-- LLNL HPC tutorials: https://hpc-tutorials.llnl.gov/openmp/
-- Méthodes numériques : "Numerical Recipes" (Press et al.)
-- Calcul scientifique parallèle : "Parallel Programming" (Pacheco)
+- Specification OpenMP 4.5 : https://www.openmp.org/specifications/
+- Tutoriels HPC du LLNL : https://hpc-tutorials.llnl.gov/openmp/
+- Methodes numeriques : "Numerical Recipes" (Press et al.)
+- Calcul scientifique parallele : "Parallel Programming" (Pacheco)

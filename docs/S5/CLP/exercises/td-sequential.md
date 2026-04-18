@@ -1,123 +1,123 @@
 ---
-title: "TD Solutions -- Sequential Logic: Complete Walkthroughs"
+title: "Corrections de TD -- Logique sequentielle : solutions detaillees"
 sidebar_position: 4
 ---
 
-# TD Solutions -- Sequential Logic: Complete Walkthroughs
+# Corrections de TD -- Logique sequentielle : solutions detaillees
 
-## TD 3 -- Flip-Flops, State Machines (Moore/Mealy)
+## TD 3 -- Bascules, machines a etats (Moore/Mealy)
 
-### Exercise 1: Flip-Flop Conversions
+### Exercice 1 : Conversions de bascules
 
-The fundamental flip-flop types have these characteristic equations:
+Les types fondamentaux de bascules ont les equations caracteristiques suivantes :
 
-| Type | Equation | Behavior |
-|------|----------|----------|
-| D | Q(t+1) = D | Output follows input |
-| T | Q(t+1) = T XOR Q | Toggle when T=1, hold when T=0 |
-| JK | Q(t+1) = J./Q + /K.Q | Set when J=1, Reset when K=1, Toggle when J=K=1 |
-| RS | Q(t+1) = S + /R.Q | Set when S=1, Reset when R=1 (S=R=1 forbidden) |
+| Type | Equation | Comportement |
+|------|----------|--------------|
+| D | Q(t+1) = D | La sortie suit l'entree |
+| T | Q(t+1) = T XOR Q | Bascule quand T=1, maintien quand T=0 |
+| JK | Q(t+1) = J./Q + /K.Q | Mise a 1 quand J=1, remise a 0 quand K=1, basculement quand J=K=1 |
+| RS | Q(t+1) = S + /R.Q | Mise a 1 quand S=1, remise a 0 quand R=1 (S=R=1 interdit) |
 
-**1a) Build RS from D flip-flop**
+**1a) Construire RS a partir d'une bascule D**
 
-We need D such that the D flip-flop behaves like RS.
+On cherche D tel que la bascule D se comporte comme RS.
 
-RS behavior:
+Comportement RS :
 | S | R | Q(t+1) |
 |---|---|--------|
-| 0 | 0 | Q (hold) |
-| 0 | 1 | 0 (reset) |
-| 1 | 0 | 1 (set) |
-| 1 | 1 | undefined |
+| 0 | 0 | Q (maintien) |
+| 0 | 1 | 0 (remise a zero) |
+| 1 | 0 | 1 (mise a un) |
+| 1 | 1 | indefini |
 
 ```
 D = S + /R . Q
 ```
 
-**Verification**:
-- S=0, R=0: D = 0 + 1.Q = Q (hold)
-- S=0, R=1: D = 0 + 0.Q = 0 (reset)
-- S=1, R=0: D = 1 + 1.Q = 1 (set)
+**Verification** :
+- S=0, R=0 : D = 0 + 1.Q = Q (maintien)
+- S=0, R=1 : D = 0 + 0.Q = 0 (remise a zero)
+- S=1, R=0 : D = 1 + 1.Q = 1 (mise a un)
 
-**1a) Build JK from D flip-flop**
+**1a) Construire JK a partir d'une bascule D**
 
-JK characteristic: Q(t+1) = J./Q + /K.Q
+Equation caracteristique JK : Q(t+1) = J./Q + /K.Q
 
 ```
 D = J./Q + /K.Q
 ```
 
-**Circuit**: Two AND gates (J with /Q, /K with Q) feeding an OR gate into D.
+**Circuit** : Deux portes ET (J avec /Q, /K avec Q) alimentant une porte OU vers D.
 
-**1b) Build D from T flip-flop**
+**1b) Construire D a partir d'une bascule T**
 
-T toggles when T=1. We want Q(t+1) = D.
+T bascule quand T=1. On veut Q(t+1) = D.
 
-When D != Q, we need to toggle (T=1). When D == Q, hold (T=0).
+Quand D != Q, il faut basculer (T=1). Quand D == Q, maintenir (T=0).
 
 ```
 T = D XOR Q
 ```
 
-**Verification**:
-- D=0, Q=0: T = 0 XOR 0 = 0 (hold at 0)
-- D=0, Q=1: T = 0 XOR 1 = 1 (toggle from 1 to 0)
-- D=1, Q=0: T = 1 XOR 0 = 1 (toggle from 0 to 1)
-- D=1, Q=1: T = 1 XOR 1 = 0 (hold at 1)
+**Verification** :
+- D=0, Q=0 : T = 0 XOR 0 = 0 (maintien a 0)
+- D=0, Q=1 : T = 0 XOR 1 = 1 (bascule de 1 a 0)
+- D=1, Q=0 : T = 1 XOR 0 = 1 (bascule de 0 a 1)
+- D=1, Q=1 : T = 1 XOR 1 = 0 (maintien a 1)
 
-**1c) Build D from JK**
+**1c) Construire D a partir de JK**
 
-Set J and K so that Q follows D:
+Fixer J et K pour que Q suive D :
 ```
 J = D,  K = /D
 ```
 
 | D | J | K | Action | Q(t+1) |
 |---|---|---|--------|--------|
-| 0 | 0 | 1 | Reset | 0 = D |
-| 1 | 1 | 0 | Set | 1 = D |
+| 0 | 0 | 1 | Remise a zero | 0 = D |
+| 1 | 1 | 0 | Mise a un | 1 = D |
 
-**1c) Build T from JK**
+**1c) Construire T a partir de JK**
 
-Toggle when T=1, hold when T=0:
+Basculer quand T=1, maintenir quand T=0 :
 ```
 J = T,  K = T
 ```
 
 | T | J | K | Action |
 |---|---|---|--------|
-| 0 | 0 | 0 | Hold |
-| 1 | 1 | 1 | Toggle |
+| 0 | 0 | 0 | Maintien |
+| 1 | 1 | 1 | Basculement |
 
 ---
 
-### Exercise 2: Moore Machine Analysis
+### Exercice 2 : Analyse d'une machine de Moore
 
-**Circuit description**: Two D flip-flops (outputs S1, S2). 
-- D1 = R . S2 (input of flip-flop 1)
-- D2 = R . S1 (input of flip-flop 2)
-- Outputs = (S2, S1) (state IS the output -- Moore machine)
+**Description du circuit** : Deux bascules D (sorties S1, S2).
+- D1 = R . S2 (entree de la bascule 1)
+- D2 = R . S1 (entree de la bascule 2)
+- Sorties = (S2, S1) (l'etat EST la sortie -- machine de Moore)
 
-**Derivation of state table**:
+**Etablissement de la table d'etats** :
 
-The next state depends on current state (S2, S1) and input R.
+L'etat suivant depend de l'etat courant (S2, S1) et de l'entree R.
 
-When R = 0:
+Quand R = 0 :
 ```
 D1 = 0 . S2 = 0  ->  S1(t+1) = 0
 D2 = 0 . S1 = 0  ->  S2(t+1) = 0
 ```
-For ANY current state, if R=0, next state = (0,0).
+Pour N'IMPORTE QUEL etat courant, si R=0, l'etat suivant = (0,0).
 
-When R = 1:
+Quand R = 1 :
 ```
 D1 = 1 . S2 = S2  ->  S1(t+1) = S2 (current S2 becomes next S1)
 D2 = 1 . S1 = S1  ->  S2(t+1) = S1 (current S1 becomes next S2)
 ```
 
-**Complete state table**:
+**Table d'etats complete** :
 
-| R | (S2,S1) current | (S2,S1) next |
+| R | (S2,S1) courant | (S2,S1) suivant |
 |---|------------------|--------------|
 | 0 | 00 | 00 |
 | 0 | 01 | 00 |
@@ -128,7 +128,7 @@ D2 = 1 . S1 = S1  ->  S2(t+1) = S1 (current S1 becomes next S2)
 | 1 | 10 | 01 |
 | 1 | 11 | 11 |
 
-Wait -- let me re-derive. S1 corresponds to flip-flop 1 output, S2 to flip-flop 2 output.
+Attendons -- re-derivons. S1 correspond a la sortie de la bascule 1, S2 a la sortie de la bascule 2.
 
 D1 = R AND S2 means: S1(t+1) = R . S2(t)
 D2 = R AND S1 means: S2(t+1) = R . S1(t)
@@ -144,7 +144,7 @@ D2 = R AND S1 means: S2(t+1) = R . S1(t)
 | 1 | 1 | 0 | 1 | 0 |
 | 1 | 1 | 1 | 1 | 1 |
 
-**State diagram**:
+**Diagramme d'etats** :
 ```
           R=0         R=0         R=0
 (00) <---------- (01) <---- (11) ---+
@@ -153,7 +153,7 @@ D2 = R AND S1 means: S2(t+1) = R . S1(t)
  +------> (00)   (01)-->(10)  (11)--+
 ```
 
-More precisely:
+Plus precisement :
 ```
 (00) --R=0--> (00)
 (00) --R=1--> (00)
@@ -165,9 +165,9 @@ More precisely:
 (11) --R=1--> (11)
 ```
 
-**Timing diagram** for input sequence R = 0, 1, 1, 0, 1 (starting from S1=S2=0):
+**Chronogramme** pour la sequence d'entree R = 0, 1, 1, 0, 1 (en partant de S1=S2=0) :
 
-| Clock | R | S1(t) | S2(t) | S1(t+1) | S2(t+1) |
+| Horloge | R | S1(t) | S2(t) | S1(t+1) | S2(t+1) |
 |-------|---|-------|-------|---------|---------|
 | 0 | - | 0 | 0 | - | - |
 | 1 | 0 | 0 | 0 | 0 | 0 |
@@ -176,41 +176,41 @@ More precisely:
 | 4 | 0 | 0 | 0 | 0 | 0 |
 | 5 | 1 | 0 | 0 | 0 | 0 |
 
-This particular sequence never leaves state (00) because R=1 from (00) goes to (00). To reach other states, you would need to somehow get to (01) or (10) first (e.g., by initializing the flip-flops).
+Cette sequence particuliere ne quitte jamais l'etat (00) car R=1 depuis (00) mene a (00). Pour atteindre d'autres etats, il faudrait d'abord etre en (01) ou (10) (par ex., en initialisant les bascules).
 
 ---
 
-### Exercise 3: Edge Detector (Mealy Machine)
+### Exercice 3 : Detecteur de front (machine de Mealy)
 
-**Problem**: Detect rising edges (0 to 1) and falling edges (1 to 0) on input e.
-- s1 = 1 for exactly one clock cycle after a rising edge
-- s2 = 1 for exactly one clock cycle after a falling edge
+**Probleme** : Detecter les fronts montants (0 vers 1) et descendants (1 vers 0) sur l'entree e.
+- s1 = 1 pendant exactement un cycle d'horloge apres un front montant
+- s2 = 1 pendant exactement un cycle d'horloge apres un front descendant
 
-**Design approach**: We need to remember the PREVIOUS value of e to detect transitions. One state variable (1 flip-flop) suffices.
+**Approche de conception** : Il faut memoriser la valeur PRECEDENTE de e pour detecter les transitions. Une variable d'etat (1 bascule) suffit.
 
-**State encoding**: Q = previous value of e.
-- State 0 (Q=0): previous input was 0
-- State 1 (Q=1): previous input was 1
+**Encodage des etats** : Q = valeur precedente de e.
+- Etat 0 (Q=0) : l'entree precedente etait 0
+- Etat 1 (Q=1) : l'entree precedente etait 1
 
-**This is a Mealy machine** because the outputs (s1, s2) depend on both the state (Q) AND the current input (e).
+**C'est une machine de Mealy** car les sorties (s1, s2) dependent a la fois de l'etat (Q) ET de l'entree courante (e).
 
-**State/output table**:
+**Table d'etats/sorties** :
 
-| Q (previous e) | e (current) | Q(t+1) | s1 (rising) | s2 (falling) |
-|----------------|-------------|---------|-------------|--------------|
+| Q (e precedent) | e (courant) | Q(t+1) | s1 (montant) | s2 (descendant) |
+|-----------------|-------------|---------|--------------|-----------------|
 | 0 | 0 | 0 | 0 | 0 |
 | 0 | 1 | 1 | **1** | 0 |
 | 1 | 0 | 0 | 0 | **1** |
 | 1 | 1 | 1 | 0 | 0 |
 
-**Implementation equations**:
+**Equations d'implementation** :
 ```
-Q(t+1) = e           (next state = current input, use a D flip-flop)
-s1 = e . /Q           (rising: input is 1, previous was 0)
-s2 = /e . Q           (falling: input is 0, previous was 1)
+Q(t+1) = e           (etat suivant = entree courante, utiliser une bascule D)
+s1 = e . /Q           (montant : entree a 1, precedent a 0)
+s2 = /e . Q           (descendant : entree a 0, precedent a 1)
 ```
 
-**Circuit**: 1 D flip-flop + 2 AND gates.
+**Circuit** : 1 bascule D + 2 portes ET.
 
 ```
 e ----+----+----> D flip-flop ----> Q
@@ -221,9 +221,9 @@ e ----+----+----> D flip-flop ----> Q
                (with NOT on e)
 ```
 
-**Timing diagram** for e = 0, 0, 1, 1, 0, 1, 0:
+**Chronogramme** pour e = 0, 0, 1, 1, 0, 1, 0 :
 
-| Clock | e | Q | s1 | s2 |
+| Horloge | e | Q | s1 | s2 |
 |-------|---|---|----|----|
 | 1 | 0 | 0 | 0 | 0 |
 | 2 | 0 | 0 | 0 | 0 |
@@ -235,29 +235,29 @@ e ----+----+----> D flip-flop ----> Q
 
 ---
 
-### Exercise 4: Divisibility-by-5 Detector
+### Exercice 4 : Detecteur de divisibilite par 5
 
-**Problem**: Binary digits arrive MSB first, one per clock cycle. After each bit, output whether the number received so far is divisible by 5.
+**Probleme** : Les chiffres binaires arrivent MSB en premier, un par cycle d'horloge. Apres chaque bit, indiquer si le nombre recu jusqu'ici est divisible par 5.
 
-**Key insight**: When we receive a new bit b, the new number is N_new = 2 * N_old + b. We only need to track the remainder mod 5 (not the entire number).
+**Idee cle** : Quand on recoit un nouveau bit b, le nouveau nombre est N_nouveau = 2 * N_ancien + b. Il suffit de suivre le reste modulo 5 (pas le nombre entier).
 
 ```
-R(N_new) = R(2 * N_old + b) = (2 * R(N_old) + b) mod 5
+R(N_nouveau) = R(2 * N_ancien + b) = (2 * R(N_ancien) + b) mod 5
 ```
 
-**5 states** (remainders 0, 1, 2, 3, 4):
+**5 etats** (restes 0, 1, 2, 3, 4) :
 
-**Transition table**:
+**Table de transitions** :
 
-| Current remainder | Input bit = 0 | Input bit = 1 |
-|-------------------|----------------|----------------|
+| Reste courant | Bit d'entree = 0 | Bit d'entree = 1 |
+|---------------|-------------------|-------------------|
 | 0 | (2*0+0) mod 5 = 0 | (2*0+1) mod 5 = 1 |
 | 1 | (2*1+0) mod 5 = 2 | (2*1+1) mod 5 = 3 |
 | 2 | (2*2+0) mod 5 = 4 | (2*2+1) mod 5 = 0 |
 | 3 | (2*3+0) mod 5 = 1 | (2*3+1) mod 5 = 2 |
 | 4 | (2*4+0) mod 5 = 3 | (2*4+1) mod 5 = 4 |
 
-**State diagram**:
+**Diagramme d'etats** :
 ```
          0            1
   +--->(0)------->(1)
@@ -272,9 +272,9 @@ R(N_new) = R(2 * N_old + b) = (2 * R(N_old) + b) mod 5
         0           1
 ```
 
-**Output**: Est_div = 1 when state = 0.
+**Sortie** : Est_div = 1 quand l'etat = 0.
 
-**State encoding** (3 bits: s3, s2, s1):
+**Encodage des etats** (3 bits : s3, s2, s1) :
 ```
 State 0 = 000
 State 1 = 001
@@ -283,21 +283,21 @@ State 3 = 011
 State 4 = 100
 ```
 
-**Example trace**: Receiving binary 1010 (decimal 10):
+**Trace d'exemple** : Reception du binaire 1010 (decimal 10) :
 
-| Clock | Bit received | Number so far | Remainder | Divisible? |
-|-------|-------------|---------------|-----------|------------|
-| init | - | 0 | 0 | Yes |
-| 1 | 1 | 1 | 1 | No |
-| 2 | 0 | 10 | 2 | No |
-| 3 | 1 | 101 = 5 | 0 | **Yes** |
-| 4 | 0 | 1010 = 10 | 0 | **Yes** |
+| Horloge | Bit recu | Nombre forme | Reste | Divisible ? |
+|---------|----------|--------------|-------|-------------|
+| init | - | 0 | 0 | Oui |
+| 1 | 1 | 1 | 1 | Non |
+| 2 | 0 | 10 | 2 | Non |
+| 3 | 1 | 101 = 5 | 0 | **Oui** |
+| 4 | 0 | 1010 = 10 | 0 | **Oui** |
 
-**Implementation**: 3 D flip-flops for state + combinational logic derived from Karnaugh maps on 4 variables (s3, s2, s1, nbre).
+**Implementation** : 3 bascules D pour l'etat + logique combinatoire derivee des tableaux de Karnaugh a 4 variables (s3, s2, s1, nbre).
 
-**Karnaugh maps for next-state bits** (4 inputs: s3, s2, s1, b):
+**Tableaux de Karnaugh pour les bits d'etat suivant** (4 entrees : s3, s2, s1, b) :
 
-For s1(t+1):
+Pour s1(t+1) :
 ```
            s1.b
         00    01    11    10
@@ -308,38 +308,38 @@ s3.s2
   11 |  -  |  -  |  -  |  -  |
 ```
 
-(Dashes are don't-cares for states 5-7 which never occur.)
+(Les tirets sont des conditions indifferentes pour les etats 5-7 qui ne se produisent jamais.)
 
 ---
 
-## TD 4 -- Complex State Machines, Control Units
+## TD 4 -- Machines a etats complexes, unites de commande
 
-### Exercise 1: LED Toggle with Button
+### Exercice 1 : Basculement de LED par bouton
 
-**Problem**: Pressing a button toggles an LED. LED holds its state when button is released. Must handle button bounce (held down for multiple cycles).
+**Probleme** : L'appui sur un bouton bascule la LED. La LED garde son etat quand le bouton est relache. Il faut gerer le rebond du bouton (maintenu enfonce pendant plusieurs cycles).
 
-**4 states** encoded as (m1, m2) where m1 = LED state, m2 = button was pressed in previous state:
+**4 etats** encodes comme (m1, m2) ou m1 = etat de la LED, m2 = bouton appuye dans l'etat precedent :
 
-| State (m1,m2) | Meaning |
-|----------------|---------|
-| (0,0) | LED off, button was not pressed |
-| (0,1) | LED off, button was pressed (debounce) |
-| (1,0) | LED on, button was not pressed |
-| (1,1) | LED on, button was pressed (debounce) |
+| Etat (m1,m2) | Signification |
+|--------------|---------------|
+| (0,0) | LED eteinte, bouton non appuye |
+| (0,1) | LED eteinte, bouton appuye (anti-rebond) |
+| (1,0) | LED allumee, bouton non appuye |
+| (1,1) | LED allumee, bouton appuye (anti-rebond) |
 
-**State transitions** (BP = button pressed):
+**Transitions d'etats** (BP = bouton presse) :
 ```
-(0,0) + BP=0 -> (0,0)   LED stays off
-(0,0) + BP=1 -> (1,1)   Button pressed: toggle LED ON, enter "pressed" state
-(0,1) + BP=0 -> (0,0)   Button released: stay off
-(0,1) + BP=1 -> (0,1)   Button still held: DON'T toggle again
-(1,0) + BP=0 -> (1,0)   LED stays on
-(1,0) + BP=1 -> (0,1)   Button pressed: toggle LED OFF, enter "pressed" state
-(1,1) + BP=0 -> (1,0)   Button released: stay on
-(1,1) + BP=1 -> (1,1)   Button still held: DON'T toggle again
+(0,0) + BP=0 -> (0,0)   LED reste eteinte
+(0,0) + BP=1 -> (1,1)   Bouton appuye : basculer LED ON, entrer en etat "appuye"
+(0,1) + BP=0 -> (0,0)   Bouton relache : rester eteinte
+(0,1) + BP=1 -> (0,1)   Bouton encore maintenu : NE PAS re-basculer
+(1,0) + BP=0 -> (1,0)   LED reste allumee
+(1,0) + BP=1 -> (0,1)   Bouton appuye : basculer LED OFF, entrer en etat "appuye"
+(1,1) + BP=0 -> (1,0)   Bouton relache : rester allumee
+(1,1) + BP=1 -> (1,1)   Bouton encore maintenu : NE PAS re-basculer
 ```
 
-**Transition table**:
+**Table de transitions** :
 
 | BP | m1 | m2 | m1(t+1) | m2(t+1) |
 |----|----|----|---------|---------|
@@ -352,7 +352,7 @@ s3.s2
 | 1 | 1 | 0 | 0 | 1 |
 | 1 | 1 | 1 | 1 | 1 |
 
-**Karnaugh map for m1(t+1)** (inputs: BP, m1, m2):
+**Tableau de Karnaugh pour m1(t+1)** (entrees : BP, m1, m2) :
 ```
          m1.m2
        00    01    11    10
@@ -361,17 +361,17 @@ s3.s2
    1 |  1  |  0  |  1  |  0  |
 ```
 
-Groups:
-- /BP.m1 (right side, BP=0): 2 cells
-- BP./m1./m2 (top-left, BP=1): 1 cell
-- BP.m1.m2 (bottom-right, BP=1): 1 cell
+Groupes :
+- /BP.m1 (cote droit, BP=0) : 2 cellules
+- BP./m1./m2 (haut-gauche, BP=1) : 1 cellule
+- BP.m1.m2 (bas-droite, BP=1) : 1 cellule
 
 ```
 m1(t+1) = /BP.m1 + BP.(m1.m2 + /m1./m2)
          = /BP.m1 + BP.XNOR(m1, m2)
 ```
 
-**Karnaugh map for m2(t+1)**:
+**Tableau de Karnaugh pour m2(t+1)** :
 ```
          m1.m2
        00    01    11    10
@@ -384,99 +384,99 @@ m1(t+1) = /BP.m1 + BP.(m1.m2 + /m1./m2)
 m2(t+1) = BP
 ```
 
-Simple: m2 just tracks whether the button is currently pressed.
+Simple : m2 memorise simplement si le bouton est actuellement presse.
 
-**Output**: LED = m1.
+**Sortie** : LED = m1.
 
 ---
 
-### Exercise 2: Sequence Detector (00, 01, 00, 10)
+### Exercice 2 : Detecteur de sequence (00, 01, 00, 10)
 
-**Problem**: Detect the specific sequence (00), (01), (00), (10) on two input lines (e1, e2). Output S=1 for one cycle when complete sequence detected.
+**Probleme** : Detecter la sequence specifique (00), (01), (00), (10) sur deux lignes d'entree (e1, e2). La sortie S=1 pendant un cycle quand la sequence complete est detectee.
 
-**4 states** tracking progress through the expected sequence:
+**4 etats** suivant la progression dans la sequence attendue :
 
-| State (d2,d1) | Meaning |
-|----------------|---------|
-| (0,0) | Initial: waiting for first 00 |
-| (0,1) | Seen 00, waiting for 01 |
-| (1,0) | Seen 00+01, waiting for 00 |
-| (1,1) | Seen 00+01+00, waiting for 10 |
+| Etat (d2,d1) | Signification |
+|--------------|---------------|
+| (0,0) | Initial : attente du premier 00 |
+| (0,1) | Recu 00, attente du 01 |
+| (1,0) | Recu 00+01, attente du 00 |
+| (1,1) | Recu 00+01+00, attente du 10 |
 
-**Key transitions**:
+**Transitions cles** :
 
-From state (0,0) "waiting for 00":
-- Input 00: match, go to (0,1)
-- Other: stay in (0,0)
+Depuis l'etat (0,0) "attente de 00" :
+- Entree 00 : correspondance, aller a (0,1)
+- Autre : rester en (0,0)
 
-From state (0,1) "waiting for 01":
-- Input 01: match, go to (1,0)
-- Input 00: could be start of new sequence, stay in (0,1)
-- Other: reset to (0,0)
+Depuis l'etat (0,1) "attente de 01" :
+- Entree 01 : correspondance, aller a (1,0)
+- Entree 00 : possible debut de nouvelle sequence, rester en (0,1)
+- Autre : reinitialiser a (0,0)
 
-From state (1,0) "waiting for 00":
-- Input 00: match, go to (1,1)
-- Other: reset to (0,0)
+Depuis l'etat (1,0) "attente de 00" :
+- Entree 00 : correspondance, aller a (1,1)
+- Autre : reinitialiser a (0,0)
 
-From state (1,1) "waiting for 10":
-- Input 10: MATCH! Output S=1, reset to (0,0)
-- Input 00: could be start of new sequence, go to (0,1)
-- Input 01: matches step 2, go to (1,0)
-- Other: reset to (0,0)
+Depuis l'etat (1,1) "attente de 10" :
+- Entree 10 : CORRESPONDANCE ! Sortie S=1, reinitialiser a (0,0)
+- Entree 00 : possible debut de nouvelle sequence, aller a (0,1)
+- Entree 01 : correspond a l'etape 2, aller a (1,0)
+- Autre : reinitialiser a (0,0)
 
-**Equations** (derived from Karnaugh maps on inputs d2, d1, e1, e2):
+**Equations** (derivees des tableaux de Karnaugh sur les entrees d2, d1, e1, e2) :
 ```
 d1(t+1) = /e1 . /e2
 d2(t+1) = /e1 . (/e2.d2./d1 + d1.e2)
 S = d2 . d1 . e1 . /e2
 ```
 
-**Verification** with sequence (00), (01), (00), (10):
+**Verification** avec la sequence (00), (01), (00), (10) :
 
-| Clock | e1,e2 | d2,d1 | S | Meaning |
-|-------|-------|-------|---|---------|
-| 1 | 0,0 | 0,0 | 0 | Got 00, advance |
-| 2 | 0,1 | 0,1 | 0 | Got 01, advance |
-| 3 | 0,0 | 1,0 | 0 | Got 00, advance |
-| 4 | 1,0 | 1,1 | **1** | Got 10, DETECTED |
-| 5 | ... | 0,0 | 0 | Reset |
+| Horloge | e1,e2 | d2,d1 | S | Signification |
+|---------|-------|-------|---|---------------|
+| 1 | 0,0 | 0,0 | 0 | Recu 00, avancer |
+| 2 | 0,1 | 0,1 | 0 | Recu 01, avancer |
+| 3 | 0,0 | 1,0 | 0 | Recu 00, avancer |
+| 4 | 1,0 | 1,1 | **1** | Recu 10, DETECTE |
+| 5 | ... | 0,0 | 0 | Reinitialisation |
 
 ---
 
-### Exercise 4: Loadable Counter Control Unit
+### Exercice 4 : Unite de commande avec compteur chargeable
 
-**Problem**: Implement a state machine with 4 states using a loadable counter.
+**Probleme** : Implementer une machine a etats a 4 etats en utilisant un compteur chargeable.
 
-States: A=0, B=1, C=2, D=3
+Etats : A=0, B=1, C=2, D=3
 
-Transitions:
+Transitions :
 ```
 A --(/C0)--> B (increment)
-A --(C0)---> A (hold at 0, load 0)
-B --(/C1)--> D (load 3)
+A --(C0)---> A (maintien a 0, charger 0)
+B --(/C1)--> D (charger 3)
 B --(C1)---> C (increment)
-C ----------> D (always increment)
-D ----------> A (load 0)
+C ----------> D (toujours incrementer)
+D ----------> A (charger 0)
 ```
 
-**Loadable counter interface**:
-- INC: when 1, counter increments on clock edge
-- LOAD: when 1, counter loads value from data input
-- DATA: value to load when LOAD=1
-- Q: current counter value (state)
+**Interface du compteur chargeable** :
+- INC : quand 1, le compteur s'incremente au front d'horloge
+- LOAD : quand 1, le compteur charge la valeur depuis l'entree de donnees
+- DATA : valeur a charger quand LOAD=1
+- Q : valeur courante du compteur (etat)
 
-**Control logic**:
+**Logique de commande** :
 
-| State | Condition | INC | LOAD | DATA |
+| Etat | Condition | INC | LOAD | DATA |
 |-------|-----------|-----|------|------|
 | 0 (A) | /C0 | 1 | 0 | -- |
 | 0 (A) | C0 | 0 | 1 | 00 |
 | 1 (B) | C1 | 1 | 0 | -- |
 | 1 (B) | /C1 | 0 | 1 | 11 |
-| 2 (C) | always | 1 | 0 | -- |
-| 3 (D) | always | 0 | 1 | 00 |
+| 2 (C) | toujours | 1 | 0 | -- |
+| 3 (D) | toujours | 0 | 1 | 00 |
 
-**Equations** (using state bits Q1, Q0):
+**Equations** (utilisant les bits d'etat Q1, Q0) :
 ```
 INC  = /Q1./Q0./C0 + /Q1.Q0.C1 + Q1./Q0
 LOAD = /Q1./Q0.C0 + /Q1.Q0./C1 + Q1.Q0
@@ -486,20 +486,20 @@ DATA0 = /Q1.Q0./C1
 
 ---
 
-## TD 5 -- Fibonacci Machine (UC + UT Integration)
+## TD 5 -- Machine de Fibonacci (integration UC + UT)
 
-### Complete Microprogrammed Design
+### Conception microprogrammee complete
 
-See [td-processor.md](/S5/CLP/exercises/td-processor) for the full processor design walkthrough.
+Voir [td-processor.md](/S5/CLP/exercises/td-processor) pour la correction detaillee de la conception de processeur.
 
-**Summary**:
+**Resume** :
 
-The Fibonacci machine computes F(n) using:
-- UT: registers R_N0, R_N1, counter Q, comparator, adder
-- UC: 5-state microprogrammed controller with 13-bit microcode words
-- Interface: 7 command signals (UC->UT), 2 condition signals (UT->UC)
+La machine de Fibonacci calcule F(n) en utilisant :
+- UT : registres R_N0, R_N1, compteur Q, comparateur, additionneur
+- UC : controleur microprogramme a 5 etats avec des mots de microcode de 13 bits
+- Interface : 7 signaux de commande (UC->UT), 2 signaux de condition (UT->UC)
 
-**Microcode format** (13 bits per instruction):
+**Format du microcode** (13 bits par instruction) :
 
 ```
 [2:0]  Jump code (3 bits): selects condition to test
@@ -507,10 +507,10 @@ The Fibonacci machine computes F(n) using:
 [12:6] Commands (7 bits): which operations to activate
 ```
 
-| State | Binary word | Meaning |
-|-------|------------|---------|
-| A (000) | 001 000 0001001 | If init, stay; else go to B. Activate RESET, RES_0 |
-| B (001) | 010 011 0000000 | If /N_GT_Q, go to D; else go to C. No commands |
-| C (010) | 111 001 1110000 | Always go to B. Activate N1_2_N0, SUM_N1, INC_Q |
-| D (011) | 001 011 0000110 | If init, stay; else go to E. Activate RES_1, OUT_N0 |
-| E (100) | 111 000 0001000 | Always go to A. Activate RES_0 |
+| Etat | Mot binaire | Signification |
+|------|-------------|---------------|
+| A (000) | 001 000 0001001 | Si init, rester ; sinon aller a B. Activer RESET, RES_0 |
+| B (001) | 010 011 0000000 | Si /N_GT_Q, aller a D ; sinon aller a C. Pas de commande |
+| C (010) | 111 001 1110000 | Toujours aller a B. Activer N1_2_N0, SUM_N1, INC_Q |
+| D (011) | 001 011 0000110 | Si init, rester ; sinon aller a E. Activer RES_1, OUT_N0 |
+| E (100) | 111 000 0001000 | Toujours aller a A. Activer RES_0 |

@@ -39,7 +39,7 @@ Le cours couvre les vulnerabilites des systemes informatiques selon deux axes co
      |
 08. Vulnerabilites web avancees (SSRF, directory traversal, OWASP Top 10)
      |
-09. Authentification et sessions (password cracking, stockage, MFA)
+09. Authentification et sessions (cassage de mots de passe, stockage, MFA)
      |
 10. Cryptographie et protocoles (sym/asym, hachage, signatures, PKI)
      |
@@ -63,20 +63,20 @@ Cheat Sheet : revision finale avant DS
 | Fichier | Sujet | Points cles |
 |---------|-------|-------------|
 | [01_fondamentaux_securite.md](/S6/Vulnerabilites/guide/01-fondamentaux-securite) | CIA, CVE, CVSS, modeles d'attaquant | Triade CIA, Dolev-Yao, Kerckhoffs |
-| [02_vulnerabilites_memoire.md](/S6/Vulnerabilites/guide/02-vulnerabilites-memoire) | Buffer overflows, format strings, integer overflows | Stack/heap, exploitation, prevention |
-| [03_injection_sql.md](/S6/Vulnerabilites/guide/03-injection-sql) | SQL injection : mecanisme, variantes, protections | OR 1=1, UNION, requetes preparees |
+| [02_vulnerabilites_memoire.md](/S6/Vulnerabilites/guide/02-vulnerabilites-memoire) | Debordements de tampon, chaines de format, depassements d'entiers | Pile/tas, exploitation, prevention |
+| [03_injection_sql.md](/S6/Vulnerabilites/guide/03-injection-sql) | Injection SQL : mecanisme, variantes, protections | OR 1=1, UNION, requetes preparees |
 | [04_xss_csrf.md](/S6/Vulnerabilites/guide/04-xss-csrf) | XSS reflete/stocke/DOM, CSRF | CSP, HttpOnly, tokens anti-CSRF |
-| [05_injection_commandes.md](/S6/Vulnerabilites/guide/05-injection-commandes) | Injection OS, reverse shells, ShellShock | Separateurs, whitelist, regex |
-| [06_techniques_exploitation.md](/S6/Vulnerabilites/guide/06-techniques-exploitation) | Shellcode, return-to-libc, ROP, NOP sled | Contexte educatif defensif |
+| [05_injection_commandes.md](/S6/Vulnerabilites/guide/05-injection-commandes) | Injection OS, shells inverses, ShellShock | Separateurs, liste blanche, regex |
+| [06_techniques_exploitation.md](/S6/Vulnerabilites/guide/06-techniques-exploitation) | Shellcode, return-to-libc, ROP, toboggan de NOP | Contexte educatif defensif |
 | [07_mecanismes_defense.md](/S6/Vulnerabilites/guide/07-mecanismes-defense) | ASLR, DEP/NX, canaries, RELRO, PIE, CFI | Defense en profondeur |
-| [08_vulnerabilites_web.md](/S6/Vulnerabilites/guide/08-vulnerabilites-web) | SSRF, path traversal, OWASP Top 10 | Classification, prevention |
-| [09_authentification_sessions.md](/S6/Vulnerabilites/guide/09-authentification-sessions) | Password cracking, stockage securise, MFA | hashcat, sel, hierarchie d'authentification |
+| [08_vulnerabilites_web.md](/S6/Vulnerabilites/guide/08-vulnerabilites-web) | SSRF, traversee de repertoires, OWASP Top 10 | Classification, prevention |
+| [09_authentification_sessions.md](/S6/Vulnerabilites/guide/09-authentification-sessions) | Cassage de mots de passe, stockage securise, MFA | hashcat, sel, hierarchie d'authentification |
 | [10_cryptographie_protocoles.md](/S6/Vulnerabilites/guide/10-cryptographie-protocoles) | Sym/asym, hachage, signatures, PKI | Notations, inference, hypothese crypto parfaite |
-| [11_securite_reseau.md](/S6/Vulnerabilites/guide/11-securite-reseau) | Sniffing, ARP spoofing, DNS poisoning, TLS | Protocoles, attaques, contre-mesures |
+| [11_securite_reseau.md](/S6/Vulnerabilites/guide/11-securite-reseau) | Ecoute, usurpation ARP, empoisonnement DNS, TLS | Protocoles, attaques, contre-mesures |
 | [12_man_in_the_middle.md](/S6/Vulnerabilites/guide/12-man-in-the-middle) | NSPK, attaque de Lowe, NSPKL | Sessions paralleles, verification Scyther |
-| [13_securite_systeme.md](/S6/Vulnerabilites/guide/13-securite-systeme) | Privileges, permissions, sandboxing | PwnKit, conteneurs, moindre privilege |
+| [13_securite_systeme.md](/S6/Vulnerabilites/guide/13-securite-systeme) | Privileges, permissions, bac a sable | PwnKit, conteneurs, moindre privilege |
 | [14_securite_cloud.md](/S6/Vulnerabilites/guide/14-securite-cloud) | IaaS/PaaS/SaaS, multitenancy, canaux auxiliaires | Deduplication, IAM, images |
-| [15_developpement_securise.md](/S6/Vulnerabilites/guide/15-developpement-securise) | Validation, encodage, OWASP, moindre privilege | Secure coding, revue de code |
+| [15_developpement_securise.md](/S6/Vulnerabilites/guide/15-developpement-securise) | Validation, encodage, OWASP, moindre privilege | Codage securise, revue de code |
 | [cheat_sheet.md](/S6/Vulnerabilites/guide/cheat-sheet) | Fiche de revision rapide pour le DS | Tout en une page |
 
 ---

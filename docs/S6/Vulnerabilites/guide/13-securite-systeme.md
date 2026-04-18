@@ -34,11 +34,11 @@ Correction : mise a jour de polkit
 | Vecteur | Description |
 |---------|------------|
 | **SUID/SGID binaries** | Programmes executables avec les droits du proprietaire |
-| **Kernel exploits** | Vulnerabilites dans le noyau |
+| **Exploits noyau** | Vulnerabilites dans le noyau |
 | **Mauvaise configuration sudo** | Regles sudo trop permissives |
-| **Fichiers world-writable** | Scripts executes par root mais modifiables par tous |
-| **Cron jobs** | Taches planifiees avec des chemins relatifs |
-| **Docker escape** | Sortir d'un conteneur |
+| **Fichiers accessibles en ecriture a tous** | Scripts executes par root mais modifiables par tous |
+| **Taches cron** | Taches planifiees avec des chemins relatifs |
+| **Evasion Docker** | Sortir d'un conteneur |
 
 ---
 
@@ -60,7 +60,7 @@ Correction : mise a jour de polkit
 |-----------|-------|
 | **SUID** (4xxx) | Le programme s'execute avec les droits du proprietaire du fichier |
 | **SGID** (2xxx) | Le programme s'execute avec les droits du groupe |
-| **Sticky bit** (1xxx) | Seul le proprietaire peut supprimer ses fichiers dans un repertoire partage |
+| **Bit collant** (1xxx) | Seul le proprietaire peut supprimer ses fichiers dans un repertoire partage |
 
 ### Recherche de fichiers SUID (audit de securite)
 
@@ -115,7 +115,7 @@ Isoler un processus pour limiter l'impact d'une compromission.
 | **chroot** | Change la racine du systeme de fichiers | Fichiers uniquement |
 | **seccomp** | Filtre les appels systeme autorises | Syscalls |
 | **AppArmor** | Profiles de securite par application | Fichiers, reseau, capabilities |
-| **SELinux** | Mandatory Access Control (MAC) | Tout |
+| **SELinux** | Controle d'acces obligatoire (MAC) | Tout |
 | **Namespaces** | Isolation PID, reseau, montages, etc. | Variable |
 
 ### Exemple : seccomp
@@ -142,7 +142,7 @@ Les conteneurs ne sont PAS des machines virtuelles. Ils partagent le noyau de l'
 | **Isolation** | Hyperviseur (forte) | Namespaces + cgroups (plus faible) |
 | **Noyau** | Noyau separe | Noyau partage |
 | **Surface d'attaque** | Hyperviseur | Noyau de l'hote |
-| **Escape** | Tres difficile | Possible (kernel exploits) |
+| **Evasion** | Tres difficile | Possible (exploits noyau) |
 
 ### Bonnes pratiques conteneurs
 
@@ -162,7 +162,7 @@ Les conteneurs ne sont PAS des machines virtuelles. Ils partagent le noyau de l'
 | SUID exploitation | Contexte de PwnKit (CVE-2021-4034) |
 | Permissions | Analyse de `/etc/shadow` en TP CMD injection |
 | Moindre privilege | Principe general de securite (Ch. 1) |
-| Shell commands | TP Shell for Security (analyse defensive) |
+| Commandes shell | TP Shell for Security (analyse defensive) |
 
 ---
 

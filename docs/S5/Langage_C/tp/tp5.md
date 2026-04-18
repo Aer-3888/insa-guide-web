@@ -1,18 +1,18 @@
 ---
-title: "TP5 - Allocation Dynamique et Listes Chaînées"
+title: "TP5 - Allocation Dynamique et Listes Chainees"
 sidebar_position: 5
 ---
 
-# TP5 - Allocation Dynamique et Listes Chaînées
+# TP5 - Allocation Dynamique et Listes Chainees
 
 ## Objectifs
 - Comprendre l'allocation dynamique (`malloc()`, `calloc()`, `free()`)
-- Implémenter une liste chaînée
+- Implementer une liste chainee
 - Manipuler des pointeurs de fonctions
-- Trier des données avec des critères personnalisés
-- Gérer la mémoire dynamique correctement
+- Trier des donnees avec des criteres personnalises
+- Gerer la memoire dynamique correctement
 
-## Concepts Clés
+## Concepts Cles
 
 ### Allocation Dynamique
 ```c noexec
@@ -22,27 +22,27 @@ int *ptr = (int*)malloc(10 * sizeof(int));
 /* Allocation et initialisation avec calloc() */
 Element *elem = (Element*)calloc(1, sizeof(Element));
 
-/* Libération de la mémoire */
+/* Liberation de la memoire */
 free(ptr);
 ```
 
-### Liste Chaînée
-Une liste chaînée est une structure de données où chaque élément pointe vers le suivant:
+### Liste Chainee
+Une liste chainee est une structure de donnees ou chaque element pointe vers le suivant :
 
 ```
-[Tache1|•]-->[Tache2|•]-->[Tache3|NULL]
+[Tache1|*]-->[Tache2|*]-->[Tache3|NULL]
 ```
 
-**Avantages:**
-- Taille dynamique (croît/décroît selon les besoins)
-- Insertion/suppression efficace en début de liste (O(1))
+**Avantages :**
+- Taille dynamique (croit/decroit selon les besoins)
+- Insertion/suppression efficace en debut de liste (O(1))
 
-**Inconvénients:**
-- Accès séquentiel uniquement (pas d'accès direct par indice)
-- Surcoût mémoire (pointeur pour chaque élément)
+**Inconvenients :**
+- Acces sequentiel uniquement (pas d'acces direct par indice)
+- Surcout memoire (pointeur pour chaque element)
 
 ### Pointeurs de Fonctions
-Permettent de passer des fonctions en paramètre:
+Permettent de passer des fonctions en parametre :
 
 ```c noexec
 int (*comparateur)(Tache, Tache);
@@ -50,37 +50,37 @@ comparateur = &compareID;  /* ou simplement compareID */
 int resultat = comparateur(t1, t2);
 ```
 
-## Structure de Données
+## Structure de Donnees
 
 ```c noexec
 typedef struct struct_element {
-    Tache t;                        /* La tâche stockée */
-    struct struct_element *suivant; /* Pointeur vers l'élément suivant */
+    Tache t;                        /* La tache stockee */
+    struct struct_element *suivant; /* Pointeur vers l'element suivant */
 } Element;
 
-typedef Element* Liste;  /* Une liste est un pointeur vers le premier élément */
+typedef Element* Liste;  /* Une liste est un pointeur vers le premier element */
 ```
 
-## Fonctions Implémentées
+## Fonctions Implementees
 
 ### Manipulation de Base
-- `ajoutdeb()` - Ajoute un élément en début de liste
-- `nbelement()` - Compte le nombre d'éléments
-- `afficheListe()` - Affiche tous les éléments
+- `ajoutdeb()` - Ajoute un element en debut de liste
+- `nbelement()` - Compte le nombre d'elements
+- `afficheListe()` - Affiche tous les elements
 
-### Insertion Triée
-- `ajouttrie()` - Insère un élément en maintenant l'ordre (générique)
-- `ajouttrield()` - Insère trié par ID (version spécialisée)
+### Insertion Triee
+- `ajouttrie()` - Insere un element en maintenant l'ordre (generique)
+- `ajouttrield()` - Insere trie par ID (version specialisee)
 
 ### Fonctions de Comparaison
-- `compareID()` - Compare par numéro de tâche
-- `compareDuree()` - Compare par durée
+- `compareID()` - Compare par numero de tache
+- `compareDuree()` - Compare par duree
 - `compareNom()` - Compare par titre (ordre lexicographique)
 
 ### Allocation Dynamique pour Fichiers
-- `lireTachesFichierDyn()` - Lit un nombre variable de tâches avec allocation dynamique
+- `lireTachesFichierDyn()` - Lit un nombre variable de taches avec allocation dynamique
 
-## Compilation et Exécution
+## Compilation et Execution
 
 ```bash
 cd tp5/src
@@ -93,7 +93,7 @@ make
 ```c noexec
 Liste l = NULL;  /* Liste vide */
 
-/* Ajout de tâches triées par ID */
+/* Ajout de taches triees par ID */
 for (int i = 0; i < nb; i++) {
     ajouttrie(&l, taches[i], compareID);
 }
@@ -101,7 +101,7 @@ for (int i = 0; i < nb; i++) {
 /* Affichage de la liste */
 afficheListe(l);
 
-/* Libération de la mémoire (à implémenter) */
+/* Liberation de la memoire (a implementer) */
 /* libererListe(&l); */
 ```
 
@@ -113,7 +113,7 @@ afficheListe(l);
 2 8 1 1  Conception architecture
 ...
 ```
-La première ligne indique le nombre de tâches.
+La premiere ligne indique le nombre de taches.
 
 ## Points Importants
 
@@ -122,27 +122,27 @@ La première ligne indique le nombre de tâches.
 /* malloc() - alloue sans initialiser */
 int *tab = (int*)malloc(n * sizeof(int));
 
-/* calloc() - alloue et initialise à zéro */
+/* calloc() - alloue et initialise a zero */
 int *tab = (int*)calloc(n, sizeof(int));
 
-/* Toujours vérifier le résultat */
+/* Toujours verifier le resultat */
 if (tab == NULL) {
     fprintf(stderr, "Erreur d'allocation\n");
     exit(1);
 }
 
-/* Libérer la mémoire après utilisation */
+/* Liberer la memoire apres utilisation */
 free(tab);
 tab = NULL;  /* Bonne pratique */
 ```
 
-### 2. Insertion en Début de Liste
+### 2. Insertion en Debut de Liste
 ```c noexec
 void ajoutdeb(Liste *l, Tache t) {
     Element *elem = (Element*)calloc(1, sizeof(Element));
     elem->t = t;
-    elem->suivant = *l;  /* Pointe vers l'ancienne tête */
-    *l = elem;           /* Le nouvel élément devient la tête */
+    elem->suivant = *l;  /* Pointe vers l'ancienne tete */
+    *l = elem;           /* Le nouvel element devient la tete */
 }
 ```
 
@@ -157,7 +157,7 @@ while (courant != NULL) {
 
 ### 4. Pointeurs de Fonctions
 ```c noexec
-/* Déclaration */
+/* Declaration */
 int (*comparateur)(Tache, Tache);
 
 /* Assignation */
@@ -165,7 +165,7 @@ comparateur = compareID;
 
 /* Appel */
 if (comparateur(t1, t2) > 0) {
-    /* t1 > t2 selon le critère */
+    /* t1 > t2 selon le critere */
 }
 ```
 
@@ -180,11 +180,11 @@ Liste ma_liste = NULL;
 modifier(&ma_liste);  /* Passe l'adresse du pointeur */
 ```
 
-## Fuites Mémoire
+## Fuites Memoire
 
-**ATTENTION:** Le code actuel ne libère pas la mémoire allouée!
+**ATTENTION :** Le code actuel ne libere pas la memoire allouee !
 
-À implémenter:
+A implementer :
 ```c noexec
 void libererListe(Liste *l) {
     while (*l != NULL) {
@@ -195,20 +195,20 @@ void libererListe(Liste *l) {
 }
 ```
 
-## Concepts C Abordés
+## Concepts C Abordes
 
 - Allocation dynamique (`malloc()`, `calloc()`, `free()`)
-- Listes chaînées
+- Listes chainees
 - Pointeurs de fonctions
-- Passage par référence de pointeurs (`Liste *l`)
-- Structures auto-référentes (`struct struct_element *suivant`)
-- Gestion de la mémoire heap
-- Algorithmes d'insertion triée
+- Passage par reference de pointeurs (`Liste *l`)
+- Structures auto-referentes (`struct struct_element *suivant`)
+- Gestion de la memoire heap
+- Algorithmes d'insertion triee
 
 ## Extensions Possibles
 
-- Implémentation de la suppression d'éléments
-- Liste doublement chaînée
+- Implementation de la suppression d'elements
+- Liste doublement chainee
 - Recherche dans la liste
-- Fusion de deux listes triées
-- Détection de cycles (si la liste est circulaire)
+- Fusion de deux listes triees
+- Detection de cycles (si la liste est circulaire)

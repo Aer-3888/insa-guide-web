@@ -1,26 +1,26 @@
 ---
-title: "LDS2 - Qt GUI Programming (PyQt)"
+title: "LDS2 - Programmation d'interface graphique Qt (PyQt)"
 sidebar_position: 9
 ---
 
-# LDS2 - Qt GUI Programming (PyQt)
+# LDS2 - Programmation d'interface graphique Qt (PyQt)
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-Introduction to GUI application development with Qt and Python:
+Introduction au developpement d'applications graphiques avec Qt et Python :
 
-- Understand event-driven programming
-- Create GUI applications with PyQt
-- Handle user interactions (signals and slots)
-- Work with images and graphics
-- Implement common UI patterns (MDI, dialogs, menus)
+- Comprendre la programmation evenementielle
+- Creer des applications graphiques avec PyQt
+- Gerer les interactions utilisateur (signaux et slots)
+- Travailler avec les images et les graphiques
+- Implementer les patrons d'interface courants (MDI, dialogues, menus)
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. PyQt Basics
+### 1. Bases de PyQt
 
-**Qt**: Cross-platform GUI framework (C++)
-**PyQt**: Python bindings for Qt
+**Qt** : framework d'interface graphique multiplateforme (C++)
+**PyQt** : bindings Python pour Qt
 
 ```python noexec
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
@@ -36,7 +36,7 @@ sys.exit(app.exec_())
 
 ### 2. Widgets
 
-Common Qt widgets:
+Widgets Qt courants :
 - `QWidget` - Base class for all UI elements
 - `QMainWindow` - Main application window
 - `QLabel` - Display text or images
@@ -67,15 +67,15 @@ hlayout.addWidget(widget4)
 container.setLayout(vlayout)
 ```
 
-Layout types:
+Types de layouts :
 - `QVBoxLayout` - Vertical stack
 - `QHBoxLayout` - Horizontal row
 - `QGridLayout` - Grid (rows × columns)
 - `QFormLayout` - Form with labels
 
-### 4. Signals and Slots
+### 4. Signaux et slots
 
-**Event-driven programming**: Respond to user actions
+**Programmation evenementielle** : repondre aux actions de l'utilisateur
 
 ```python noexec
 # Signal: Event that can be emitted
@@ -88,13 +88,13 @@ def on_button_clicked():
     print("Button was clicked!")
 ```
 
-Common signals:
+Signaux courants :
 - `clicked` - Button clicked
 - `textChanged` - Text edited
 - `valueChanged` - Value changed (spinbox, slider)
 - `currentIndexChanged` - Selection changed (combobox)
 
-### 5. Image Processing
+### 5. Traitement d'images
 
 ```python noexec
 from PyQt5.QtGui import QImage, QPixmap
@@ -117,7 +117,7 @@ new_rgb = (r << 16) | (g << 8) | b
 image.setPixel(x, y, new_rgb)
 ```
 
-### 6. MDI (Multiple Document Interface)
+### 6. MDI (Interface multi-documents)
 
 ```python noexec
 from PyQt5.QtWidgets import QMdiArea, QMdiSubWindow
@@ -129,64 +129,64 @@ mdi_area.addSubWindow(sub_window)
 sub_window.show()
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Simple Window
-Create basic window with widgets and layouts.
+### Exercice 1 : Fenetre simple
+Creer une fenetre de base avec des widgets et des layouts.
 
-**Concepts**:
+**Concepts** :
 - QMainWindow
 - QLabel, QPushButton
 - Layouts
 - Window properties (title, size)
 
-### Exercise 2: Image Viewer
-Build image viewer application.
+### Exercice 2 : Visionneuse d'images
+Construire une application de visionneuse d'images.
 
-**Features**:
+**Fonctionnalites** :
 - Load and display images
 - Zoom in/out
 - Navigate between images
 - Image transformations
 
-**Files**: `ex2/tp6-p2_e.py`
+**Fichiers** : `ex2/tp6-p2_e.py`
 
-### Exercise 3: Clock Widget
-Create analog or digital clock widget.
+### Exercice 3 : Widget horloge
+Creer un widget horloge analogique ou numerique.
 
-**Concepts**:
+**Concepts** :
 - QPainter for custom drawing
 - QTimer for periodic updates
 - Coordinate transformations
 
-**Files**: `ex3/Horloge_e.py`
+**Fichiers** : `ex3/Horloge_e.py`
 
-### Exercise 4: MDI Image Editor
-Multi-document interface for editing images.
+### Exercice 4 : Editeur d'images MDI
+Interface multi-documents pour l'edition d'images.
 
-**Features**:
+**Fonctionnalites** :
 - Multiple image windows
 - RGB color adjustment
 - True color vs indexed color
 - Window management
 
-**Files**: `ex4/fenetreMDI_e.py`, `principalMDI_e.py`
+**Fichiers** : `ex4/fenetreMDI_e.py`, `principalMDI_e.py`
 
 ## Solutions
 
-See `src/` and exercise directories (`ex2/`, `ex3/`, `ex4/`) for complete implementations.
+Voir les repertoires `src/` et exercices (`ex2/`, `ex3/`, `ex4/`) for les implementations completes.
 
-## Key Takeaways
+## Points cles a retenir
 
 1. **Event-driven ≠ procedural** - Code runs in response to events
-2. **Signals/slots are powerful** - Clean way to handle interactions
-3. **Layouts > absolute positioning** - More flexible, handles resize
-4. **Qt is comprehensive** - Has widgets for almost everything
-5. **Documentation is essential** - Qt docs are detailed and helpful
+2. **Les signaux/slots sont puissants** - Facon propre de gerer les interactions
+3. **Layouts > positionnement absolu** - Plus flexible, gere le redimensionnement
+4. **Qt est complet** - Possede des widgets pour presque tout
+5. **La documentation est essentielle** - La doc Qt est detaillee et utile
 
-## Common Patterns
+## Motifs courants
 
-### Main Window Template
+### Modele de fenetre principale
 ```python noexec
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -202,7 +202,7 @@ class MainWindow(QMainWindow):
         pass
 ```
 
-### Dialog Pattern
+### Patron de dialogue
 ```python noexec
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox
 
@@ -217,7 +217,7 @@ class MyDialog(QDialog):
         buttons.rejected.connect(self.reject)
 ```
 
-### Menu and Toolbar
+### Menu et barre d'outils
 ```python noexec
 # Menu bar
 menubar = self.menuBar()
@@ -230,16 +230,16 @@ toolbar = self.addToolBar("Main")
 toolbar.addAction(open_action)
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Forgetting sys.exit(app.exec_())** - App won't run event loop
-2. **Not calling super().__init__()** - Parent class not initialized
-3. **Connecting to wrong signal** - Check Qt documentation
-4. **Memory leaks with images** - Clear pixmaps when done
-5. **Thread safety** - GUI updates must be on main thread
-6. **Layout conflicts** - Can't mix manual positioning with layouts
+1. **Oublier sys.exit(app.exec_())** - L'application n'executera pas la boucle evenementielle
+2. **Ne pas appeler super().__init__()** - La classe parente n'est pas initialisee
+3. **Se connecter au mauvais signal** - Verifier la documentation Qt
+4. **Fuites memoire avec les images** - Effacer les pixmaps une fois termine
+5. **Securite des threads** - Les mises a jour de l'interface doivent etre sur le thread principal
+6. **Conflits de layouts** - On ne peut pas melanger le positionnement manuel avec les layouts
 
-## Further Reading
+## Pour aller plus loin
 
 - PyQt5 Documentation: https://www.riverbankcomputing.com/static/Docs/PyQt5/
 - Qt Documentation: https://doc.qt.io/
@@ -247,7 +247,7 @@ toolbar.addAction(open_action)
 - Model-View architecture: For complex data display
 - Qt Graphics View: For custom 2D graphics
 
-## Qt Architecture
+## Architecture Qt
 
 ```
 QApplication (manages app)
@@ -258,19 +258,19 @@ QApplication (manages app)
             └── Status Bar
 ```
 
-## Image Processing Operations
+## Operations de traitement d'images
 
-Common operations on QImage:
-- Color space conversion (RGB, grayscale, indexed)
-- Filtering (blur, sharpen, edge detection)
-- Transformations (rotate, scale, flip)
-- Color adjustments (brightness, contrast, saturation)
-- Histogram analysis
+Operations courantes sur QImage :
+- Conversion d'espace colorimetrique (RVB, niveaux de gris, indexe)
+- Filtrage (flou, nettete, detection de contours)
+- Transformations (rotation, mise a l'echelle, retournement)
+- Ajustements de couleur (luminosite, contraste, saturation)
+- Analyse d'histogramme
 
-## Performance Tips
+## Conseils de performance
 
-1. **Use QPixmap for display** - Optimized for screen rendering
-2. **Process with QImage** - Optimized for pixel manipulation
-3. **Cache expensive operations** - Don't recalculate on every paint
-4. **Update only changed regions** - Use update(QRect) not update()
-5. **Consider threading** - Long operations should be off main thread
+1. **Utiliser QPixmap pour l'affichage** - Optimise pour le rendu ecran
+2. **Traiter avec QImage** - Optimise pour la manipulation de pixels
+3. **Mettre en cache les operations couteuses** - Ne pas recalculer a chaque dessin
+4. **Mettre a jour uniquement les regions modifiees** - Utiliser update(QRect) et non update()
+5. **Considerer le multi-threading** - Les operations longues doivent etre hors du thread principal

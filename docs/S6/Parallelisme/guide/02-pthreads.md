@@ -261,7 +261,7 @@ pthread_mutex_unlock(&mutex);
 
 ---
 
-## CHEAT SHEET -- Pthreads
+## AIDE-MEMOIRE -- Pthreads
 
 ```c noexec
 /* Creation / attente */

@@ -1,25 +1,25 @@
 ---
-title: "TP9 - Propositional Logic and Parsing"
+title: "TP9 - Logique propositionnelle et analyse syntaxique"
 sidebar_position: 9
 ---
 
-# TP9 - Propositional Logic and Parsing
+# TP9 - Logique propositionnelle et analyse syntaxique
 
-## Overview
+## Vue d'ensemble
 
-Implementation of a propositional logic system with:
-- Parser combinator library (Opal)
-- Formula parsing and evaluation
-- Tautology checking
-- CNF conversion
-- Knights and Knaves puzzles
+Implementation d'un systeme de logique propositionnelle avec :
+- Bibliotheque de combinateurs d'analyse syntaxique (Opal)
+- Analyse et evaluation de formules
+- Verification de tautologies
+- Conversion en CNF
+- Enigmes des chevaliers et des menteurs
 
-## Data Types
+## Types de donnees
 
 ```ocaml
 type formula =
   | True | False
-  | P of string                    (* Propositional variable *)
+  | P of string                    (* Variable propositionnelle *)
   | Not of formula
   | And of formula * formula
   | Or of formula * formula
@@ -29,49 +29,49 @@ type formula =
 type valuation = (string * bool) list
 ```
 
-## Exercises
+## Exercices
 
-### 1. Formula Parsing
-Parse logical formulas from strings:
-- Operators: `~` (not), `.` (and), `+` (or), `=>` (implies), `<=>` (iff)
-- Precedence: Not > And > Or > Imp > Iff
+### 1. Analyse syntaxique de formules
+Analyser des formules logiques a partir de chaines de caracteres :
+- Operateurs : `~` (non), `.` (et), `+` (ou), `=>` (implique), `<=>` (equivalence)
+- Priorite : Non > Et > Ou > Imp > Iff
 
-**Concepts**: Parser combinators, operator precedence
+**Concepts** : Combinateurs d'analyse syntaxique, priorite des operateurs
 
-### 2. Formula Evaluation (`eval`)
-Evaluate a formula given a valuation.
+### 2. Evaluation de formules (`eval`)
+Evaluer une formule etant donne une valuation.
 
-**Concepts**: Recursive evaluation, pattern matching
+**Concepts** : Evaluation recursive, pattern matching
 
-### 3. Extract Atoms (`atoms`)
-Find all propositional variables in a formula.
+### 3. Extraction des atomes (`atoms`)
+Trouver toutes les variables propositionnelles dans une formule.
 
-**Concepts**: Tree traversal, collecting elements
+**Concepts** : Parcours d'arbre, collecte d'elements
 
-### 4. Tautology Checking (`tautology`)
-Check if a formula is always true.
+### 4. Verification de tautologie (`tautology`)
+Verifier si une formule est toujours vraie.
 
-**Concepts**: Truth tables, exhaustive search
+**Concepts** : Tables de verite, recherche exhaustive
 
-### 5. Find Truths (`find_truth`)
-Find all valuations that make a formula true.
+### 5. Recherche de solutions (`find_truth`)
+Trouver toutes les valuations qui rendent une formule vraie.
 
-**Concepts**: Backtracking, solution enumeration
+**Concepts** : Retour sur trace (backtracking), enumeration de solutions
 
-### 6. Normal Forms (`nnf`, `simplify`)
-- `nnf`: Convert to Negation Normal Form
-- `simplify`: Convert to simplified CNF
+### 6. Formes normales (`nnf`, `simplify`)
+- `nnf` : Convertir en forme normale de negation
+- `simplify` : Convertir en CNF simplifiee
 
-**Concepts**: Formula transformation, De Morgan's laws
+**Concepts** : Transformation de formules, lois de De Morgan
 
-### 7. Knights and Knaves
-Solve logic puzzles using the system.
+### 7. Chevaliers et menteurs
+Resoudre des enigmes logiques avec le systeme.
 
-**Concepts**: Logic modeling, problem solving
+**Concepts** : Modelisation logique, resolution de problemes
 
-## Key Algorithms
+## Algorithmes cles
 
-### Formula Evaluation
+### Evaluation de formules
 ```ocaml
 let rec eval fm v = match fm with
   | True -> true
@@ -84,7 +84,7 @@ let rec eval fm v = match fm with
   | Iff (f, g) -> (eval f v) = (eval g v)
 ```
 
-### Tautology Checking
+### Verification de tautologie
 ```ocaml noexec
 let tautology fm =
   let rec check decided atoms_left = match atoms_left with
@@ -96,7 +96,7 @@ let tautology fm =
   check [] (atoms fm)
 ```
 
-### Negation Normal Form
+### Forme normale de negation
 ```ocaml
 let rec nnf fm = match fm with
   | Not (Not x) -> nnf x
@@ -109,24 +109,24 @@ let rec nnf fm = match fm with
   | _ -> fm
 ```
 
-## Knights and Knaves Puzzles
+## Enigmes des chevaliers et des menteurs
 
-Example: "If I am a knight there is gold on the island"
+Exemple : "Si je suis un chevalier, il y a de l'or sur l'ile"
 ```ocaml noexec
-(* k: "I" is a knight, g: there is gold *)
+(* k: "je" suis un chevalier, g: il y a de l'or *)
 let _ = find_truth print_valuation
   (string_to_formula "k <=> (k => g)")
-(* Result: k=true, g=true *)
+(* Resultat : k=true, g=true *)
 ```
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp9.ml";;
 ```
 
-Test functions:
+Fonctions de test :
 ```bash
 # test_eval ();;
 # test_atoms ();;
@@ -135,7 +135,7 @@ Test functions:
 # test_nnf ();;
 ```
 
-## Expected Results
+## Resultats attendus
 
 - `tautology "p => q => p"` → true
 - `tautology "~(p . q) <=> ~p + ~q"` → true (De Morgan)

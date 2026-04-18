@@ -5,15 +5,15 @@ sidebar_position: 6
 
 # TP6 - MPI: Propagation de chaleur distribuée (SPMD + Recouvrement)
 
-Application complète de calcul parallèle distribué avec communications point-à-point et recouvrement de données (ghost zones).
+Application complete de calcul parallele distribue avec communications point-a-point et recouvrement de donnees (zones fantomes).
 
 ## Objectifs pédagogiques
 
 - Implémenter un algorithme SPMD complet
-- Gérer les communications entre voisins (halo exchange)
+- Gerer les communications entre voisins (echange de halos)
 - Utiliser les communications non-bloquantes
 - Converger de manière distribuée avec `MPI_Allreduce`
-- Comprendre le pattern de recouvrement (ghost zones / overlap)
+- Comprendre le schema de recouvrement (zones fantomes / halo)
 
 ## Problème : Propagation de chaleur distribuée
 
@@ -69,15 +69,15 @@ Tous les processus exécutent le même programme, mais travaillent sur des donn�
 
 ---
 
-## Recouvrement (Ghost Zones / Halo)
+## Recouvrement (zones fantomes / halo)
 
-### Problème
+### Probleme
 
 Chaque processus calcule une tranche de N/P lignes. Mais pour calculer la ligne i, on a besoin des lignes i-1 et i+1.
 
-**Problème** : Les lignes des bords nécessitent des données du processus voisin.
+**Probleme** : Les lignes des bords necessitent des donnees du processus voisin.
 
-### Solution : Ghost zones
+### Solution : zones fantomes
 
 Chaque processus stocke :
 - Ses N/P lignes utiles
@@ -315,7 +315,7 @@ int MPI_Isend(void *buf, int count, MPI_Datatype datatype,
 
 **Utilisation** :
 - Envoyer plusieurs messages sans attendre
-- Overlapping communication/computation
+- Recouvrement calcul/communication
 
 ### 2. MPI_Allreduce
 
@@ -350,9 +350,9 @@ int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
 
 ---
 
-## Patterns de communication
+## Schemas de communication
 
-### 1. Halo Exchange (pattern dominant ici)
+### 1. Echange de halos (schema dominant ici)
 
 Chaque processus échange des données avec ses voisins immédiats.
 
@@ -361,15 +361,15 @@ Chaque processus échange des données avec ses voisins immédiats.
 P0 ←→ P1 ←→ P2 ←→ P3
 ```
 
-**Généralisation** : Grilles 2D, 3D (stencils multi-dimensionnels)
+**Generalisation** : Grilles 2D, 3D (stencils multi-dimensionnels)
 
-### 2. All-to-one (Gather)
+### 2. Tous-vers-un (Gather)
 
 Tous les processus envoient au processus 0 (collecte finale).
 
-### 3. All-to-all (Allreduce)
+### 3. Tous-vers-tous (Allreduce)
 
-Tous les processus participent à un calcul collectif et reçoivent le résultat.
+Tous les processus participent a un calcul collectif et recoivent le resultat.
 
 ---
 
@@ -534,9 +534,9 @@ Permettre aux processus de continuer sans attendre les autres :
 ## Points clés à retenir
 
 1. **SPMD** : Même programme, données différentes
-2. **Ghost zones** : Duplication des bords pour calculs locaux
-3. **Halo exchange** : Pattern fondamental pour stencils distribués
-4. **MPI_Isend** : Éviter les deadlocks, permettre l'overlapping
+2. **Zones fantomes** : Duplication des bords pour calculs locaux
+3. **Echange de halos** : Schema fondamental pour stencils distribues
+4. **MPI_Isend** : Eviter les deadlocks, permettre le recouvrement
 5. **MPI_Allreduce** : Convergence distribuée
 6. **Scalabilité limitée** : Communication O(M) vs calcul O(N×M/P)
 
@@ -557,7 +557,7 @@ tp6/
 
 ## Ressources
 
-- MPI Topologies: https://www.mpi-forum.org/docs/ (section 7: Process Topologies)
-- Halo exchange patterns: "Using MPI" (Gropp, Lusk, Skjellum)
-- Stencil computations: "Parallel Programming for Science and Engineering" (Eijkhout)
-- Non-blocking communications: https://mpitutorial.com/tutorials/mpi-non-blocking/
+- Topologies MPI : https://www.mpi-forum.org/docs/ (section 7 : Process Topologies)
+- Echanges de halos : "Using MPI" (Gropp, Lusk, Skjellum)
+- Calculs stencil : "Parallel Programming for Science and Engineering" (Eijkhout)
+- Communications non-bloquantes : https://mpitutorial.com/tutorials/mpi-non-blocking/

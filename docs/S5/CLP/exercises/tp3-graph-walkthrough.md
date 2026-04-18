@@ -1,17 +1,17 @@
 ---
-title: "TP3 - Graph Algorithms in ARM Assembly"
+title: "TP3 - Algorithmes sur les graphes en assembleur ARM"
 sidebar_position: 3
 ---
 
-# TP3 - Graph Algorithms in ARM Assembly
+# TP3 - Algorithmes sur les graphes en assembleur ARM
 
-> Following teacher instructions from: S5/CLP/data/moodle/tp/tp3/README.md
+> D'apres les consignes enseignants : S5/CLP/data/moodle/tp/tp3/README.md
 
-This TP implements graph algorithms in ARM assembly: depth-first search (DFS), vertex search, and entry point detection. Four files work together: `main.s` (graph data definition), `rechercheSommet.s` (find vertex index by name), `estPointEntree.s` (entry point check), and `dfs.s` (DFS traversal).
+Ce TP implemente des algorithmes sur les graphes en assembleur ARM : parcours en profondeur (DFS), recherche de sommet, et detection de point d'entree. Quatre fichiers fonctionnent ensemble : `main.s` (definition des donnees du graphe), `rechercheSommet.s` (trouver l'index d'un sommet par son nom), `estPointEntree.s` (verification de point d'entree), et `dfs.s` (parcours DFS).
 
 ---
 
-## Exercise 1: Graph Data Structure (main.s)
+## Exercice 1: Graph Data Structure (main.s)
 
 ### Define the graph structure and its memory layout
 
@@ -116,7 +116,7 @@ end:
 
 ---
 
-## Exercise 2: rechercheSommet.s -- Vertex Search
+## Exercice 2: rechercheSommet.s -- Vertex Search
 
 ### Implement linear search through vertex names
 
@@ -197,7 +197,7 @@ endloop:
 
 ---
 
-## Exercise 3: estPointEntree.s -- Entry Point Detection
+## Exercice 3: estPointEntree.s -- Entry Point Detection
 
 ### Check if a vertex has no incoming edges
 
@@ -292,7 +292,7 @@ Return 1 -- 'a' IS an entry point
 
 ---
 
-## Exercise 4: dfs.s -- Depth-First Search
+## Exercice 4: dfs.s -- Depth-First Search
 
 ### Implement recursive DFS traversal
 
@@ -467,7 +467,7 @@ Call 2 returns -> Call 1: j=1 >= nbSucc[0]=1, exit, RETURN
 
 ---
 
-## Key Concepts Summary
+## Resume des concepts cles
 
 ### Byte vs Word Access
 

@@ -1,97 +1,97 @@
 ---
-title: "UML Diagrams"
+title: "Diagrammes UML"
 sidebar_position: 4
 ---
 
-# UML Diagrams
+# Diagrammes UML
 
-## Theory
+## Theorie
 
-UML (Unified Modeling Language) is a standardized visual language for specifying, constructing, and documenting software systems. The CPOO exam consistently asks you to draw class diagrams and, occasionally, use case diagrams and sequence diagrams.
+UML (Unified Modeling Language) est un langage visuel normalise pour specifier, construire et documenter des systemes logiciels. L'examen CPOO vous demande systematiquement de dessiner des diagrammes de classes et, occasionnellement, des diagrammes de cas d'utilisation et des diagrammes de sequence.
 
 ---
 
-## 1. Class Diagrams
+## 1. Diagrammes de classes
 
-### Basic Class Notation
+### Notation de base d'une classe
 
 ```
 +-------------------+
 |    ClassName       |       <<abstract>>  or <<interface>>
 +-------------------+
-| - privateField    |       Visibility:
+| - privateField    |       Visibilite :
 | # protectedField  |         - private
 | + publicField     |         # protected
 | ~ packageField    |         + public
 +-------------------+         ~ package
 | + publicMethod()  |
 | # protectedMethod()|
-| + abstractMethod()*|      * italic or {abstract}
+| + abstractMethod()*|      * italique ou {abstract}
 +-------------------+
 ```
 
-### Relationships
+### Relations
 
-**Inheritance (generalization)**: solid line with hollow triangle arrowhead pointing to parent.
+**Heritage (generalisation)** : trait plein avec tete de fleche en triangle creux pointant vers le parent.
 ```
      Arbre              (parent)
        ^
-       |                solid line + hollow triangle
+       |                trait plein + triangle creux
        |
-     Chene              (child: Chene extends Arbre)
+     Chene              (enfant : Chene extends Arbre)
 ```
 
-**Interface implementation (realization)**: dashed line with hollow triangle.
+**Implementation d'interface (realisation)** : trait en pointilles avec triangle creux.
 ```
   <<interface>>
     Network             (interface)
        ^
-       :                dashed line + hollow triangle
+       :                trait en pointilles + triangle creux
        :
-  NetworkImpl           (class implements Network)
+  NetworkImpl           (classe implements Network)
 ```
 
-**Association**: solid line, optionally with arrowhead for navigation direction.
+**Association** : trait plein, optionnellement avec tete de fleche pour la direction de navigation.
 ```
-  Velo ---------> Guidon         unidirectional (Velo knows Guidon)
+  Velo ---------> Guidon         unidirectionnelle (Velo connait Guidon)
         guidon
         0..1
 
-  Velo <--------> Guidon         bidirectional (both know each other)
+  Velo <--------> Guidon         bidirectionnelle (les deux se connaissent)
         guidon     velo
         0..1       0..1
 ```
 
-**Aggregation** (weak "has-a"): solid line with hollow diamond on the "whole" side.
+**Agregation** ("possede" faible) : trait plein avec losange creux du cote du "tout".
 ```
-  Foret <>------> Arbre          Foret has Arbres
+  Foret <>------> Arbre          Foret possede des Arbres
           arbres
           0..*
 ```
 
-**Composition** (strong "has-a"): solid line with filled diamond. The part cannot exist without the whole.
+**Composition** ("possede" fort) : trait plein avec losange plein. La partie ne peut pas exister sans le tout.
 ```
-  Velo <*>------> Roue           Roue cannot exist without Velo
+  Velo <*>------> Roue           Roue ne peut pas exister sans Velo
           roues
           0..*
 ```
 
-**Dependency**: dashed arrow. One class uses another temporarily (e.g., as a parameter).
+**Dependance** : fleche en pointilles. Une classe utilise temporairement une autre (par ex., comme parametre).
 ```
-  Client - - - -> Service        Client depends on Service
+  Client - - - -> Service        Client depend de Service
 ```
 
-### Multiplicity
+### Multiplicite
 
-| Notation | Meaning |
-|----------|---------|
-| `1` | Exactly one |
-| `0..1` | Zero or one (optional) |
-| `0..*` or `*` | Zero or more |
-| `1..*` | One or more |
-| `2` | Exactly two |
+| Notation | Signification |
+|----------|---------------|
+| `1` | Exactement un |
+| `0..1` | Zero ou un (optionnel) |
+| `0..*` ou `*` | Zero ou plusieurs |
+| `1..*` | Un ou plusieurs |
+| `2` | Exactement deux |
 
-### Abstract Classes and Interfaces in UML
+### Classes abstraites et interfaces en UML
 
 ```
 +-------------------+           +-------------------+
@@ -103,11 +103,11 @@ UML (Unified Modeling Language) is a standardized visual language for specifying
 +-------------------+
 | + vieillir()      |
 | + getPrix(): double|
-| + getPrixM3()*    |     * = abstract method
+| + getPrixM3()*    |     * = methode abstraite
 +-------------------+
 ```
 
-### Enumerations in UML
+### Enumerations en UML
 
 ```
 +-------------------+
@@ -122,9 +122,9 @@ UML (Unified Modeling Language) is a standardized visual language for specifying
 
 ---
 
-## 2. Worked Example: Forest System (TP2)
+## 2. Exemple detaille : systeme forestier (TP2)
 
-From the course text:
+Depuis le texte du cours :
 
 ```
                       +-------------------+
@@ -153,7 +153,7 @@ From the course text:
     | + produireFruit() |          | + produireFruit() |
     +-------------------+          +-------------------+
               |                               |
-           produces                        produces
+           produit                          produit
               |                               |
     +-------------------+          +-------------------+
     |      Gland        |          |      Cone         |
@@ -179,9 +179,9 @@ From the course text:
 
 ---
 
-## 3. Worked Example: Exam 2024-2025 (Devis System)
+## 3. Exemple detaille : examen 2024-2025 (systeme de devis)
 
-Text: "Un devis concerne un client et possede une date. Un client a un nom et une adresse. Un client peut etre une entreprise (avec un numero). Une tache a une designation, quantite, prix unitaire, et unite de mesure. Une tache fait reference a du materiel (au moins un). Un materiel est fourni par un ou plusieurs fournisseurs."
+Texte : "Un devis concerne un client et possede une date. Un client a un nom et une adresse. Un client peut etre une entreprise (avec un numero). Une tache a une designation, quantite, prix unitaire, et unite de mesure. Une tache fait reference a du materiel (au moins un). Un materiel est fourni par un ou plusieurs fournisseurs."
 
 ```
   +-------------------+     1    +-------------------+
@@ -222,9 +222,9 @@ Text: "Un devis concerne un client et possede une date. Un client a un nom et un
 
 ---
 
-## 4. Worked Example: Exam 2020-2021 (Arithmetic Formula)
+## 4. Exemple detaille : examen 2020-2021 (formule arithmetique)
 
-Text describes a formula as a tree: root node is an operator, operands can be values, constant references, or other operators.
+Le texte decrit une formule comme un arbre : le noeud racine est un operateur, les operandes peuvent etre des valeurs, des references a des constantes, ou d'autres operateurs.
 
 ```
   +-------------------+          +-------------------+
@@ -262,20 +262,20 @@ Text describes a formula as a tree: root node is an operator, operands can be va
 
 ---
 
-## 5. Use Case Diagrams
+## 5. Diagrammes de cas d'utilisation
 
-Use case diagrams show actors (stick figures) and the use cases (ovals) they interact with.
+Les diagrammes de cas d'utilisation montrent les acteurs (bonhommes batons) et les cas d'utilisation (ovales) avec lesquels ils interagissent.
 
-### Relationships in Use Case Diagrams
+### Relations dans les diagrammes de cas d'utilisation
 
-| Relationship | Notation | Meaning |
-|-------------|----------|---------|
-| Association | Solid line | Actor participates in use case |
-| Include | Dashed arrow `<<include>>` | Use case always includes another |
-| Extend | Dashed arrow `<<extend>>` | Use case optionally extends another |
-| Generalization | Solid arrow with triangle | Specialized use case / actor inheritance |
+| Relation | Notation | Signification |
+|----------|----------|---------------|
+| Association | Trait plein | L'acteur participe au cas d'utilisation |
+| Include | Fleche en pointilles `<<include>>` | Le cas d'utilisation inclut toujours un autre |
+| Extend | Fleche en pointilles `<<extend>>` | Le cas d'utilisation etend optionnellement un autre |
+| Generalisation | Fleche pleine avec triangle | Cas d'utilisation specialise / heritage d'acteur |
 
-### Worked Example: Restaurant (Exam 2020-2021)
+### Exemple detaille : restaurant (examen 2020-2021)
 
 ```
    Client            Serveur           Cuisinier          Caissier
@@ -285,8 +285,8 @@ Use case diagrams show actors (stick figures) and the use cases (ovals) they int
      |            |     |                  |                  |
      | Commander  |     +-- Servir plat ---+                  |
      |   du vin --+     |                  |                  |
-     | (specializes     +-- Servir vin     |                  |
-     |  commande)       | (specializes     |                  |
+     | (specialise      +-- Servir vin     |                  |
+     |  commande)       | (specialise      |                  |
      |                  |  servir plat)    |                  |
      |                  |                  +-- Cuisiner plat  |
      |                  |                  | <<include>>      |
@@ -297,15 +297,15 @@ Use case diagrams show actors (stick figures) and the use cases (ovals) they int
                                              passer commande
 ```
 
-Note: "Serveur peut etre Caissier" = actor generalization (Serveur inherits from Caissier or vice versa).
+Note : "Serveur peut etre Caissier" = generalisation d'acteur (Serveur herite de Caissier ou inversement).
 
 ---
 
-## 6. Sequence Diagrams
+## 6. Diagrammes de sequence
 
-Sequence diagrams show the order of method calls between objects over time.
+Les diagrammes de sequence montrent l'ordre des appels de methodes entre objets au fil du temps.
 
-### Worked Example: Addition.calculer()
+### Exemple detaille : Addition.calculer()
 
 ```
   :Client         :Addition        :gauche           :droite
@@ -327,48 +327,48 @@ Sequence diagrams show the order of method calls between objects over time.
 
 ---
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Confusing aggregation and composition**: composition means the part cannot exist without the whole (filled diamond). Aggregation is weaker (hollow diamond).
-2. **Missing multiplicity**: every association should show multiplicity on both ends.
-3. **Forgetting abstract notation**: mark abstract classes with `<<abstract>>` or italicize the name.
-4. **Wrong arrow direction**: the arrow points FROM the dependent TO the dependency. A `Velo` that knows its `Guidon` has the arrow FROM Velo TO Guidon.
-5. **Mixing `<<include>>` and `<<extend>>`**: include is mandatory; extend is optional/conditional.
+1. **Confondre agregation et composition** : la composition signifie que la partie ne peut pas exister sans le tout (losange plein). L'agregation est plus faible (losange creux).
+2. **Multiplicite manquante** : chaque association doit montrer la multiplicite aux deux extremites.
+3. **Oublier la notation abstraite** : marquer les classes abstraites avec `<<abstract>>` ou mettre le nom en italique.
+4. **Mauvaise direction de fleche** : la fleche pointe DE l'element dependant VERS la dependance. Un `Velo` qui connait son `Guidon` a la fleche DE Velo VERS Guidon.
+5. **Confondre `<<include>>` et `<<extend>>`** : include est obligatoire ; extend est optionnel/conditionnel.
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-CLASS DIAGRAM RELATIONSHIPS
-  Inheritance:     solid line + hollow triangle pointing to parent
-  Implementation:  dashed line + hollow triangle pointing to interface
-  Association:     solid line (+ arrowhead for direction)
-  Aggregation:     hollow diamond on "whole" side
-  Composition:     filled diamond on "whole" side
-  Dependency:      dashed arrow
+RELATIONS DES DIAGRAMMES DE CLASSES
+  Heritage :       trait plein + triangle creux pointant vers le parent
+  Implementation : trait en pointilles + triangle creux pointant vers l'interface
+  Association :    trait plein (+ tete de fleche pour la direction)
+  Agregation :     losange creux du cote "tout"
+  Composition :    losange plein du cote "tout"
+  Dependance :     fleche en pointilles
 
-MULTIPLICITY
-  1     exactly one
-  0..1  optional (zero or one)
-  0..*  zero or more
-  1..*  one or more
+MULTIPLICITE
+  1     exactement un
+  0..1  optionnel (zero ou un)
+  0..*  zero ou plusieurs
+  1..*  un ou plusieurs
 
-CLASS NOTATION
+NOTATION DES CLASSES
   + public   # protected   - private   ~ package
   <<abstract>>   <<interface>>   <<enumeration>>
-  abstract method: italic or marked with {abstract}
+  methode abstraite : italique ou marquee {abstract}
 
-USE CASE DIAGRAM
-  Actor:          stick figure
-  Use Case:       oval
-  <<include>>:    dashed arrow, mandatory sub-behavior
-  <<extend>>:     dashed arrow, optional sub-behavior
-  Generalization: solid arrow + triangle (actor or use case inheritance)
+DIAGRAMME DE CAS D'UTILISATION
+  Acteur :        bonhomme baton
+  Cas d'utilisation : ovale
+  <<include>> :   fleche en pointilles, sous-comportement obligatoire
+  <<extend>> :    fleche en pointilles, sous-comportement optionnel
+  Generalisation : fleche pleine + triangle (heritage d'acteur ou de cas d'utilisation)
 
-SEQUENCE DIAGRAM
-  Object:         box at top with lifeline (dashed vertical)
-  Message:        solid arrow (synchronous) or dashed arrow (return)
-  Activation:     thin rectangle on lifeline
-  Self-call:      arrow looping back to same lifeline
+DIAGRAMME DE SEQUENCE
+  Objet :         boite en haut avec ligne de vie (verticale en pointilles)
+  Message :       fleche pleine (synchrone) ou fleche en pointilles (retour)
+  Activation :    rectangle fin sur la ligne de vie
+  Auto-appel :    fleche bouclant sur la meme ligne de vie
 ```

@@ -5,9 +5,9 @@ sidebar_position: 1
 
 # TP Nettoyage de Donnees & ACP - Solution
 
-> Following teacher instructions from: `TP1_etudiant.ipynb` (House Prices - Kaggle)
+> Conforme aux instructions de l'enseignant dans : `TP1_etudiant.ipynb` (House Prices - Kaggle)
 
-**Dataset**: `train.csv` from Kaggle "House Prices - Advanced Regression Techniques" -- 1460 residential properties in Ames, Iowa, with 81 features.
+**Jeu de donnees** : `train.csv` du challenge Kaggle "House Prices - Advanced Regression Techniques" -- 1460 proprietes residentielles a Ames, Iowa, avec 81 variables.
 
 ---
 
@@ -15,7 +15,7 @@ sidebar_position: 1
 
 ### Afficher les premieres lignes du dataframe df. Calculer et afficher le nombre d'exemples.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 import numpy as np
 import pandas as pd
@@ -36,14 +36,14 @@ df.head()
 print(len(df))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 1460
 ```
 
 ### Q3 - Afficher les dimensions du jeu de donnees. Afficher les informations sur le jeu de donnees. Afficher la repartition des types de variables.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 # 1. Dimensions du jeu de donnees
 print(df.shape)
@@ -55,7 +55,7 @@ print(df.info())
 print(df.dtypes.value_counts())
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 (1460, 81)
 <class 'pandas.core.frame.DataFrame'>
@@ -70,7 +70,7 @@ Data columns (total 81 columns):
 dtypes: float64(3), int64(35), object(43)
 ```
 
-**Interpretation:** The dataset has 81 columns. The `info()` output reveals that many object columns have missing values (e.g., PoolQC has only 7 non-null out of 1460). Among the 38 numerical columns, not all are truly quantitative -- MSSubClass uses integer codes for categories.
+**Interpretation :** Le jeu de donnees contient 81 colonnes. La sortie de `info()` revele que beaucoup de colonnes object ont des valeurs manquantes (ex. PoolQC n'a que 7 valeurs non-null sur 1460). Parmi les 38 colonnes numeriques, toutes ne sont pas veritablement quantitatives -- MSSubClass utilise des codes entiers pour des categories.
 
 ---
 
@@ -78,18 +78,18 @@ dtypes: float64(3), int64(35), object(43)
 
 > Les variables de type Object ne sont pas des variables numeriques. Attention pour autant des variables int64 peuvent coder des variables categorielles.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 nb_non_object = (df.dtypes != "object").sum()
 print("Nombre de variables non-object :", nb_non_object)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 Nombre de variables non-object : 38
 ```
 
-**Interpretation:** 38 columns have numeric types (int64 or float64). However, columns like MSSubClass (which encodes dwelling types as numbers like 20, 30, 60, 70) are categorical despite being int64.
+**Interpretation :** 38 colonnes ont des types numeriques (int64 ou float64). Cependant, des colonnes comme MSSubClass (qui encode des types de logement avec des nombres comme 20, 30, 60, 70) sont categorielles bien qu'elles soient de type int64.
 
 ---
 
@@ -101,7 +101,7 @@ Nombre de variables non-object : 38
 > - nb_na : le nombre de valeurs manquantes pour chaque variable
 > - pct_na : le pourcentage de valeurs manquantes pour chaque variable
 
-**Answer:**
+**Reponse :**
 ```python noexec
 # Tableau recapitulatif
 table_na = pd.DataFrame({
@@ -116,7 +116,7 @@ table_na = table_na.sort_values('pct_na', ascending=False)
 print(table_na.head(10))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
              nb_na     pct_na
 PoolQC        1453  99.520548
@@ -131,31 +131,31 @@ GarageCond      81   5.547945
 GarageType      81   5.547945
 ```
 
-**Interpretation:** PoolQC is 99.5% missing because very few houses in Ames have swimming pools -- this is "Missing Not At Random" (MNAR) where absence is informative. Alley (93.8% missing) means most properties have no alley access.
+**Interpretation :** PoolQC est a 99.5% manquant car tres peu de maisons a Ames ont des piscines -- c'est une donnee "Missing Not At Random" (MNAR) ou l'absence est informative. Alley (93.8% manquant) signifie que la plupart des proprietes n'ont pas d'acces a une ruelle.
 
 ---
 
 ### Q7 - Representez sous forme de diagramme en barres le nombre de valeurs manquantes pour les 15 variables ayant le plus de valeurs manquantes.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 top15 = table_na.head(15)
 plt.figure(figsize=(10, 6))
 plt.bar(top15.index, top15['nb_na'])
 plt.xticks(rotation=45, ha='right')
-plt.title('Top 15 Variables with Most Missing Values')
-plt.ylabel('Number of Missing Values')
+plt.title('Top 15 des variables avec le plus de valeurs manquantes')
+plt.ylabel('Nombre de valeurs manquantes')
 plt.tight_layout()
 plt.show()
 ```
 
-**Expected output/plot:** A descending bar chart with PoolQC (~1453) as the tallest bar, followed by MiscFeature (~1406), Alley (~1369). The drop-off from FireplaceQu (690) to LotFrontage (259) is notable, and remaining variables have small bars (<100).
+**Resultat attendu :** Un diagramme en barres decroissant avec PoolQC (~1453) comme la barre la plus haute, suivie de MiscFeature (~1406), Alley (~1369). La chute de FireplaceQu (690) a LotFrontage (259) est notable, et les variables restantes ont de petites barres (<100).
 
 ---
 
 ### Q8 - Faire le meme travail, mais uniquement pour les variables de type object
 
-**Answer:**
+**Reponse :**
 ```python noexec
 df_object = df.select_dtypes(include=["object"])
 
@@ -168,7 +168,7 @@ print("Variables object avec le plus de valeurs manquantes :\n")
 print(table_na_obj.head(10))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 Variables object avec le plus de valeurs manquantes :
 
@@ -189,7 +189,7 @@ GarageFinish     81   5.547945
 
 ### Q9 - Faire le meme travail, mais uniquement pour les variables de type autre que object. Que remarquez-vous ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 df_non_object = df.select_dtypes(exclude=["object"])
 
@@ -202,7 +202,7 @@ print("Variables non-object avec le plus de valeurs manquantes :\n")
 print(table_na_num.head(10))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 Variables non-object avec le plus de valeurs manquantes :
 
@@ -215,13 +215,13 @@ OpenPorchSF       0   0.000000
 ...
 ```
 
-**Key observation:** Les variables susceptibles d'etre numeriques ont peu de valeurs manquantes. Only LotFrontage (17.7%), GarageYrBlt (5.5%), and MasVnrArea (0.5%) have any NaN at all.
+**Observation cle :** Les variables susceptibles d'etre numeriques ont peu de valeurs manquantes. Seules LotFrontage (17.7%), GarageYrBlt (5.5%) et MasVnrArea (0.5%) ont des NaN.
 
 ---
 
 ## 3. Selection des variables numeriques
 
-The notebook provides the 14 surface/area variables for PCA:
+Le notebook fournit les 14 variables de surface pour l'ACP :
 
 ```python noexec
 cols_numeric = [
@@ -235,73 +235,73 @@ df_num = df[cols_numeric].copy()
 print(df_num.info())
 ```
 
-**Variable descriptions (from notebook):**
-- **LotArea:** Lot size in square feet
-- **MasVnrArea:** Masonry veneer area in square feet
-- **BsmtFinSF1:** Type 1 finished square feet (basement)
-- **BsmtUnfSF:** Unfinished square feet of basement area
-- **TotalBsmtSF:** Total square feet of basement area
-- **1stFlrSF:** First Floor square feet
-- **2ndFlrSF:** Second floor square feet
-- **GrLivArea:** Above grade living area square feet
-- **GarageArea:** Size of garage in square feet
-- **WoodDeckSF:** Wood deck area in square feet
-- **OpenPorchSF:** Open porch area in square feet
-- **EnclosedPorch:** Enclosed porch area in square feet
-- **MiscVal:** Value of miscellaneous feature (dollars)
-- **SalePrice:** Sale price in dollars (target variable)
+**Description des variables (issues du notebook) :**
+- **LotArea :** Surface du terrain en pieds carres
+- **MasVnrArea :** Surface du revetement de maconnerie en pieds carres
+- **BsmtFinSF1 :** Surface finie de type 1 du sous-sol en pieds carres
+- **BsmtUnfSF :** Surface non finie du sous-sol en pieds carres
+- **TotalBsmtSF :** Surface totale du sous-sol en pieds carres
+- **1stFlrSF :** Surface du rez-de-chaussee en pieds carres
+- **2ndFlrSF :** Surface du premier etage en pieds carres
+- **GrLivArea :** Surface habitable hors-sol en pieds carres
+- **GarageArea :** Surface du garage en pieds carres
+- **WoodDeckSF :** Surface de la terrasse en bois en pieds carres
+- **OpenPorchSF :** Surface du porche ouvert en pieds carres
+- **EnclosedPorch :** Surface du porche ferme en pieds carres
+- **MiscVal :** Valeur de la caracteristique diverse (dollars)
+- **SalePrice :** Prix de vente en dollars (variable cible)
 
 ---
 
-## 4. Visualisation des distributions et outliers
+## 4. Visualisation des distributions et valeurs aberrantes
 
 ### Q10 - Afficher un histogramme de 1stFlrSF
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(8, 5))
 df_num["1stFlrSF"].hist(bins=50)
-plt.title("Distribution of 1st Floor Square Feet")
-plt.xlabel("1stFlrSF (sq ft)")
-plt.ylabel("Count")
+plt.title("Distribution de la surface du rez-de-chaussee")
+plt.xlabel("1stFlrSF (pieds carres)")
+plt.ylabel("Effectif")
 plt.show()
 ```
 
-**Expected output/plot:** A right-skewed distribution centered around 800-1200 sq ft, with a long right tail extending to ~4500 sq ft. Most houses have first floors between 600 and 1500 sq ft.
+**Resultat attendu :** Une distribution asymetrique a droite centree autour de 800-1200 pieds carres, avec une longue queue a droite s'etendant jusqu'a ~4500 pieds carres. La plupart des maisons ont un rez-de-chaussee entre 600 et 1500 pieds carres.
 
 ---
 
 ### Q11 - Afficher un histogramme de LotArea
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(8, 5))
 df_num["LotArea"].hist(bins=50)
-plt.title("Distribution of Lot Area")
-plt.xlabel("LotArea (sq ft)")
-plt.ylabel("Count")
+plt.title("Distribution de la surface du terrain")
+plt.xlabel("LotArea (pieds carres)")
+plt.ylabel("Effectif")
 plt.show()
 ```
 
-**Expected output/plot:** Extremely right-skewed. The vast majority of lots are between 5,000 and 15,000 sq ft, but outliers reach up to 215,245 sq ft. The distribution has a massive spike on the left and a very long right tail.
+**Resultat attendu :** Extremement asymetrique a droite. La grande majorite des terrains font entre 5 000 et 15 000 pieds carres, mais des valeurs aberrantes atteignent 215 245 pieds carres. La distribution a un pic massif a gauche et une tres longue queue a droite.
 
 ---
 
 ### Q12 - Afficher le nuage de points GrLivArea vs SalePrice. Que remarquez-vous sur ce nuage de points ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(8, 6))
 plt.scatter(df_num["GrLivArea"], df_num["SalePrice"], alpha=0.5)
-plt.xlabel("GrLivArea (sq ft)")
+plt.xlabel("GrLivArea (pieds carres)")
 plt.ylabel("SalePrice ($)")
-plt.title("Living Area vs Sale Price")
+plt.title("Surface habitable vs Prix de vente")
 plt.show()
 ```
 
-**Expected output/plot:** A clear positive linear relationship. Most points form a cloud from lower-left (~800 sq ft, ~100k$) to upper-right (~3000 sq ft, ~500k$). There are 2 notable outliers in the bottom-right: houses with GrLivArea > 4000 sq ft but SalePrice < 200k$ (likely foreclosures or family transfers).
+**Resultat attendu :** Une relation lineaire positive claire. La plupart des points forment un nuage du coin inferieur gauche (~800 pieds carres, ~100k$) au coin superieur droit (~3000 pieds carres, ~500k$). On note 2 valeurs aberrantes en bas a droite : des maisons avec GrLivArea > 4000 pieds carres mais SalePrice < 200k$ (probablement des saisies immobilieres ou des transferts familiaux).
 
-**Observation (from notebook):** Les variables GrLiveArea et SalePrice semblent tres correlees.
+**Observation (issue du notebook) :** Les variables GrLiveArea et SalePrice semblent tres correlees.
 
 ---
 
@@ -311,24 +311,24 @@ plt.show()
 
 ### Q13 - Supprimer provisoirement les lignes contenant des valeurs manquantes, au vu du nombre de donnees supprimees comment peut on traiter les valeurs manquantes
 
-**Answer:**
+**Reponse :**
 ```python noexec
 df_dropped = df_num.dropna()
-print(f"Before: {len(df_num)}, After: {len(df_dropped)}")
+print(f"Avant : {len(df_num)}, Apres : {len(df_dropped)}")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
-Before: 1460, After: 1452
+Avant : 1460, Apres : 1452
 ```
 
-**Interpretation:** Only 8 rows are lost (those with MasVnrArea = NaN). Since this is only 0.55% of data, dropping is acceptable. However, imputation is preferred because it preserves all observations and is a transferable practice for datasets with more missing values.
+**Interpretation :** Seulement 8 lignes sont perdues (celles avec MasVnrArea = NaN). Puisque cela ne represente que 0.55% des donnees, la suppression est acceptable. Cependant, l'imputation est preferable car elle preserve toutes les observations et constitue une pratique transferable pour les jeux de donnees avec plus de valeurs manquantes.
 
 ---
 
 ### Q14 - Imputer les valeurs manquantes par la mediane, afficher la distribution de la variable impactee avant et apres imputation
 
-**Answer:**
+**Reponse :**
 ```python noexec
 imputer = SimpleImputer(strategy="median")
 df_imp = pd.DataFrame(
@@ -337,20 +337,20 @@ df_imp = pd.DataFrame(
     index=df_num.index
 )
 
-# Verification: no NaN remain
+# Verification : plus aucun NaN
 print(df_imp.isnull().sum().sum())  # 0
 
-# Distribution of MasVnrArea before and after
+# Distribution de MasVnrArea avant et apres
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 axes[0].hist(df_num["MasVnrArea"].dropna(), bins=50)
-axes[0].set_title("MasVnrArea - Before imputation")
+axes[0].set_title("MasVnrArea - Avant imputation")
 axes[1].hist(df_imp["MasVnrArea"], bins=50)
-axes[1].set_title("MasVnrArea - After imputation (median)")
+axes[1].set_title("MasVnrArea - Apres imputation (mediane)")
 plt.tight_layout()
 plt.show()
 ```
 
-**Expected output:** 0 remaining NaN. The median of MasVnrArea is 0.0 (because >50% of houses have no masonry veneer), so the 8 missing values are filled with 0.
+**Resultat attendu :** 0 NaN restant. La mediane de MasVnrArea est 0.0 (car >50% des maisons n'ont pas de revetement de maconnerie), donc les 8 valeurs manquantes sont remplacees par 0.
 
 ---
 
@@ -360,7 +360,7 @@ plt.show()
 
 > Vous pourrez utiliser `mask = (df_imp <= q99).all(axis=1)`
 
-**Answer:**
+**Reponse :**
 ```python noexec
 q99 = df_imp.quantile(0.99)
 mask = (df_imp <= q99).all(axis=1)
@@ -369,13 +369,13 @@ print(f"Avant : {len(df_imp)}")
 print(f"Apres : {len(df_clean)}")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 Avant : 1460
 Apres : 1326
 ```
 
-**Interpretation:** 134 rows (9.2%) are removed. The `.all(axis=1)` means a row is kept only if ALL 14 of its values are below their respective 99th percentiles. Outliers disproportionately affect PCA because they inflate variance along their direction.
+**Interpretation :** 134 lignes (9.2%) sont supprimees. Le `.all(axis=1)` signifie qu'une ligne est conservee uniquement si TOUTES ses 14 valeurs sont inferieures a leur 99e percentile respectif. Les valeurs aberrantes affectent de maniere disproportionnee l'ACP car elles gonflent la variance dans leur direction.
 
 ---
 
@@ -383,7 +383,7 @@ Apres : 1326
 
 ### Q16 - Appliquer une transformation log1p sur certaines variables. Affichage de WoodDeckSF avant et apres transformation.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 cols_to_log = [
     "LotArea", "MasVnrArea", "TotalBsmtSF",
@@ -391,33 +391,33 @@ cols_to_log = [
     "OpenPorchSF", "EnclosedPorch", "MiscVal"
 ]
 
-# Display WoodDeckSF before transformation
+# Afficher WoodDeckSF avant transformation
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 axes[0].hist(df_clean["WoodDeckSF"], bins=50)
-axes[0].set_title("WoodDeckSF - Before log1p")
+axes[0].set_title("WoodDeckSF - Avant log1p")
 
-# Apply log1p transformation
+# Appliquer la transformation log1p
 df_clean[cols_to_log] = np.log1p(df_clean[cols_to_log])
 
-# Display WoodDeckSF after transformation
+# Afficher WoodDeckSF apres transformation
 axes[1].hist(df_clean["WoodDeckSF"], bins=50)
-axes[1].set_title("WoodDeckSF - After log1p")
+axes[1].set_title("WoodDeckSF - Apres log1p")
 plt.tight_layout()
 plt.show()
 ```
 
-**Why log1p?** `log1p(x) = log(1 + x)` compresses the right tail of skewed distributions and handles zeros correctly (`log1p(0) = 0`).
+**Pourquoi log1p ?** `log1p(x) = log(1 + x)` compresse la queue droite des distributions asymetriques et gere correctement les zeros (`log1p(0) = 0`).
 
 ---
 
 ### Q17 - Afficher le nombre d'exemples par valeur de la variable WoodDeckSF, pour verifier l'existence du pic en zero.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 print(df_clean["WoodDeckSF"].value_counts().head(10))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 WoodDeckSF
 0.0      761
@@ -433,7 +433,7 @@ WoodDeckSF
 Name: count, dtype: int64
 ```
 
-**Interpretation:** 761 out of 1326 houses (57%) have WoodDeckSF = 0 (no wood deck). This is a "zero-inflated" distribution, common for optional features.
+**Interpretation :** 761 maisons sur 1326 (57%) ont WoodDeckSF = 0 (pas de terrasse en bois). C'est une distribution "inflationee de zeros", courante pour les equipements optionnels.
 
 ---
 
@@ -474,7 +474,7 @@ print("\n=== AVEC nettoyage ===")
 print("RMSE :", round(rmse_clean, 2))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 Comparaison des modeles de regression lineaire
 
@@ -485,7 +485,7 @@ RMSE : 39280.83
 RMSE : 32392.59
 ```
 
-**Interpretation:** Cleaning reduced prediction error by ~$6,888. The improvement comes from removing outliers and from the log transformation that makes relationships more linear.
+**Interpretation :** Le nettoyage a reduit l'erreur de prediction d'environ 6 888 $. L'amelioration provient de la suppression des valeurs aberrantes et de la transformation log qui rend les relations plus lineaires.
 
 ---
 
@@ -493,19 +493,19 @@ RMSE : 32392.59
 
 ### Q18 - Standardiser les donnees nettoyees
 
-**Answer:**
+**Reponse :**
 ```python noexec
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df_clean)
 ```
 
-**Why standardize?** PCA finds directions of maximum variance. Without standardization, SalePrice (range 0-755,000) would dominate over WoodDeckSF (range 0-857) purely because of scale. StandardScaler transforms each variable to have mean=0 and std=1.
+**Pourquoi standardiser ?** L'ACP cherche les directions de variance maximale. Sans standardisation, SalePrice (plage 0-755 000) dominerait WoodDeckSF (plage 0-857) uniquement a cause de l'echelle. StandardScaler transforme chaque variable pour avoir une moyenne=0 et un ecart-type=1.
 
 ---
 
 ### Q19 - Calculer la PCA
 
-**Answer:**
+**Reponse :**
 ```python noexec
 pca = PCA()
 X_pca = pca.fit_transform(X_scaled)
@@ -515,13 +515,13 @@ X_pca = pca.fit_transform(X_scaled)
 
 ### Q20 - Recuperer et afficher la variance expliquee
 
-**Answer:**
+**Reponse :**
 ```python noexec
 for i, var in enumerate(pca.explained_variance_ratio_):
     print(f"PC{i+1}: {var*100:.2f}%")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 PC1: 25.85%
 PC2: 12.86%
@@ -539,7 +539,7 @@ PC13: 0.87%
 PC14: 0.35%
 ```
 
-**Interpretation:** The first 2 components capture only ~38.7% of variance. This is lower than the French cities temperature example (~87%) because these 14 housing variables are diverse and not as strongly correlated.
+**Interpretation :** Les 2 premieres composantes ne capturent qu'environ 38.7% de la variance. C'est inferieur a l'exemple des temperatures des villes francaises (~87%) car ces 14 variables immobilieres sont diverses et moins fortement correlees.
 
 ---
 
@@ -547,19 +547,19 @@ PC14: 0.35%
 
 > On notera que pour l'instant cette projection n'apporte que peu d'information.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(10, 7))
 plt.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.5, s=20)
 plt.xlabel(f"PC1 ({pca.explained_variance_ratio_[0]*100:.1f}%)")
 plt.ylabel(f"PC2 ({pca.explained_variance_ratio_[1]*100:.1f}%)")
-plt.title("PCA Projection of Houses")
+plt.title("Projection ACP des maisons")
 plt.axhline(0, color='k', linestyle='--', alpha=0.3)
 plt.axvline(0, color='k', linestyle='--', alpha=0.3)
 plt.show()
 ```
 
-**Expected output/plot:** A cloud of 1326 points with no obvious clustering. The cloud is roughly elliptical, extending more along PC1 than PC2. At this stage, the projection alone does not reveal much structure.
+**Resultat attendu :** Un nuage de 1326 points sans regroupement evident. Le nuage est approximativement elliptique, s'etendant davantage le long de PC1 que de PC2. A ce stade, la projection seule ne revele pas beaucoup de structure.
 
 ---
 
@@ -567,7 +567,7 @@ plt.show()
 
 ### Q22 - Afficher pour chaque axe la valeur propre associee, la variance expliquee et la variance cumulee.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 eigenvalue_table = pd.DataFrame({
     'Valeur propre': pca.explained_variance_,
@@ -577,7 +577,7 @@ eigenvalue_table = pd.DataFrame({
 print(eigenvalue_table.head(5))
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
      Valeur propre  Variance expliquee (%)  Inertie cumulee (%)
 PC1       3.621329               25.847129            25.847129
@@ -588,27 +588,27 @@ PC2       1.801478               12.857996            38.705125
 
 ### Q23 - A l'aide du code ci-dessus, afficher le cercle des correlations pour l'ACP que l'on vient de realiser. Quelles variables semblent liees aux deux axes ? Quelles variables semblent correlees entre elles ? Existe-t-il des variables independantes ?
 
-The notebook provides a `correlation_circle_plotly` function. Use it:
+Le notebook fournit une fonction `correlation_circle_plotly`. On l'utilise :
 
-**Answer:**
+**Reponse :**
 ```python noexec
 correlation_circle_plotly(pca, df_clean.columns, min_contrib=0.15)
 ```
 
-**Expected output/plot:** A unit circle with arrows from the origin. Variables near the circle boundary are well-represented on these 2 PCs.
+**Resultat attendu :** Un cercle unite avec des fleches partant de l'origine. Les variables proches du bord du cercle sont bien representees sur ces 2 PC.
 
-**Expected positions of variables:**
-- **Clustered together along PC1 (right side):** TotalBsmtSF, 1stFlrSF, GrLivArea, GarageArea -- correlated, representing "house size"
-- **Pointing upward (positive PC2):** SalePrice, partially GrLivArea
-- **Near center (low contribution):** BsmtFinSF1, WoodDeckSF, OpenPorchSF, EnclosedPorch, MiscVal -- vary independently
+**Positions attendues des variables :**
+- **Regroupees le long de PC1 (cote droit) :** TotalBsmtSF, 1stFlrSF, GrLivArea, GarageArea -- correlees, representant la "taille de la maison"
+- **Pointant vers le haut (PC2 positif) :** SalePrice, partiellement GrLivArea
+- **Pres du centre (faible contribution) :** BsmtFinSF1, WoodDeckSF, OpenPorchSF, EnclosedPorch, MiscVal -- varient independamment
 
-**Answers to the questions:**
-- Variables liees au premier axe: TotalBsmtSF, 1stFlrSF, GrLivArea, GarageArea (taille de la maison)
-- Variables liees au deuxieme axe: SalePrice, GrLivArea (valeur/qualite)
-- Variables correlees entre elles: TotalBsmtSF et 1stFlrSF (fleches dans la meme direction)
-- Variables independantes: MiscVal est pres du centre, quasi-independante de toutes les autres
+**Reponses aux questions :**
+- Variables liees au premier axe : TotalBsmtSF, 1stFlrSF, GrLivArea, GarageArea (taille de la maison)
+- Variables liees au deuxieme axe : SalePrice, GrLivArea (valeur/qualite)
+- Variables correlees entre elles : TotalBsmtSF et 1stFlrSF (fleches dans la meme direction)
+- Variables independantes : MiscVal est pres du centre, quasi-independante de toutes les autres
 
-**(From notebook):** Variables correlees avec le deuxieme axe : SalePrice, voir GrLivArea (surface habitable). Toutes les variables affichees sont correlees positivement avec le 2e axe.
+**(Issue du notebook) :** Variables correlees avec le deuxieme axe : SalePrice, voir GrLivArea (surface habitable). Toutes les variables affichees sont correlees positivement avec le 2e axe.
 
 ---
 
@@ -618,7 +618,7 @@ correlation_circle_plotly(pca, df_clean.columns, min_contrib=0.15)
 
 > On notera que les valeurs dans `pca.components_` contient les correlations entre les variables et les axes principaux.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 loadings = pd.DataFrame(
     pca.components_.T,
@@ -632,14 +632,14 @@ print(loadings.head())
 
 ### Q25 - Classer les variables en fonction de leur contribution au premier axe (le carre de leurs correlations avec cet axe).
 
-**Answer:**
+**Reponse :**
 ```python noexec
 contributions = loadings ** 2
-print("=== Contributions to PC1 ===")
+print("=== Contributions a PC1 ===")
 print(contributions['PC1'].sort_values(ascending=False))
 ```
 
-**Expected output (top 5):**
+**Resultat attendu (top 5) :**
 ```
 TotalBsmtSF      ~0.17
 1stFlrSF         ~0.16
@@ -652,13 +652,13 @@ SalePrice        ~0.11
 
 ### Q26 - Classer les variables en fonction de leur contribution au deuxieme axe (le carre de leurs correlations avec cet axe).
 
-**Answer:**
+**Reponse :**
 ```python noexec
-print("=== Contributions to PC2 ===")
+print("=== Contributions a PC2 ===")
 print(contributions['PC2'].sort_values(ascending=False))
 ```
 
-**Expected output (top 5):**
+**Resultat attendu (top 5) :**
 ```
 SalePrice        ~0.20
 2ndFlrSF         ~0.16
@@ -667,17 +667,17 @@ BsmtUnfSF        ~0.10
 BsmtFinSF1       ~0.09
 ```
 
-**Interpretation:** PC1 is driven by surface areas (basement, first floor, living area, garage). PC2 is driven by SalePrice and second floor area, a "value and multi-story" dimension.
+**Interpretation :** PC1 est domine par les surfaces (sous-sol, rez-de-chaussee, surface habitable, garage). PC2 est domine par SalePrice et la surface du premier etage, une dimension "valeur et multi-etages".
 
 ---
 
-## Mis en avant de la correlation
+## Mise en avant de la correlation
 
 ### Q27 - Colorer les points en fonction de la valeur de SalePrice
 
 > Pour verifier que la variable SalePrice est bien liee au deuxieme axe, on va colorer les points en fonction de cette valeur.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(10, 7))
 scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1],
@@ -685,23 +685,23 @@ scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1],
 plt.colorbar(scatter, label='SalePrice')
 plt.xlabel(f"PC1 ({pca.explained_variance_ratio_[0]*100:.1f}%)")
 plt.ylabel(f"PC2 ({pca.explained_variance_ratio_[1]*100:.1f}%)")
-plt.title("PCA colored by SalePrice")
+plt.title("ACP coloree par SalePrice")
 plt.show()
 ```
 
-**Expected output/plot:** A gradient appears primarily along PC2. Points at the top (high PC2) are yellow (high SalePrice), while points at the bottom are purple (low SalePrice).
+**Resultat attendu :** Un gradient apparait principalement le long de PC2. Les points en haut (PC2 eleve) sont jaunes (SalePrice eleve), tandis que les points en bas sont violets (SalePrice bas).
 
 ---
 
 ### Q28 - Commenter cette visualisation
 
-**Answer:** SalePrice increases primarily along PC2 (vertical axis), confirming that PC2 captures the "value" dimension. The correlation circle predicted this -- SalePrice's arrow points mostly upward. There is also some gradient along PC1 (larger houses cost more), but the PC2 relationship is more pronounced.
+**Reponse :** SalePrice augmente principalement le long de PC2 (axe vertical), confirmant que PC2 capture la dimension "valeur". Le cercle des correlations le predisait -- la fleche de SalePrice pointe principalement vers le haut. Il y a aussi un certain gradient le long de PC1 (les maisons plus grandes coutent plus cher), mais la relation avec PC2 est plus prononcee.
 
 ---
 
 ### Q29 - Colorer les points en fonction de la valeur de BsmtFinSF1
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(10, 7))
 scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1],
@@ -709,23 +709,23 @@ scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1],
 plt.colorbar(scatter, label='BsmtFinSF1')
 plt.xlabel(f"PC1 ({pca.explained_variance_ratio_[0]*100:.1f}%)")
 plt.ylabel(f"PC2 ({pca.explained_variance_ratio_[1]*100:.1f}%)")
-plt.title("PCA colored by BsmtFinSF1")
+plt.title("ACP coloree par BsmtFinSF1")
 plt.show()
 ```
 
-**Expected output/plot:** Less clear gradient than SalePrice. Points with high BsmtFinSF1 are scattered throughout, with no strong correlation to either axis. This confirms that BsmtFinSF1 sits near the center of the correlation circle with low contribution to the first 2 PCs.
+**Resultat attendu :** Gradient moins net que SalePrice. Les points avec un BsmtFinSF1 eleve sont disperses partout, sans correlation forte avec aucun axe. Cela confirme que BsmtFinSF1 se situe pres du centre du cercle des correlations avec une faible contribution aux 2 premieres PC.
 
 ---
 
 ### Q30 - Commenter cette visualisation
 
-**Answer:** BsmtFinSF1 (finished basement area) does not show a clear pattern on the first two principal components. The coloring appears relatively uniform across the PCA plane. This is expected since BsmtFinSF1 is near the center of the correlation circle, meaning its variance is captured by higher-order components (PC3 and beyond), not the first two.
+**Reponse :** BsmtFinSF1 (surface finie du sous-sol) ne montre pas de pattern clair sur les deux premieres composantes principales. La coloration apparait relativement uniforme sur le plan ACP. C'est attendu puisque BsmtFinSF1 est pres du centre du cercle des correlations, ce qui signifie que sa variance est capturee par des composantes d'ordre superieur (PC3 et au-dela), pas les deux premieres.
 
 ---
 
 ## Explication par une variable qualitative
 
-The notebook provides a coloring by Neighborhood:
+Le notebook fournit une coloration par Neighborhood :
 
 ```python noexec
 pca_df = pd.DataFrame(X_pca, columns=["PC1", "PC2"])
@@ -733,18 +733,18 @@ pca_df["Neighborhood"] = df.loc[df_clean.index, "Neighborhood"].values
 plt.figure(figsize=(10, 7))
 sns.scatterplot(data=pca_df, x="PC1", y="PC2", hue="Neighborhood",
                 palette="tab20", s=40)
-plt.title("PCA colore selon Neighborhood")
+plt.title("ACP coloree selon Neighborhood")
 plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
 plt.show()
 ```
 
-**(From notebook):** Les quartiers ne semblent pas structurer les donnees selon les dimensions principales de variation. Les deux premieres composantes principales sont construites majoritairement par les surfaces, la structure du logement, les volumes, le standing -- mais pas par la localisation geographique.
+**(Issue du notebook) :** Les quartiers ne semblent pas structurer les donnees selon les dimensions principales de variation. Les deux premieres composantes principales sont construites majoritairement par les surfaces, la structure du logement, les volumes, le standing -- mais pas par la localisation geographique.
 
 ---
 
 ### Q31 - Faire le meme travail d'affichage en fonction de la variable OverallQual (note de qualite attribuee a la maison).
 
-**Answer:**
+**Reponse :**
 ```python noexec
 pca_df = pd.DataFrame(X_pca[:, :2], columns=["PC1", "PC2"])
 pca_df["OverallQual"] = df.loc[df_clean.index, "OverallQual"].values
@@ -752,52 +752,52 @@ pca_df["OverallQual"] = df.loc[df_clean.index, "OverallQual"].values
 plt.figure(figsize=(10, 7))
 sns.scatterplot(data=pca_df, x="PC1", y="PC2", hue="OverallQual",
                 palette="tab10", s=40)
-plt.title("PCA colore selon OverallQual")
+plt.title("ACP coloree selon OverallQual")
 plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
 plt.show()
 ```
 
-**Expected output/plot:** With 10 colors, it is hard to see patterns. The notebook acknowledges: "le diagramme est trompeur, il y a trop de couleurs pour bien voir la situation."
+**Resultat attendu :** Avec 10 couleurs, il est difficile de voir des patterns. Le notebook reconnait : "le diagramme est trompeur, il y a trop de couleurs pour bien voir la situation."
 
 ---
 
 ### Q32 - Afficher uniquement les points ayant comme valeur 1, 2 ou 3. Que remarquez-vous ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 pca_df_low = pca_df[pca_df["OverallQual"].isin([1, 2, 3])]
 plt.figure(figsize=(10, 7))
 plt.scatter(pca_df_low["PC1"], pca_df_low["PC2"], s=40, alpha=0.7)
-plt.title("PCA - OverallQual 1, 2, 3 only")
+plt.title("ACP - OverallQual 1, 2, 3 uniquement")
 plt.axhline(0, color='k', linestyle='--', alpha=0.3)
 plt.axvline(0, color='k', linestyle='--', alpha=0.3)
 plt.show()
 ```
 
-**Observation (from notebook):** Les points sont situes tres a gauche de l'axe 1 (valeurs inferieures a 0). Low-quality houses have small surfaces across the board, so they project negatively on the "house size" axis.
+**Observation (issue du notebook) :** Les points sont situes tres a gauche de l'axe 1 (valeurs inferieures a 0). Les maisons de faible qualite ont de petites surfaces dans l'ensemble, donc elles se projettent negativement sur l'axe "taille de la maison".
 
 ---
 
 ### Q33 - Afficher uniquement les points ayant comme valeur 8, 9 ou 10. Que remarquez-vous ?
 
-**Answer:**
+**Reponse :**
 ```python noexec
 pca_df_high = pca_df[pca_df["OverallQual"].isin([8, 9, 10])]
 plt.figure(figsize=(10, 7))
 plt.scatter(pca_df_high["PC1"], pca_df_high["PC2"], s=40, alpha=0.7, color='red')
-plt.title("PCA - OverallQual 8, 9, 10 only")
+plt.title("ACP - OverallQual 8, 9, 10 uniquement")
 plt.axhline(0, color='k', linestyle='--', alpha=0.3)
 plt.axvline(0, color='k', linestyle='--', alpha=0.3)
 plt.show()
 ```
 
-**Observation (from notebook):** Les points sont situes tres a droite de l'axe 1 (valeurs superieures a 0). High-quality houses tend to be larger.
+**Observation (issue du notebook) :** Les points sont situes tres a droite de l'axe 1 (valeurs superieures a 0). Les maisons de haute qualite tendent a etre plus grandes.
 
 ---
 
 ### Q34 - Pour confirmer ceci affichez sur un meme graphique en bleu les valeurs 1,2,3 et en rouge les valeurs 8,9,10.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 pca_df = pd.DataFrame(X_pca[:, :2], columns=["PC1", "PC2"])
 pca_df["OverallQual"] = df.loc[df_clean.index, "OverallQual"].values
@@ -811,10 +811,10 @@ plt.scatter(high["PC1"], high["PC2"], color='red', alpha=0.6, label='Qual 8-10',
 plt.axhline(0, color='k', linestyle='--', alpha=0.3)
 plt.axvline(0, color='k', linestyle='--', alpha=0.3)
 plt.legend()
-plt.title("PCA - Low vs High Overall Quality")
+plt.title("ACP - Qualite basse vs haute")
 plt.xlabel(f"PC1 ({pca.explained_variance_ratio_[0]*100:.1f}%)")
 plt.ylabel(f"PC2 ({pca.explained_variance_ratio_[1]*100:.1f}%)")
 plt.show()
 ```
 
-**Expected output/plot:** Blue points (low quality) form a cluster on the left side. Red points (high quality) form a cluster on the right side. There is clear separation along PC1, confirming that PC1 captures not just "size" but also "quality" -- larger and better-built houses project to the right.
+**Resultat attendu :** Les points bleus (faible qualite) forment un groupe a gauche. Les points rouges (haute qualite) forment un groupe a droite. Il y a une separation claire le long de PC1, confirmant que PC1 capture non seulement la "taille" mais aussi la "qualite" -- les maisons plus grandes et mieux construites se projettent a droite.

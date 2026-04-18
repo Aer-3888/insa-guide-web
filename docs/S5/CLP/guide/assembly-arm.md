@@ -1,251 +1,251 @@
 ---
-title: "Chapter 6 -- ARM Assembly Language"
+title: "Chapitre 6 -- Langage assembleur ARM"
 sidebar_position: 2
 ---
 
-# Chapter 6 -- ARM Assembly Language
+# Chapitre 6 -- Langage assembleur ARM
 
-## 6.1 Overview
+## 6.1 Presentation
 
-The ARM assembly portion of CLP covers programming at the hardware level using the ARM instruction set. ARM is a RISC (Reduced Instruction Set Computer) architecture used in mobile devices, embedded systems, and the Raspberry Pi used in TP4.
+La partie assembleur ARM du cours CLP couvre la programmation au niveau materiel en utilisant le jeu d'instructions ARM. ARM est une architecture RISC (Reduced Instruction Set Computer) utilisee dans les appareils mobiles, les systemes embarques, et le Raspberry Pi utilise en TP4.
 
 ---
 
-## 6.2 ARM Register Set
+## 6.2 Jeu de registres ARM
 
-### General-Purpose Registers
+### Registres generaux
 
-| Register | Alias | Convention |
+| Registre | Alias | Convention |
 |----------|-------|------------|
-| r0 | -- | Argument 1 / Return value |
+| r0 | -- | Argument 1 / Valeur de retour |
 | r1 | -- | Argument 2 |
 | r2 | -- | Argument 3 |
 | r3 | -- | Argument 4 |
-| r4-r10 | -- | General purpose (callee-saved) |
-| r11 | fp | Frame Pointer |
-| r12 | ip | Intra-procedure scratch |
-| r13 | sp | Stack Pointer |
-| r14 | lr | Link Register (return address) |
-| r15 | pc | Program Counter |
+| r4-r10 | -- | Usage general (sauvegardes par l'appele) |
+| r11 | fp | Pointeur de cadre (Frame Pointer) |
+| r12 | ip | Registre de travail intra-procedure |
+| r13 | sp | Pointeur de pile (Stack Pointer) |
+| r14 | lr | Registre de lien (adresse de retour) |
+| r15 | pc | Compteur de programme (Program Counter) |
 
-### Condition Flags (CPSR)
+### Drapeaux de condition (CPSR)
 
-| Flag | Name | Set when... |
-|------|------|-------------|
-| N | Negative | Result bit 31 is 1 (negative in two's complement) |
-| Z | Zero | Result is zero |
-| C | Carry | Unsigned overflow (carry out of bit 31) |
-| V | oVerflow | Signed overflow |
-
----
-
-## 6.3 Data Sections and Directives
-
-### Section Declarations
-
-```arm
-.data                    @ Initialized data section
-    x: .word 42          @ 32-bit integer, initialized to 42
-    msg: .asciz "Hello"  @ Null-terminated string
-    arr: .word 1, 2, 3   @ Array of 3 words
-
-.bss                     @ Uninitialized data section
-    result: .skip 4      @ Reserve 4 bytes (1 word)
-    buffer: .space 100   @ Reserve 100 bytes
-    .align               @ Align to word boundary
-
-.text                    @ Code section
-    .global _start       @ Make _start visible to linker
-```
-
-### Data Definition Directives
-
-| Directive | Size | Example |
-|-----------|------|---------|
-| `.word` | 4 bytes | `.word 42` or `.word 1, 2, 3` |
-| `.byte` | 1 byte | `.byte 0xFF` |
-| `.ascii` | string (no null) | `.ascii "hello"` |
-| `.asciz` | string (null-terminated) | `.asciz "hello"` |
-| `.skip N` / `.space N` | N bytes | `.skip 40` |
-| `.align` | pad to word boundary | `.align` |
-
-### Constants
-
-```arm
-.equ NAME, value        @ Assembly-time constant
-.set NAME, value        @ Alternative syntax (same effect)
-
-@ Example:
-.equ N, 10              @ N is always 10
-.set offset_x, 4        @ offset_x is always 4
-```
+| Drapeau | Nom | Active quand... |
+|---------|-----|-----------------|
+| N | Negatif | Le bit 31 du resultat est 1 (negatif en complement a deux) |
+| Z | Zero | Le resultat est nul |
+| C | Retenue (Carry) | Debordement non signe (retenue sortante du bit 31) |
+| V | Debordement (oVerflow) | Debordement signe |
 
 ---
 
-## 6.4 Instruction Set
+## 6.3 Sections de donnees et directives
 
-### Data Movement
+### Declarations de sections
 
 ```arm
-MOV  rd, op2            @ rd = op2 (register or immediate)
+.data                    @ Section de donnees initialisees
+    x: .word 42          @ Entier 32 bits, initialise a 42
+    msg: .asciz "Hello"  @ Chaine terminee par null
+    arr: .word 1, 2, 3   @ Tableau de 3 mots
+
+.bss                     @ Section de donnees non initialisees
+    result: .skip 4      @ Reserve 4 octets (1 mot)
+    buffer: .space 100   @ Reserve 100 octets
+    .align               @ Aligner a la frontiere de mot
+
+.text                    @ Section de code
+    .global _start       @ Rendre _start visible pour l'editeur de liens
+```
+
+### Directives de definition de donnees
+
+| Directive | Taille | Exemple |
+|-----------|--------|---------|
+| `.word` | 4 octets | `.word 42` ou `.word 1, 2, 3` |
+| `.byte` | 1 octet | `.byte 0xFF` |
+| `.ascii` | chaine (sans null) | `.ascii "hello"` |
+| `.asciz` | chaine (terminee par null) | `.asciz "hello"` |
+| `.skip N` / `.space N` | N octets | `.skip 40` |
+| `.align` | remplir jusqu'a la frontiere de mot | `.align` |
+
+### Constantes
+
+```arm
+.equ NAME, value        @ Constante au moment de l'assemblage
+.set NAME, value        @ Syntaxe alternative (meme effet)
+
+@ Exemple :
+.equ N, 10              @ N vaut toujours 10
+.set offset_x, 4        @ offset_x vaut toujours 4
+```
+
+---
+
+## 6.4 Jeu d'instructions
+
+### Deplacement de donnees
+
+```arm
+MOV  rd, op2            @ rd = op2 (registre ou immediat)
 MVN  rd, op2            @ rd = NOT(op2)
-LDR  rd, [rn]           @ rd = memory[rn]  (load word)
+LDR  rd, [rn]           @ rd = memory[rn]  (charger un mot)
 LDR  rd, [rn, #offset]  @ rd = memory[rn + offset]
-LDR  rd, =label         @ rd = address of label (pseudo-instruction)
-STR  rd, [rn]           @ memory[rn] = rd  (store word)
+LDR  rd, =label         @ rd = adresse de label (pseudo-instruction)
+STR  rd, [rn]           @ memory[rn] = rd  (stocker un mot)
 STR  rd, [rn, #offset]  @ memory[rn + offset] = rd
-LDRB rd, [rn]           @ rd = memory[rn] (load byte, zero-extended)
-STRB rd, [rn]           @ memory[rn] = rd (store byte)
+LDRB rd, [rn]           @ rd = memory[rn] (charger un octet, extension par zeros)
+STRB rd, [rn]           @ memory[rn] = rd (stocker un octet)
 ```
 
-### Loading a Variable from Memory (Two-Step Pattern)
+### Charger une variable depuis la memoire (patron en deux etapes)
 
 ```arm
-ldr r0, =x              @ Step 1: r0 = ADDRESS of x
-ldr r0, [r0]            @ Step 2: r0 = VALUE at that address
+ldr r0, =x              @ Etape 1 : r0 = ADRESSE de x
+ldr r0, [r0]            @ Etape 2 : r0 = VALEUR a cette adresse
 
-@ For storing:
-ldr r0, =x              @ r0 = address of x
-str r1, [r0]            @ memory[address of x] = r1
+@ Pour stocker :
+ldr r0, =x              @ r0 = adresse de x
+str r1, [r0]            @ memory[adresse de x] = r1
 ```
 
-This two-step pattern is fundamental. `ldr r0, =x` is a pseudo-instruction that loads the address into r0. The second `ldr` dereferences the pointer.
+Ce patron en deux etapes est fondamental. `ldr r0, =x` est une pseudo-instruction qui charge l'adresse dans r0. Le second `ldr` dereference le pointeur.
 
-### Addressing Modes
+### Modes d'adressage
 
 ```arm
-@ Offset addressing
-ldr r0, [r1, #4]        @ r0 = memory[r1 + 4]    (pre-indexed)
+@ Adressage par decalage
+ldr r0, [r1, #4]        @ r0 = memory[r1 + 4]    (pre-indexe)
 ldr r0, [r1, r2]        @ r0 = memory[r1 + r2]
-ldr r0, [r1, r2, lsl #2] @ r0 = memory[r1 + r2*4] (scaled index)
+ldr r0, [r1, r2, lsl #2] @ r0 = memory[r1 + r2*4] (index avec mise a l'echelle)
 
-@ Post-indexed addressing
-ldr r0, [r1], #4        @ r0 = memory[r1], then r1 = r1 + 4
+@ Adressage post-indexe
+ldr r0, [r1], #4        @ r0 = memory[r1], puis r1 = r1 + 4
 
-@ Pre-indexed with writeback
-ldr r0, [r1, #4]!       @ r1 = r1 + 4, then r0 = memory[r1]
+@ Pre-indexe avec reecriture
+ldr r0, [r1, #4]!       @ r1 = r1 + 4, puis r0 = memory[r1]
 ```
 
-### Arithmetic
+### Arithmetique
 
 ```arm
 ADD  rd, rn, op2        @ rd = rn + op2
 SUB  rd, rn, op2        @ rd = rn - op2
-RSB  rd, rn, op2        @ rd = op2 - rn  (reverse subtract)
+RSB  rd, rn, op2        @ rd = op2 - rn  (soustraction inverse)
 MUL  rd, rm, rs         @ rd = rm * rs
-MLA  rd, rm, rs, rn     @ rd = rm * rs + rn  (multiply-accumulate)
+MLA  rd, rm, rs, rn     @ rd = rm * rs + rn  (multiplication-accumulation)
 ```
 
-**RSB is useful** for negation: `RSB r0, r0, #0` computes r0 = 0 - r0 = -r0.
+**RSB est utile** pour la negation : `RSB r0, r0, #0` calcule r0 = 0 - r0 = -r0.
 
-### Logic
+### Logique
 
 ```arm
-AND  rd, rn, op2        @ rd = rn AND op2
-ORR  rd, rn, op2        @ rd = rn OR op2
+AND  rd, rn, op2        @ rd = rn ET op2
+ORR  rd, rn, op2        @ rd = rn OU op2
 EOR  rd, rn, op2        @ rd = rn XOR op2
-BIC  rd, rn, op2        @ rd = rn AND NOT(op2)  (bit clear)
+BIC  rd, rn, op2        @ rd = rn ET NON(op2)  (effacement de bits)
 ```
 
-### Shifts
+### Decalages
 
 ```arm
-MOV  rd, rm, LSL #n     @ rd = rm << n   (logical shift left)
-MOV  rd, rm, LSR #n     @ rd = rm >> n   (logical shift right, fill with 0)
-MOV  rd, rm, ASR #n     @ rd = rm >> n   (arithmetic shift right, sign extend)
-MOV  rd, rm, ROR #n     @ rd = rm rotated right by n
+MOV  rd, rm, LSL #n     @ rd = rm << n   (decalage logique a gauche)
+MOV  rd, rm, LSR #n     @ rd = rm >> n   (decalage logique a droite, remplissage par 0)
+MOV  rd, rm, ASR #n     @ rd = rm >> n   (decalage arithmetique a droite, extension de signe)
+MOV  rd, rm, ROR #n     @ rd = rm en rotation a droite de n)
 ```
 
-Shifts can also be used as the second operand in other instructions:
+Les decalages peuvent aussi etre utilises comme second operande dans d'autres instructions :
 ```arm
 ADD r0, r1, r2, LSL #2  @ r0 = r1 + (r2 * 4)
 ```
 
-### Comparison
+### Comparaison
 
 ```arm
-CMP  rn, op2            @ Set flags based on rn - op2 (result discarded)
-CMN  rn, op2            @ Set flags based on rn + op2
-TST  rn, op2            @ Set flags based on rn AND op2
-TEQ  rn, op2            @ Set flags based on rn XOR op2
+CMP  rn, op2            @ Positionner les drapeaux selon rn - op2 (resultat ignore)
+CMN  rn, op2            @ Positionner les drapeaux selon rn + op2
+TST  rn, op2            @ Positionner les drapeaux selon rn ET op2
+TEQ  rn, op2            @ Positionner les drapeaux selon rn XOR op2
 ```
 
-### Branching
+### Branchement
 
 ```arm
-B    label              @ Unconditional branch
-BL   label              @ Branch with Link (saves PC+4 in LR)
-BX   lr                 @ Branch to address in lr (return from function)
-BEQ  label              @ Branch if Z=1 (equal)
-BNE  label              @ Branch if Z=0 (not equal)
-BGT  label              @ Branch if N=V and Z=0 (signed greater than)
-BLT  label              @ Branch if N!=V (signed less than)
-BGE  label              @ Branch if N=V (signed greater or equal)
-BLE  label              @ Branch if Z=1 or N!=V (signed less or equal)
-BHI  label              @ Branch if C=1 and Z=0 (unsigned higher)
-BHS  label              @ Branch if C=1 (unsigned higher or same)
-BLO  label              @ Branch if C=0 (unsigned lower)
-BLS  label              @ Branch if C=0 or Z=1 (unsigned lower or same)
+B    label              @ Branchement inconditionnel
+BL   label              @ Branchement avec lien (sauvegarde PC+4 dans LR)
+BX   lr                 @ Branchement vers l'adresse dans lr (retour de fonction)
+BEQ  label              @ Brancher si Z=1 (egal)
+BNE  label              @ Brancher si Z=0 (different)
+BGT  label              @ Brancher si N=V et Z=0 (signe strictement superieur)
+BLT  label              @ Brancher si N!=V (signe strictement inferieur)
+BGE  label              @ Brancher si N=V (signe superieur ou egal)
+BLE  label              @ Brancher si Z=1 ou N!=V (signe inferieur ou egal)
+BHI  label              @ Brancher si C=1 et Z=0 (non signe strictement superieur)
+BHS  label              @ Brancher si C=1 (non signe superieur ou egal)
+BLO  label              @ Brancher si C=0 (non signe strictement inferieur)
+BLS  label              @ Brancher si C=0 ou Z=1 (non signe inferieur ou egal)
 ```
 
-### Conditional Execution
+### Execution conditionnelle
 
-Any ARM instruction can be made conditional by adding a condition suffix:
+Toute instruction ARM peut etre rendue conditionnelle en ajoutant un suffixe de condition :
 
 ```arm
-ADDEQ r0, r0, #1       @ Add 1 to r0 ONLY IF Zero flag is set
-MOVGT r1, r0            @ Move r0 to r1 ONLY IF greater than
-STRNE r2, [r3]          @ Store ONLY IF not equal
+ADDEQ r0, r0, #1       @ Ajouter 1 a r0 UNIQUEMENT SI le drapeau Zero est active
+MOVGT r1, r0            @ Deplacer r0 vers r1 UNIQUEMENT SI strictement superieur
+STRNE r2, [r3]          @ Stocker UNIQUEMENT SI different
 ```
 
-This avoids short branches and is a signature feature of the ARM ISA.
+Cela evite les branchements courts et c'est une caracteristique emblematique de l'ISA ARM.
 
-**Example** (from TD assembly, counting in array):
+**Exemple** (du TD assembleur, comptage dans un tableau) :
 ```arm
 cmp r0, #0
-addlt r3, r3, #1       @ If r0 < 0: increment negative count
-addeq r4, r4, #1       @ If r0 == 0: increment zero count
+addlt r3, r3, #1       @ Si r0 < 0 : incrementer le compteur de negatifs
+addeq r4, r4, #1       @ Si r0 == 0 : incrementer le compteur de zeros
 ```
 
 ---
 
-## 6.5 Stack Operations
+## 6.5 Operations sur la pile
 
-### Full Descending Stack
+### Pile descendante pleine
 
-ARM uses a Full Descending (FD) stack by convention:
-- **Full**: SP points to the last occupied location
-- **Descending**: Stack grows toward lower addresses
+L'ARM utilise par convention une pile descendante pleine (Full Descending - FD) :
+- **Pleine (Full)** : SP pointe sur le dernier emplacement occupe
+- **Descendante (Descending)** : La pile croit vers les adresses basses
 
-### Push and Pop
+### Push et Pop
 
 ```arm
-STMFD sp!, {r0, r1, r2}    @ Push r0, r1, r2 onto stack
-                            @ SP decreases by 12 (3 * 4 bytes)
-                            @ Registers stored: r2 at highest addr, r0 at lowest
+STMFD sp!, {r0, r1, r2}    @ Empiler r0, r1, r2 sur la pile
+                            @ SP diminue de 12 (3 * 4 octets)
+                            @ Registres stockes : r2 a l'adresse la plus haute, r0 a la plus basse
 
-LDMFD sp!, {r0, r1, r2}    @ Pop from stack into r0, r1, r2
-                            @ SP increases by 12
+LDMFD sp!, {r0, r1, r2}    @ Depiler de la pile vers r0, r1, r2
+                            @ SP augmente de 12
 ```
 
-**IMPORTANT**: STMFD stores registers in ascending order of register number from lowest address. So `STMFD sp!, {r0, r1}` stores r0 at [sp-8] and r1 at [sp-4].
+**IMPORTANT** : STMFD stocke les registres en ordre croissant de numero de registre depuis l'adresse la plus basse. Donc `STMFD sp!, {r0, r1}` stocke r0 a [sp-8] et r1 a [sp-4].
 
-### Reserving Space for Local Variables
+### Reserver de l'espace pour les variables locales
 
 ```arm
-SUB sp, sp, #8          @ Reserve 8 bytes (2 words) on stack
-@ ... use [fp, #-4] and [fp, #-8] for local variables ...
-ADD sp, sp, #8          @ Free the reserved space
+SUB sp, sp, #8          @ Reserver 8 octets (2 mots) sur la pile
+@ ... utiliser [fp, #-4] et [fp, #-8] pour les variables locales ...
+ADD sp, sp, #8          @ Liberer l'espace reserve
 ```
 
 ---
 
-## 6.6 Function Calling Convention
+## 6.6 Convention d'appel de fonction
 
-### The Stack Frame
+### Le cadre de pile (stack frame)
 
 ```
-High addresses
+Adresses hautes
     +------------------+
     | Argument N       |  [fp, #8 + 4*(N-1)]
     +------------------+
@@ -255,117 +255,117 @@ High addresses
     +------------------+
     | Argument 1       |  [fp, #8]
     +------------------+
-    | Return value     |  [fp, #8] (if result passed via stack)
+    | Valeur de retour |  [fp, #8] (si resultat passe par la pile)
     +------------------+
-    | Saved LR         |  [fp, #4]
+    | LR sauvegarde    |  [fp, #4]
     +------------------+
-FP->| Saved FP         |  [fp, #0]
+FP->| FP sauvegarde    |  [fp, #0]
     +------------------+
-    | Local var 1      |  [fp, #-4]
+    | Var. locale 1    |  [fp, #-4]
     +------------------+
-    | Local var 2      |  [fp, #-8]
+    | Var. locale 2    |  [fp, #-8]
     +------------------+
-    | Saved registers  |  (below local vars)
+    | Registres sauv.  |  (sous les variables locales)
     +------------------+
 SP->|                  |
-Low addresses
+Adresses basses
 ```
 
-### Caller's Responsibilities
+### Responsabilites de l'appelant
 
 ```arm
-@ 1. Load arguments
+@ 1. Charger les arguments
 ldr r0, =arg1
 ldr r0, [r0]
 ldr r1, =arg2
 ldr r1, [r1]
 
-@ 2. Push arguments onto stack
-stmfd sp!, {r0, r1}        @ Push arguments
+@ 2. Empiler les arguments sur la pile
+stmfd sp!, {r0, r1}        @ Empiler les arguments
 
-@ 3. Reserve space for return value (if using stack-based return)
+@ 3. Reserver de l'espace pour la valeur de retour (si retour par pile)
 sub sp, sp, #4
 
-@ 4. Call function
+@ 4. Appeler la fonction
 bl myFunction
 
-@ 5. Retrieve return value
-ldmfd sp!, {r2}             @ Pop return value into r2
+@ 5. Recuperer la valeur de retour
+ldmfd sp!, {r2}             @ Depiler la valeur de retour dans r2
 
-@ 6. Clean up arguments
-add sp, sp, #8              @ Remove 2 arguments (2 * 4 bytes)
+@ 6. Nettoyer les arguments
+add sp, sp, #8              @ Retirer 2 arguments (2 * 4 octets)
 ```
 
-### Callee's Responsibilities (Function Prologue/Epilogue)
+### Responsabilites de l'appele (prologue/epilogue de fonction)
 
 ```arm
 myFunction:
     @ === PROLOGUE ===
-    stmfd sp!, {lr}         @ Save return address
-    stmfd sp!, {fp}         @ Save caller's frame pointer
-    mov fp, sp              @ Set up our frame pointer
-    sub sp, sp, #N          @ Reserve N bytes for local variables
-    stmfd sp!, {r4-r9}      @ Save registers we'll modify
+    stmfd sp!, {lr}         @ Sauvegarder l'adresse de retour
+    stmfd sp!, {fp}         @ Sauvegarder le pointeur de cadre de l'appelant
+    mov fp, sp              @ Etablir notre pointeur de cadre
+    sub sp, sp, #N          @ Reserver N octets pour les variables locales
+    stmfd sp!, {r4-r9}      @ Sauvegarder les registres qu'on va modifier
 
-    @ === BODY ===
-    ldr r0, [fp, #8]        @ Access first parameter
-    ldr r1, [fp, #12]       @ Access second parameter
-    @ ... computation ...
-    str r0, [fp, #8]        @ Store return value (if stack-based)
+    @ === CORPS ===
+    ldr r0, [fp, #8]        @ Acceder au premier parametre
+    ldr r1, [fp, #12]       @ Acceder au second parametre
+    @ ... calculs ...
+    str r0, [fp, #8]        @ Stocker la valeur de retour (si par pile)
 
     @ === EPILOGUE ===
-    ldmfd sp!, {r4-r9}      @ Restore saved registers
-    add sp, sp, #N          @ Free local variables
-    ldmfd sp!, {fp}         @ Restore caller's frame pointer
-    ldmfd sp!, {lr}         @ Restore return address
-    bx lr                   @ Return to caller
+    ldmfd sp!, {r4-r9}      @ Restaurer les registres sauvegardes
+    add sp, sp, #N          @ Liberer les variables locales
+    ldmfd sp!, {fp}         @ Restaurer le pointeur de cadre de l'appelant
+    ldmfd sp!, {lr}         @ Restaurer l'adresse de retour
+    bx lr                   @ Retourner a l'appelant
 ```
 
-### Alternative Prologue Style
+### Style de prologue alternatif
 
-Some implementations save FP and LR together:
+Certaines implementations sauvegardent FP et LR ensemble :
 
 ```arm
-stmfd sp!, {fp, lr}     @ Save both in one instruction
+stmfd sp!, {fp, lr}     @ Sauvegarder les deux en une instruction
 mov fp, sp
 @ ...
-ldmfd sp!, {fp, lr}     @ Restore both
+ldmfd sp!, {fp, lr}     @ Restaurer les deux
 bx lr
 ```
 
 ---
 
-## 6.7 Recursion
+## 6.7 Recursivite
 
-### Template for Recursive Functions
+### Modele pour les fonctions recursives
 
 ```arm
 recursive_func:
-    @ Prologue: MUST save LR because BL will overwrite it
+    @ Prologue : IL FAUT sauvegarder LR car BL va l'ecraser
     stmfd sp!, {lr}
     stmfd sp!, {fp}
     mov fp, sp
-    stmfd sp!, {r0-r3}      @ Save any registers we use
+    stmfd sp!, {r0-r3}      @ Sauvegarder les registres utilises
 
-    @ Load parameters
+    @ Charger les parametres
     ldr r0, [fp, #param1_offset]
 
-    @ Base case check
+    @ Verification du cas de base
     cmp r0, #base_value
     beq base_case
 
-    @ Recursive case: prepare new arguments
-    @ ... modify r0, r1 ...
-    stmfd sp!, {r0, r1}     @ Push new arguments
-    sub sp, sp, #4           @ Reserve space for result
-    bl recursive_func        @ RECURSIVE CALL
-    ldmfd sp!, {r0}          @ Get result
-    add sp, sp, #8           @ Clean up arguments
+    @ Cas recursif : preparer les nouveaux arguments
+    @ ... modifier r0, r1 ...
+    stmfd sp!, {r0, r1}     @ Empiler les nouveaux arguments
+    sub sp, sp, #4           @ Reserver l'espace pour le resultat
+    bl recursive_func        @ APPEL RECURSIF
+    ldmfd sp!, {r0}          @ Recuperer le resultat
+    add sp, sp, #8           @ Nettoyer les arguments
     str r0, [fp, #result_offset]
     b epilogue
 
 base_case:
-    @ Store base case result
+    @ Stocker le resultat du cas de base
     mov r0, #base_result
     str r0, [fp, #result_offset]
 
@@ -376,7 +376,7 @@ epilogue:
     bx lr
 ```
 
-### Example: Recursive GCD (from TP1)
+### Exemple : PGCD recursif (du TP1)
 
 ```arm
 pgcd:
@@ -409,41 +409,41 @@ pgcd:
 
 ---
 
-## 6.8 Arrays and Structures
+## 6.8 Tableaux et structures
 
-### Array Access
+### Acces aux tableaux
 
-For an array of words (4 bytes each):
+Pour un tableau de mots (4 octets chacun) :
 ```arm
-@ Address of arr[i] = base + i * 4
-ldr r0, =array              @ r0 = base address
+@ Adresse de arr[i] = base + i * 4
+ldr r0, =array              @ r0 = adresse de base
 mov r1, #3                   @ i = 3
 ldr r2, [r0, r1, lsl #2]    @ r2 = array[3]  (r0 + 3*4)
 ```
 
-For an array of bytes:
+Pour un tableau d'octets :
 ```arm
 ldr r0, =string
 mov r1, #5
-ldrb r2, [r0, r1]           @ r2 = string[5] (no scaling needed)
+ldrb r2, [r0, r1]           @ r2 = string[5] (pas de mise a l'echelle)
 ```
 
-### Post-increment Pattern (Array Traversal)
+### Patron de post-increment (parcours de tableau)
 
 ```arm
-@ Walk through array, loading each element
-ldr r1, =T                  @ r1 = base address
+@ Parcourir le tableau, charger chaque element
+ldr r1, =T                  @ r1 = adresse de base
 loop:
-    ldr r0, [r1], #4        @ r0 = *r1, then r1 += 4
-    @ ... process r0 ...
+    ldr r0, [r1], #4        @ r0 = *r1, puis r1 += 4
+    @ ... traiter r0 ...
     b loop
 ```
 
-### Matrix Addressing (from TP2)
+### Adressage matriciel (du TP2)
 
-For a matrix M[N][N] of words stored row-major:
+Pour une matrice M[N][N] de mots stockee en ligne (row-major) :
 ```arm
-@ Address of M[i][j] = base + (i*N + j) * 4
+@ Adresse de M[i][j] = base + (i*N + j) * 4
 mov r9, #N
 mla r9, r9, r0, r1      @ r9 = N*i + j
 mov r9, r9, lsl #2       @ r9 = (N*i + j) * 4
@@ -452,31 +452,31 @@ add r9, r6               @ r9 = &M[i][j]
 ldr r5, [r9]             @ r5 = M[i][j]
 ```
 
-### Structure Access (from TP3)
+### Acces aux structures (du TP3)
 
-Define structure offsets as constants:
+Definir les decalages de structure comme constantes :
 ```arm
-.equ offset_name, 0         @ First field: char* name
-.equ offset_count, 4        @ Second field: int count
-.equ offset_data, 8         @ Third field: int* data
+.equ offset_name, 0         @ Premier champ : char* name
+.equ offset_count, 4        @ Deuxieme champ : int count
+.equ offset_data, 8         @ Troisieme champ : int* data
 
-@ Access structure member:
+@ Acceder a un membre de structure :
 ldr r1, [r0, #offset_count] @ r1 = struct_ptr->count
 ```
 
-For array of pointers to structures:
+Pour un tableau de pointeurs vers des structures :
 ```arm
-ldr r2, [r0, r3, lsl #2]    @ r2 = array[r3] (pointer to struct)
+ldr r2, [r0, r3, lsl #2]    @ r2 = array[r3] (pointeur vers la structure)
 ldr r4, [r2, #offset_count]  @ r4 = array[r3]->count
 ```
 
 ---
 
-## 6.9 Worked Examples
+## 6.9 Exemples detailles
 
-### Example 1: Count Characters (from Annales 2017 Exercise 1)
+### Exemple 1 : Compter des caracteres (annale 2017, exercice 1)
 
-Count occurrences of 'e' in a string:
+Compter les occurrences de 'e' dans une chaine :
 
 ```arm
 .data
@@ -485,22 +485,22 @@ Count occurrences of 'e' in a string:
 .text
 .global _Start
 _Start:
-  mov r1, #0                 @ counter = 0
-  mov r2, #0                 @ current char
-  ldr r0, =b                 @ r0 = address of string
+  mov r1, #0                 @ compteur = 0
+  mov r2, #0                 @ caractere courant
+  ldr r0, =b                 @ r0 = adresse de la chaine
   loop:
-    ldrb r2, [r0], #1        @ r2 = *r0++  (load byte, post-increment)
-    cmp r2, #'e'             @ compare with 'e'
-    addeq r1, r1, #1         @ if equal: counter++
-    cmp r2, #0               @ check for null terminator
-    bne loop                  @ continue if not end of string
+    ldrb r2, [r0], #1        @ r2 = *r0++  (charger octet, post-increment)
+    cmp r2, #'e'             @ comparer avec 'e'
+    addeq r1, r1, #1         @ si egal : compteur++
+    cmp r2, #0               @ verifier le terminateur null
+    bne loop                  @ continuer si pas fin de chaine
   ldr r0, =a
-  str r1, [r0]               @ store count in memory
+  str r1, [r0]               @ stocker le compteur en memoire
 ```
 
-**Key techniques**: Post-increment addressing, conditional execution (`addeq`), null-terminated string traversal. Note that the accented "e" in "litterature" does not match ASCII 'e', so the final count is 5.
+**Techniques cles** : Adressage post-increment, execution conditionnelle (`addeq`), parcours de chaine terminee par null. A noter que le "e" accentue de "litterature" ne correspond pas au 'e' ASCII, donc le compte final est 5.
 
-### Example 2: Collatz Sequence (from TD)
+### Exemple 2 : Suite de Collatz (du TD)
 
 ```arm
 .data
@@ -511,43 +511,43 @@ _start:
   ldr r0, [r2]              @ r0 = x
 collatz_loop:
   cmp r0, #1
-  beq collatz_done           @ stop when x == 1
-  and r3, r0, #1            @ test if odd (bit 0)
+  beq collatz_done           @ arreter quand x == 1
+  and r3, r0, #1            @ tester si impair (bit 0)
   cmp r3, #1
   bne collatz_even
-  @ Odd: x = 3*x + 1
+  @ Impair : x = 3*x + 1
   mov r7, #1
   mov r6, #3
   mla r0, r0, r6, r7        @ r0 = r0*3 + 1
   b collatz_store
 collatz_even:
-  @ Even: x = x / 2
+  @ Pair : x = x / 2
   mov r0, r0, lsr #1        @ r0 = r0 >> 1
 collatz_store:
-  str r0, [r2]               @ save back to memory
+  str r0, [r2]               @ sauvegarder en memoire
   b collatz_loop
 collatz_done:
 ```
 
-**Key techniques**: Bit testing with AND, MLA for 3x+1, LSR for division by 2.
+**Techniques cles** : Test de bit avec AND, MLA pour 3x+1, LSR pour la division par 2.
 
-### Example 3: Factorial (from TD)
+### Exemple 3 : Factorielle (du TD)
 
 ```arm
-.set N, 12                   @ Maximum factorial that fits in 32 bits
+.set N, 12                   @ Factorielle maximale tenant sur 32 bits
 .data
   i:    .word 1
   fact: .word 1
 .text
 _start:
-  ldr r9, =N                 @ r9 = 12 (the limit)
+  ldr r9, =N                 @ r9 = 12 (la limite)
   ldr r0, =fact
-  ldr r0, [r0]               @ r0 = 1 (running product)
+  ldr r0, [r0]               @ r0 = 1 (produit courant)
 loop_condition:
   ldr r1, =i
   ldr r1, [r1]               @ r1 = i
   cmp r1, r9
-  bhi loop_done               @ exit when i > 12
+  bhi loop_done               @ sortir quand i > 12
   mul r0, r0, r1              @ fact = fact * i
   add r1, r1, #1              @ i++
   ldr r8, =i
@@ -555,131 +555,131 @@ loop_condition:
   b loop_condition
 loop_done:
   ldr r9, =fact
-  str r0, [r9]                @ store final result
+  str r0, [r9]                @ stocker le resultat final
 ```
 
-**Note**: 12! = 479001600 fits in 32 bits. 13! = 6227020800 does NOT.
+**Remarque** : 12! = 479001600 tient sur 32 bits. 13! = 6227020800 NE TIENT PAS.
 
 ---
 
-## 6.10 GPIO / Raspberry Pi (from TP4)
+## 6.10 GPIO / Raspberry Pi (du TP4)
 
-### Memory-Mapped I/O
+### Entrees/sorties mappees en memoire
 
-On Raspberry Pi, hardware registers are accessed by reading/writing to specific memory addresses. No special I/O instructions needed.
+Sur Raspberry Pi, les registres materiels sont accedes en lisant/ecrivant a des adresses memoire specifiques. Pas besoin d'instructions d'E/S speciales.
 
 ```arm
-.set GPSEL4, 0x3f200010     @ GPIO Function Select Register 4
-.set GPSET1, 0x3f200020     @ GPIO Set Register 1
-.set GPCLR1, 0x3f20002c     @ GPIO Clear Register 1
+.set GPSEL4, 0x3f200010     @ Registre de selection de fonction GPIO 4
+.set GPSET1, 0x3f200020     @ Registre de mise a 1 GPIO 1
+.set GPCLR1, 0x3f20002c     @ Registre de mise a 0 GPIO 1
 ```
 
-### Configuring a Pin as Output
+### Configurer une broche en sortie
 
-GPIO 47 uses bits [21:19] of GPFSEL4. Setting to 001 = output mode:
+Le GPIO 47 utilise les bits [21:19] de GPFSEL4. Mettre a 001 = mode sortie :
 
 ```arm
 ldr r0, =GPSEL4
-mov r1, #(1 << 21)          @ Bit 21 = 1, others = 0
-str r1, [r0]                 @ Configure pin 47 as output
+mov r1, #(1 << 21)          @ Bit 21 = 1, les autres = 0
+str r1, [r0]                 @ Configurer la broche 47 en sortie
 ```
 
-### Controlling the LED
+### Commander la LED
 
 ```arm
-@ Turn ON: write 1 to bit 15 of GPSET1
+@ Allumer : ecrire 1 au bit 15 de GPSET1
 ldr r0, =GPSET1
-mov r1, #(1 << 15)          @ Pin 47 = bit 15 in bank 1
+mov r1, #(1 << 15)          @ Broche 47 = bit 15 dans le banc 1
 str r1, [r0]
 
-@ Turn OFF: write 1 to bit 15 of GPCLR1
+@ Eteindre : ecrire 1 au bit 15 de GPCLR1
 ldr r0, =GPCLR1
 mov r1, #(1 << 15)
 str r1, [r0]
 ```
 
-### Bare Metal Considerations
+### Considerations pour le bare metal
 
-- No OS, no stack initialization (use registers for save/restore)
-- No printf -- observe LEDs or use hardware debugger
-- Link at 0x8000 (`-Ttext=0x8000`) -- Raspberry Pi boot address
-- Busy-wait loops for timing (no timer interrupt setup)
-
----
-
-## 6.11 Common Pitfalls
-
-1. **Forgetting to save LR**: If your function calls another function (BL), LR is overwritten. Always STMFD {lr} before BL if you need to return.
-
-2. **Stack misalignment**: Every STMFD must have a matching LDMFD. Every SUB sp must have a matching ADD sp. Mismatched pairs corrupt the stack.
-
-3. **Wrong offset calculations**: Draw the stack frame and count bytes. Remember: LR is at fp+4, FP is at fp+0, return value at fp+8, first param at fp+12 (if using the standard convention).
-
-4. **LDRB vs LDR**: Use LDRB for single characters/bytes, LDR for 32-bit words. Using LDR on a byte array reads 4 bytes at once, giving garbage.
-
-5. **Scaled indexing**: For word arrays, use `lsl #2` to multiply index by 4. For byte arrays, no scaling needed. Forgetting the scale reads wrong elements.
-
-6. **Conditional execution gotcha**: `ADDEQ` does nothing if the Z flag is not set. Make sure CMP is executed immediately before the conditional instruction -- other instructions between CMP and the conditional may modify flags.
-
-7. **Forgetting .align**: After `.ascii` or `.byte` data, the next data/code may be misaligned. Always use `.align` after byte/string data.
-
-8. **MUL destination restriction**: On some ARM variants, `MUL rd, rm, rs` requires rd != rm. Use a different register as destination if in doubt.
+- Pas d'OS, pas d'initialisation de pile (utiliser les registres pour sauvegarder/restaurer)
+- Pas de printf -- observer les LED ou utiliser un debogueur materiel
+- Edition de liens a 0x8000 (`-Ttext=0x8000`) -- adresse de demarrage du Raspberry Pi
+- Boucles d'attente active pour la temporisation (pas de timer configure)
 
 ---
 
-## CHEAT SHEET -- ARM Assembly
+## 6.11 Pieges courants
+
+1. **Oublier de sauvegarder LR** : Si votre fonction appelle une autre fonction (BL), LR est ecrase. Toujours faire STMFD {lr} avant BL si vous devez retourner.
+
+2. **Desalignement de pile** : Chaque STMFD doit avoir un LDMFD correspondant. Chaque SUB sp doit avoir un ADD sp correspondant. Les paires non appariees corrompent la pile.
+
+3. **Erreurs de calcul de decalage** : Dessiner le cadre de pile et compter les octets. Rappel : LR est a fp+4, FP est a fp+0, la valeur de retour a fp+8, le premier parametre a fp+12 (avec la convention standard).
+
+4. **LDRB vs LDR** : Utiliser LDRB pour les caracteres/octets individuels, LDR pour les mots de 32 bits. Utiliser LDR sur un tableau d'octets lit 4 octets d'un coup, donnant des resultats errones.
+
+5. **Indexation avec mise a l'echelle** : Pour les tableaux de mots, utiliser `lsl #2` pour multiplier l'index par 4. Pour les tableaux d'octets, pas de mise a l'echelle. Oublier la mise a l'echelle lit de mauvais elements.
+
+6. **Piege de l'execution conditionnelle** : `ADDEQ` ne fait rien si le drapeau Z n'est pas active. S'assurer que CMP est execute immediatement avant l'instruction conditionnelle -- d'autres instructions entre CMP et l'instruction conditionnelle peuvent modifier les drapeaux.
+
+7. **Oublier .align** : Apres des donnees `.ascii` ou `.byte`, les donnees/code suivants peuvent etre desalignes. Toujours utiliser `.align` apres des donnees d'octets/chaines.
+
+8. **Restriction de MUL sur la destination** : Sur certaines variantes ARM, `MUL rd, rm, rs` requiert rd != rm. Utiliser un registre different comme destination en cas de doute.
+
+---
+
+## AIDE-MEMOIRE -- Assembleur ARM
 
 ```
-REGISTERS:
-  r0-r3:  Arguments / Return / Scratch (caller-saved)
-  r4-r10: General purpose (callee-saved)
-  r11/fp: Frame Pointer
-  r13/sp: Stack Pointer (Full Descending)
-  r14/lr: Link Register (return address)
-  r15/pc: Program Counter
+REGISTRES :
+  r0-r3 :  Arguments / Retour / Travail (sauvegardes par l'appelant)
+  r4-r10 : Usage general (sauvegardes par l'appele)
+  r11/fp : Pointeur de cadre (Frame Pointer)
+  r13/sp : Pointeur de pile (Full Descending)
+  r14/lr : Registre de lien (adresse de retour)
+  r15/pc : Compteur de programme
 
-LOADING FROM MEMORY (TWO-STEP PATTERN):
-  ldr r0, =variable     @ r0 = ADDRESS
-  ldr r0, [r0]          @ r0 = VALUE
+CHARGEMENT DEPUIS LA MEMOIRE (PATRON EN DEUX ETAPES) :
+  ldr r0, =variable     @ r0 = ADRESSE
+  ldr r0, [r0]          @ r0 = VALEUR
 
-FUNCTION CALL TEMPLATE:
-  Caller:                    Callee:
+MODELE D'APPEL DE FONCTION :
+  Appelant :                 Appele :
     stmfd sp!, {args}          stmfd sp!, {lr}
     sub sp, sp, #4             stmfd sp!, {fp}
     bl function                mov fp, sp
     ldmfd sp!, {result}        sub sp, sp, #locals
     add sp, sp, #args_size     stmfd sp!, {regs}
-                               @ ... body ...
+                               @ ... corps ...
                                ldmfd sp!, {regs}
                                add sp, sp, #locals
                                ldmfd sp!, {fp}
                                ldmfd sp!, {lr}
                                bx lr
 
-STACK FRAME OFFSETS:
-  [fp, #0]  = saved FP
-  [fp, #4]  = saved LR
-  [fp, #8]  = return value (or 1st param)
-  [fp, #12] = 1st param (or 2nd param)
-  [fp, #-4] = 1st local variable
+DECALAGES DU CADRE DE PILE :
+  [fp, #0]  = FP sauvegarde
+  [fp, #4]  = LR sauvegarde
+  [fp, #8]  = valeur de retour (ou 1er param.)
+  [fp, #12] = 1er param. (ou 2eme param.)
+  [fp, #-4] = 1ere variable locale
 
-ARRAY ACCESS:
-  Word array:  ldr r0, [base, index, lsl #2]   @ base + index*4
-  Byte array:  ldrb r0, [base, index]           @ base + index
+ACCES AUX TABLEAUX :
+  Tableau de mots :  ldr r0, [base, index, lsl #2]   @ base + index*4
+  Tableau d'octets : ldrb r0, [base, index]           @ base + index
 
-MATRIX ACCESS: M[i][j] where M is NxN words
+ACCES MATRICIEL : M[i][j] ou M est NxN de mots
   offset = (i*N + j) * 4
   mla r0, N_reg, i_reg, j_reg    @ r0 = N*i + j
   ldr r1, [base, r0, lsl #2]     @ r1 = M[i][j]
 
-CONDITION CODES:
+CODES DE CONDITION :
   EQ (Z=1)   NE (Z=0)   GT (N=V,Z=0)   LT (N!=V)
   GE (N=V)   LE (Z=1|N!=V)
   HI (C=1,Z=0)  HS/CS (C=1)  LO/CC (C=0)  LS (C=0|Z=1)
 
-KEY INSTRUCTIONS:
+INSTRUCTIONS CLES :
   MLA rd, rm, rs, rn    @ rd = rm*rs + rn
-  RSB rd, rn, op2       @ rd = op2 - rn (reverse subtract)
-  LSL #n                @ shift left by n (multiply by 2^n)
-  LSR #n                @ shift right by n (divide by 2^n)
+  RSB rd, rn, op2       @ rd = op2 - rn (soustraction inverse)
+  LSL #n                @ decalage gauche de n (multiplication par 2^n)
+  LSR #n                @ decalage droite de n (division par 2^n)
 ```

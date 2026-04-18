@@ -35,7 +35,7 @@ Calcul propositionnel ──> Formes normales ──> Resolution
 | 06 | [Semantique des predicats](/S6/Propositions_Predicats/guide/06-semantique-des-predicats) | Interpretations, modeles, validite, satisfiabilite |
 | 07 | [Unification et resolution](/S6/Propositions_Predicats/guide/07-unification-et-resolution) | Algorithme d'unification, principe de resolution, skolemisation, forme clausale |
 | 08 | [Completude et solidite](/S6/Propositions_Predicats/guide/08-completude-et-solidite) | Theoreme de completude de Godel, solidite, decidabilite |
-| -- | [Cheat Sheet](/S6/Propositions_Predicats/guide/cheat-sheet) | Toutes les regles d'inference, equivalences, procedures -- en un seul endroit |
+| -- | [Aide-memoire](/S6/Propositions_Predicats/guide/cheat-sheet) | Toutes les regles d'inference, equivalences, procedures -- en un seul endroit |
 
 ---
 
@@ -48,5 +48,5 @@ Calcul propositionnel ──> Formes normales ──> Resolution
 
 1. Lire dans l'ordre pour une progression naturelle, ou sauter au chapitre qui t'interesse.
 2. Refaire les exemples a la main sur papier.
-3. Consulter la cheat sheet pour reviser avant le DS.
+3. Consulter l'aide-memoire pour reviser avant le DS.
 4. Travailler les exercices dans le dossier `../exercises/` et les annales dans `../exam-prep/`.

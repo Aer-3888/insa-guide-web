@@ -1,11 +1,11 @@
 ---
-title: "TP2 - UDP & TCP Communication in Java"
+title: "TP2 - Communication UDP & TCP en Java"
 sidebar_position: 2
 ---
 
-# TP2 - UDP & TCP Communication in Java
+# TP2 - Communication UDP & TCP en Java
 
-> Following teacher instructions from: S6/Reseaux/data/moodle/tp/TP2/README.md
+> D'apres les instructions de l'enseignant : S6/Reseaux/data/moodle/tp/TP2/README.md
 
 Ce TP introduit la programmation socket en Java avec deux protocoles de transport :
 - **UDP** (User Datagram Protocol) : sans connexion, rapide, non fiable.
@@ -15,15 +15,15 @@ On construit un serveur echo UDP, un serveur HTTP basique en TCP, et un client H
 
 ---
 
-## Part 1: UDP Echo Server
+## Partie 1 : Serveur echo UDP
 
-### Exercise 1: Implement a UDP echo server that listens on port 5674, receives a datagram and echoes it back to the sender.
+### Exercice 1 : Implementer un serveur echo UDP qui ecoute sur le port 5674, recoit un datagramme et le renvoie a l'emetteur.
 
-**Answer:**
+**Reponse :**
 
 Le serveur UDP fonctionne en boucle : il attend un datagramme, puis le renvoie a l'emetteur. Il n'y a pas de connexion, chaque datagramme est independant.
 
-#### Complete code: Serveur_UDP.java
+#### Code complet : Serveur_UDP.java
 
 ```java
 import java.net.*;
@@ -86,13 +86,13 @@ public class Serveur_UDP {
 }
 ```
 
-### Exercise 2: Implement a UDP client with a graphical interface (AWT) that sends a message and displays the response.
+### Exercice 2 : Implementer un client UDP avec une interface graphique (AWT) qui envoie un message et affiche la reponse.
 
-**Answer:**
+**Reponse :**
 
 Le client GUI permet de saisir le hostname et le port, puis envoie un datagramme et affiche la reponse.
 
-#### Complete code: Client_UDP.java
+#### Code complet : Client_UDP.java
 
 ```java
 import java.awt.*;
@@ -234,7 +234,7 @@ class Comm_UDP_1 {
 }
 ```
 
-#### Complete code: UtilitaireRepartition.java
+#### Code complet : UtilitaireRepartition.java
 
 ```java
 import java.awt.*;
@@ -267,15 +267,15 @@ class UtilitaireRepartition {
 }
 ```
 
-**How to test:**
+**Comment tester :**
 
 ```bash
-# Terminal 1: start the server
+# Terminal 1 : demarrer le serveur
 javac Serveur_UDP.java
 java Serveur_UDP
 # Output: UDP Server listening on port 5674
 
-# Terminal 2: start the GUI client
+# Terminal 2 : demarrer le client GUI
 javac Client_UDP.java UtilitaireRepartition.java
 java Client_UDP
 # In the GUI window:
@@ -285,9 +285,9 @@ java Client_UDP
 #   -> The label displays the echoed response
 ```
 
-### Exercise 3: Capture and analyze the UDP exchange in Wireshark.
+### Exercice 3 : Capturer et analyser l'echange UDP dans Wireshark.
 
-**Answer:**
+**Reponse :**
 
 Filtre Wireshark : `udp.port == 5674`
 
@@ -316,21 +316,21 @@ Data (variable)
 
 Observations :
 - Pas de handshake (pas de SYN/ACK)
-- Un seul aller-retour (request + echo)
+- Un seul aller-retour (requete + echo)
 - Le serveur est stateless : il ne memorise rien entre les datagrammes
 - Si un paquet est perdu, pas de retransmission automatique
 
 ---
 
-## Part 2: TCP HTTP Server
+## Partie 2 : Serveur HTTP TCP
 
-### Exercise 4: Implement an HTTP server that listens on port 8888, parses GET requests, and serves files from the current directory.
+### Exercice 4 : Implementer un serveur HTTP qui ecoute sur le port 8888, parse les requetes GET et sert les fichiers depuis le repertoire courant.
 
-**Answer:**
+**Reponse :**
 
 Le serveur HTTP ecoute sur un port TCP, accepte les connexions, parse la requete "GET /fichier HTTP/1.0", et sert le fichier demande ou renvoie une erreur.
 
-#### Complete code: ServeurHttp.java
+#### Code complet : ServeurHttp.java
 
 ```java
 import java.net.*;
@@ -483,20 +483,20 @@ public class ServeurHttp {
 }
 ```
 
-**How to test:**
+**Comment tester :**
 
 ```bash
-# Compile and run
+# Compiler et lancer
 javac ServeurHttp.java
-java ServeurHttp          # default port 8888
-java ServeurHttp 9000     # custom port
+java ServeurHttp          # port par defaut 8888
+java ServeurHttp 9000     # port personnalise
 
-# Test with browser: http://localhost:8888/index.html
-# Test with curl:
+# Tester avec un navigateur : http://localhost:8888/index.html
+# Tester avec curl :
 curl -v http://localhost:8888/index.html
 ```
 
-Create a test file `index.html` in the server's working directory:
+Creer un fichier test `index.html` dans le repertoire de travail du serveur :
 ```html
 <!DOCTYPE html>
 <html>
@@ -508,11 +508,11 @@ Create a test file `index.html` in the server's working directory:
 </html>
 ```
 
-### Exercise 5: Implement an HTTP client that sends GET requests and displays responses.
+### Exercice 5 : Implementer un client HTTP qui envoie des requetes GET et affiche les reponses.
 
-**Answer:**
+**Reponse :**
 
-#### Complete code: ClientHttp.java
+#### Code complet : ClientHttp.java
 
 ```java
 import java.net.*;
@@ -585,7 +585,7 @@ public class ClientHttp {
 }
 ```
 
-**How to test:**
+**Comment tester :**
 
 ```bash
 # Terminal 1: start the HTTP server
@@ -600,9 +600,9 @@ java ClientHttp
 # Expected output for nonexistent: HTTP/1.0 404 Not Found
 ```
 
-### Exercise 6: Measure response time for 50 requests.
+### Exercice 6 : Mesurer le temps de reponse pour 50 requetes.
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Add to ClientHttp.main():
@@ -618,18 +618,18 @@ System.out.println("Average: " + (end - start) / 50.0 + " ms/request");
 
 Observation : le serveur est sequentiel (un seul client a la fois). Avec 5 clients simultanes de 10 requetes chacun, le temps total est ~50 x temps_par_requete. Pour gerer la concurrence, il faudrait utiliser du multithreading (un thread par client) ou du NIO (non-blocking I/O).
 
-### Exercise 7: Compare UDP and TCP exchanges in Wireshark.
+### Exercice 7 : Comparer les echanges UDP et TCP dans Wireshark.
 
-**Answer:**
+**Reponse :**
 
-**UDP session** (filter `udp.port == 5674`):
+**Session UDP** (filtre `udp.port == 5674`) :
 ```
 1. Client -> Server: UDP datagram with data
 2. Server -> Client: UDP datagram with echo
 Total: 2 packets
 ```
 
-**TCP session** (filter `tcp.port == 8888`):
+**Session TCP** (filtre `tcp.port == 8888`) :
 ```
  1. Client -> Server: SYN
  2. Server -> Client: SYN-ACK

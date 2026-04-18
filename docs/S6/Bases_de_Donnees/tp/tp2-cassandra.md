@@ -5,8 +5,8 @@ sidebar_position: 2
 
 # TP 2 — Cassandra
 
-Introduction to Cassandra NoSQL database.
+Introduction a la base de donnees NoSQL Cassandra.
 
-## Files
+## Fichiers
 
-- `sujet.pdf` — Lab instructions for Cassandra TP
+- `sujet.pdf` — Enonce du TP Cassandra

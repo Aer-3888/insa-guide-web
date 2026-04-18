@@ -1,21 +1,21 @@
 ---
-title: "Design Patterns"
+title: "Patrons de conception"
 sidebar_position: 3
 ---
 
-# Design Patterns
+# Patrons de conception
 
-## Theory
+## Theorie
 
-Design patterns are reusable solutions to commonly occurring problems in software design. The CPOO course focuses on patterns that appear in OOP class hierarchies and exam questions.
+Les patrons de conception sont des solutions reutilisables a des problemes recurrents en conception logicielle. Le cours CPOO se concentre sur les patrons qui apparaissent dans les hierarchies de classes POO et les questions d'examen.
 
 ---
 
-## 1. Strategy Pattern
+## 1. Patron Strategy
 
-**Intent**: Define a family of algorithms, encapsulate each one, and make them interchangeable. The client code depends on the interface, not the concrete implementation.
+**Intention** : definir une famille d'algorithmes, encapsuler chacun d'eux, et les rendre interchangeables. Le code client depend de l'interface, pas de l'implementation concrete.
 
-**Structure**:
+**Structure** :
 ```
   +-----------+          +------------------+
   |  Context  |--------->|  <<interface>>   |
@@ -30,7 +30,7 @@ Design patterns are reusable solutions to commonly occurring problems in softwar
                   +-----------+    +----------+
 ```
 
-**Course example**: `Animal<F extends Fruit>` uses generics as a type-safe strategy for eating different fruit types.
+**Exemple du cours** : `Animal<F extends Fruit>` utilise les generiques comme une strategie type-safe pour manger differents types de fruits.
 
 ```java
 public abstract class Animal<F extends Fruit> {
@@ -48,15 +48,15 @@ public class Ecureuil extends Animal<Cone> {
 }
 ```
 
-**When to use**: when you have multiple ways to perform an operation and want to swap them without changing client code.
+**Quand l'utiliser** : lorsque vous avez plusieurs facons d'effectuer une operation et que vous voulez les interchanger sans modifier le code client.
 
 ---
 
-## 2. Observer Pattern
+## 2. Patron Observer
 
-**Intent**: Define a one-to-many dependency so that when one object (the subject) changes state, all its dependents (observers) are notified automatically.
+**Intention** : definir une dependance un-vers-plusieurs de sorte que lorsqu'un objet (le sujet) change d'etat, tous ses dependants (observateurs) soient notifies automatiquement.
 
-**Structure**:
+**Structure** :
 ```
   +-------------+          +------------------+
   |   Subject   |--------->|  <<interface>>   |
@@ -71,7 +71,7 @@ public class Ecureuil extends Animal<Cone> {
                            +---------------+
 ```
 
-**Exam example (2024-2025)**: The `Traitement` class uses an `Observateur` interface to notify observers based on input.
+**Exemple d'examen (2024-2025)** : la classe `Traitement` utilise une interface `Observateur` pour notifier les observateurs en fonction de l'entree.
 
 ```java
 public interface Observateur {
@@ -96,15 +96,15 @@ public class Traitement {
 }
 ```
 
-**When to use**: event systems, UI updates, publisher/subscriber scenarios.
+**Quand l'utiliser** : systemes d'evenements, mises a jour d'interface, scenarios editeur/abonne.
 
 ---
 
-## 3. Factory Pattern
+## 3. Patron Factory
 
-**Intent**: Provide an interface for creating objects without specifying their exact class. Let subclasses or a factory method decide which class to instantiate.
+**Intention** : fournir une interface pour creer des objets sans specifier leur classe exacte. Laisser les sous-classes ou une methode fabrique decider quelle classe instancier.
 
-### Simple Factory Method
+### Methode fabrique simple
 
 ```java
 public class A {
@@ -122,7 +122,7 @@ public class A {
 A obj = A.create(someB);   // cleaner than try/catch at call site
 ```
 
-### Factory with Subclass Selection
+### Fabrique avec selection de sous-classe
 
 ```java
 public abstract class Arbre<F extends Fruit> {
@@ -137,13 +137,13 @@ Pin pine = new Pin(8, 1.0);
 Cone cone = pine.produireFruit();        // factory method returns Cone
 ```
 
-**When to use**: when object creation logic is complex, when you want to decouple the client from specific classes, or when construction may fail.
+**Quand l'utiliser** : lorsque la logique de creation d'objets est complexe, lorsque vous voulez decoupler le client des classes specifiques, ou lorsque la construction peut echouer.
 
 ---
 
-## 4. Singleton Pattern
+## 4. Patron Singleton
 
-**Intent**: Ensure a class has exactly one instance and provide a global point of access to it.
+**Intention** : garantir qu'une classe n'a qu'une seule instance et fournir un point d'acces global a celle-ci.
 
 ```java
 public class Registry {
@@ -157,34 +157,34 @@ public class Registry {
 }
 ```
 
-**Caution**: Singletons make testing difficult because they introduce global state. Prefer dependency injection where possible.
+**Attention** : les singletons rendent les tests difficiles car ils introduisent un etat global. Preferez l'injection de dependances quand c'est possible.
 
 ---
 
-## 5. MVC (Model-View-Controller)
+## 5. MVC (Modele-Vue-Controleur)
 
-**Intent**: Separate an application into three interconnected components to separate concerns.
+**Intention** : separer une application en trois composants interconnectes pour separer les responsabilites.
 
 ```
-  +-------+     updates     +------+     renders     +------+
-  | Model | <-------------- | Ctrl | --------------> | View |
-  +-------+                 +------+                 +------+
+  +-------+     met a jour    +------+     affiche      +------+
+  | Model | <---------------- | Ctrl | --------------> | View |
+  +-------+                   +------+                 +------+
       |                         ^                        |
-      |      notifies           |       user input       |
+      |      notifie            |     entree utilisateur |
       +-------------------------+------------------------+
 ```
 
-- **Model**: data and business logic (e.g., `Arbre`, `Foret` classes)
-- **View**: presentation layer (displays data to user)
-- **Controller**: handles user input, updates model, selects view
+- **Modele** : donnees et logique metier (par ex., les classes `Arbre`, `Foret`)
+- **Vue** : couche de presentation (affiche les donnees a l'utilisateur)
+- **Controleur** : gere les entrees utilisateur, met a jour le modele, selectionne la vue
 
-In the CPOO course context, the TP code follows a simplified MVC where domain classes (Model) are tested independently of any UI.
+Dans le contexte du cours CPOO, le code TP suit un MVC simplifie ou les classes du domaine (Modele) sont testees independamment de toute interface graphique.
 
 ---
 
-## 6. Decorator Pattern
+## 6. Patron Decorator
 
-**Intent**: Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing.
+**Intention** : attacher dynamiquement des responsabilites supplementaires a un objet. Les decorateurs offrent une alternative flexible au sous-classement.
 
 ```
   +------------------+
@@ -226,9 +226,9 @@ class AvecLait implements Boisson {
 
 ---
 
-## 7. Composite Pattern
+## 7. Patron Composite
 
-**Intent**: Compose objects into tree structures to represent part-whole hierarchies. Clients treat individual objects and compositions uniformly.
+**Intention** : composer des objets en structures arborescentes pour representer des hierarchies tout-partie. Les clients traitent uniformement les objets individuels et les compositions.
 
 ```
   +------------------+
@@ -247,7 +247,7 @@ class AvecLait implements Boisson {
                 +-------------+
 ```
 
-**Exam example (2020-2021)**: Arithmetic formula tree where a node is either a literal value, a constant reference, or an operator (addition/subtraction) with two operands (left and right). The formula and all nodes are "calculable" -- they implement a `calculer(): double` method.
+**Exemple d'examen (2020-2021)** : arbre de formule arithmetique ou un noeud est soit une valeur litterale, une reference a une constante, ou un operateur (addition/soustraction) avec deux operandes (gauche et droite). La formule et tous les noeuds sont "calculables" -- ils implementent une methode `calculer(): double`.
 
 ```
   +------------------+
@@ -270,42 +270,42 @@ class AvecLait implements Boisson {
 
 ---
 
-## Patterns in the Course Material
+## Patrons dans le materiel de cours
 
-| Pattern | Where It Appears |
-|---------|-----------------|
-| Template Method | `Arbre.getPrix()` calls abstract `getPrixM3()` |
-| Strategy (via generics) | `Animal<F>` / `Arbre<F>` with type-specific behavior |
-| Factory Method | `A.create(B b)` static factory |
-| Observer | Exam 2024-2025 `Traitement`/`Observateur` |
-| Composite | Exam 2020-2021 arithmetic formula tree |
+| Patron | Ou il apparait |
+|--------|----------------|
+| Template Method | `Arbre.getPrix()` appelle l'abstraite `getPrixM3()` |
+| Strategy (via generiques) | `Animal<F>` / `Arbre<F>` avec comportement specifique au type |
+| Factory Method | `A.create(B b)` methode fabrique statique |
+| Observer | Examen 2024-2025 `Traitement`/`Observateur` |
+| Composite | Examen 2020-2021 arbre de formule arithmetique |
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Over-engineering**: do not apply patterns where a simple solution suffices.
-2. **Confusing Strategy and Template Method**: Strategy uses composition (object holds a strategy reference); Template Method uses inheritance (subclass overrides steps).
-3. **Singleton abuse**: in tests, singletons make mocking very difficult. The course teaches `mockConstruction` and `mockStatic` to work around this.
-4. **Missing the pattern in exam questions**: read UML text carefully for keywords like "composed of," "is-a," "has different types of" to identify which pattern fits.
+1. **Sur-ingenierie** : ne pas appliquer de patrons la ou une solution simple suffit.
+2. **Confondre Strategy et Template Method** : Strategy utilise la composition (l'objet detient une reference vers une strategie) ; Template Method utilise l'heritage (la sous-classe redefinie les etapes).
+3. **Abus du Singleton** : dans les tests, les singletons rendent le mocking tres difficile. Le cours enseigne `mockConstruction` et `mockStatic` pour contourner cela.
+4. **Ne pas reconnaitre le patron dans les questions d'examen** : lisez attentivement le texte UML pour des mots-cles comme "compose de", "est-un", "possede differents types de" pour identifier le patron qui convient.
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-STRATEGY        = interface + multiple implementations, context holds reference
-OBSERVER        = subject notifies observers on state change (1-to-many)
-FACTORY         = static method or separate class creates objects
-SINGLETON       = private constructor + static getInstance()
-MVC             = Model (data) + View (display) + Controller (logic)
-DECORATOR       = wraps an object, adds behavior, same interface
-COMPOSITE       = tree structure, leaf and composite share interface
-TEMPLATE METHOD = base class algorithm, subclasses override steps
+STRATEGY        = interface + implementations multiples, le contexte detient une reference
+OBSERVER        = le sujet notifie les observateurs lors d'un changement d'etat (1-vers-plusieurs)
+FACTORY         = methode statique ou classe separee qui cree des objets
+SINGLETON       = constructeur prive + getInstance() statique
+MVC             = Modele (donnees) + Vue (affichage) + Controleur (logique)
+DECORATOR       = enveloppe un objet, ajoute du comportement, meme interface
+COMPOSITE       = structure arborescente, feuille et composite partagent la meme interface
+TEMPLATE METHOD = algorithme dans la classe de base, les sous-classes redefinissent les etapes
 
-EXAM KEYWORDS TO PATTERN MAPPING:
-  "different types of X"        -> Inheritance / Strategy
-  "composed of / contains"      -> Composite / Aggregation
-  "notify / update"             -> Observer
-  "create / factory"            -> Factory Method
-  "tree structure / recursive"  -> Composite
-  "wraps / adds behavior"       -> Decorator
+MOTS-CLES D'EXAMEN -> CORRESPONDANCE PATRON :
+  "differents types de X"        -> Heritage / Strategy
+  "compose de / contient"        -> Composite / Agregation
+  "notifier / mettre a jour"     -> Observer
+  "creer / fabrique"             -> Factory Method
+  "structure arborescente / recursif" -> Composite
+  "enveloppe / ajoute du comportement" -> Decorator
 ```

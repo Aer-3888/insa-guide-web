@@ -1,11 +1,11 @@
 ---
-title: "TP4 - Emploi du Temps (Time Scheduling)"
+title: "TP4 - Emploi du Temps"
 sidebar_position: 4
 ---
 
-# TP4 - Emploi du Temps (Time Scheduling)
+# TP4 - Emploi du Temps
 
-> Following teacher instructions from: `S5/SDD/data/moodle/tp/tp4_scheduling/README.md`
+> D'apres les consignes de l'enseignant : `S5/SDD/data/moodle/tp/tp4_scheduling/README.md`
 
 ## Objectif
 
@@ -28,7 +28,7 @@ Utiliser `java.util.HashMap` pour modeliser un systeme d'emploi du temps univers
 
 Creer une classe valeur representant un creneau horaire (jour + heure). Elle doit fonctionner correctement comme cle de HashMap.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -68,7 +68,7 @@ public class Schedule {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - `equals()` compare jour et heure. Deux Schedule avec le meme jour et la meme heure sont egaux.
 - `hashCode()` multiplie par le nombre premier 31 pour repartir les valeurs de hash. La formule combine les deux champs pour que (MONDAY, 8) et (MONDAY, 10) produisent des hash differents.
 - Le contrat `equals`/`hashCode` est essentiel : si on redefinit `equals()`, on DOIT redefinir `hashCode()` de maniere coherente pour que HashMap fonctionne.
@@ -81,7 +81,7 @@ public class Schedule {
 
 Structure : `Map<String, Map<Schedule, String>>` -- la map externe a les noms d'enseignants comme cles. La map interne utilise `Schedule` comme cle et le nom du cours comme valeur.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -120,7 +120,7 @@ public class TimeTable {
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - `putIfAbsent` verifie atomiquement si une cle existe et n'insere que si elle est absente. Retourne `null` en cas de succes (creneau libre -> retourne `true`) ou la valeur existante en cas de conflit (retourne `false`).
 - Les heures doivent etre paires (blocs de 2h), entre 0 et 22.
 - Les enseignants inconnus sont ajoutes automatiquement.
@@ -131,7 +131,7 @@ public class TimeTable {
 
 ### Implementer getTimeTable
 
-**Answer:**
+**Reponse :**
 
 ```java
     public Map<Schedule, String> getTimeTable(String teacher)
@@ -142,7 +142,7 @@ public class TimeTable {
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Retourne `null` pour un enseignant inconnu, ou la map de creneaux de l'enseignant.
 
 ---
@@ -151,7 +151,7 @@ Retourne `null` pour un enseignant inconnu, ou la map de creneaux de l'enseignan
 
 ### Implementer classesAtTenAMOnMonday -- combien d'enseignants ont un cours lundi a 10h ?
 
-**Answer:**
+**Reponse :**
 
 ```java
     public int classesAtTenAMOnMonday() {
@@ -163,7 +163,7 @@ Retourne `null` pour un enseignant inconnu, ou la map de creneaux de l'enseignan
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 `containsKey` utilise notre `equals()`/`hashCode()` personnalise sur `Schedule`. La creation d'un `new Schedule(MONDAY, 10)` correspondra a tout Schedule existant avec le meme jour et la meme heure.
 
 ---
@@ -172,7 +172,7 @@ Retourne `null` pour un enseignant inconnu, ou la map de creneaux de l'enseignan
 
 ### Implementer classesOnMonday -- nombre total de cours le lundi pour tous les enseignants
 
-**Answer:**
+**Reponse :**
 
 ```java
     public int classesOnMonday() {
@@ -186,7 +186,7 @@ Retourne `null` pour un enseignant inconnu, ou la map de creneaux de l'enseignan
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 On parcourt toutes les maps internes et on compte les Schedule dont le jour est MONDAY. `DayOfWeek` est un enum, donc `==` fonctionne.
 
 ---
@@ -195,7 +195,7 @@ On parcourt toutes les maps internes et on compte les Schedule dont le jour est 
 
 ### Implementer earlyBirdTeacher -- l'enseignant avec le plus de cours avant midi
 
-**Answer:**
+**Reponse :**
 
 ```java
     public String earlyBirdTeacher() {
@@ -220,7 +220,7 @@ On parcourt toutes les maps internes et on compte les Schedule dont le jour est 
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Premiere passe : compter les cours matinaux par enseignant. Deuxieme passe : trouver le maximum. `getOrDefault` evite les NullPointerException pour les enseignants non encore comptes.
 
 ---
@@ -229,7 +229,7 @@ Premiere passe : compter les cours matinaux par enseignant. Deuxieme passe : tro
 
 ### Implementer versatileTeacher -- l'enseignant qui enseigne le plus de cours distincts
 
-**Answer:**
+**Reponse :**
 
 ```java
     public String versatileTeacher() {
@@ -250,7 +250,7 @@ Premiere passe : compter les cours matinaux par enseignant. Deuxieme passe : tro
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Convertir les valeurs en `Set` supprime les doublons, donnant le nombre de cours *distincts*. Un enseignant qui fait "SDD" 3 fois par semaine aura `classes.size() == 1`.
 
 ---
@@ -261,7 +261,7 @@ Convertir les valeurs en `Set` supprime les doublons, donnant le nombre de cours
 
 De `enseignant -> (creneau -> cours)` vers `creneau -> (enseignant -> cours)`.
 
-**Answer:**
+**Reponse :**
 
 ```java
     public Map<Schedule, Map<String, String>> buildReverseTable() {
@@ -277,7 +277,7 @@ De `enseignant -> (creneau -> cours)` vers `creneau -> (enseignant -> cours)`.
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 La table inversee regroupe tous les enseignants par creneau horaire. Pour chaque couple (enseignant, creneau, cours), on ajoute une entree dans la map associee au creneau.
 
 ---
@@ -286,7 +286,7 @@ La table inversee regroupe tous les enseignants par creneau horaire. Pour chaque
 
 ### Implementer minimalNumberOfClassRooms -- nombre maximum de cours simultanes
 
-**Answer:**
+**Reponse :**
 
 ```java
     public int minimalNumberOfClassRooms() {
@@ -299,7 +299,7 @@ La table inversee regroupe tous les enseignants par creneau horaire. Pour chaque
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 La table inversee associe chaque creneau a l'ensemble des enseignants actifs a ce moment. Le plus grand ensemble determine le pic de demande, donc le nombre minimum de salles necessaires.
 
 ---

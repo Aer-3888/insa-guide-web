@@ -1,26 +1,26 @@
 ---
-title: "LDS1 - Python Basics & Sorting Algorithms"
+title: "LDS1 - Bases de Python et algorithmes de tri"
 sidebar_position: 8
 ---
 
-# LDS1 - Python Basics & Sorting Algorithms
+# LDS1 - Bases de Python et algorithmes de tri
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-Introduction to Python programming with focus on data structures and algorithms:
+Introduction a la programmation Python avec un accent sur les structures de donnees et les algorithmes :
 
-- Python syntax and basic structures
-- Lists and list comprehensions
-- Functions and parameter passing
-- Object-oriented programming (classes)
-- Sorting algorithm implementation
-- Performance measurement with time module
+- Syntaxe Python et structures de base
+- Listes et comprehensions de listes
+- Fonctions et passage de parametres
+- Programmation orientee objet (classes)
+- Implementation d'algorithmes de tri
+- Mesure de performance avec le module time
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. Python Basics
+### 1. Bases de Python
 
-**Variables & Types**:
+**Variables et types** :
 ```python
 x = 42                    # Integer
 name = "Alice"            # String
@@ -28,7 +28,7 @@ values = [1, 2, 3]        # List
 is_valid = True           # Boolean
 ```
 
-**Functions**:
+**Fonctions** :
 ```python
 def function_name(param1, param2):
     """Docstring describing function"""
@@ -36,7 +36,7 @@ def function_name(param1, param2):
     return result
 ```
 
-**Lists**:
+**Listes** :
 ```python
 # Creation
 lst = [1, 2, 3, 4, 5]
@@ -57,7 +57,7 @@ lst.remove(3)              # Remove value 3
 sublst = lst[1:4]          # Elements 1,2,3
 ```
 
-**List Comprehensions**:
+**Comprehensions de listes** :
 ```python
 # Create list with expression
 squares = [x**2 for x in range(10)]
@@ -66,9 +66,9 @@ squares = [x**2 for x in range(10)]
 evens = [x for x in range(10) if x % 2 == 0]
 ```
 
-### 2. Object-Oriented Programming
+### 2. Programmation orientee objet
 
-**Classes**:
+**Classes** :
 ```python noexec
 class TableauTri:
     """Class for sortable array"""
@@ -88,16 +88,16 @@ class TableauTri:
         pass
 ```
 
-**Key OOP Concepts**:
+**Concepts cles de la POO** :
 - `__init__`: Constructor method
 - `self`: Reference to instance
 - Instance variables: `self.variable`
 - Methods: Functions belonging to class
 
-### 3. Sorting Algorithms
+### 3. Algorithmes de tri
 
-#### Selection Sort
-Find minimum in unsorted portion, swap with first unsorted element.
+#### Tri par selection
+Trouver le minimum dans la partie non triee, echanger avec le premier element non trie.
 
 **Complexity**: O(n²)
 
@@ -114,8 +114,8 @@ def selection_sort(lst):
     return lst
 ```
 
-#### Insertion Sort
-Build sorted portion by inserting each element in correct position.
+#### Tri par insertion
+Construire la partie triee en inserant chaque element a la bonne position.
 
 **Complexity**: O(n²), but efficient for nearly-sorted data
 
@@ -131,8 +131,8 @@ def insertion_sort(lst):
     return lst
 ```
 
-#### Quicksort
-Divide-and-conquer: partition around pivot, recursively sort partitions.
+#### Tri rapide (Quicksort)
+Diviser pour regner : partitionner autour d'un pivot, trier recursivement les partitions.
 
 **Complexity**: O(n log n) average, O(n²) worst case
 
@@ -147,8 +147,8 @@ def quicksort(lst):
     return quicksort(left) + middle + quicksort(right)
 ```
 
-#### Merge Sort
-Divide-and-conquer: split in half, recursively sort, merge sorted halves.
+#### Tri fusion (Merge Sort)
+Diviser pour regner : couper en deux, trier recursivement, fusionner les moities triees.
 
 **Complexity**: O(n log n), stable
 
@@ -176,7 +176,7 @@ def merge(left, right):
     return result
 ```
 
-### 4. Performance Measurement
+### 4. Mesure de performance
 
 ```python noexec
 from time import time
@@ -188,51 +188,51 @@ elapsed = end - start
 print(f"Elapsed time: {elapsed:.6f} seconds")
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Random Array Initialization
-Create function to generate random arrays for testing.
+### Exercice 1 : Initialisation de tableaux aleatoires
+Creer une fonction pour generer des tableaux aleatoires pour les tests.
 
-**Concepts**: Functions, random module, list comprehensions
+**Concepts** : Functions, random module, list comprehensions
 
-### Exercise 2: Implement Sorting Algorithms
-Implement multiple sorting algorithms as class methods.
+### Exercice 2 : Implementer les algorithmes de tri
+Implementer plusieurs algorithmes de tri comme methodes de classe.
 
-**Algorithms**:
+**Algorithmes** :
 - Selection sort
 - Insertion sort
 - Quicksort
 - Merge sort
 
-### Exercise 3: Performance Comparison
-Measure execution time of different algorithms on various array sizes.
+### Exercice 3 : Comparaison de performances
+Mesurer le temps d'execution des differents algorithmes sur des tableaux de tailles variees.
 
-**Analysis**:
+**Analyse** :
 - Small arrays (n < 100)
 - Medium arrays (n ~ 1000)
 - Large arrays (n ~ 10000)
 
-### Exercise 4: Visualization
-Create simple visualization or statistics of sorting performance.
+### Exercice 4 : Visualisation
+Creer une visualisation simple ou des statistiques de performance des algorithmes de tri.
 
 ## Solutions
 
-See `src/` directory for:
-- `progimp.py` - Simple implementations
-- `tableau_tri.py` - Complete class-based solution with all algorithms
-- `performance_test.py` - Benchmark different algorithms
+Voir le repertoire `src/` pour:
+- `progimp.py` - Implementations simples
+- `tableau_tri.py` - Solution complete basee sur les classes avec tous les algorithmes
+- `performance_test.py` - Benchmark des differents algorithmes
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Python is concise** - List comprehensions, slicing, tuple unpacking
-2. **OOP for organization** - Classes group related data and methods
+1. **Python est concis** - Comprehensions de listes, tranches, deballage de tuples
+2. **La POO pour l'organisation** - Les classes regroupent donnees et methodes liees
 3. **Algorithm complexity matters** - O(n²) vs O(n log n) significant for large data
-4. **Python built-in sort is fast** - Uses Timsort (optimized merge/insertion hybrid)
-5. **Profile before optimizing** - Measure actual performance
+4. **Le tri integre de Python est rapide** - Utilise Timsort (hybride fusion/insertion optimise)
+5. **Profiler avant d'optimiser** - Mesurer les performances reelles
 
-## Common Patterns
+## Motifs courants
 
-### Array Initialization
+### Initialisation de tableaux
 ```python noexec
 # Fixed size with zeros
 arr = [0] * n
@@ -245,7 +245,7 @@ arr = [random.randint(min, max) for _ in range(n)]
 arr = list(existing_data)
 ```
 
-### In-Place vs New Array
+### En place vs nouveau tableau
 ```python noexec
 # In-place (modifies original)
 lst.sort()
@@ -254,29 +254,29 @@ lst.sort()
 sorted_lst = sorted(lst)
 ```
 
-### Swapping
+### Echange
 ```python noexec
 # Python idiom (no temp variable needed)
 a, b = b, a
 lst[i], lst[j] = lst[j], lst[i]
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Forgetting self in methods** - Methods need `self` parameter
-2. **Modifying list while iterating** - Creates unexpected behavior
-3. **Not returning from functions** - Functions return None by default
-4. **Shallow vs deep copy** - `lst.copy()` vs `copy.deepcopy(lst)`
-5. **Range off-by-one errors** - `range(n)` goes 0 to n-1
+1. **Oublier self dans les methodes** - Les methodes necessitent le parametre `self`
+2. **Modifier une liste pendant l'iteration** - Cree un comportement inattendu
+3. **Ne pas retourner depuis les fonctions** - Les fonctions retournent None par defaut
+4. **Copie superficielle vs profonde** - `lst.copy()` vs `copy.deepcopy(lst)`
+5. **Erreurs de bornes avec range** - `range(n)` va de 0 a n-1
 
-## Further Reading
+## Pour aller plus loin
 
 - Python Tutorial: https://docs.python.org/3/tutorial/
 - Sorting algorithms: https://visualgo.net/en/sorting
 - Time complexity: Big O notation
 - Python's Timsort: https://en.wikipedia.org/wiki/Timsort
 
-## Sorting Algorithm Comparison
+## Comparaison des algorithmes de tri
 
 | Algorithm | Best | Average | Worst | Space | Stable |
 |-----------|------|---------|-------|-------|--------|
@@ -286,9 +286,9 @@ lst[i], lst[j] = lst[j], lst[i]
 | Merge Sort | O(n log n) | O(n log n) | O(n log n) | O(n) | Yes |
 | Python sort | O(n) | O(n log n) | O(n log n) | O(n) | Yes |
 
-**When to use**:
-- Selection: Educational, simple to understand
-- Insertion: Small arrays, nearly-sorted data
-- Quicksort: General purpose, in-place
-- Merge Sort: Guaranteed O(n log n), stable
-- Python sort: Production code (Timsort is optimized)
+**Quand utiliser** :
+- Selection : educatif, simple a comprendre
+- Insertion : petits tableaux, donnees presque triees
+- Quicksort : usage general, en place
+- Tri fusion : O(n log n) garanti, stable
+- sort Python : code de production (Timsort est optimise)

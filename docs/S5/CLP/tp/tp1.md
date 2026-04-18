@@ -1,25 +1,25 @@
 ---
-title: "TP1 - Introduction to ARM Assembly"
+title: "TP1 - Introduction a l'assembleur ARM"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction to ARM Assembly
+# TP1 - Introduction a l'assembleur ARM
 
-## Overview
+## Presentation
 
-This lab introduces fundamental ARM assembly concepts through the implementation of the GCD (Greatest Common Divisor) algorithm. Two implementations are provided, demonstrating different coding styles and approaches.
+Ce TP introduit les concepts fondamentaux de l'assembleur ARM a travers l'implementation de l'algorithme du PGCD (Plus Grand Commun Diviseur). Deux implementations sont fournies, illustrant differents styles de codage et approches.
 
-## Exercises
+## Exercices
 
 ### 1. assembleur_TP1.s
-Basic ARM assembly exercise with GCD computation (French-style implementation).
+Exercice d'assembleur ARM de base avec calcul du PGCD (implementation en style francais).
 
 ### 2. pgcd.s
-GCD computation using Euclid's algorithm (English-style implementation with detailed comments).
+Calcul du PGCD utilisant l'algorithme d'Euclide (implementation en style anglais avec commentaires detailles).
 
-## GCD Algorithm (Euclid's Algorithm)
+## Algorithme du PGCD (algorithme d'Euclide)
 
-The Greatest Common Divisor is computed using the Euclidean algorithm:
+Le Plus Grand Commun Diviseur est calcule a l'aide de l'algorithme d'Euclide :
 
 ```
 function gcd(a, b):
@@ -33,41 +33,41 @@ function gcd(a, b):
         return gcd(a, b - a)
 ```
 
-This is a recursive algorithm that repeatedly subtracts the smaller value from the larger until they are equal.
+C'est un algorithme recursif qui soustrait de maniere repetee la plus petite valeur de la plus grande jusqu'a ce qu'elles soient egales.
 
-## Key ARM Concepts Demonstrated
+## Concepts ARM cles illustres
 
-### 1. Stack Management
+### 1. Gestion de la pile
 
-**Full Descending Stack** (standard ARM convention):
+**Pile descendante pleine** (convention ARM standard) :
 ```assembly
 stmfd sp!, {r0, r1}    @ Push r0 and r1 onto stack
 ldmfd sp!, {r0, r1}    @ Pop from stack back into r0 and r1
 ```
 
-The `!` suffix means "writeback" - update SP after the operation.
+Le suffixe `!` signifie "reecriture" - mettre a jour SP apres l'operation.
 
-### 2. Function Calling Convention
+### 2. Convention d'appel de fonction
 
-**Caller responsibilities**:
-1. Push arguments onto stack (right to left)
-2. Reserve space for return value
-3. Call function with `bl`
-4. Retrieve return value from stack
-5. Clean up arguments from stack
+**Responsabilites de l'appelant** :
+1. Empiler les arguments sur la pile (de droite a gauche)
+2. Reserver de l'espace pour la valeur de retour
+3. Appeler la fonction avec `bl`
+4. Recuperer la valeur de retour depuis la pile
+5. Nettoyer les arguments de la pile
 
-**Callee responsibilities**:
-1. Save LR (return address) and FP (frame pointer)
-2. Set up new frame pointer
-3. Save registers that will be modified
-4. Execute function logic
-5. Store return value at correct stack offset
-6. Restore registers, FP, and LR
-7. Return with `bx lr`
+**Responsabilites de l'appele** :
+1. Sauvegarder LR (adresse de retour) et FP (pointeur de cadre)
+2. Etablir le nouveau pointeur de cadre
+3. Sauvegarder les registres qui seront modifies
+4. Executer la logique de la fonction
+5. Stocker la valeur de retour au bon decalage dans la pile
+6. Restaurer les registres, FP et LR
+7. Retourner avec `bx lr`
 
-### 3. Stack Frame Layout
+### 3. Organisation du cadre de pile
 
-For a function call `pgcd(a, b)` returning `res`:
+Pour un appel de fonction `pgcd(a, b)` retournant `res` :
 
 ```
 High memory
@@ -87,16 +87,16 @@ SP->+------------------+
 Low memory
 ```
 
-Offsets defined with `.equ`:
+Decalages definis avec `.equ` :
 ```assembly
 .equ a, 12        @ Offset to parameter a
 .equ b, 16        @ Offset to parameter b  
 .equ res, 8       @ Offset to return value
 ```
 
-### 4. Recursive Function Calls
+### 4. Appels de fonctions recursifs
 
-Recursion in assembly requires careful stack management:
+La recursivite en assembleur necessite une gestion soigneuse de la pile :
 
 ```assembly
 @ Recursive call: pgcd(a-b, b)
@@ -109,9 +109,9 @@ add sp, sp, #8          @ Clean up arguments
 str r0, [fp, #res]      @ Store in our return location
 ```
 
-### 5. Conditional Branching
+### 5. Branchements conditionnels
 
-The algorithm uses comparisons and conditional branches:
+L'algorithme utilise des comparaisons et des branchements conditionnels :
 
 ```assembly
 cmp r0, #0              @ Compare r0 with 0
@@ -123,39 +123,39 @@ bgt retP1               @ Branch if greater than (a > b)
                         @ Fall through to else case (a < b)
 ```
 
-### 6. Memory Access
+### 6. Acces memoire
 
-**Loading data from memory**:
+**Chargement de donnees depuis la memoire** :
 ```assembly
 ldr r0, =x              @ Load address of x into r0
 ldr r0, [r0]            @ Load value at address into r0
 ```
 
-**Two-stage process**:
-1. `ldr r0, =x` - Get address (pseudo-instruction)
-2. `ldr r0, [r0]` - Dereference pointer
+**Processus en deux etapes** :
+1. `ldr r0, =x` - Obtenir l'adresse (pseudo-instruction)
+2. `ldr r0, [r0]` - Dereferencement du pointeur
 
-**Storing to stack**:
+**Stockage dans la pile** :
 ```assembly
 str r2, [fp, #res]      @ Store r2 at offset 'res' from FP
 ```
 
-## Instruction Set Reference
+## Reference du jeu d'instructions
 
-### Data Movement
+### Deplacement de donnees
 - `MOV rd, op2` - Move operand2 to destination register
 - `LDR rd, [addr]` - Load 32-bit word from memory
 - `STR rs, [addr]` - Store 32-bit word to memory
 
-### Stack Operations  
+### Operations de pile
 - `STMFD sp!, {list}` - Store multiple, full descending, writeback
 - `LDMFD sp!, {list}` - Load multiple, full descending, writeback
 
-### Arithmetic
+### Arithmetique
 - `ADD rd, rn, op2` - rd = rn + op2
 - `SUB rd, rn, op2` - rd = rn - op2
 
-### Branch/Compare
+### Branchement/Comparaison
 - `CMP rn, op2` - Compare (sets condition flags)
 - `B label` - Unconditional branch
 - `BL label` - Branch with link (call function)
@@ -165,9 +165,9 @@ str r2, [fp, #res]      @ Store r2 at offset 'res' from FP
 - `BGT label` - Branch if greater than (signed)
 - `BLT label` - Branch if less than (signed)
 
-## Register Usage
+## Utilisation des registres
 
-In these implementations:
+Dans ces implementations :
 - **r0**: First parameter (a), intermediate calculations
 - **r1**: Second parameter (b), intermediate calculations
 - **r2**: Result value before storing
@@ -176,9 +176,9 @@ In these implementations:
 - **LR (r14)**: Return address (link register)
 - **FP (r11)**: Frame pointer (base for accessing parameters/locals)
 
-## Assembly Directives
+## Directives d'assemblage
 
-### Section Definitions
+### Definitions de sections
 ```assembly
 .data                   @ Initialized data section
 .bss                    @ Uninitialized data section
@@ -186,7 +186,7 @@ In these implementations:
 .global _start          @ Make _start visible to linker
 ```
 
-### Data Definitions
+### Definitions de donnees
 ```assembly
 .word value             @ Define 32-bit word
 .byte value             @ Define 8-bit byte
@@ -195,13 +195,13 @@ In these implementations:
 .align                  @ Align to word boundary
 ```
 
-### Constants
+### Constantes
 ```assembly
 .equ name, value        @ Define assembly-time constant
 .set name, value        @ Alternative syntax
 ```
 
-## Building and Running
+## Compilation et execution
 
 ### Compilation
 ```bash
@@ -214,13 +214,13 @@ arm-linux-gnueabi-as -o pgcd.o src/pgcd.s
 arm-linux-gnueabi-ld -o pgcd pgcd.o
 ```
 
-### Running with QEMU
+### Execution avec QEMU
 ```bash
 qemu-arm ./tp1
 echo $?    # Check exit code (result may be in r0)
 ```
 
-### Debugging
+### Debogage
 ```bash
 arm-linux-gnueabi-gdb ./tp1
 (gdb) break pgcd
@@ -230,7 +230,7 @@ arm-linux-gnueabi-gdb ./tp1
 (gdb) stepi             # Step one instruction
 ```
 
-## Expected Results
+## Resultats attendus
 
 ### assembleur_TP1.s
 - Input: `x = 666, y = 666`
@@ -240,42 +240,42 @@ arm-linux-gnueabi-gdb ./tp1
 - Input: `a = 24, b = 18`
 - Expected output: `res = 6` (GCD of 24 and 18 is 6)
 
-**Verification**:
-- 24 = 4 × 6
-- 18 = 3 × 6
-- No larger number divides both
+**Verification** :
+- 24 = 4 x 6
+- 18 = 3 x 6
+- Aucun nombre plus grand ne divise les deux
 
-## Study Exercises
+## Exercices d'entrainement
 
-1. **Trace Execution**: Draw the stack state after each function call for `gcd(24, 18)`
-2. **Modify Values**: Change the initial values of a and b and verify the result
-3. **Iterative Version**: Implement GCD iteratively (without recursion) to compare approaches
-4. **Optimization**: Notice the subtraction-based algorithm is slow. Research the modulo-based version: `gcd(a, b) = gcd(b, a mod b)`
+1. **Tracer l'execution** : Dessiner l'etat de la pile apres chaque appel de fonction pour `pgcd(24, 18)`
+2. **Modifier les valeurs** : Changer les valeurs initiales de a et b et verifier le resultat
+3. **Version iterative** : Implementer le PGCD de maniere iterative (sans recursion) pour comparer les approches
+4. **Optimisation** : Remarquer que l'algorithme par soustraction est lent. Rechercher la version par modulo : `pgcd(a, b) = pgcd(b, a mod b)`
 
-## Common Errors and Solutions
+## Erreurs courantes et solutions
 
-### Stack Imbalance
-**Problem**: Program crashes or wrong results
-**Cause**: Mismatched push/pop operations
-**Solution**: Ensure every `stmfd sp!, {...}` has corresponding `ldmfd sp!, {...}` with same registers
+### Desequilibre de pile
+**Probleme** : Le programme plante ou donne de mauvais resultats
+**Cause** : Operations push/pop non appariees
+**Solution** : S'assurer que chaque `stmfd sp!, {...}` a un `ldmfd sp!, {...}` correspondant avec les memes registres
 
-### Wrong Offsets
-**Problem**: Loading wrong values for parameters
-**Cause**: Incorrect calculation of `.equ` offsets
-**Solution**: Draw stack layout, count bytes from FP
+### Mauvais decalages
+**Probleme** : Chargement de mauvaises valeurs pour les parametres
+**Cause** : Calcul incorrect des decalages `.equ`
+**Solution** : Dessiner l'organisation de la pile, compter les octets depuis FP
 
-### Missing LR Save
-**Problem**: Infinite recursion or crash
-**Cause**: Calling another function without saving LR first
-**Solution**: Always `stmfd sp!, {lr}` before `bl` if your function calls others
+### Sauvegarde de LR manquante
+**Probleme** : Recursion infinie ou crash
+**Cause** : Appel d'une autre fonction sans sauvegarder LR d'abord
+**Solution** : Toujours faire `stmfd sp!, {lr}` avant `bl` si votre fonction appelle d'autres fonctions
 
-### Frame Pointer Not Set
-**Problem**: Unable to access parameters correctly
-**Cause**: Forgot `mov fp, sp` after saving old FP
-**Solution**: Set up FP immediately after saving it
+### Pointeur de cadre non etabli
+**Probleme** : Impossible d'acceder correctement aux parametres
+**Cause** : Oubli de `mov fp, sp` apres la sauvegarde de l'ancien FP
+**Solution** : Etablir FP immediatement apres l'avoir sauvegarde
 
 ## References
 
-- ARM Architecture Reference Manual: Calling Convention
-- Course slides: `../../cours/ARM/AssembleurARM - 2020-2021.pdf`
-- ARM Instruction Reference: `../../cours/ARM/arm-cheatsheet.pdf`
+- Manuel de reference de l'architecture ARM : Convention d'appel
+- Diapositives du cours : `../../cours/ARM/AssembleurARM - 2020-2021.pdf`
+- Reference des instructions ARM : `../../cours/ARM/arm-cheatsheet.pdf`

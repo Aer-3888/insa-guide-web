@@ -251,7 +251,7 @@ membre(X, [_|T]) :- membre(X, T).
 
 ---
 
-## CHEAT SHEET -- Arbres de resolution
+## AIDE-MEMOIRE -- Arbres de resolution
 
 ```
 CONSTRUCTION

@@ -107,7 +107,7 @@ Le maitre distribue le travail dynamiquement aux esclaves qui en demandent.
 
 ## 4. Patterns de communication en MPI
 
-### Halo exchange (echange de bordures)
+### Echange de halos (echange de bordures)
 
 Pattern fondamental pour les calculs stencil distribues. Chaque processus echange ses lignes de bord avec ses voisins.
 
@@ -175,7 +175,7 @@ if (delta_total < SEUIL) break;
 
 ---
 
-## CHEAT SHEET -- Algorithmes paralleles
+## AIDE-MEMOIRE -- Algorithmes paralleles
 
 ```
 Decomposition :
@@ -194,7 +194,7 @@ Equilibrage de charge :
 
 Patterns de communication :
   - Bcast + calcul + Reduce : donnees communes + distribution
-  - Halo exchange : stencils distribues (ghost zones)
+  - Echange de halos : stencils distribues (zones fantomes)
   - Recouvrement : Isend/Irecv + calcul + Wait
 
 Convergence distribuee :

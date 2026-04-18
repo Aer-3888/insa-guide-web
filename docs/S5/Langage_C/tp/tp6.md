@@ -6,40 +6,40 @@ sidebar_position: 6
 # TP6 - Analyse de Fichiers GEDCOM et Automates
 
 ## Objectifs
-- Analyser des fichiers structurés (format GEDCOM)
-- Implémenter un automate à états finis
+- Analyser des fichiers structures (format GEDCOM)
+- Implementer un automate a etats finis
 - Utiliser des pointeurs de fonctions pour les transitions
-- Parser des données généalogiques
-- Gérer des variables statiques
+- Parser des donnees genealogiques
+- Gerer des variables statiques
 
-## Contexte: Format GEDCOM
+## Contexte : Format GEDCOM
 
-GEDCOM (GEnealogical Data COMmunication) est un format standard pour échanger des données généalogiques.
+GEDCOM (GEnealogical Data COMmunication) est un format standard pour echanger des donnees genealogiques.
 
-**Structure:**
+**Structure :**
 - Chaque ligne contient une balise (INDI, NAME, BIRT, OCCU, etc.)
-- Les données sont organisées hiérarchiquement
+- Les donnees sont organisees hierarchiquement
 - Permet de retrouver les individus, leurs noms, professions, dates de naissance, etc.
 
-**Exemple de fichier GEDCOM:**
+**Exemple de fichier GEDCOM :**
 ```
 0 @I1@ INDI
 1 NAME Jean /Dupont/
 1 BIRT
 2 DATE 1 JAN 1950
-1 OCCU Ingénieur
+1 OCCU Ingenieur
 ```
 
-## Automate à États Finis
+## Automate a Etats Finis
 
-Un automate permet de parser le fichier ligne par ligne en changeant d'état selon les balises rencontrées.
+Un automate permet de parser le fichier ligne par ligne en changeant d'etat selon les balises rencontrees.
 
-**États:**
-- `EINIT` : État initial (recherche d'individu)
-- `EINDI` : Individu détecté (en attente du nom)
-- `ENAME` : Nom détecté (peut aller vers profession)
+**Etats :**
+- `EINIT` : Etat initial (recherche d'individu)
+- `EINDI` : Individu detecte (en attente du nom)
+- `ENAME` : Nom detecte (peut aller vers profession)
 
-**Transitions:**
+**Transitions :**
 ```
 EINIT --[INDI]--> EINDI
 EINDI --[NAME]--> ENAME
@@ -50,13 +50,13 @@ ENAME --[INDI]--> EINDI (nouvel individu)
 ## Structure de l'Automate
 
 ```c noexec
-/* États possibles */
+/* Etats possibles */
 typedef enum {EINIT, EINDI, ENAME, NBETAT} Etat;
 
 /* Structure de l'automate */
 typedef struct {
-    Etat etat;      /* État courant */
-    char nom[TMAX]; /* Mémorise le nom en cours */
+    Etat etat;      /* Etat courant */
+    char nom[TMAX]; /* Memorise le nom en cours */
 } EtatAutomate;
 ```
 
@@ -67,25 +67,25 @@ typedef struct {
 
 ### Automate
 - `int recherche(char *str, char *chIndi, char *extract, ...)` 
-  - Fonction générique de recherche par automate
+  - Fonction generique de recherche par automate
   - Utilise des pointeurs de fonction pour personnaliser les transitions
 
 ### Traitement des Balises
-- Détection des balises: `INDI`, `NAME`, `OCCU`, `BIRT`, etc.
-- Extraction des données utiles
-- Variables statiques pour mémoriser l'état entre les appels
+- Detection des balises : `INDI`, `NAME`, `OCCU`, `BIRT`, etc.
+- Extraction des donnees utiles
+- Variables statiques pour memoriser l'etat entre les appels
 
 ## Exercices du TP
 
 1. **Compter les femmes/hommes** dans le fichier (balise SEX)
 2. **Compter les naissances** (balise BIRT)
-3. **Trouver les professions contenant un mot** (ex: "sabot")
-4. **Identifier la variable mémorisant le nom** (variable statique dans l'automate)
-5. **Comprendre les transitions programmées** dans le code fourni
-6. **Créer automaton.h** et tester la fonction
-7. **Afficher tous les individus** dont la profession contient un mot donné
+3. **Trouver les professions contenant un mot** (ex : "sabot")
+4. **Identifier la variable memorisant le nom** (variable statique dans l'automate)
+5. **Comprendre les transitions programmees** dans le code fourni
+6. **Creer automaton.h** et tester la fonction
+7. **Afficher tous les individus** dont la profession contient un mot donne
 
-## Compilation et Exécution
+## Compilation et Execution
 
 ```bash
 cd tp6/src
@@ -94,7 +94,7 @@ cd tp6/src
 make simple
 ./simple
 
-# Version complète (avec automate)
+# Version complete (avec automate)
 make gedcom
 ./gedcom fichier.ged
 ```
@@ -105,12 +105,12 @@ make gedcom
 ```c noexec
 static EtatAutomate etatA = {EINIT, ""};
 ```
-Une variable statique conserve sa valeur entre les appels de fonction (mémorisation de l'état).
+Une variable statique conserve sa valeur entre les appels de fonction (memorisation de l'etat).
 
 ### 2. Pointeurs de Fonctions
 ```c noexec
 int (*scanner)(char *str, char *chIndi, char *extract);
-scanner = sscanf;  /* Fonction à utiliser pour l'extraction */
+scanner = sscanf;  /* Fonction a utiliser pour l'extraction */
 ```
 
 ### 3. Lecture de Lignes
@@ -121,34 +121,34 @@ while (fgets(ligne, TMAX, fichier) != NULL) {
 }
 ```
 
-### 4. Switch sur Énumérations
+### 4. Switch sur Enumerations
 ```c noexec
 switch (etatA.etat) {
     case EINIT:
-        /* Actions en état initial */
+        /* Actions en etat initial */
         break;
     case EINDI:
-        /* Actions après détection d'individu */
+        /* Actions apres detection d'individu */
         break;
     /* ... */
 }
 ```
 
-## Concepts C Abordés
+## Concepts C Abordes
 
-- Automates à états finis
-- Variables statiques (mémorisation d'état)
+- Automates a etats finis
+- Variables statiques (memorisation d'etat)
 - Pointeurs de fonctions
-- Énumérations (`enum`)
-- Analyse de fichiers structurés
-- `sscanf()` pour parser des chaînes
-- `strstr()` pour rechercher des sous-chaînes
+- Enumerations (`enum`)
+- Analyse de fichiers structures
+- `sscanf()` pour parser des chaines
+- `strstr()` pour rechercher des sous-chaines
 - Switch/case
 
 ## Extensions Possibles
 
 - Parser toutes les informations GEDCOM (dates, lieux, relations)
-- Construire un arbre généalogique en mémoire
+- Construire un arbre genealogique en memoire
 - Exporter vers d'autres formats (JSON, XML)
-- Recherches avancées (ancêtres, descendants)
-- Statistiques sur les données généalogiques
+- Recherches avancees (ancetres, descendants)
+- Statistiques sur les donnees genealogiques

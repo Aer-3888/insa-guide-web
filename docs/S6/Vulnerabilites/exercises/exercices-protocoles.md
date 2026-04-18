@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # Exercices -- Protocoles et proprietes de securite
 
-> Following teacher instructions from: S6/Vulnerabilites/data/moodle/guide/05_cryptographie_protocoles.md, 06_authentification.md, 07_mitm.md
+> Conforme aux consignes du cours : S6/Vulnerabilites/data/moodle/guide/05_cryptographie_protocoles.md, 06_authentification.md, 07_mitm.md
 > Sources du cours : C1-annotated.pdf, intro.pdf, intro_mim-annotated.pdf, secrecy_auth-annotated.pdf (Barbara Fila)
 
 ---
@@ -31,7 +31,7 @@ Avec : chiffrement symetrique `k^(-1) = k` ; chiffrement asymetrique `pk(i)^(-1)
 
 ### a) h(m) ?
 
-**Answer:**
+**Reponse :**
 
 h(m) n'est pas directement dans M. Mais l'adversaire peut-il d'abord deduire m ?
 
@@ -47,7 +47,7 @@ Etape 5 : Regle de hachage : h(m) peut etre calcule
 
 ### b) m ?
 
-**Answer:**
+**Reponse :**
 
 ```
 Etape 1 : L'adversaire connait {m}pk(b)   (dans M)
@@ -60,7 +60,7 @@ Etape 4 : dec({m}pk(b), sk(b)) = m
 
 ### c) k ?
 
-**Answer:**
+**Reponse :**
 
 ```
 L'adversaire connait h(k).
@@ -73,7 +73,7 @@ Aucune autre combinaison dans M ne permet d'obtenir k.
 
 ### d) h(k) ?
 
-**Answer:**
+**Reponse :**
 
 ```
 h(k) est directement dans M.
@@ -83,7 +83,7 @@ h(k) est directement dans M.
 
 ### e) p ?
 
-**Answer:**
+**Reponse :**
 
 ```
 Etape 1 : L'adversaire peut deduire m           (voir b)
@@ -99,7 +99,7 @@ Etape 7 : dec({p}h(h(h(m))), h(h(h(m)))) = p
 
 ### f) {m}h(k) peut-il etre dechiffre ?
 
-**Answer:**
+**Reponse :**
 
 ```
 L'adversaire connait {m}h(k) et h(k)   (les deux dans M).
@@ -110,7 +110,7 @@ Donc : dec({m}h(k), h(k)) = m
 
 **Reponse : OUI.** Cela fournit une deuxieme methode pour obtenir m (en plus de la methode par dechiffrement asymetrique du point b).
 
-**Security explanation:**
+**Explication de securite :**
 
 L'inference de messages est le fondement de l'analyse de protocoles. L'adversaire Dolev-Yao combine les messages qu'il connait pour en deduire de nouveaux, en appliquant les regles de chiffrement, dechiffrement, hachage et decomposition. L'hypothese de cryptographie parfaite impose que le hachage est irreversible et que le dechiffrement sans la cle est impossible.
 
@@ -132,7 +132,7 @@ L'inference de messages est le fondement de l'analyse de protocoles. L'adversair
 
 ### Le secret de n est-il valide pour i ? Pour r ?
 
-**Answer:**
+**Reponse :**
 
 **Secret pour i -- VALIDE**
 
@@ -172,7 +172,7 @@ Raisonnement :
        |                     MAIS Eve connait n_eve !
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 C'est l'**asymetrie fondamentale** du chiffrement asymetrique : la cle de chiffrement (`pk(r)`) est publique. N'importe qui peut chiffrer pour r, donc l'emetteur n'est PAS authentifie. Le secret est valide pour l'emetteur (i sait ce qu'il a envoye et a qui) mais PAS pour le receveur (r ne sait pas qui a vraiment envoye le message).
 
@@ -192,7 +192,7 @@ C'est l'**asymetrie fondamentale** du chiffrement asymetrique : la cle de chiffr
      [secret n pour i ?]     [secret n pour r ?]
 ```
 
-**Answer:**
+**Reponse :**
 
 **Secret pour i -- VALIDE**
 ```
@@ -210,7 +210,7 @@ C'est l'**asymetrie fondamentale** du chiffrement asymetrique : la cle de chiffr
 5. Donc le n que r recoit vient de i et est inconnu de l'adversaire
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 La cle symetrique garantit le secret pour les DEUX roles, contrairement a la cle asymetrique. C'est parce que seuls les deux participants possedent la cle, ce qui empeche l'adversaire de creer des messages chiffres valides.
 
@@ -249,7 +249,7 @@ Weak Aliveness    Non-injective    Non-injective      Injective
 
 ### Ce protocole garantit-il la weak aliveness de r pour i ?
 
-**Answer:**
+**Reponse :**
 
 **Reponse : VALIDE.**
 
@@ -273,7 +273,7 @@ Ce protocole ne garantit PAS que r jouait le role de repondeur. r pourrait avoir
 3. i pense que r a repondu, mais r jouait un role d'initiateur
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 La weak aliveness est la propriete d'authentification la plus faible. Elle garantit seulement que l'agent distant "est vivant" et a participe a un protocole, mais ne dit rien sur le role joue ni sur les donnees echangees. Pour un protocole "Hello" sans nonce ni donnees specifiques, c'est le maximum qu'on peut prouver.
 
@@ -301,7 +301,7 @@ La weak aliveness est la propriete d'authentification la plus faible. Elle garan
 
 ### Decrivez l'attaque de Lowe pas a pas avec le MSC complet
 
-**Answer:**
+**Reponse :**
 
 ```
      Bob                    Eve                      Alice
@@ -379,7 +379,7 @@ La weak aliveness est la propriete d'authentification la plus faible. Elle garan
 
 ### Pourquoi la correction NSPKL fonctionne
 
-**Answer:**
+**Reponse :**
 
 **NSPKL :** message 2 devient `{(n, m, r)}pk(i)` -- on ajoute l'identite de r.
 
@@ -395,7 +395,7 @@ Dans l'attaque :
 
 C'est l'ajout d'UN SEUL champ (l'identite de r) qui corrige le protocole. NSPKL satisfait la non-injective synchronization et le secret de n et m.
 
-**Security explanation:**
+**Explication de securite :**
 
 L'attaque de Lowe demontre que la cryptographie parfaite ne suffit pas pour securiser un protocole. Eve ne casse aucun chiffrement -- elle relaie des messages chiffres entre deux sessions paralleles. La correction est minime (un champ ajoute) mais a ete decouverte 17 ans apres la publication du protocole. C'est pourquoi la verification formelle (Scyther) est indispensable.
 
@@ -419,7 +419,7 @@ L'attaque de Lowe demontre que la cryptographie parfaite ne suffit pas pour secu
 
 ### Trouvez la vulnerabilite et proposez une correction
 
-**Answer:**
+**Reponse :**
 
 **Attaque par session parallele :**
 
@@ -494,7 +494,7 @@ protocol auth-mim(r, p) {
 
 ### Q1 : Decrivez le protocole en MSC
 
-**Answer:**
+**Reponse :**
 
 ```
      pk(p)                    pk(p), sk(p)
@@ -513,7 +513,7 @@ protocol auth-mim(r, p) {
 
 ### Q2 : Quels claims sont satisfaits ?
 
-**Answer:**
+**Reponse :**
 
 **Weak Aliveness (claim_3) : VALIDE**
 ```
@@ -537,7 +537,7 @@ Meme attaque que ci-dessus : les messages de p sont dans une autre session.
 
 ---
 
-## Exercice 8 : Replay attack et nonces
+## Exercice 8 : Attaque par rejeu et nonces
 
 ### Protocole de transfert bancaire :
 
@@ -551,9 +551,9 @@ Meme attaque que ci-dessus : les messages de p sont dans une autre session.
 
 ### Q1 : Quelle attaque est possible ?
 
-**Answer:**
+**Reponse :**
 
-**Attaque par rejeu (replay) :**
+**Attaque par rejeu :**
 ```
 1. Eve intercepte le message signe {i, "transfert 100EUR"}sk(i)
 2. Eve ne peut pas le modifier (la signature le protege)
@@ -565,7 +565,7 @@ Meme attaque que ci-dessus : les messages de p sont dans une autre session.
 
 ### Q2 : Comment corriger ?
 
-**Answer:**
+**Reponse :**
 
 **Ajout d'un nonce (challenge-response) :**
 ```
@@ -614,7 +614,7 @@ Le serveur rejette les messages avec un timestamp trop ancien (fenetre de 60 sec
 
 ### Evaluez les proprietes de securite et proposez une correction
 
-**Answer:**
+**Reponse :**
 
 **Secret de k pour i : VALIDE**
 ```

@@ -1,211 +1,211 @@
 ---
-title: "ITI Exam Preparation"
+title: "Preparation a l'examen ITI"
 sidebar_position: 0
 ---
 
-# ITI Exam Preparation
+# Preparation a l'examen ITI
 
-## Exam Structure
+## Structure des examens
 
-The ITI course has **two separate exams**:
+Le cours ITI comporte **deux examens distincts** :
 
-### 1. FUS/ITI Exam (November)
-- **Duration**: ~2 hours
-- **Format**: Written, on paper
-- **Topics**: Shell, Makefile, file systems, debugging, regex, grep
-- **Past exams available**: 2012-2024 (FUS), 2026 (ITI)
+### 1. Examen FUS/ITI (novembre)
+- **Duree** : ~2 heures
+- **Format** : ecrit, sur papier
+- **Sujets** : shell, Makefile, systemes de fichiers, debogage, regex, grep
+- **Annales disponibles** : 2012-2024 (FUS), 2026 (ITI)
 
-### 2. LDS Exam (January)
-- **Duration**: ~2 hours
-- **Format**: Written, on paper
-- **Topics**: Python, Qt, SQL, web scraping, automation
-- **Past exams available**: 2016-2025 (LDS), 2026 (ITI)
+### 2. Examen LDS (janvier)
+- **Duree** : ~2 heures
+- **Format** : ecrit, sur papier
+- **Sujets** : Python, Qt, SQL, web scraping, automatisation
+- **Annales disponibles** : 2016-2025 (LDS), 2026 (ITI)
 
-## Exam Archive Inventory
+## Inventaire des annales
 
-### November Exams (FUS / Systems)
+### Examens de novembre (FUS / Systemes)
 
-| Year | Subject | Corrections Available |
-|------|---------|----------------------|
-| 2012 | FUS 2012-2013 | No |
-| 2013 | FUS 2013-2014 | Yes (partial, Ivan Leplumey) |
-| 2014 | FUS 2014-2015 | No |
-| 2015 | FUS 2015-2016 | Yes (multiple student corrections) |
-| 2016 | FUS 2016-2017 | Yes (student correction) |
-| 2017 | FUS 2017 | Yes (student correction) |
-| 2018 | FUS 2018 | Yes (student correction) |
-| 2019 | FUS 2019 | Yes (student correction) |
-| 2020 | FUS 2020 | Yes (student correction) |
-| 2021 | FUS 2021 | Yes (student correction) |
-| 2022 | FUS 2022 | Subject only |
-| 2023 | FUS 2023 | Subject only |
-| 2024 | FUS 2024 | Subject only |
+| Annee | Sujet | Corrections disponibles |
+|-------|-------|------------------------|
+| 2012 | FUS 2012-2013 | Non |
+| 2013 | FUS 2013-2014 | Oui (partielle, Ivan Leplumey) |
+| 2014 | FUS 2014-2015 | Non |
+| 2015 | FUS 2015-2016 | Oui (plusieurs corrections etudiantes) |
+| 2016 | FUS 2016-2017 | Oui (correction etudiante) |
+| 2017 | FUS 2017 | Oui (correction etudiante) |
+| 2018 | FUS 2018 | Oui (correction etudiante) |
+| 2019 | FUS 2019 | Oui (correction etudiante) |
+| 2020 | FUS 2020 | Oui (correction etudiante) |
+| 2021 | FUS 2021 | Oui (correction etudiante) |
+| 2022 | FUS 2022 | Sujet uniquement |
+| 2023 | FUS 2023 | Sujet uniquement |
+| 2024 | FUS 2024 | Sujet uniquement |
 
-### January Exams (LDS / Scripting)
+### Examens de janvier (LDS / Scripting)
 
-| Year | Subject | Corrections Available |
-|------|---------|----------------------|
-| 2016 | LDS 2016 | Yes (student correction) |
-| 2017 | LDS 2017 | Yes (student correction) |
-| 2018 | LDS 2018 | Yes (student corrections) |
-| 2019 | LDS 2019 | Yes (multiple student corrections) |
-| 2020 | LDS 2020 | Yes (multiple student corrections) |
-| 2022 | LDS 2022 | Yes (official solution) |
-| 2023 | LDS 2023 | Yes (student correction) |
-| 2024 | LDS 2024 | Yes (student correction) |
-| 2025 | LDS 2025 | Subject only |
-| 2026 | ITI 2026 | Yes (student corrections) |
+| Annee | Sujet | Corrections disponibles |
+|-------|-------|------------------------|
+| 2016 | LDS 2016 | Oui (correction etudiante) |
+| 2017 | LDS 2017 | Oui (correction etudiante) |
+| 2018 | LDS 2018 | Oui (corrections etudiantes) |
+| 2019 | LDS 2019 | Oui (plusieurs corrections etudiantes) |
+| 2020 | LDS 2020 | Oui (plusieurs corrections etudiantes) |
+| 2022 | LDS 2022 | Oui (solution officielle) |
+| 2023 | LDS 2023 | Oui (correction etudiante) |
+| 2024 | LDS 2024 | Oui (correction etudiante) |
+| 2025 | LDS 2025 | Sujet uniquement |
+| 2026 | ITI 2026 | Oui (corrections etudiantes) |
 
-## Topic Analysis by Exam
+## Analyse des sujets par examen
 
-### FUS/ITI Exam (November) -- Typical Question Types
+### Examen FUS/ITI (novembre) -- Types de questions typiques
 
-Based on analysis of 13 years of exams, the most common topics are:
+D'apres l'analyse de 13 annees d'examens, les sujets les plus frequents sont :
 
-#### 1. Shell Commands & Scripting (appears in ~95% of exams)
-- **Writing shell scripts**: Variables, loops, conditionals, functions
-- **Pipe chains**: Combining grep, sed, awk, sort, uniq, wc
-- **File operations**: Testing with `-f`, `-d`, `-r`, `-x`
-- **Command output prediction**: "What does this command produce?"
-- **Script debugging**: "Find the error in this script"
+#### 1. Commandes shell et scripting (present dans ~95% des examens)
+- **Ecriture de scripts shell** : variables, boucles, conditionnelles, fonctions
+- **Chaines de pipes** : combiner grep, sed, awk, sort, uniq, wc
+- **Operations sur les fichiers** : tests avec `-f`, `-d`, `-r`, `-x`
+- **Prediction de sortie de commande** : "Que produit cette commande ?"
+- **Debogage de scripts** : "Trouvez l'erreur dans ce script"
 
-**Typical question format:**
-> Write a bash script that takes a directory as argument and lists all `.c` files, showing the number of lines in each.
+**Format de question typique :**
+> Ecrivez un script bash qui prend un repertoire en argument et liste tous les fichiers `.c`, en affichant le nombre de lignes de chacun.
 
-#### 2. Regular Expressions & grep (appears in ~90% of exams)
-- **Pattern writing**: "Write a regex that matches..."
-- **grep command construction**: Using flags `-i`, `-v`, `-c`, `-n`, `-E`
-- **sed substitution**: Writing `sed 's/.../.../'` commands
-- **Pattern analysis**: "Which lines does this grep match?"
+#### 2. Expressions regulieres et grep (present dans ~90% des examens)
+- **Ecriture de motifs** : "Ecrivez une regex qui correspond a..."
+- **Construction de commandes grep** : utilisation des options `-i`, `-v`, `-c`, `-n`, `-E`
+- **Substitution sed** : ecriture de commandes `sed 's/.../.../'`
+- **Analyse de motifs** : "Quelles lignes cette commande grep selectionne-t-elle ?"
 
-**Typical question format:**
-> Write a grep command that extracts all lines containing an email address from a file.
+**Format de question typique :**
+> Ecrivez une commande grep qui extrait toutes les lignes contenant une adresse email d'un fichier.
 
-#### 3. Makefile (appears in ~80% of exams)
-- **Writing Makefile rules**: Target, dependencies, commands
-- **Understanding automatic variables**: `$@`, `$<`, `$^`
-- **Determining build order**: "Which files are recompiled if X changes?"
-- **Pattern rules**: `%.o: %.c`
-- **Tab vs spaces**: Understanding the TAB requirement
+#### 3. Makefile (present dans ~80% des examens)
+- **Ecriture de regles Makefile** : cible, dependances, commandes
+- **Comprehension des variables automatiques** : `$@`, `$<`, `$^`
+- **Determination de l'ordre de construction** : "Quels fichiers sont recompiles si X change ?"
+- **Regles generiques** : `%.o: %.c`
+- **Tabulation vs espaces** : comprehension de l'exigence de la TABULATION
 
-**Typical question format:**
-> Given these source files and their dependencies, write a complete Makefile.
+**Format de question typique :**
+> Etant donnes ces fichiers sources et leurs dependances, ecrivez un Makefile complet.
 
-#### 4. File Systems (appears in ~70% of exams)
-- **Inode structure**: How files are stored on disk
-- **FAT table**: File Allocation Table traversal
-- **Hard links vs symbolic links**: Differences and inode implications
-- **Directory structure**: How directories reference inodes
+#### 4. Systemes de fichiers (present dans ~70% des examens)
+- **Structure des inodes** : comment les fichiers sont stockes sur le disque
+- **Table FAT** : parcours de la table d'allocation de fichiers
+- **Liens physiques vs liens symboliques** : differences et implications sur les inodes
+- **Structure des repertoires** : comment les repertoires referencent les inodes
 
-**Typical question format:**
-> Given this FAT table, trace the blocks belonging to file X.
+**Format de question typique :**
+> Etant donnee cette table FAT, tracez les blocs appartenant au fichier X.
 
-#### 5. GCC Compilation (appears in ~60% of exams)
-- **Compilation phases**: Preprocessing, compilation, assembly, linking
-- **Flag meanings**: `-c`, `-o`, `-g`, `-Wall`, `-O2`, `-pg`, `-E`
-- **Dependency analysis**: "If we change header.h, what must be recompiled?"
+#### 5. Compilation GCC (present dans ~60% des examens)
+- **Phases de compilation** : preprocessing, compilation, assemblage, edition de liens
+- **Signification des options** : `-c`, `-o`, `-g`, `-Wall`, `-O2`, `-pg`, `-E`
+- **Analyse des dependances** : "Si on modifie header.h, que faut-il recompiler ?"
 
-#### 6. GDB Debugging (appears in ~40% of exams)
-- **Setting breakpoints**: `break function`, `break file:line`
-- **Stepping**: `next`, `step`, `continue`, `finish`
-- **Variable inspection**: `print`, `info locals`, `backtrace`
+#### 6. Debogage GDB (present dans ~40% des examens)
+- **Placement de points d'arret** : `break function`, `break file:line`
+- **Avancement pas a pas** : `next`, `step`, `continue`, `finish`
+- **Inspection de variables** : `print`, `info locals`, `backtrace`
 
-### LDS Exam (January) -- Typical Question Types
+### Examen LDS (janvier) -- Types de questions typiques
 
-#### 1. Python Programming (appears in ~100% of exams)
-- **Class definitions**: `__init__`, methods, `self`
-- **List operations**: Comprehensions, slicing, sorting
-- **File I/O**: Reading/writing files with `open()`
-- **String manipulation**: split, join, replace, format
-- **Algorithm implementation**: Sorting, searching, data processing
+#### 1. Programmation Python (present dans ~100% des examens)
+- **Definitions de classes** : `__init__`, methodes, `self`
+- **Operations sur les listes** : comprehensions, tranches, tri
+- **Entrees/Sorties fichiers** : lecture/ecriture de fichiers avec `open()`
+- **Manipulation de chaines** : split, join, replace, format
+- **Implementation d'algorithmes** : tri, recherche, traitement de donnees
 
-#### 2. SQL Queries (appears in ~80% of exams)
-- **SELECT with conditions**: WHERE, ORDER BY, LIMIT
-- **JOIN operations**: INNER JOIN, LEFT JOIN
-- **Aggregate functions**: COUNT, AVG, SUM, GROUP BY
-- **INSERT, UPDATE, DELETE**: CRUD operations
-- **Schema design**: CREATE TABLE with constraints
+#### 2. Requetes SQL (present dans ~80% des examens)
+- **SELECT avec conditions** : WHERE, ORDER BY, LIMIT
+- **Operations JOIN** : INNER JOIN, LEFT JOIN
+- **Fonctions d'agregation** : COUNT, AVG, SUM, GROUP BY
+- **INSERT, UPDATE, DELETE** : operations CRUD
+- **Conception de schema** : CREATE TABLE avec contraintes
 
-#### 3. Qt/PyQt (appears in ~60% of exams)
-- **Widget hierarchy**: QWidget, QMainWindow, layouts
-- **Signals and slots**: `clicked.connect(function)`
-- **Image handling**: QImage pixel access and manipulation
-- **QTableView with QSqlTableModel**: Display database data
+#### 3. Qt/PyQt (present dans ~60% des examens)
+- **Hierarchie des widgets** : QWidget, QMainWindow, layouts
+- **Signaux et slots** : `clicked.connect(function)`
+- **Gestion d'images** : acces et manipulation des pixels QImage
+- **QTableView avec QSqlTableModel** : afficher des donnees de base de donnees
 
-#### 4. Web Scraping (appears in ~50% of exams)
-- **BeautifulSoup**: find(), find_all(), get_text()
-- **CSS selectors**: Tag, class, id selection
-- **HTML structure understanding**: DOM tree navigation
-- **Data extraction patterns**: Tables, links, forms
+#### 4. Web Scraping (present dans ~50% des examens)
+- **BeautifulSoup** : find(), find_all(), get_text()
+- **Selecteurs CSS** : selection par balise, classe, id
+- **Comprehension de la structure HTML** : navigation dans l'arbre DOM
+- **Motifs d'extraction de donnees** : tableaux, liens, formulaires
 
-## Exam Strategy
+## Strategie d'examen
 
-### Time Management
+### Gestion du temps
 
-- **Read the entire exam first** (5 min)
-- **Answer what you know immediately** -- shell and regex questions first
-- **Allocate time proportionally** to point values
-- **Leave time to review** (10 min)
+- **Lire l'examen entier d'abord** (5 min)
+- **Repondre a ce qu'on sait immediatement** -- questions shell et regex d'abord
+- **Allouer le temps proportionnellement** aux valeurs en points
+- **Garder du temps pour relire** (10 min)
 
-### Common Point Distributions (FUS Exam)
+### Repartition courante des points (examen FUS)
 
-| Topic | Approximate Weight |
+| Sujet | Poids approximatif |
 |-------|-------------------|
-| Shell scripting | 25-35% |
+| Scripting shell | 25-35% |
 | Regex / grep | 20-25% |
 | Makefile | 15-20% |
-| File systems | 10-15% |
+| Systemes de fichiers | 10-15% |
 | GCC / Compilation | 5-10% |
-| GDB / Debugging | 5-10% |
+| GDB / Debogage | 5-10% |
 
-### Study Priority (FUS)
+### Priorite de revision (FUS)
 
-1. **HIGH PRIORITY**: Shell commands, piping, scripting, regex, grep
-2. **MEDIUM PRIORITY**: Makefile, file system concepts, GCC flags
-3. **LOWER PRIORITY**: GDB commands, valgrind, gprof
+1. **HAUTE PRIORITE** : commandes shell, pipes, scripting, regex, grep
+2. **PRIORITE MOYENNE** : Makefile, concepts de systemes de fichiers, options GCC
+3. **PRIORITE BASSE** : commandes GDB, valgrind, gprof
 
-### Study Priority (LDS)
+### Priorite de revision (LDS)
 
-1. **HIGH PRIORITY**: Python classes, list operations, file I/O
-2. **MEDIUM PRIORITY**: SQL queries (SELECT, JOIN, GROUP BY)
-3. **LOWER PRIORITY**: Qt widgets, web scraping
+1. **HAUTE PRIORITE** : classes Python, operations sur les listes, E/S fichiers
+2. **PRIORITE MOYENNE** : requetes SQL (SELECT, JOIN, GROUP BY)
+3. **PRIORITE BASSE** : widgets Qt, web scraping
 
-### Key Exam Tips
+### Conseils cles pour l'examen
 
-1. **Syntax matters**: Exams require exact command syntax (no IDE autocomplete)
-2. **Quote your variables**: Always write `"$var"` not `$var` in shell
-3. **TABs in Makefiles**: Mention this explicitly if asked about Makefile rules
-4. **Test operators**: Know the difference between `-eq` (numeric) and `=` (string)
-5. **Regex escaping**: Know which characters need `\` to be literal
-6. **Python indentation**: Crucial on paper -- use consistent indentation
-7. **SQL semicolons**: End SQL statements with `;`
-8. **Error handling**: Always mention checking for errors (file exists, arguments valid)
+1. **La syntaxe compte** : les examens exigent la syntaxe exacte des commandes (pas d'autocompletion IDE)
+2. **Proteger vos variables** : toujours ecrire `"$var"` et non `$var` en shell
+3. **TABulations dans les Makefiles** : le mentionner explicitement si on pose la question sur les regles Makefile
+4. **Operateurs de test** : connaitre la difference entre `-eq` (numerique) et `=` (chaines)
+5. **Echappement regex** : savoir quels caracteres necessite `\` pour etre pris litteralement
+6. **Indentation Python** : cruciale sur papier -- utiliser une indentation coherente
+7. **Points-virgules SQL** : terminer les instructions SQL par `;`
+8. **Gestion des erreurs** : toujours mentionner la verification des erreurs (fichier existant, arguments valides)
 
-## Quick Reference for Exam Day
+## Reference rapide pour le jour de l'examen
 
-See the cheat sheets at the end of each topic guide:
-- [Shell & Bash Cheat Sheet](/S5/ITI/guide/shell-bash#cheat-sheet)
-- [Regex Cheat Sheet](/S5/ITI/guide/regex#cheat-sheet)
-- [Build Tools Cheat Sheet](/S5/ITI/guide/build-tools#cheat-sheet)
-- [Debugging Cheat Sheet](/S5/ITI/guide/debugging#cheat-sheet)
-- [Git Cheat Sheet](/S5/ITI/guide/git#cheat-sheet)
-- [Python Cheat Sheet](/S5/ITI/guide/python-basics#cheat-sheet)
-- [SQL Cheat Sheet](/S5/ITI/guide/sql-sqlite#cheat-sheet)
-- [Qt GUI Cheat Sheet](/S5/ITI/guide/qt-gui#cheat-sheet)
-- [Web Scraping Cheat Sheet](/S5/ITI/guide/web-scraping#cheat-sheet)
+Voir les aide-memoire a la fin de chaque guide thematique :
+- [Aide-memoire Shell et Bash](/S5/ITI/guide/shell-bash#aide-memoire)
+- [Aide-memoire Regex](/S5/ITI/guide/regex#aide-memoire)
+- [Aide-memoire Outils de construction](/S5/ITI/guide/build-tools#aide-memoire)
+- [Aide-memoire Debogage](/S5/ITI/guide/debugging#aide-memoire)
+- [Aide-memoire Git](/S5/ITI/guide/git#aide-memoire)
+- [Aide-memoire Python](/S5/ITI/guide/python-basics#aide-memoire)
+- [Aide-memoire SQL](/S5/ITI/guide/sql-sqlite#aide-memoire)
+- [Aide-memoire Qt GUI](/S5/ITI/guide/qt-gui#aide-memoire)
+- [Aide-memoire Web Scraping](/S5/ITI/guide/web-scraping#aide-memoire)
 
-## Practice Approach
+## Approche de revision
 
-### For FUS Exam
-1. Do all past FUS exams from 2015-2024 (most relevant)
-2. Practice writing shell scripts on paper (no computer)
-3. Write grep/sed/awk commands from memory
-4. Draw Makefile dependency trees
-5. Trace inode and FAT table exercises
+### Pour l'examen FUS
+1. Faire toutes les annales FUS de 2015 a 2024 (les plus pertinentes)
+2. S'entrainer a ecrire des scripts shell sur papier (sans ordinateur)
+3. Ecrire des commandes grep/sed/awk de memoire
+4. Dessiner des arbres de dependances Makefile
+5. Tracer des exercices d'inodes et de tables FAT
 
-### For LDS Exam
-1. Do all past LDS exams from 2018-2025
-2. Practice Python class definitions on paper
-3. Write SQL queries without running them
-4. Know the BeautifulSoup API: find, find_all, get_text, CSS selectors
-5. Practice writing Qt signal/slot connections
+### Pour l'examen LDS
+1. Faire toutes les annales LDS de 2018 a 2025
+2. S'entrainer a ecrire des definitions de classes Python sur papier
+3. Ecrire des requetes SQL sans les executer
+4. Connaitre l'API BeautifulSoup : find, find_all, get_text, selecteurs CSS
+5. S'entrainer a ecrire des connexions signal/slot Qt

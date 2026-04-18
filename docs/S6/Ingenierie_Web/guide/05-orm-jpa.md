@@ -14,7 +14,7 @@ sidebar_position: 5
 5. [Repository](#5-repository)
 6. [Methode complete : du diagramme UML au code](#6-methode-complete--du-diagramme-uml-au-code)
 7. [Pieges courants](#7-pieges-courants)
-8. [Cheat Sheet](#8-cheat-sheet)
+8. [Aide-memoire](#8-aide-memoire)
 
 ---
 
@@ -165,8 +165,8 @@ public class BaseballPlayer extends Player {
 
 ### Strategies d'heritage
 
-| Strategie | Description | Tables |
-|-----------|-------------|--------|
+| Strategie | Description | Tables generees |
+|-----------|-------------|-----------------|
 | `SINGLE_TABLE` | Une seule table + colonne DTYPE | 1 table |
 | `TABLE_PER_CLASS` | Une table par classe (colonnes dupliquees) | N tables |
 | `JOINED` | Une table par classe, colonnes factorisees, cles etrangeres | N tables liees |
@@ -297,7 +297,7 @@ public class Etudiant {
 
 ---
 
-## 8. Cheat Sheet
+## 8. Aide-memoire
 
 ```
 Annotations obligatoires :

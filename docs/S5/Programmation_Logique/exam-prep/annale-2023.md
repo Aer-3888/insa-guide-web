@@ -235,6 +235,6 @@ L = [bertrand, eric, laurence, pascal, ...] (selon la base)
 
 1. **Predicats multi-clauses** : `individu/1` montre qu'un predicat peut avoir de nombreuses clauses alternatives
 2. **Negation** : `\+(grippe(X))` doit etre appele APRES que X soit instancie par `individu(X)`
-3. **findall + sort** : pattern classique pour collecter et dedupliquer
+3. **findall + sort** : schema classique pour collecter et dedupliquer
 4. **Recursion sur un compteur** : `contamine` utilise N comme compteur de profondeur
 5. **zip/unzip** : exploite le multi-mode de Prolog (un seul predicat pour les deux directions)

@@ -1,181 +1,181 @@
 ---
-title: "Chapter 2: Discrete Random Variables"
+title: "Chapitre 2 : Variables aleatoires discretes"
 sidebar_position: 2
 ---
 
-# Chapter 2: Discrete Random Variables
+# Chapitre 2 : Variables aleatoires discretes
 
 ## 2.1 Definition
 
-A **random variable** $X$ is a function $X: \Omega \to \mathbb{R}$ that assigns a real number to each outcome of a random experiment. It is **discrete** if it takes a finite or countably infinite set of values.
+Une **variable aleatoire** $X$ est une fonction $X: \Omega \to \mathbb{R}$ qui associe un nombre reel a chaque resultat d'une experience aleatoire. Elle est **discrete** si elle prend un ensemble fini ou denombrable de valeurs.
 
-### Probability Mass Function (PMF)
+### Loi de probabilite (PMF)
 
-For discrete $X$ with values $\{x_1, x_2, \ldots\}$:
+Pour une variable $X$ discrete de valeurs $\{x_1, x_2, \ldots\}$ :
 
-$$P(X = x_i) = p_i \quad \text{with} \quad \sum_i p_i = 1$$
+$$P(X = x_i) = p_i \quad \text{avec} \quad \sum_i p_i = 1$$
 
-The PMF completely determines the distribution: a list of all possible values with their probabilities.
+La loi de probabilite determine entierement la distribution : une liste de toutes les valeurs possibles avec leurs probabilites.
 
-### Cumulative Distribution Function (CDF)
+### Fonction de repartition (CDF)
 
 $$F_X(x) = P(X \leq x) = \sum_{x_i \leq x} P(X = x_i)$$
 
-Properties:
-- $F$ is non-decreasing (staircase function for discrete r.v.)
+Proprietes :
+- $F$ est croissante (fonction en escalier pour une v.a. discrete)
 - $\lim_{x \to -\infty} F(x) = 0$, $\lim_{x \to +\infty} F(x) = 1$
 - $P(a < X \leq b) = F(b) - F(a)$
 
 ---
 
-## 2.2 Expectation and Variance
+## 2.2 Esperance et variance
 
-### Expectation (Mean)
+### Esperance (moyenne)
 
-The **expected value** is the probability-weighted average:
+L'**esperance** est la moyenne ponderee par les probabilites :
 
 $$E[X] = \sum_{x \in X(\Omega)} x \cdot P(X = x)$$
 
-Properties of expectation:
-- $E[aX + b] = aE[X] + b$ (linearity)
-- $E[X + Y] = E[X] + E[Y]$ (always, even if dependent)
-- $E[g(X)] = \sum_x g(x) P(X = x)$ (law of the unconscious statistician)
+Proprietes de l'esperance :
+- $E[aX + b] = aE[X] + b$ (linearite)
+- $E[X + Y] = E[X] + E[Y]$ (toujours, meme si dependantes)
+- $E[g(X)] = \sum_x g(x) P(X = x)$ (formule de transfert)
 
 ### Variance
 
-**Variance** measures dispersion around the mean:
+La **variance** mesure la dispersion autour de la moyenne :
 
 $$Var(X) = E\left[(X - E[X])^2\right] = E[X^2] - (E[X])^2$$
 
-Properties:
+Proprietes :
 - $Var(X) \geq 0$
 - $Var(aX + b) = a^2 Var(X)$
-- **Standard deviation**: $\sigma(X) = \sqrt{Var(X)}$
+- **Ecart-type** : $\sigma(X) = \sqrt{Var(X)}$
 
 ### Covariance
 
 $$Cov(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y]$$
 
-If $X$ and $Y$ are independent: $Cov(X,Y) = 0$ and $Var(X+Y) = Var(X) + Var(Y)$.
+Si $X$ et $Y$ sont independantes : $Cov(X,Y) = 0$ et $Var(X+Y) = Var(X) + Var(Y)$.
 
 ---
 
-## 2.3 Common Discrete Distributions
+## 2.3 Lois discretes classiques
 
-### Bernoulli Distribution $\mathcal{B}(p)$
+### Loi de Bernoulli $\mathcal{B}(p)$
 
-A binary random variable: success ($X=1$) with probability $p$, failure ($X=0$) with probability $1-p$.
+Variable aleatoire binaire : succes ($X=1$) avec probabilite $p$, echec ($X=0$) avec probabilite $1-p$.
 
 $$P(X = k) = p^k (1-p)^{1-k}, \quad k \in \{0, 1\}$$
 
-| | Value |
+| | Valeur |
 |---|---|
 | $E[X]$ | $p$ |
 | $Var(X)$ | $p(1-p)$ |
 
-**Application**: Single trial with two outcomes (error in a model, coin flip, defect detection).
+**Application** : Epreuve unique a deux issues (erreur dans un modele, lancer de piece, detection de defaut).
 
-### Binomial Distribution $\mathcal{B}(n, p)$
+### Loi binomiale $\mathcal{B}(n, p)$
 
-Sum of $n$ independent Bernoulli trials: $X = \sum_{i=1}^n X_i$ where $X_i \sim \mathcal{B}(p)$.
+Somme de $n$ epreuves de Bernoulli independantes : $X = \sum_{i=1}^n X_i$ ou $X_i \sim \mathcal{B}(p)$.
 
 $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k \in \{0, 1, \ldots, n\}$$
 
-| | Value |
+| | Valeur |
 |---|---|
 | $E[X]$ | $np$ |
 | $Var(X)$ | $np(1-p)$ |
 
-**Application**: Number of successes in $n$ independent trials (MCQ guessing, defective items in a batch).
+**Application** : Nombre de succes en $n$ epreuves independantes (QCM au hasard, articles defectueux dans un lot).
 
-### Poisson Distribution $\mathcal{P}(\lambda)$
+### Loi de Poisson $\mathcal{P}(\lambda)$
 
-Models the number of events in a fixed interval when events occur at constant average rate $\lambda$.
+Modelise le nombre d'evenements dans un intervalle fixe lorsque les evenements se produisent a un taux moyen constant $\lambda$.
 
 $$P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k \in \{0, 1, 2, \ldots\}$$
 
-| | Value |
+| | Valeur |
 |---|---|
 | $E[X]$ | $\lambda$ |
 | $Var(X)$ | $\lambda$ |
 
-**Application**: Number of server requests per minute, radioactive decay events. Approximation: $\mathcal{B}(n,p) \approx \mathcal{P}(np)$ when $n$ large, $p$ small.
+**Application** : Nombre de requetes serveur par minute, desintegrations radioactives. Approximation : $\mathcal{B}(n,p) \approx \mathcal{P}(np)$ lorsque $n$ grand, $p$ petit.
 
-### Geometric Distribution $\mathcal{G}(p)$
+### Loi geometrique $\mathcal{G}(p)$
 
-Number of trials until the first success.
+Nombre d'epreuves jusqu'au premier succes.
 
 $$P(X = k) = p(1-p)^{k-1}, \quad k \in \{1, 2, 3, \ldots\}$$
 
-| | Value |
+| | Valeur |
 |---|---|
 | $E[X]$ | $1/p$ |
 | $Var(X)$ | $(1-p)/p^2$ |
 
-**Memoryless property**: $P(X > s + t \mid X > s) = P(X > t)$.
+**Propriete d'absence de memoire** : $P(X > s + t \mid X > s) = P(X > t)$.
 
-### Hypergeometric Distribution
+### Loi hypergeometrique
 
-Drawing without replacement from a finite population. Drawing $k$ items from a population of $N$ items containing $K$ successes.
+Tirage sans remise dans une population finie. On tire $k$ elements d'une population de $N$ elements contenant $K$ succes.
 
 $$P(X = x) = \frac{\binom{K}{x}\binom{N-K}{k-x}}{\binom{N}{k}}$$
 
-| | Value |
+| | Valeur |
 |---|---|
 | $E[X]$ | $k \cdot K/N$ |
 
-**R function**: `dhyper(x, m=K, n=N-K, k)`.
+**Fonction R** : `dhyper(x, m=K, n=N-K, k)`.
 
-When $N$ is large relative to $k$, the hypergeometric distribution approximates the binomial.
+Lorsque $N$ est grand par rapport a $k$, la loi hypergeometrique s'approche de la loi binomiale.
 
 ---
 
-## 2.4 Worked Examples
+## 2.4 Exemples corriges
 
-### Example 1: MCQ Random Guessing
+### Exemple 1 : QCM au hasard
 
-> A 10-question MCQ with 4 choices each. A student guesses randomly. What is $P(\text{pass})$ if pass requires $\geq 6$ correct?
+> Un QCM de 10 questions avec 4 choix chacune. Un etudiant repond au hasard. Quelle est $P(\text{reussir})$ si la reussite exige $\geq 6$ bonnes reponses ?
 
 $X \sim \mathcal{B}(10, 0.25)$.
 
 $$P(X \geq 6) = 1 - P(X \leq 5) = 1 - \sum_{k=0}^{5} \binom{10}{k} (0.25)^k (0.75)^{10-k}$$
 
-In R: `1 - pbinom(5, size=10, prob=0.25)` $\approx 0.0197$
+En R : `1 - pbinom(5, size=10, prob=0.25)` $\approx 0.0197$
 
-Only about 2% chance of passing by guessing.
+Seulement environ 2% de chances de reussir en repondant au hasard.
 
-### Example 2: Urn Problem
+### Exemple 2 : Probleme de l'urne
 
-> An urn has 8 red and 5 black balls. Draw 6 without replacement. Expected number of red balls?
+> Une urne contient 8 boules rouges et 5 boules noires. On tire 6 boules sans remise. Nombre moyen de boules rouges ?
 
-$X \sim \text{Hypergeometric}(N=13, K=8, k=6)$.
+$X \sim \text{Hypergeometrique}(N=13, K=8, k=6)$.
 
 $$E[X] = k \cdot \frac{K}{N} = 6 \cdot \frac{8}{13} \approx 3.69$$
 
-In R: `sum(0:6 * dhyper(0:6, m=8, n=5, k=6))`.
+En R : `sum(0:6 * dhyper(0:6, m=8, n=5, k=6))`.
 
 ---
 
-## 2.5 Indicator Function
+## 2.5 Fonction indicatrice
 
-The **indicator function** of event $A$ is:
+La **fonction indicatrice** de l'evenement $A$ est :
 
-$$\mathbf{1}_A(\omega) = \begin{cases} 1 & \text{if } \omega \in A \\ 0 & \text{otherwise} \end{cases}$$
+$$\mathbf{1}_A(\omega) = \begin{cases} 1 & \text{si } \omega \in A \\ 0 & \text{sinon} \end{cases}$$
 
-Useful property: $E[\mathbf{1}_A] = P(A)$ and $Var(\mathbf{1}_A) = P(A)(1-P(A))$.
+Propriete utile : $E[\mathbf{1}_A] = P(A)$ et $Var(\mathbf{1}_A) = P(A)(1-P(A))$.
 
 ---
 
-## CHEAT SHEET -- Discrete Distributions
+## AIDE-MEMOIRE -- Distributions discretes
 
-| Distribution | $P(X=k)$ | $E[X]$ | $Var(X)$ | R: `d*` |
+| Distribution | $P(X=k)$ | $E[X]$ | $Var(X)$ | R : `d*` |
 |---|---|---|---|---|
 | $\mathcal{B}(p)$ | $p^k(1-p)^{1-k}$ | $p$ | $p(1-p)$ | `dbinom(k,1,p)` |
 | $\mathcal{B}(n,p)$ | $\binom{n}{k}p^k(1-p)^{n-k}$ | $np$ | $np(1-p)$ | `dbinom(k,n,p)` |
 | $\mathcal{P}(\lambda)$ | $e^{-\lambda}\lambda^k/k!$ | $\lambda$ | $\lambda$ | `dpois(k,lambda)` |
 | $\mathcal{G}(p)$ | $p(1-p)^{k-1}$ | $1/p$ | $(1-p)/p^2$ | `dgeom(k-1,p)` |
-| Hypergeometric | $\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}$ | $nK/N$ | -- | `dhyper(k,K,N-K,n)` |
+| Hypergeometrique | $\frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}$ | $nK/N$ | -- | `dhyper(k,K,N-K,n)` |
 
-**Key approximations**:
-- $\mathcal{B}(n,p) \approx \mathcal{P}(np)$ when $n$ large, $p$ small
-- $\mathcal{B}(n,p) \approx \mathcal{N}(np, \sqrt{np(1-p)})$ when $np \geq 5$ and $n(1-p) \geq 5$
+**Approximations cles** :
+- $\mathcal{B}(n,p) \approx \mathcal{P}(np)$ lorsque $n$ grand, $p$ petit
+- $\mathcal{B}(n,p) \approx \mathcal{N}(np, \sqrt{np(1-p)})$ lorsque $np \geq 5$ et $n(1-p) \geq 5$

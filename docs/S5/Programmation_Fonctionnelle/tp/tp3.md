@@ -1,19 +1,19 @@
 ---
-title: "TP3 - Card Game with Types and Graphics"
+title: "TP3 - Jeu de cartes avec types et graphique"
 sidebar_position: 3
 ---
 
-# TP3 - Card Game with Types and Graphics
+# TP3 - Jeu de cartes avec types et graphique
 
-## Overview
+## Vue d'ensemble
 
-Implementation of a solitaire card game using:
-- Custom algebraic data types
+Implementation d'un jeu de reussite (solitaire) utilisant :
+- Types algebriques personnalises
 - Pattern matching
-- List operations
-- Graphics library
+- Operations sur les listes
+- Bibliotheque graphique
 
-## Data Types
+## Types de donnees
 
 ```ocaml
 type coul = Coeur | Trefle | Pique | Carreau
@@ -21,47 +21,47 @@ type haut = Sept | Huit | Neuf | Dix | Valet | Dame | Roi | As
 type carte = {h : haut; c : coul}
 ```
 
-## Exercises
+## Exercices
 
-### 1. Type Constructors
-Define card types and accessor functions.
+### 1. Constructeurs de types
+Definir les types de cartes et les fonctions d'acces.
 
-**Concepts**: Variant types, record types
+**Concepts** : Types variants, types records
 
-### 2. Conversion Functions
-- `haut_of_int`: Convert integer to card height
-- `coul_of_string`: Convert string to card suit
-- `string_of_carte`: Pretty-print cards
+### 2. Fonctions de conversion
+- `haut_of_int` : Convertir un entier en hauteur de carte
+- `coul_of_string` : Convertir une chaine en couleur de carte
+- `string_of_carte` : Afficher les cartes sous forme lisible
 
-**Concepts**: Pattern matching on integers and strings
+**Concepts** : Pattern matching sur entiers et chaines
 
-### 3. Random Card Generation
-Generate random cards without duplicates.
+### 3. Generation aleatoire de cartes
+Generer des cartes aleatoires sans doublons.
 
-**Concepts**: Random module, list membership testing
+**Concepts** : Module Random, test d'appartenance a une liste
 
-### 4. Game Logic
-Implement solitaire reduction rules:
-- Cards can be folded if they match suit or height
-- Middle pile gets merged with outer piles
+### 4. Logique du jeu
+Implementer les regles de reduction de la reussite :
+- Les cartes peuvent etre regroupees si elles correspondent en couleur ou en hauteur
+- La pile du milieu est fusionnee avec les piles exterieures
 
-**Concepts**: Complex pattern matching on lists
+**Concepts** : Pattern matching complexe sur les listes
 
-### 5. Graphics (Optional)
-Display cards using the Graphics module.
+### 5. Graphique (Optionnel)
+Afficher les cartes avec le module Graphics.
 
-**Concepts**: 2D graphics, drawing sprites
+**Concepts** : Graphisme 2D, dessin de sprites
 
-## Game Rules
+## Regles du jeu
 
-The solitaire works with piles of cards:
-1. If pile A and pile C have matching top cards (same suit or height)
-2. Then pile B is placed on top of pile A
-3. The process repeats until no more reductions are possible
+La reussite fonctionne avec des piles de cartes :
+1. Si la pile A et la pile C ont des cartes au sommet correspondantes (meme couleur ou meme hauteur)
+2. Alors la pile B est placee au-dessus de la pile A
+3. Le processus se repete jusqu'a ce qu'aucune reduction ne soit plus possible
 
-## Key OCaml Concepts
+## Concepts cles OCaml
 
-### Variant Types
+### Types variants
 ```ocaml
 type coul = Coeur | Trefle | Pique | Carreau
 ```
@@ -72,7 +72,7 @@ type carte = {h : haut; c : coul}
 let c = {h = As; c = Coeur}
 ```
 
-### Complex Pattern Matching
+### Pattern matching complexe
 ```ocaml noexec
 let rec reduc l = match l with
   | (e1::l1')::(l2)::(e3::l3')::l' ->
@@ -80,14 +80,14 @@ let rec reduc l = match l with
   | _ -> l
 ```
 
-## Running the Code
+## Execution du code
 
 ```bash
 ocaml
 # #use "tp3.ml";;
 ```
 
-For graphics:
+Pour le graphique :
 ```bash
 # #load "graphics.cma";;
 # open Graphics;;

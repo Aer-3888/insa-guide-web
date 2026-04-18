@@ -233,7 +233,7 @@ calculer_interieur();
 MPI_Wait(&req, MPI_STATUS_IGNORE);   /* attendre la fin */
 ```
 
-Permet de **recouvrir calcul et communication** (overlapping).
+Permet de **recouvrir calcul et communication** (recouvrement).
 
 ---
 
@@ -300,9 +300,9 @@ MPI_Gather(resultat, n/nb_proc, MPI_DOUBLE,
 
 ---
 
-## 10. Exemple : chaleur distribuee avec halo exchange (TP6 INSA)
+## 10. Exemple : chaleur distribuee avec echange de halos (TP6 INSA)
 
-Pattern SPMD avec ghost zones : chaque processus stocke N/P lignes utiles + 2 lignes fantomes echangees avec les voisins a chaque iteration.
+Schema SPMD avec zones fantomes : chaque processus stocke N/P lignes utiles + 2 lignes fantomes echangees avec les voisins a chaque iteration.
 
 ```c noexec
 /* Envoi non-bloquant de mes bords aux voisins */
@@ -335,7 +335,7 @@ MPI_Allreduce(&delta_local, &delta_total, 1, MPI_DOUBLE, MPI_SUM, comm);
 
 ---
 
-## CHEAT SHEET -- MPI
+## AIDE-MEMOIRE -- MPI
 
 ```c noexec
 /* Initialisation */

@@ -21,7 +21,7 @@ Guides detailles pas a pas pour les 5 TPs du cours d'Ingenierie Web, couvrant le
 
 - **Structure du projet** : arborescence complete des fichiers
 - **Code source complet** : chaque fichier cle reproduit et commente
-- **API Documentation** : endpoints REST avec methodes, parametres, codes de retour
-- **Tests curl** : commandes pour tester chaque endpoint
+- **Documentation de l'API** : points d'acces REST avec methodes, parametres, codes de retour
+- **Tests curl** : commandes pour tester chaque point d'acces
 - **Evolution des fichiers** : quels fichiers changent a chaque etape du TP
-- **Concepts cles** : tableaux recapitulatifs des annotations et patterns
+- **Concepts essentiels** : tableaux recapitulatifs des annotations et motifs de conception

@@ -1,54 +1,54 @@
 ---
-title: "TP8 - Card Game (Graphics Variant)"
+title: "TP8 - Jeu de cartes (variante graphique)"
 sidebar_position: 8
 ---
 
-# TP8 - Card Game (Graphics Variant)
+# TP8 - Jeu de cartes (variante graphique)
 
-## Overview
+## Vue d'ensemble
 
-Similar to TP3 but with different card type implementation and enhanced graphics display. This lab demonstrates:
-- Alternative type definitions
-- Graphics library usage
-- Game state management
-- Interactive graphics
+Similaire au TP3 mais avec une implementation de type carte differente et un affichage graphique ameliore. Ce TP illustre :
+- Definitions de types alternatives
+- Utilisation de la bibliotheque graphique
+- Gestion de l'etat du jeu
+- Graphisme interactif
 
-## Data Types
+## Types de donnees
 
 ```ocaml
 type coul = Coeur | Trefle | Pique | Carreau
 type haut = Sept | Huit | Neuf | Dix | Valet | Dame | Roi | As
-type carte = Carte of haut * coul  (* tuple variant instead of record *)
+type carte = Carte of haut * coul  (* variant avec tuple au lieu de record *)
 ```
 
-## Exercises
+## Exercices
 
-### 1. Card Construction
-Type definitions and conversion functions similar to TP3.
+### 1. Construction de cartes
+Definitions de types et fonctions de conversion similaires au TP3.
 
-**Concepts**: Tuple variants vs records
+**Concepts** : Variants avec tuple vs records
 
-### 2. Card Generation
-Random card generation without duplicates using List.mem.
+### 2. Generation de cartes
+Generation aleatoire de cartes sans doublons avec List.mem.
 
-**Concepts**: Standard library functions
+**Concepts** : Fonctions de la bibliotheque standard
 
-### 3. Game Logic
-Solitaire reduction with pattern matching on card tuples.
+### 3. Logique du jeu
+Reduction de la reussite avec pattern matching sur les tuples de cartes.
 
-**Concepts**: Nested pattern matching
+**Concepts** : Pattern matching imbrique
 
-### 4. Graphics Display
-- `draw_carte`: Draw a single card
-- `draw_pile`: Draw a pile of cards vertically
-- `draw_jeu`: Draw all piles
-- `draw_reussite`: Interactive game loop
+### 4. Affichage graphique
+- `draw_carte` : Dessiner une carte
+- `draw_pile` : Dessiner une pile de cartes verticalement
+- `draw_jeu` : Dessiner toutes les piles
+- `draw_reussite` : Boucle de jeu interactive
 
-**Concepts**: Graphics primitives, event loop
+**Concepts** : Primitives graphiques, boucle d'evenements
 
-## Key Differences from TP3
+## Differences cles avec le TP3
 
-### Type Definition
+### Definition du type
 ```ocaml noexec
 (* TP3 *)
 type carte = {h : haut; c : coul}
@@ -57,7 +57,7 @@ type carte = {h : haut; c : coul}
 type carte = Carte of haut * coul
 ```
 
-### Pattern Matching
+### Pattern matching
 ```ocaml noexec
 (* TP3 *)
 let coul c = c.c
@@ -66,32 +66,32 @@ let coul c = c.c
 let coul c = let Carte (_, col) = c in col
 ```
 
-### Graphics
-More sophisticated graphics with:
-- Sprite-based card drawing
-- Interactive game loop with keyboard input
-- Real-time reduction visualization
+### Graphisme
+Graphisme plus avance avec :
+- Dessin de cartes a base de sprites
+- Boucle de jeu interactive avec saisie clavier
+- Visualisation des reductions en temps reel
 
-## Running the Code
+## Execution du code
 
 ```bash
-# Load graphics library first
+# Charger d'abord la bibliotheque graphique
 ocaml
 # #use "topfind";;
 # #require "graphics";;
 # #use "tp8.ml";;
 ```
 
-For graphics:
+Pour le graphique :
 ```bash
 # draw_reussite ();;
-# Press 'q' to quit
+# Appuyez sur 'q' pour quitter
 ```
 
-## Game Interaction
+## Interaction avec le jeu
 
-The `draw_reussite` function:
-1. Creates a deck of 32 cards
-2. Displays them as individual piles
-3. Applies reduction on each keypress
-4. Continues until 'q' is pressed
+La fonction `draw_reussite` :
+1. Cree un jeu de 32 cartes
+2. Les affiche sous forme de piles individuelles
+3. Applique une reduction a chaque appui de touche
+4. Continue jusqu'a l'appui sur 'q'

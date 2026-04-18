@@ -74,7 +74,7 @@ genre_stable(N) :-
     \+(genre_instable(N)).
 ```
 
-Pattern important : definir la propriete **negative** d'abord, puis utiliser `\+` pour obtenir la positive.
+Motif important : definir la propriete **negative** d'abord, puis utiliser `\+` pour obtenir la positive.
 
 ---
 
@@ -150,7 +150,7 @@ interpreter([mul | Prog], [Op2, Op1 | Stack], Env, Res) :-
     interpreter(Prog, [X | Stack], Env, Res).
 ```
 
-### Q11 : neq (not equal)
+### Q11 : neq (non-egalite)
 
 ```prolog noexec
 interpreter([neq | Prog], [Op2, Op1 | Stack], Env, Res) :-
@@ -161,7 +161,7 @@ interpreter([neq | Prog], [Op2, Op1 | Stack], Env, Res) :-
     interpreter(Prog, [1 | Stack], Env, Res).     % differents -> 1 (vrai)
 ```
 
-Deux clauses : une pour le cas "egaux" (push 0), une pour "differents" (push 1).
+Deux clauses : une pour le cas "egaux" (empile 0), une pour "differents" (empile 1).
 
 ### Q12 : if(Cond, Then, Else)
 

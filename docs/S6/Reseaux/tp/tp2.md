@@ -1,134 +1,134 @@
 ---
-title: "TP2 - UDP & TCP Communication in Java"
+title: "TP2 - Communication UDP & TCP en Java"
 sidebar_position: 2
 ---
 
-# TP2 - UDP & TCP Communication in Java
+# TP2 - Communication UDP & TCP en Java
 
-Introduction to socket programming with Java, implementing UDP echo server and HTTP web server.
+Introduction a la programmation socket en Java, implementation d'un serveur echo UDP et d'un serveur web HTTP.
 
-## Objectives
+## Objectifs
 
-- Understand UDP connectionless communication
-- Implement TCP client-server applications
-- Build a basic HTTP server
-- Compare UDP and TCP protocols
+- Comprendre la communication sans connexion UDP
+- Implementer des applications client-serveur TCP
+- Construire un serveur HTTP basique
+- Comparer les protocoles UDP et TCP
 
-## Topics Covered
+## Themes abordes
 
-1. **UDP Echo Server** - Stateless request/reply
-2. **TCP HTTP Server** - Connection-oriented file serving
-3. **HTTP Client** - Making GET requests
+1. **Serveur echo UDP** - Requete/reponse sans etat
+2. **Serveur HTTP TCP** - Service de fichiers oriente connexion
+3. **Client HTTP** - Envoi de requetes GET
 
 ---
 
-## Part 1: UDP Echo Server
+## Partie 1 : Serveur echo UDP
 
 ### Concept
 
-UDP (User Datagram Protocol) is **connectionless**:
-- No handshake or connection establishment
-- Each datagram is independent
-- No guarantee of delivery or order
-- Fast, low overhead
+UDP (User Datagram Protocol) est **sans connexion** :
+- Pas de handshake ni d'etablissement de connexion
+- Chaque datagramme est independant
+- Pas de garantie de livraison ni d'ordre
+- Rapide, faible surcout
 
 ### Implementation
 
-The UDP server:
-1. Waits for a message from a client
-2. Echoes the message back to sender
-3. Repeat indefinitely
+Le serveur UDP :
+1. Attend un message d'un client
+2. Renvoie le message a l'emetteur (echo)
+3. Repete indefiniment
 
-### Key Code Points
+### Points cles du code
 
 ```java
-// Create UDP socket on specific port
+// Creer un socket UDP sur un port specifique
 DatagramSocket socket = new DatagramSocket(port);
 
-// Prepare buffer for incoming data
+// Preparer le buffer pour les donnees entrantes
 byte[] recvBuf = new byte[256];
 DatagramPacket packet = new DatagramPacket(recvBuf, 256);
 
-// Receive datagram (blocking)
+// Recevoir un datagramme (bloquant)
 socket.receive(packet);
 
-// Send datagram back (packet contains sender address)
+// Renvoyer le datagramme (le paquet contient l'adresse de l'emetteur)
 socket.send(packet);
 ```
 
-### Running
+### Execution
 
 ```bash
-# Terminal 1: Start server
+# Terminal 1 : Demarrer le serveur
 javac Serveur_UDP.java
 java Serveur_UDP
 
-# Terminal 2: Start client (GUI)
+# Terminal 2 : Demarrer le client (GUI)
 javac Client_UDP.java UtilitaireRepartition.java
 java Client_UDP
 ```
 
-**Client GUI:**
-- Enter hostname (e.g., `localhost` or `127.0.0.1`)
-- Enter port number (e.g., `5674`)
-- Click "Envoi message" to send
-- Received message appears in label
+**Interface graphique du client :**
+- Saisir le hostname (ex : `localhost` ou `127.0.0.1`)
+- Saisir le numero de port (ex : `5674`)
+- Cliquer sur "Envoi message" pour envoyer
+- Le message recu s'affiche dans le label
 
-### Network Analysis
+### Analyse reseau
 
-Capture with Wireshark filter: `udp.port == 5674`
+Capture avec le filtre Wireshark : `udp.port == 5674`
 
-**UDP packet structure:**
+**Structure du paquet UDP :**
 ```
-Ethernet Header (14 bytes)
-├─ Destination MAC
-├─ Source MAC
-└─ Type: 0x0800 (IPv4)
+Ethernet Header (14 octets)
++-- Destination MAC
++-- Source MAC
++-- Type: 0x0800 (IPv4)
 
-IP Header (20 bytes)
-├─ Version: 4
-├─ Protocol: 17 (UDP)
-├─ Source IP
-└─ Destination IP
+IP Header (20 octets)
++-- Version: 4
++-- Protocol: 17 (UDP)
++-- Source IP
++-- Destination IP
 
-UDP Header (8 bytes)
-├─ Source Port
-├─ Destination Port
-├─ Length
-└─ Checksum
+UDP Header (8 octets)
++-- Source Port
++-- Destination Port
++-- Length
++-- Checksum
 
 Data (variable)
-└─ Application payload
++-- Charge utile applicative
 ```
 
 ### Observations
 
-- No connection setup (no SYN/ACK)
-- Single request/reply exchange
-- Stateless: server doesn't remember previous messages
-- If packet lost, no automatic retransmission
+- Pas d'etablissement de connexion (pas de SYN/ACK)
+- Un seul echange requete/reponse
+- Sans etat : le serveur ne memorise pas les messages precedents
+- Si un paquet est perdu, pas de retransmission automatique
 
 ---
 
-## Part 2: TCP HTTP Server
+## Partie 2 : Serveur HTTP TCP
 
 ### Concept
 
-HTTP protocol operates over TCP:
-- Connection-oriented (3-way handshake)
-- Reliable delivery
-- Request/response model
+Le protocole HTTP fonctionne sur TCP :
+- Oriente connexion (3-way handshake)
+- Livraison fiable
+- Modele requete/reponse
 
-### Server Features
+### Fonctionnalites du serveur
 
-1. **Listen on port** (default 8888)
-2. **Accept connections** from browsers
-3. **Parse HTTP requests** (GET method)
-4. **Serve files** from root directory
-5. **Handle errors** (400 Bad Request, 404 Not Found)
-6. **Log requests** with timestamp and client IP
+1. **Ecoute sur un port** (par defaut 8888)
+2. **Accepte les connexions** depuis les navigateurs
+3. **Parse les requetes HTTP** (methode GET)
+4. **Sert les fichiers** depuis le repertoire racine
+5. **Gere les erreurs** (400 Bad Request, 404 Not Found)
+6. **Journalise les requetes** avec horodatage et IP du client
 
-### HTTP Request Format
+### Format de la requete HTTP
 
 ```
 GET /index.html HTTP/1.0
@@ -136,9 +136,9 @@ Host: localhost:8888
 User-Agent: Mozilla/5.0
 ```
 
-### HTTP Response Format
+### Format de la reponse HTTP
 
-**Success (200 OK):**
+**Succes (200 OK) :**
 ```
 HTTP/1.0 200 OK
 Date: Fri Apr 11 10:30:00 2026
@@ -147,63 +147,63 @@ Content-type: text/html
 
 <!DOCTYPE html>
 <html>
-...file content...
+...contenu du fichier...
 </html>
 ```
 
-**Not Found (404):**
+**Non trouve (404) :**
 ```
 HTTP/1.0 404 Not Found
 Date: Fri Apr 11 10:30:00 2026
 Server: -- Serveur HTTP Java --
 Content-type: text/html
 
-<HTML><BODY><H1>Fichier Non Trouvé</H1></BODY></HTML>
+<HTML><BODY><H1>Fichier Non Trouve</H1></BODY></HTML>
 ```
 
-**Bad Request (400):**
+**Mauvaise requete (400) :**
 ```
 HTTP/1.0 400 Bad Request
 ...
-<HTML><BODY><H1>Mauvaise requête</H1></BODY></HTML>
+<HTML><BODY><H1>Mauvaise requete</H1></BODY></HTML>
 ```
 
-### Implementation Highlights
+### Points cles de l'implementation
 
 ```java
-// Create server socket
+// Creer le socket serveur
 ServerSocket serverSocket = new ServerSocket(port);
 
-// Accept client connections (blocking)
+// Accepter les connexions client (bloquant)
 Socket clientSocket = serverSocket.accept();
 
-// Get input/output streams
+// Obtenir les flux d'entree/sortie
 BufferedReader in = new BufferedReader(
     new InputStreamReader(clientSocket.getInputStream()));
 PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 
-// Read HTTP request
+// Lire la requete HTTP
 String request = in.readLine();  // "GET /index.html HTTP/1.0"
 
-// Parse request
-String[] parts = request.split("\\s");  // Split by whitespace
-String filename = parts[1];  // Extract path
+// Parser la requete
+String[] parts = request.split("\\s");  // Decouper par espaces
+String filename = parts[1];  // Extraire le chemin
 
-// Check if file exists
+// Verifier si le fichier existe
 File file = new File(rootDir + filename);
 if (!file.exists()) {
-    // Send 404 response
+    // Envoyer la reponse 404
 } else {
-    // Send 200 response + file content
+    // Envoyer la reponse 200 + contenu du fichier
 }
 
-// Close connection
+// Fermer la connexion
 clientSocket.close();
 ```
 
-### MIME Types
+### Types MIME
 
-Server determines content type from file extension:
+Le serveur determine le type de contenu a partir de l'extension du fichier :
 
 ```java
 static String typeMime(String nom) {
@@ -216,36 +216,36 @@ static String typeMime(String nom) {
 }
 ```
 
-### Running
+### Execution
 
 ```bash
-# Compile
+# Compiler
 javac ServeurHttp.java
 
-# Run with default port 8888
+# Lancer avec le port par defaut 8888
 java ServeurHttp
 
-# Run with custom port
+# Lancer avec un port personnalise
 java ServeurHttp 9000
 ```
 
-**Test with browser:**
+**Tester avec un navigateur :**
 ```
 http://localhost:8888/index.html
 ```
 
-**Test with curl:**
+**Tester avec curl :**
 ```bash
 curl -v http://localhost:8888/index.html
 ```
 
-**Test with ClientHttp:**
+**Tester avec ClientHttp :**
 ```bash
 javac ClientHttp.java
 java ClientHttp
 ```
 
-### Server Log Output
+### Sortie du journal serveur
 
 ```
 [Fri Apr 11 10:30:15 2026] Connexion :laptop:54321 (192.168.1.100)
@@ -255,11 +255,11 @@ GET /index.html HTTP/1.0
 GET /missing.html HTTP/1.0
 ```
 
-### Performance Testing
+### Tests de performance
 
-**Exercise:** Measure response time for 50 requests
+**Exercice :** Mesurer le temps de reponse pour 50 requetes
 
-Create benchmark client:
+Creer un client de benchmark :
 ```java
 long start = System.currentTimeMillis();
 for (int i = 0; i < 50; i++) {
@@ -267,39 +267,39 @@ for (int i = 0; i < 50; i++) {
 }
 long end = System.currentTimeMillis();
 System.out.println("Total: " + (end - start) + " ms");
-System.out.println("Average: " + (end - start) / 50.0 + " ms/request");
+System.out.println("Moyenne: " + (end - start) / 50.0 + " ms/requete");
 ```
 
-**Exercise:** Launch 5 clients, each making 10 requests
+**Exercice :** Lancer 5 clients, chacun effectuant 10 requetes
 
-Observe:
-- Server handles requests sequentially (one at a time)
-- Clients block while waiting for server
-- Total time ≈ 50 requests × per-request time
+Observer :
+- Le serveur traite les requetes sequentiellement (une a la fois)
+- Les clients bloquent en attendant le serveur
+- Le temps total = environ 50 requetes x temps par requete
 
-To handle concurrent requests, server would need:
-- Multithreading (one thread per client)
-- Thread pool for efficiency
-- Non-blocking I/O (NIO)
+Pour gerer des requetes concurrentes, le serveur aurait besoin de :
+- Multithreading (un thread par client)
+- Pool de threads pour l'efficacite
+- I/O non bloquant (NIO)
 
 ---
 
-## Part 3: HTTP Client
+## Partie 3 : Client HTTP
 
 ### Implementation
 
-Simple HTTP client that sends GET requests:
+Client HTTP simple qui envoie des requetes GET :
 
 ```java
-// Connect to server
+// Se connecter au serveur
 Socket socket = new Socket(hostname, port);
 
-// Send HTTP request
+// Envoyer la requete HTTP
 PrintWriter out = new PrintWriter(socket.getOutputStream());
 out.println("GET /" + filename + " HTTP/1.1\r\n\r\n");
 out.flush();
 
-// Read response
+// Lire la reponse
 BufferedReader in = new BufferedReader(
     new InputStreamReader(socket.getInputStream()));
 String line;
@@ -310,162 +310,162 @@ while ((line = in.readLine()) != null) {
 socket.close();
 ```
 
-### Testing
+### Tests
 
-Client tests multiple files:
+Le client teste plusieurs fichiers :
 ```java
 String[] targets = {
-    "index.html",           // Should return 200 OK
-    "Client_UDP.java",      // Should return 200 OK
-    "nonexistent.html"      // Should return 404 Not Found
+    "index.html",           // Devrait retourner 200 OK
+    "Client_UDP.java",      // Devrait retourner 200 OK
+    "nonexistent.html"      // Devrait retourner 404 Not Found
 };
 ```
 
 ---
 
-## UDP vs TCP Comparison
+## Comparaison UDP vs TCP
 
-| Feature | UDP | TCP |
+| Critere | UDP | TCP |
 |---------|-----|-----|
-| **Connection** | Connectionless | Connection-oriented |
-| **Reliability** | Best-effort, no guarantee | Guaranteed delivery |
-| **Ordering** | No guarantee | In-order delivery |
-| **Speed** | Fast, low overhead | Slower, more overhead |
-| **Header size** | 8 bytes | 20+ bytes |
-| **Use cases** | DNS, streaming, gaming | HTTP, FTP, email |
-| **Error detection** | Checksum only | Checksum + ACK/retransmit |
-| **Flow control** | No | Yes (window size) |
-| **State** | Stateless | Stateful |
+| **Connexion** | Sans connexion | Oriente connexion |
+| **Fiabilite** | Best-effort, sans garantie | Livraison garantie |
+| **Ordre** | Pas de garantie | Livraison ordonnee |
+| **Vitesse** | Rapide, faible surcout | Plus lent, plus de surcout |
+| **Taille en-tete** | 8 octets | 20+ octets |
+| **Cas d'usage** | DNS, streaming, jeux | HTTP, FTP, email |
+| **Detection d'erreurs** | Checksum uniquement | Checksum + ACK/retransmission |
+| **Controle de flux** | Non | Oui (taille de fenetre) |
+| **Etat** | Sans etat | Avec etat |
 
-### When to Use UDP
+### Quand utiliser UDP
 
-- Real-time applications (VoIP, video streaming)
-- Small request/reply (DNS)
+- Applications temps reel (VoIP, streaming video)
+- Requetes courtes (DNS)
 - Broadcast/multicast
-- Low latency critical, occasional loss acceptable
+- Latence critique, perte occasionnelle acceptable
 
-### When to Use TCP
+### Quand utiliser TCP
 
-- File transfer (must be complete and correct)
-- HTTP/HTTPS (web pages)
+- Transfert de fichiers (doit etre complet et correct)
+- HTTP/HTTPS (pages web)
 - Email (SMTP, IMAP, POP3)
-- Anything requiring reliability
+- Tout ce qui necessite de la fiabilite
 
 ---
 
-## Network Analysis
+## Analyse reseau
 
-### Wireshark Capture Comparison
+### Comparaison des captures Wireshark
 
-**UDP Session:**
+**Session UDP :**
 ```
-1. Client → Server: UDP packet with data
-2. Server → Client: UDP packet with echo
-(2 packets total)
-```
-
-**TCP Session:**
-```
-1. Client → Server: SYN
-2. Server → Client: SYN-ACK
-3. Client → Server: ACK
-4. Client → Server: GET request (PSH, ACK)
-5. Server → Client: HTTP response (PSH, ACK)
-6. Client → Server: ACK
-7. Client → Server: FIN, ACK
-8. Server → Client: FIN, ACK
-9. Client → Server: ACK
-(9+ packets for simple exchange)
+1. Client -> Serveur : paquet UDP avec donnees
+2. Serveur -> Client : paquet UDP avec echo
+(2 paquets au total)
 ```
 
-### Capture Filters
+**Session TCP :**
+```
+1. Client -> Serveur : SYN
+2. Serveur -> Client : SYN-ACK
+3. Client -> Serveur : ACK
+4. Client -> Serveur : requete GET (PSH, ACK)
+5. Serveur -> Client : reponse HTTP (PSH, ACK)
+6. Client -> Serveur : ACK
+7. Client -> Serveur : FIN, ACK
+8. Serveur -> Client : FIN, ACK
+9. Client -> Serveur : ACK
+(9+ paquets pour un echange simple)
+```
+
+### Filtres de capture
 
 ```
-udp.port == 5674                    # UDP traffic
-tcp.port == 8888                    # HTTP server
-http.request.method == "GET"        # HTTP GET requests
-http.response.code == 200           # Successful responses
-tcp.flags.syn == 1                  # TCP SYN packets
+udp.port == 5674                    # Trafic UDP
+tcp.port == 8888                    # Serveur HTTP
+http.request.method == "GET"        # Requetes HTTP GET
+http.response.code == 200           # Reponses reussies
+tcp.flags.syn == 1                  # Paquets TCP SYN
 ```
 
 ---
 
-## Extensions & Exercises
+## Extensions et exercices
 
-### 1. Multithreaded UDP Server
+### 1. Serveur UDP multithread
 
-Current server handles one client at a time. Modify to handle multiple simultaneous clients:
+Le serveur actuel gere un seul client a la fois. Modifier pour gerer plusieurs clients simultanes :
 
 ```java
 while (true) {
     DatagramPacket packet = new DatagramPacket(buf, buf.length);
     socket.receive(packet);
     
-    // Spawn thread to handle this request
+    // Lancer un thread pour traiter cette requete
     new Thread(() -> {
-        // Process and respond
+        // Traiter et repondre
         socket.send(packet);
     }).start();
 }
 ```
 
-### 2. HTTP Server Enhancements
+### 2. Ameliorations du serveur HTTP
 
-- **POST support**: Handle form submissions
-- **Keep-Alive**: Reuse connections (HTTP/1.1)
-- **Multithreading**: Handle concurrent clients
-- **Statistics**: Track requests per file, error rates
-- **Logging**: Write access log to file
-- **Virtual hosts**: Serve multiple domains
-- **CGI support**: Execute server-side scripts
+- **Support POST** : gerer les soumissions de formulaires
+- **Keep-Alive** : reutiliser les connexions (HTTP/1.1)
+- **Multithreading** : gerer les clients concurrents
+- **Statistiques** : suivre les requetes par fichier, taux d'erreur
+- **Journalisation** : ecrire le journal d'acces dans un fichier
+- **Hotes virtuels** : servir plusieurs domaines
+- **Support CGI** : executer des scripts cote serveur
 
-### 3. HTTP Client Features
+### 3. Fonctionnalites du client HTTP
 
-- **Follow redirects**: Handle 301/302 responses
-- **Persistent connections**: Reuse socket
-- **Download progress**: Show bytes received
-- **Timeout handling**: Don't wait forever
-- **HTTPS support**: SSL/TLS connections
+- **Suivi des redirections** : gerer les reponses 301/302
+- **Connexions persistantes** : reutiliser le socket
+- **Progression du telechargement** : afficher les octets recus
+- **Gestion du timeout** : ne pas attendre indefiniment
+- **Support HTTPS** : connexions SSL/TLS
 
-### 4. Protocol Implementation
+### 4. Implementation d'un protocole
 
-Implement your own application protocol:
+Implementer son propre protocole applicatif :
 
 ```
-ECHO <message>          → Server echoes message
-TIME                    → Server returns current time
-CALC <expr>             → Server evaluates expression
-QUIT                    → Close connection
+ECHO <message>          -> Le serveur renvoie le message
+TIME                    -> Le serveur retourne l'heure actuelle
+CALC <expr>             -> Le serveur evalue l'expression
+QUIT                    -> Fermer la connexion
 ```
 
 ---
 
-## Key Takeaways
+## Points a retenir
 
-1. **UDP is simple** but unreliable - suitable for real-time apps
-2. **TCP ensures delivery** at cost of complexity and overhead
-3. **HTTP is text-based** - easy to debug with telnet/curl
-4. **Socket programming abstracts** network details
-5. **Buffering is important** - flush() output streams
-6. **Error handling matters** - network operations can fail
-7. **Resource management** - close sockets when done
+1. **UDP est simple** mais non fiable - adapte aux applications temps reel
+2. **TCP assure la livraison** au prix de la complexite et du surcout
+3. **HTTP est en texte** - facile a debugger avec telnet/curl
+4. **La programmation socket abstrait** les details reseau
+5. **Le buffering est important** - flush() les flux de sortie
+6. **La gestion d'erreurs compte** - les operations reseau peuvent echouer
+7. **La gestion des ressources** - fermer les sockets quand c'est fini
 
 ---
 
-## Files in This Directory
+## Fichiers dans ce repertoire
 
-### Source Code (`src/`)
-- `Client_UDP.java` - UDP client with GUI
-- `Serveur_UDP.java` - UDP echo server
-- `ServeurHttp.java` - HTTP file server
-- `ClientHttp.java` - Simple HTTP client
-- `UtilitaireRepartition.java` - GUI layout utility
+### Code source (`src/`)
+- `Client_UDP.java` - Client UDP avec interface graphique
+- `Serveur_UDP.java` - Serveur echo UDP
+- `ServeurHttp.java` - Serveur de fichiers HTTP
+- `ClientHttp.java` - Client HTTP simple
+- `UtilitaireRepartition.java` - Utilitaire de disposition GUI
 
-### Resources
-- `index.html` - Sample HTML file for HTTP server
-- `tp2.pdf` - Assignment instructions
+### Ressources
+- `index.html` - Fichier HTML exemple pour le serveur HTTP
+- `tp2.pdf` - Enonce du TP
 
-### Compilation & Execution
+### Compilation et execution
 
 ```bash
 # UDP
@@ -480,10 +480,10 @@ java -cp src ClientHttp
 
 ---
 
-## Further Reading
+## Pour aller plus loin
 
 - RFC 768 (UDP)
 - RFC 793 (TCP)
 - RFC 2616 (HTTP/1.1)
-- Java Socket API documentation
-- Wireshark User Guide
+- Documentation de l'API Socket Java
+- Guide utilisateur Wireshark

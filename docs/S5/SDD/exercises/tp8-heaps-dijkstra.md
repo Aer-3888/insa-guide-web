@@ -5,7 +5,7 @@ sidebar_position: 8
 
 # TP8 - Files de Priorite, Dijkstra, Le Compte Est Bon et Seam Carving
 
-> Following teacher instructions from: `S5/SDD/data/moodle/tp/tp_final_project/README.md`
+> D'apres les consignes de l'enseignant : `S5/SDD/data/moodle/tp/tp_final_project/README.md`
 
 Il y a 4 parties dans ce TP : implementation de files de priorite, algorithme de Dijkstra, solveur du jeu "Le Compte Est Bon", et recadrage intelligent (Seam Carving).
 
@@ -69,7 +69,7 @@ On fournit une implementation peu efficace dans la classe `OrderedArrayPQ<T>`. D
 
 Votre implementation devrait avoir une complexite en O(log n) pour les methodes `add` et `poll` (contre O(n) pour `OrderedArrayPQ`).
 
-**Answer:**
+**Reponse :**
 
 ```java
 package fr.insa_rennes.sdd.priority_queue;
@@ -176,7 +176,7 @@ public class HeapPQ<T> implements PriorityQueue<T> {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - **shiftUp (remonter)** : Apres insertion a la fin, comparer avec le parent et echanger vers le haut jusqu'a restaurer la propriete de tas. O(log n).
 - **shiftDown (descendre)** : Apres suppression de la racine (remplacee par le dernier element), comparer avec les enfants et echanger vers le bas. Toujours echanger avec l'enfant le *plus petit*. O(log n).
 
@@ -260,7 +260,7 @@ L'algorithme de Dijkstra avec une file de priorite :
 
 ### Implementer la methode solve() de Dijkstra
 
-**Answer:**
+**Reponse :**
 
 ```java
 private void solve(Graph<T> graph, T source) {
@@ -294,7 +294,7 @@ private void solve(Graph<T> graph, T source) {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 C'est l'implementation "LazyDijkstra" : on peut ajouter le meme sommet plusieurs fois dans la PQ avec des couts differents. L'etape 4 (`if (cost.containsKey(node.vertex)) continue`) ignore les doublons. C'est plus simple qu'une approche "decrease-key" et fonctionne bien avec notre tas.
 
 ### Exercice II.2
@@ -303,7 +303,7 @@ C'est l'implementation "LazyDijkstra" : on peut ajouter le meme sommet plusieurs
 
 `Deque<T> getPathTo(T v)` rend une collection qui donne le chemin pour aller de la source vers le sommet `v`. Grace a la table `prev`, on peut connaitre le predecesseur de `v`, puis le predecesseur du predecesseur et ainsi de suite, jusqu'a retomber sur le sommet source.
 
-**Answer:**
+**Reponse :**
 
 ```java
 public Deque<T> getPathTo(T v) {
@@ -319,7 +319,7 @@ public Deque<T> getPathTo(T v) {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Partir de la cible, suivre les pointeurs `prev` en arriere vers la source (qui a un cout de 0). Chaque etape ajoute au debut du deque, donc le resultat final est ordonne source-vers-cible.
 
 Tester : `mvn -Dtest=DijkstraTest test`
@@ -361,7 +361,7 @@ Les methodes utilitaires : `get(stack, index)`, `size(stack)`, `push(stack, v)`.
 
 Cette methode prend une pile de calcul en parametre et rend le resultat du calcul. Si la pile ne represente pas un calcul valide, rend `IMPOSSIBLE`. Si le calcul n'est pas encore termine, retourne `UNFINISHED`.
 
-**Answer:**
+**Reponse :**
 
 ```java
 private int compte(long stack) {
@@ -406,7 +406,7 @@ private int compte(long stack) {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Regles du jeu appliquees :
 - La soustraction doit donner un resultat positif (`potres < 0` => IMPOSSIBLE)
 - La division doit etre entiere (`potres * opa != opb` => IMPOSSIBLE)
@@ -424,7 +424,7 @@ Dans le jeu, on ne peut utiliser qu'une seule fois une plaque donnee.
 
 Exemple : si `plaques = {1, 3, 7, 10, 25, 100}` et l'etat courant a la pile `[4, 3, 4, 1, ADD]` (compte: UNFINISHED), les voisins seront les etats obtenus en poussant : ADD, TIMES, la plaque 0 (indice de 1), la plaque 2 (indice de 7), la plaque 5 (indice de 100).
 
-**Answer:**
+**Reponse :**
 
 ```java
 private HashSet<VertexAndWeight<State>> neighbors() {
@@ -465,7 +465,7 @@ private HashSet<VertexAndWeight<State>> neighbors() {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - Les plaques sont suivies par index (0-5 dans le tableau `plaques`), pas par valeur. Cela permet la detection efficace des doublons.
 - Modele de cout : chaque plaque coute 1. Les operateurs ont des couts configurables (defaut : `+`=1, `-`=1, `*`=2, `/`=6). Les operateurs couteux sont evites par Dijkstra, preferant les solutions plus simples.
 
@@ -497,7 +497,7 @@ Completer les methodes `horizontalSeam()`, `verticalSeam()` et `reduceToSize()`.
 - `Deque<Coordinate> verticalSeam()` rend les coordonnees du plus court chemin entre `Top` et `Bottom` (sans Top et Bottom).
 - `void reduceToSize(int width, int height)` reduit l'image aux dimensions `width x height`. Utiliser `cropHorizontal` et `cropVertical`.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package fr.insa_rennes.sdd.seam_carving;
@@ -559,7 +559,7 @@ public class SeamCarverDijkstra extends SeamCarver {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 1. Calculer la carte d'energie (importance de chaque pixel)
 2. Construire un graphe grille ou les poids des arcs sont les energies des pixels d'arrivee
 3. Les noeuds virtuels `Left`/`Right` (ou `Top`/`Bottom`) se connectent a tous les pixels du bord
@@ -577,7 +577,7 @@ L'algorithme de Dijkstra est en O((V + E) * log V). En exploitant la structure d
 
 On remplit une matrice colonne par colonne (de gauche a droite) pour `horizontalSeam`, ou ligne par ligne (de haut en bas) pour `verticalSeam`. Puis on reconstruit le chemin a rebours.
 
-**Answer:**
+**Reponse :**
 
 ```java
 package fr.insa_rennes.sdd.seam_carving;
@@ -701,7 +701,7 @@ public class SeamCarverDP extends SeamCarver {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - **Complexite** : Dijkstra = O((V + E) log V), DP = O(V + E) = O(V) -- pas de facteur log, beaucoup plus rapide.
 - Pour tester : dans `Controller.java`, remplacer `SeamCarverDijkstra` par `SeamCarverDP` a la ligne 7 de `loadImage()`, puis `mvn javafx:run`. Le redimensionnement devrait etre plus reactif.
 

@@ -1,15 +1,15 @@
 ---
-title: "TP3 - Graph Algorithms in ARM Assembly"
+title: "TP3 - Algorithmes sur les graphes en assembleur ARM"
 sidebar_position: 3
 ---
 
-# TP3 - Graph Algorithms in ARM Assembly
+# TP3 - Algorithmes sur les graphes en assembleur ARM
 
-## Overview
+## Presentation
 
-This lab implements graph algorithms in ARM assembly, focusing on data structure representation, pointer manipulation, and recursive traversal. The exercises demonstrate how to work with complex data structures (graphs) in low-level programming.
+Ce TP implemente des algorithmes sur les graphes en assembleur ARM, en se concentrant sur la representation des structures de donnees, la manipulation de pointeurs, et le parcours recursif. Les exercices montrent comment travailler avec des structures de donnees complexes (graphes) en programmation bas niveau.
 
-## Exercises
+## Exercices
 
 ### 1. main.s
 Graph definition and program entry point. Defines a directed graph structure with 5 vertices (a-e) and initializes the marking array for DFS.
@@ -23,7 +23,7 @@ Vertex search function - finds the index of a vertex given its character name.
 ### 4. estPointEntree.s
 Entry point detection - determines if a given vertex is an entry point (has no incoming edges).
 
-## Graph Data Structure
+## Structure de donnees du graphe
 
 ### Structure Definition
 
@@ -106,7 +106,7 @@ g:                                   @ Graph structure
 marquer: .byte 0, 0, 0, 0, 0         @ Marking array (visited flags)
 ```
 
-## Key ARM Concepts Demonstrated
+## Concepts ARM cles illustres
 
 ### 1. Structure Member Access
 
@@ -179,7 +179,7 @@ ldr r2, [r1, r3, lsl #2]            @ r2 = *(r1 + r3*4)
 - `lsl #2` - Word array (32-bit, ×4)
 - `lsl #3` - Double-word array (64-bit, ×8)
 
-## Algorithm Details
+## Details des algorithmes
 
 ### Depth-First Search (dfs.s)
 
@@ -256,7 +256,7 @@ function estPointEntree(sommet, g):
 - 'a' is an entry point (no incoming edges)
 - 'b', 'c', 'd', 'e' are not entry points (have incoming edges)
 
-## Building and Running
+## Compilation et execution
 
 ### Compilation
 ```bash
@@ -270,12 +270,12 @@ arm-linux-gnueabi-as -o estPointEntree.o src/estPointEntree.s
 arm-linux-gnueabi-ld -o graph main.o dfs.o rechercheSommet.o estPointEntree.o
 ```
 
-### Running
+### Execution
 ```bash
 qemu-arm ./graph
 ```
 
-### Debugging DFS
+### Debogage DFS
 ```bash
 arm-linux-gnueabi-gdb ./graph
 (gdb) break dfs
@@ -291,7 +291,7 @@ Before: 00 00 00 00 00  (all unvisited)
 After:  01 01 01 01 01  (all visited - graph is connected)
 ```
 
-## Key Instructions Used
+## Instructions cles utilisees
 
 ### Memory Access
 - `LDR` - Load word (32-bit)
@@ -311,7 +311,7 @@ After:  01 01 01 01 01  (all visited - graph is connected)
 - `BGE` - Branch if greater or equal
 - `BLT` - Branch if less than
 
-## Study Exercises
+## Exercices d'entrainement
 
 1. **Trace DFS**: Manually trace `dfs('a', g, marquer)` showing the call stack and marking array at each step.
 
@@ -325,7 +325,7 @@ After:  01 01 01 01 01  (all visited - graph is connected)
 
 6. **Entry Points**: Modify main.s to find all entry points in the graph.
 
-## Common Errors
+## Erreurs courantes
 
 ### Wrong Indexing
 **Problem**: Accessing wrong array element
@@ -359,7 +359,7 @@ ldrb r3, [r2, r0]                    @ r3 = character at offset r0
 **Cause**: Not cleaning up stack properly after function call
 **Solution**: Match every `stmfd` with `ldmfd`, every `sub sp` with `add sp`
 
-## Performance Considerations
+## Considerations de performance
 
 ### Time Complexity
 - **DFS**: O(V + E) where V = vertices, E = edges

@@ -1,52 +1,52 @@
 ---
-title: "TD Solutions -- Combinational and Digital Logic"
+title: "Corrections de TD -- Logique combinatoire et numerique"
 sidebar_position: 2
 ---
 
-# TD Solutions -- Combinational and Digital Logic
+# Corrections de TD -- Logique combinatoire et numerique
 
-> Following teacher instructions from: S5/CLP/data/moodle/td/Logique/TD 1/Gonzalez/TD_01.tex, TD 2/Gonzalez/TD_02.tex
+> D'apres les consignes enseignants : S5/CLP/data/moodle/td/Logique/TD 1/Gonzalez/TD_01.tex, TD 2/Gonzalez/TD_02.tex
 
-This file covers the combinational logic TD exercises: Boolean algebra, Karnaugh maps, circuit analysis, number systems, multiplexers, decoders, and VU-meter design.
-
----
-
-## TD 1 -- Boolean Algebra, Karnaugh Maps, Combinational Circuits
+Ce fichier couvre les exercices de TD en logique combinatoire : algebre de Boole, tableaux de Karnaugh, analyse de circuits, systemes de numeration, multiplexeurs, decodeurs et conception de VU-metre.
 
 ---
 
-### Exercise 1: Boolean Algebra Proofs
-
-**Question:** Prove the following relations using Boolean algebra, then verify with truth tables.
+## TD 1 -- Algebre de Boole, tableaux de Karnaugh, circuits combinatoires
 
 ---
 
-#### 1a) Prove: NOT(A.NOT(B) + NOT(A).B) = NOT(A).NOT(B) + A.B
+### Exercice 1 : Demonstrations en algebre de Boole
 
-**Answer:**
+**Question :** Demontrer les relations suivantes en utilisant l'algebre de Boole, puis verifier a l'aide de tables de verite.
+
+---
+
+#### 1a) Demontrer : NOT(A.NOT(B) + NOT(A).B) = NOT(A).NOT(B) + A.B
+
+**Reponse :**
 
 ```
-Step 1: Apply De Morgan to the outer NOT:
-  NOT(X + Y) = NOT(X) . NOT(Y)   where X = A.NOT(B), Y = NOT(A).B
+Etape 1 : Appliquer De Morgan au NOT exterieur :
+  NOT(X + Y) = NOT(X) . NOT(Y)   ou X = A.NOT(B), Y = NOT(A).B
 
   NOT(A.NOT(B) + NOT(A).B) = NOT(A.NOT(B)) . NOT(NOT(A).B)
 
-Step 2: Apply De Morgan to each inner NOT:
-  NOT(A.NOT(B)) = NOT(A) + B      (De Morgan on AND)
-  NOT(NOT(A).B) = A + NOT(B)      (De Morgan on AND)
+Etape 2 : Appliquer De Morgan a chaque NOT interieur :
+  NOT(A.NOT(B)) = NOT(A) + B      (De Morgan sur ET)
+  NOT(NOT(A).B) = A + NOT(B)      (De Morgan sur ET)
 
-Step 3: Distribute (multiply out):
+Etape 3 : Distribuer (developper) :
   (NOT(A) + B) . (A + NOT(B))
   = NOT(A).A + NOT(A).NOT(B) + B.A + B.NOT(B)
 
-Step 4: Simplify using complement law (X.NOT(X) = 0):
+Etape 4 : Simplifier avec la loi du complement (X.NOT(X) = 0) :
   = 0 + NOT(A).NOT(B) + A.B + 0
-  = NOT(A).NOT(B) + A.B            QED
+  = NOT(A).NOT(B) + A.B            CQFD
 ```
 
-**Interpretation:** The left side is NOT(XOR(A,B)) = XNOR(A,B). The result is 1 when A and B have the same value.
+**Interpretation :** Le membre de gauche est NOT(XOR(A,B)) = XNOR(A,B). Le resultat vaut 1 quand A et B ont la meme valeur.
 
-**Truth table verification:**
+**Verification par table de verite :**
 
 | A | B | A.NOT(B) + NOT(A).B (XOR) | NOT(XOR) = XNOR | NOT(A).NOT(B) + A.B |
 |---|---|---------------------------|------------------|---------------------|
@@ -55,30 +55,30 @@ Step 4: Simplify using complement law (X.NOT(X) = 0):
 | 1 | 0 | 1 | 0 | 0 |
 | 1 | 1 | 0 | 1 | 1 |
 
-Columns 4 and 5 match.
+Les colonnes 4 et 5 correspondent.
 
 ---
 
-#### 1b) Prove: A.B + A.C.D + NOT(B).D = A.B + NOT(B).D
+#### 1b) Demontrer : A.B + A.C.D + NOT(B).D = A.B + NOT(B).D
 
-**Answer:**
+**Reponse :**
 
-**Strategy:** Show that A.C.D is redundant (absorbed by the other terms).
+**Strategie :** Montrer que A.C.D est redondant (absorbe par les autres termes).
 
 ```
-Step 1: Expand A.C.D using consensus on B:
-  A.C.D = A.C.D.(B + NOT(B))         (since B + NOT(B) = 1)
+Etape 1 : Developper A.C.D par consensus sur B :
+  A.C.D = A.C.D.(B + NOT(B))         (car B + NOT(B) = 1)
         = A.B.C.D + A.NOT(B).C.D
 
-Step 2: Show each part is already covered:
-  A.B.C.D  is covered by  A.B      (A.B includes ALL cases where A=1, B=1)
-  A.NOT(B).C.D is covered by  NOT(B).D   (NOT(B).D includes ALL where B=0, D=1)
+Etape 2 : Montrer que chaque partie est deja couverte :
+  A.B.C.D  est couvert par  A.B      (A.B inclut TOUS les cas ou A=1, B=1)
+  A.NOT(B).C.D est couvert par  NOT(B).D   (NOT(B).D inclut TOUS les cas ou B=0, D=1)
 
-Step 3: Therefore A.C.D adds nothing new:
-  A.B + A.C.D + NOT(B).D = A.B + NOT(B).D    QED
+Etape 3 : Donc A.C.D n'apporte rien de nouveau :
+  A.B + A.C.D + NOT(B).D = A.B + NOT(B).D    CQFD
 ```
 
-**Karnaugh map verification (4 variables: A, B, C, D):**
+**Verification par tableau de Karnaugh (4 variables : A, B, C, D) :**
 
 ```
               CD
@@ -90,23 +90,23 @@ Step 3: Therefore A.C.D adds nothing new:
    10  |  0  |  1  |  1  |  0  |
 ```
 
-Reading the map:
-- Group 1: Row AB=11 (all 4 cells) = A.B
-- Group 2: Column D=1 with B=0 (rows AB=00 and AB=10, columns CD=01 and CD=11) = NOT(B).D
+Lecture du tableau :
+- Groupe 1 : Ligne AB=11 (les 4 cellules) = A.B
+- Groupe 2 : Colonne D=1 avec B=0 (lignes AB=00 et AB=10, colonnes CD=01 et CD=11) = NOT(B).D
 
-Two groups cover all 1s. The term A.C.D is already covered by these groups.
+Deux groupes couvrent tous les 1. Le terme A.C.D est deja couvert par ces groupes.
 
 ---
 
-### Exercise 2: Binary-to-Gray Code Transcoder
+### Exercice 2 : Transcodeur binaire vers code de Gray
 
-**Question:** Build a transcoder from 4-bit natural binary (A,B,C,D) to Gray code (a,b,c,d). Use Karnaugh maps to simplify the logical functions for each output.
+**Question :** Construire un transcodeur de binaire naturel 4 bits (A,B,C,D) vers le code de Gray (a,b,c,d). Utiliser les tableaux de Karnaugh pour simplifier les fonctions logiques de chaque sortie.
 
-**Answer:**
+**Reponse :**
 
-**Conversion table:**
+**Table de conversion :**
 
-| Decimal | Binary ABCD | Gray abcd |
+| Decimal | Binaire ABCD | Gray abcd |
 |---------|-------------|-----------|
 | 0 | 0000 | 0000 |
 | 1 | 0001 | 0001 |
@@ -125,7 +125,7 @@ Two groups cover all 1s. The term A.C.D is already covered by these groups.
 | 14 | 1110 | 1001 |
 | 15 | 1111 | 1000 |
 
-**Karnaugh map for output a:**
+**Tableau de Karnaugh pour la sortie a :**
 
 ```
               CD
@@ -137,9 +137,9 @@ Two groups cover all 1s. The term A.C.D is already covered by these groups.
    10  |  1  |  1  |  1  |  1  |
 ```
 
-**a = A** (direct copy of MSB)
+**a = A** (copie directe du MSB)
 
-**Karnaugh map for output b:**
+**Tableau de Karnaugh pour la sortie b :**
 
 ```
               CD
@@ -151,10 +151,10 @@ Two groups cover all 1s. The term A.C.D is already covered by these groups.
    10  |  1  |  1  |  1  |  1  |
 ```
 
-Two groups: NOT(A).B (row AB=01) and A.NOT(B) (row AB=10).
+Deux groupes : NOT(A).B (ligne AB=01) et A.NOT(B) (ligne AB=10).
 **b = NOT(A).B + A.NOT(B) = A XOR B**
 
-**Karnaugh map for output c:**
+**Tableau de Karnaugh pour la sortie c :**
 
 ```
               CD
@@ -168,7 +168,7 @@ Two groups: NOT(A).B (row AB=01) and A.NOT(B) (row AB=10).
 
 **c = NOT(B).C + B.NOT(C) = B XOR C**
 
-**Karnaugh map for output d:**
+**Tableau de Karnaugh pour la sortie d :**
 
 ```
               CD
@@ -182,7 +182,7 @@ Two groups: NOT(A).B (row AB=01) and A.NOT(B) (row AB=10).
 
 **d = C.NOT(D) + NOT(C).D = C XOR D**
 
-**Summary:**
+**Resume :**
 ```
 a = A
 b = A XOR B
@@ -190,9 +190,9 @@ c = B XOR C
 d = C XOR D
 ```
 
-**General rule:** Gray_bit[i] = Binary_bit[i] XOR Binary_bit[i+1], with MSB copied directly.
+**Regle generale :** Gray_bit[i] = Binary_bit[i] XOR Binary_bit[i+1], avec le MSB recopie directement.
 
-**Circuit:** 3 XOR gates:
+**Circuit :** 3 portes XOR :
 ```
 A ----+---> a
       |
@@ -205,75 +205,75 @@ D ---XOR--> d
 
 ---
 
-### Exercise 3: Circuit Analysis
+### Exercice 3 : Analyse de circuit
 
-**Question:** Analyze the given circuit with 5 gates and simplify the output expression S.
+**Question :** Analyser le circuit donne comportant 5 portes et simplifier l'expression de la sortie S.
 
-**Answer:**
+**Reponse :**
 
-Gate-by-gate analysis (left to right, top to bottom):
-1. Gate 1 (AND): inputs b, c -> output b.c
-2. Gate 2 (AND): inputs a, gate1 -> output a.b.c
-3. Gate 3 (NAND): inputs a, gate1 -> output NOT(a.b.c)
-4. Gate 4 (NOR): inputs gate2, d -> output NOT(a.b.c + d)
-5. Gate 5 (NAND): inputs gate4, gate3 -> S
+Analyse porte par porte (de gauche a droite, de haut en bas) :
+1. Porte 1 (ET) : entrees b, c -> sortie b.c
+2. Porte 2 (ET) : entrees a, porte1 -> sortie a.b.c
+3. Porte 3 (NON-ET) : entrees a, porte1 -> sortie NOT(a.b.c)
+4. Porte 4 (NON-OU) : entrees porte2, d -> sortie NOT(a.b.c + d)
+5. Porte 5 (NON-ET) : entrees porte4, porte3 -> S
 
 ```
-S = NOT(gate4 . gate3)
+S = NOT(porte4 . porte3)
   = NOT(NOT(a.b.c + d) . NOT(a.b.c))
 ```
 
-**Simplification:**
+**Simplification :**
 ```
-Step 1: Apply De Morgan to outer NAND:
-  S = NOT(X . Y)  where X = NOT(a.b.c + d), Y = NOT(a.b.c)
+Etape 1 : Appliquer De Morgan au NON-ET exterieur :
+  S = NOT(X . Y)  ou X = NOT(a.b.c + d), Y = NOT(a.b.c)
   S = NOT(X) + NOT(Y)
 
-Step 2: Double-negate:
+Etape 2 : Double negation :
   NOT(X) = NOT(NOT(a.b.c + d)) = a.b.c + d
   NOT(Y) = NOT(NOT(a.b.c)) = a.b.c
 
-Step 3: Combine:
+Etape 3 : Combiner :
   S = (a.b.c + d) + a.b.c
-    = a.b.c + d                    (idempotent: X + X = X)
+    = a.b.c + d                    (idempotence : X + X = X)
 ```
 
-**Result: S = a.b.c + d**
+**Resultat : S = a.b.c + d**
 
 ---
 
-### Exercise 4: Transistor Classification
+### Exercice 4 : Classification de transistors
 
-**Question:** Classify transistors into C1 (good), C2 (marginal), C3 (reject) based on parameters F (frequency), B (bandwidth), G (gain), Z (impedance). X=1 if parameter is correct.
+**Question :** Classifier des transistors en C1 (bon), C2 (marginal), C3 (rebut) selon les parametres F (frequence), B (bande passante), G (gain), Z (impedance). X=1 si le parametre est correct.
 
-- C1: correct frequency AND at least 2 of {B, G, Z} correct
-- C2: only frequency wrong, OR correct frequency with at least 2 others wrong
-- C3: frequency wrong AND at least 1 other wrong
+- C1 : frequence correcte ET au moins 2 parmi {B, G, Z} corrects
+- C2 : seule la frequence est fausse, OU frequence correcte avec au moins 2 autres faux
+- C3 : frequence fausse ET au moins 1 autre faux
 
-#### Question 1: Write C1, C2, C3 as logical equations
+#### Question 1 : Ecrire C1, C2, C3 sous forme d'equations logiques
 
-**Answer:**
+**Reponse :**
 
-**C1:** Correct frequency and at least 2 of 3 others correct:
+**C1 :** Frequence correcte et au moins 2 des 3 autres corrects :
 ```
 C1 = F . (B.G + B.Z + G.Z)
 ```
 
-**C2:** All fine but frequency, OR correct frequency with at least 2 others incorrect:
+**C2 :** Tout correct sauf la frequence, OU frequence correcte avec au moins 2 autres incorrects :
 ```
 C2 = NOT(F).B.G.Z + F.(NOT(G).NOT(B) + NOT(Z).NOT(G) + NOT(Z).NOT(B))
 ```
 
-**C3:** Frequency wrong and at least 1 other wrong:
+**C3 :** Frequence fausse et au moins 1 autre faux :
 ```
 C3 = NOT(F) . (NOT(G) + NOT(B) + NOT(Z))
 ```
 
-#### Question 2: Verify using Karnaugh maps
+#### Question 2 : Verifier a l'aide des tableaux de Karnaugh
 
-**Answer:**
+**Reponse :**
 
-**Karnaugh map for C1 (rows: FB, cols: GZ):**
+**Tableau de Karnaugh pour C1 (lignes : FB, colonnes : GZ) :**
 ```
               GZ
          00    01    11    10
@@ -284,9 +284,9 @@ C3 = NOT(F) . (NOT(G) + NOT(B) + NOT(Z))
    10  |  0  |  0  |  1  |  0  |
 ```
 
-Groups: F.B.Z (2 cells) + F.B.G (2 cells) + F.G.Z (2 cells) -> **C1 = F.(B.Z + B.G + G.Z)**. Matches.
+Groupes : F.B.Z (2 cellules) + F.B.G (2 cellules) + F.G.Z (2 cellules) -> **C1 = F.(B.Z + B.G + G.Z)**. Correspond.
 
-**Karnaugh map for C2:**
+**Tableau de Karnaugh pour C2 :**
 ```
               GZ
          00    01    11    10
@@ -297,9 +297,9 @@ Groups: F.B.Z (2 cells) + F.B.G (2 cells) + F.G.Z (2 cells) -> **C1 = F.(B.Z + B
    10  |  1  |  1  |  0  |  1  |
 ```
 
-Simplifies to: **C2 = NOT(F).B.G.Z + F.(NOT(B).NOT(G) + NOT(B).NOT(Z) + NOT(G).NOT(Z))**. Matches.
+Se simplifie en : **C2 = NOT(F).B.G.Z + F.(NOT(B).NOT(G) + NOT(B).NOT(Z) + NOT(G).NOT(Z))**. Correspond.
 
-**Karnaugh map for C3:**
+**Tableau de Karnaugh pour C3 :**
 ```
               GZ
          00    01    11    10
@@ -310,156 +310,156 @@ Simplifies to: **C2 = NOT(F).B.G.Z + F.(NOT(B).NOT(G) + NOT(B).NOT(Z) + NOT(G).N
    10  |  0  |  0  |  0  |  0  |
 ```
 
-Simplifies to: **C3 = NOT(F).(NOT(G) + NOT(B) + NOT(Z))**. Matches.
+Se simplifie en : **C3 = NOT(F).(NOT(G) + NOT(B) + NOT(Z))**. Correspond.
 
-#### Question 3: Propose circuits with 2, 3, or 4 input gates
+#### Question 3 : Proposer des circuits avec des portes a 2, 3 ou 4 entrees
 
-**Answer:** See Logisim circuit files (ex4-circuit.circ). The circuits use AND, OR, and NOT gates to implement the equations above. C1 requires three 2-input AND gates feeding a 3-input OR, preceded by a check on F. C3 requires a 3-input OR feeding a 2-input AND with NOT(F).
-
----
-
-### Exercise 5: Number Encoding Ranges
-
-**Question 1:** Give the unsigned binary coding range for 10, 12, 16 bits.
-
-**Answer:**
-- 10 bits: [0, 2^10 - 1] = [0, 1023]
-- 12 bits: [0, 2^12 - 1] = [0, 4095]
-- 16 bits: [0, 2^16 - 1] = [0, 65535]
-
-**Question 2:** With n bits in two's complement, what is the largest representable integer?
-
-**Answer:**
-
-The range in two's complement is [-2^(n-1), 2^(n-1) - 1].
-
-The largest representable integer is **2^(n-1) - 1**.
-
-Examples:
-- 8 bits: [-128, 127]
-- 16 bits: [-32768, 32767]
-- 32 bits: [-2,147,483,648, 2,147,483,647]
+**Reponse :** Voir les fichiers de circuits Logisim (ex4-circuit.circ). Les circuits utilisent des portes ET, OU et NON pour implementer les equations ci-dessus. C1 necessite trois portes ET a 2 entrees alimentant un OU a 3 entrees, precede d'une verification de F. C3 necessite un OU a 3 entrees alimentant un ET a 2 entrees avec NOT(F).
 
 ---
 
-### Exercise 6: Ship Heading Precision
+### Exercice 5 : Intervalles de codage des nombres
 
-**Question 1:** How many bits N to represent a heading with 1-degree precision?
+**Question 1 :** Donner l'intervalle de codage binaire non signe pour 10, 12, 16 bits.
 
-**Answer:**
-Need to represent 360 distinct values (0 to 359).
+**Reponse :**
+- 10 bits : [0, 2^10 - 1] = [0, 1023]
+- 12 bits : [0, 2^12 - 1] = [0, 4095]
+- 16 bits : [0, 2^16 - 1] = [0, 65535]
+
+**Question 2 :** Avec n bits en complement a deux, quel est le plus grand entier representable ?
+
+**Reponse :**
+
+L'intervalle en complement a deux est [-2^(n-1), 2^(n-1) - 1].
+
+Le plus grand entier representable est **2^(n-1) - 1**.
+
+Exemples :
+- 8 bits : [-128, 127]
+- 16 bits : [-32768, 32767]
+- 32 bits : [-2 147 483 648, 2 147 483 647]
+
+---
+
+### Exercice 6 : Precision du cap d'un navire
+
+**Question 1 :** Combien de bits N pour representer un cap avec une precision de 1 degre ?
+
+**Reponse :**
+Il faut representer 360 valeurs distinctes (0 a 359).
 ```
 N = ceil(log2(360)) = ceil(8.49) = 9 bits
 ```
-Check: 2^8 = 256 < 360 (insufficient), 2^9 = 512 >= 360 (sufficient).
+Verification : 2^8 = 256 < 360 (insuffisant), 2^9 = 512 >= 360 (suffisant).
 
-**Note:** The teacher's solution states 8 bits, rounding 360 < 512 = 2^9, but the minimum is actually 9 bits since 2^8 = 256 < 360.
+**Remarque :** La correction de l'enseignant indique 8 bits, arrondissant 360 < 512 = 2^9, mais le minimum est en fait 9 bits puisque 2^8 = 256 < 360.
 
-**Question 2:** How many bits for 0.1-degree precision?
+**Question 2 :** Combien de bits pour une precision de 0.1 degre ?
 
-**Answer:**
-Need to represent 3600 distinct values (0.0 to 359.9).
+**Reponse :**
+Il faut representer 3600 valeurs distinctes (0.0 a 359.9).
 ```
 N = ceil(log2(3600)) = ceil(11.81) = 12 bits
 ```
-Check: 2^11 = 2048 < 3600 (insufficient), 2^12 = 4096 >= 3600 (sufficient).
+Verification : 2^11 = 2048 < 3600 (insuffisant), 2^12 = 4096 >= 3600 (suffisant).
 
 ---
 
-### Exercise 7: ASCII Case Conversion
+### Exercice 7 : Conversion de casse ASCII
 
-**Question:** Among ASCII characters, there are lowercase and uppercase letters. Design the operators MAJUSC (lowercase to uppercase) and MAJMINUSC (toggle case).
+**Question :** Parmi les caracteres ASCII, on trouve des minuscules et des majuscules. Concevoir les operateurs MAJUSC (minuscule vers majuscule) et MAJMINUSC (basculer la casse).
 
-**Answer:**
+**Reponse :**
 
-**ASCII observation:**
+**Observation ASCII :**
 
-| Char | Decimal | Binary |
-|------|---------|--------|
+| Caractere | Decimal | Binaire |
+|-----------|---------|---------|
 | 'A' | 65 | 01000001 |
 | 'Z' | 90 | 01011010 |
 | 'a' | 97 | 01100001 |
 | 'z' | 122 | 01111010 |
 
-The only difference: bit 5 (value 32).
+La seule difference : le bit 5 (valeur 32).
 
-**Question 1 -- MAJUSC (lowercase to uppercase): clear bit 5:**
+**Question 1 -- MAJUSC (minuscule vers majuscule) : mettre le bit 5 a zero :**
 ```
 MAJUSC(X) = X AND 0b01011111 = X AND 0xDF
 ```
-Example: 'a' AND 0xDF = 01100001 AND 01011111 = 01000001 = 'A'
+Exemple : 'a' AND 0xDF = 01100001 AND 01011111 = 01000001 = 'A'
 
-**Question 2 -- MAJMINUSC (toggle case): flip bit 5:**
+**Question 2 -- MAJMINUSC (basculer la casse) : inverser le bit 5 :**
 ```
 MAJMINUSC(X) = X XOR 0b00100000 = X XOR 0x20
 ```
-Example: 'a' XOR 0x20 = 01100001 XOR 00100000 = 01000001 = 'A'
-Example: 'A' XOR 0x20 = 01000001 XOR 00100000 = 01100001 = 'a'
+Exemple : 'a' XOR 0x20 = 01100001 XOR 00100000 = 01000001 = 'A'
+Exemple : 'A' XOR 0x20 = 01000001 XOR 00100000 = 01100001 = 'a'
 
-**Circuit:** 8-bit input, bit 5 passes through an XOR gate with control signal. Other 7 bits pass through unchanged.
-
----
-
-## TD 2 -- Number Systems, Arithmetic, MUX, Decoders
+**Circuit :** Entree 8 bits, le bit 5 passe a travers une porte XOR avec un signal de commande. Les 7 autres bits passent inchanges.
 
 ---
 
-### Exercise 1: Base Conversions
+## TD 2 -- Systemes de numeration, arithmetique, MUX, decodeurs
 
-**Question 1:** Convert the following binary numbers to decimal, octal, hexadecimal.
+---
 
-**Answer:**
+### Exercice 1 : Conversions de base
 
-Method for binary to decimal: sum of powers of 2.
-Example: 0011001 = 2^4 + 2^3 + 2^0 = 16 + 8 + 1 = 25
+**Question 1 :** Convertir les nombres binaires suivants en decimal, octal, hexadecimal.
 
-| Binary | Decimal | Hexadecimal | Octal |
-|--------|---------|-------------|-------|
+**Reponse :**
+
+Methode pour binaire vers decimal : somme des puissances de 2.
+Exemple : 0011001 = 2^4 + 2^3 + 2^0 = 16 + 8 + 1 = 25
+
+| Binaire | Decimal | Hexadecimal | Octal |
+|---------|---------|-------------|-------|
 | 0011001 | 25 | 0x19 | 31 |
 | 100001 | 33 | 0x21 | 41 |
 | 0101101 | 45 | 0x2D | 55 |
 | 11010 | 26 | 0x1A | 32 |
 | 1111111 | 127 | 0x7F | 177 |
 
-**Binary to hex shortcut:** Group bits by 4 from right.
+**Raccourci binaire vers hex :** Grouper les bits par 4 depuis la droite.
 - 0011001 -> 001|1001 -> 1|9 -> 0x19
 - 1111111 -> 111|1111 -> 7|F -> 0x7F
 
-**Question 2:** Convert decimal 12 and 1025 to binary.
+**Question 2 :** Convertir les decimaux 12 et 1025 en binaire.
 
-**Answer:**
+**Reponse :**
 - 12 = 8 + 4 = 2^3 + 2^2 -> 0b1100
 - 1025 = 1024 + 1 = 2^10 + 2^0 -> 0b10000000001
 
 ---
 
-### Exercise 2: Two's Complement Arithmetic
+### Exercice 2 : Arithmetique en complement a deux
 
-**Question 1:** Represent +63 and -63 on 8 bits (two's complement).
+**Question 1 :** Representer +63 et -63 sur 8 bits (complement a deux).
 
-**Answer:**
+**Reponse :**
 
-+63: 63 = 2^6 - 1 = 00111111
++63 : 63 = 2^6 - 1 = 00111111
 
--63: Two's complement procedure:
+-63 : Procedure du complement a deux :
 ```
-Step 1: Write +63     = 00111111
-Step 2: Invert all bits = 11000000
-Step 3: Add 1          = 11000001
+Etape 1 : Ecrire +63     = 00111111
+Etape 2 : Inverser tous les bits = 11000000
+Etape 3 : Ajouter 1          = 11000001
 ```
 -63 = 11000001
 
-**Verification:** 11000001 + 00111111 = 100000000 (9 bits; discard carry) = 00000000. Correct.
+**Verification :** 11000001 + 00111111 = 100000000 (9 bits ; ignorer la retenue) = 00000000. Correct.
 
-**Alternative:** -128 + 65 = 10000000 + 01000001 = 11000001. Since 11000001 = -128 + 65 = -63. Correct.
+**Alternative :** -128 + 65 = 10000000 + 01000001 = 11000001. Puisque 11000001 = -128 + 65 = -63. Correct.
 
-**Question 2:** Compute 30 + (-8) in 6-bit two's complement.
+**Question 2 :** Calculer 30 + (-8) en complement a deux sur 6 bits.
 
-**Answer:**
+**Reponse :**
 
 ```
 +30 = 011110
- -8: +8 = 001000, invert = 110111, add 1 = 111000
+ -8 : +8 = 001000, inverser = 110111, ajouter 1 = 111000
 ```
 
 ```
@@ -469,20 +469,20 @@ Step 3: Add 1          = 11000001
  1010110
 ```
 
-Discard carry (7th bit): result = 010110 = 22. Correct (30 - 8 = 22).
+Ignorer la retenue (7e bit) : resultat = 010110 = 22. Correct (30 - 8 = 22).
 
 ---
 
-### Exercise 6: Multiplexer Function Implementation
+### Exercice 6 : Implementation de fonction par multiplexeur
 
-**Question:** S = 1 when N = 0, 3, 5, or 7 (N on 3 bits C, B, A).
-1. Write the truth table.
-2. Implement using a multiplexer.
-3. How many functions of M variables exist? What is the interest of the multiplexer?
+**Question :** S = 1 quand N = 0, 3, 5 ou 7 (N sur 3 bits C, B, A).
+1. Ecrire la table de verite.
+2. Implementer a l'aide d'un multiplexeur.
+3. Combien de fonctions de M variables existent ? Quel est l'interet du multiplexeur ?
 
-**Answer:**
+**Reponse :**
 
-**Question 1 -- Truth table:**
+**Question 1 -- Table de verite :**
 
 | C | B | A | N (decimal) | S |
 |---|---|---|-------------|---|
@@ -495,38 +495,38 @@ Discard carry (7th bit): result = 010110 = 22. Correct (30 - 8 = 22).
 | 1 | 1 | 0 | 6 | 0 |
 | 1 | 1 | 1 | 7 | 1 |
 
-Boolean expression: S = NOT(A).NOT(B).NOT(C) + A.(B + C)
+Expression booleenne : S = NOT(A).NOT(B).NOT(C) + A.(B + C)
 
-**Question 2 -- Using an 8:1 MUX:** Connect C, B, A as selection inputs S2, S1, S0.
+**Question 2 -- Avec un MUX 8 vers 1 :** Connecter C, B, A comme entrees de selection S2, S1, S0.
 
 ```
-Selection  N  S    MUX input
-  000      0  1    input 0 -> VCC (1)
-  001      1  0    input 1 -> GND (0)
-  010      2  0    input 2 -> GND (0)
-  011      3  1    input 3 -> VCC (1)
-  100      4  0    input 4 -> GND (0)
-  101      5  1    input 5 -> VCC (1)
-  110      6  0    input 6 -> GND (0)
-  111      7  1    input 7 -> VCC (1)
+Selection  N  S    Entree MUX
+  000      0  1    entree 0 -> VCC (1)
+  001      1  0    entree 1 -> GND (0)
+  010      2  0    entree 2 -> GND (0)
+  011      3  1    entree 3 -> VCC (1)
+  100      4  0    entree 4 -> GND (0)
+  101      5  1    entree 5 -> VCC (1)
+  110      6  0    entree 6 -> GND (0)
+  111      7  1    entree 7 -> VCC (1)
 ```
 
-**Question 3:** For M variables, there exist exactly 2^(2^M) different Boolean functions. A 2^M:1 MUX can implement ANY function of M variables by simply wiring each data input to 0 or 1 based on the truth table. This makes multiplexers universal function generators -- useful when the function is complex or irregular, avoiding the need for custom gate arrangements.
+**Question 3 :** Pour M variables, il existe exactement 2^(2^M) fonctions booleennes differentes. Un MUX 2^M vers 1 peut implementer N'IMPORTE QUELLE fonction de M variables en cablant simplement chaque entree de donnees a 0 ou 1 selon la table de verite. Cela fait des multiplexeurs des generateurs de fonctions universels -- utiles quand la fonction est complexe ou irreguliere, evitant d'avoir a concevoir un arrangement de portes specifique.
 
 ---
 
-### Exercise 7: VU-Meter Controller
+### Exercice 7 : Controleur de VU-metre
 
-**Question:** Design a VU-meter: 3-bit input (v2, v1, v0) representing level 0-7. LED segment s_k lights up when level >= k. For level 0, the bar is off.
+**Question :** Concevoir un VU-metre : entree 3 bits (v2, v1, v0) representant le niveau 0-7. Le segment LED s_k s'allume quand le niveau >= k. Pour le niveau 0, la barre est eteinte.
 
-#### Question 1: Boolean method for 3-bit / 7-segment VU-meter
+#### Question 1 : Methode booleenne pour un VU-metre 3 bits / 7 segments
 
-**Answer:**
+**Reponse :**
 
-**Truth table for s3 (lights when level >= 3):**
+**Table de verite pour s3 (s'allume quand niveau >= 3) :**
 
-| v2 v1 v0 | Level | s3 |
-|-----------|-------|----|
+| v2 v1 v0 | Niveau | s3 |
+|-----------|--------|----|
 | 000 | 0 | 0 |
 | 001 | 1 | 0 |
 | 010 | 2 | 0 |
@@ -536,7 +536,7 @@ Selection  N  S    MUX input
 | 110 | 6 | 1 |
 | 111 | 7 | 1 |
 
-**Karnaugh map for s3:**
+**Tableau de Karnaugh pour s3 :**
 ```
         v0
        0    1
@@ -547,20 +547,20 @@ v2v1
  10 |  1  |  1  |
 ```
 
-Groups: v2 (4 cells) + v1.v0 (2 cells) -> **s3 = v2 + v1.v0**
+Groupes : v2 (4 cellules) + v1.v0 (2 cellules) -> **s3 = v2 + v1.v0**
 
-**All segment equations:**
+**Toutes les equations des segments :**
 ```
-s1 = v2 + v1 + v0            (level >= 1: any bit set)
-s2 = v2 + v1                 (level >= 2)
-s3 = v2 + v1.v0              (level >= 3)
-s4 = v2                      (level >= 4)
-s5 = v2.(v1 + v0)            (level >= 5)
-s6 = v2.v1                   (level >= 6)
-s7 = v2.v1.v0                (level = 7: all bits set)
+s1 = v2 + v1 + v0            (niveau >= 1 : un bit quelconque a 1)
+s2 = v2 + v1                 (niveau >= 2)
+s3 = v2 + v1.v0              (niveau >= 3)
+s4 = v2                      (niveau >= 4)
+s5 = v2.(v1 + v0)            (niveau >= 5)
+s6 = v2.v1                   (niveau >= 6)
+s7 = v2.v1.v0                (niveau = 7 : tous les bits a 1)
 ```
 
-**Using a 3:8 decoder:** A decoder activates exactly one output line per input value. To build a VU-meter, OR together all output lines at or above the threshold:
+**Avec un decodeur 3 vers 8 :** Un decodeur active exactement une ligne de sortie par valeur d'entree. Pour construire un VU-metre, faire un OU des lignes de sortie au-dessus ou au seuil :
 ```
 s1 = D1 + D2 + D3 + D4 + D5 + D6 + D7
 s3 = D3 + D4 + D5 + D6 + D7
@@ -568,12 +568,12 @@ s5 = D5 + D6 + D7
 s7 = D7
 ```
 
-This approach is more systematic: if a segment is on, all segments before it must also be on, so the decoder outputs propagate through OR gates.
+Cette approche est plus systematique : si un segment est allume, tous les segments avant lui doivent l'etre aussi, donc les sorties du decodeur se propagent a travers des portes OU.
 
-#### Question 2: 4-bit / 15-segment VU-meter
+#### Question 2 : VU-metre 4 bits / 15 segments
 
-**Answer:** Same principle with 4-bit input (v3, v2, v1, v0) and 15 segments. Use a 4:16 decoder and OR together the appropriate output lines for each segment threshold. See Logisim circuit file for implementation.
+**Reponse :** Meme principe avec une entree 4 bits (v3, v2, v1, v0) et 15 segments. Utiliser un decodeur 4 vers 16 et faire un OU des lignes de sortie appropriees pour chaque seuil de segment. Voir le fichier de circuit Logisim pour l'implementation.
 
-#### Question 3: Signed 4-bit / two-sided VU-meter
+#### Question 3 : VU-metre signe 4 bits / barre bilaterale
 
-**Answer:** For signed two's complement input on 4 bits (range -8 to +7), split the bar into 7 upper segments (positive) and 8 lower segments (negative). The MSB (sign bit) determines which half is active. Positive values light up the upper segments proportionally; negative values light up lower segments proportionally. See Logisim circuit file for implementation.
+**Reponse :** Pour une entree signee en complement a deux sur 4 bits (intervalle -8 a +7), diviser la barre en 7 segments superieurs (positifs) et 8 segments inferieurs (negatifs). Le MSB (bit de signe) determine quelle moitie est active. Les valeurs positives allument les segments superieurs proportionnellement ; les valeurs negatives allument les segments inferieurs proportionnellement. Voir le fichier de circuit Logisim pour l'implementation.

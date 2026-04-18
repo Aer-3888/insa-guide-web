@@ -1,9 +1,9 @@
 ---
-title: "ADFD -- Analyse de Donnees et Fouille de Donnees (Data Analysis & Data Mining)"
+title: "ADFD -- Analyse de Donnees et Fouille de Donnees"
 sidebar_position: 0
 ---
 
-# ADFD -- Analyse de Donnees et Fouille de Donnees (Data Analysis & Data Mining)
+# ADFD -- Analyse de Donnees et Fouille de Donnees
 
 - [Guide](guide/)
 - [Exercices](exercises/)

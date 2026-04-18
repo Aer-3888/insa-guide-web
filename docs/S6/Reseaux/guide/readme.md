@@ -1,9 +1,9 @@
 ---
-title: "Reseaux (Computer Networks) -- Course Guide"
+title: "Reseaux -- Guide de cours"
 sidebar_position: 0
 ---
 
-# Reseaux (Computer Networks) -- Course Guide
+# Reseaux -- Guide de cours
 
 Guide complet du cours de Reseaux (S6, INSA Rennes 3INFO). Chaque chapitre est autonome et contient une explication progressive, des schemas de protocoles, des exemples de code C, et une cheat sheet.
 

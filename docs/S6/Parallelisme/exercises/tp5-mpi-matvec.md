@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # TP5 - MPI : Produit matrice-vecteur distribue
 
-> Following teacher instructions from: `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP5_mpi.pdf`
+> D'apres les consignes de l'enseignant : `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP5_mpi.pdf`
 
 ---
 
@@ -29,7 +29,7 @@ Le probleme mathematique : calculer **R = Mat x V** ou R[i] = somme(j=0..N-1) Ma
 >
 > Realisez l'implementation de cette solution et realisez des mesures de performances en fonction du nombre de processeurs utilises.
 
-**Answer:**
+**Reponse :**
 
 ### Strategie
 
@@ -203,7 +203,7 @@ MPI_Gather(rezFragment, n/nbproc, MPI_DOUBLE,
 ```
 Rassemble les fragments de resultat dans l'ordre des rangs. P0 obtient le vecteur complet.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 mpicc main.c -o main -Wall -Wextra -lm
@@ -216,7 +216,7 @@ mpiexec -n 8 ./main 10000
 # mpiexec -n 3 ./main 10000   --> CRASH (10000 % 3 != 0)
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 | Processus | Temps (s) | Speedup | Efficacite |
 |-----------|-----------|---------|------------|
@@ -237,7 +237,7 @@ Le Scatter de la matrice (N^2 doubles) domine les communications. Pour P grand, 
 >
 > Realisez l'implementation de cette solution et realisez des mesures de performances en fonction du nombre de processeurs utilises.
 
-**Answer:**
+**Reponse :**
 
 ### Strategie
 
@@ -394,7 +394,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 mpicc maitre_esclave.c -o maitre_esclave -Wall -Wextra -lm
@@ -404,7 +404,7 @@ mpiexec -n 4 ./maitre_esclave 10000
 mpiexec -n 8 ./maitre_esclave 10000
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 L'implementation 2 est significativement plus lente que l'implementation 1 pour ce probleme regulier :
 

@@ -1,28 +1,28 @@
 ---
-title: "FUS5 - Build Tools (make, gdb, gprof)"
+title: "FUS5 - Outils de construction (make, gdb, gprof)"
 sidebar_position: 5
 ---
 
-# FUS5 - Build Tools (make, gdb, gprof)
+# FUS5 - Outils de construction (make, gdb, gprof)
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-This TP introduces essential development tools for C programming:
+Ce TP introduit essential development tools for C programming:
 
-- Automate builds with **make** and Makefiles
-- Debug programs with **gdb** (GNU Debugger)
-- Profile performance with **gprof** (GNU Profiler)
-- Understand compiler flags and optimization levels
-- Manage dependencies in multi-file projects
+- Automatiser les constructions avec **make** et les Makefiles
+- Deboguer les programmes avec **gdb** (GNU Debugger)
+- Profiler les performances avec **gprof** (GNU Profiler)
+- Comprendre les options du compilateur et les niveaux d'optimisation
+- Gerer les dependances dans les projets multi-fichiers
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. Make - Build Automation
+### 1. Make - Automatisation de la construction
 
-**make** is a build automation tool that manages dependencies between source files and build products.
+**make** est un outil d'automatisation de la construction qui gere les dependances entre les fichiers sources et les produits de la construction.
 
-#### Why Make?
-Without make, rebuilding after changes requires recompiling all files:
+#### Pourquoi Make ?
+Sans make, reconstruire apres des modifications necessite de tout recompiler :
 ```bash
 gcc -c file1.c
 gcc -c file2.c
@@ -30,9 +30,9 @@ gcc -c file3.c
 gcc -o program file1.o file2.o file3.o
 ```
 
-With make, only changed files are recompiled automatically.
+Avec make, seuls les fichiers modifies sont recompiles automatiquement.
 
-#### Makefile Structure
+#### Structure du Makefile
 
 ```makefile
 # Target: dependencies
@@ -48,13 +48,13 @@ program: file1.o file2.o
 	gcc -o program file1.o file2.o
 ```
 
-**Key rules**:
-- Targets are files to be built
-- Dependencies are files needed to build the target
-- Commands must be indented with a **TAB** (not spaces!)
-- Make checks file timestamps to determine what needs rebuilding
+**Regles cles** :
+- Les cibles sont les fichiers a construire
+- Les dependances sont les fichiers necessaires pour construire la cible
+- Les commandes doivent etre indentees avec une **TABULATION** (pas des espaces !)
+- Make verifie les horodatages des fichiers pour determiner ce qui doit etre reconstruit
 
-#### Special Variables
+#### Variables speciales
 
 ```makefile
 CC = gcc              # Compiler
@@ -69,7 +69,7 @@ $^    # All dependencies
 	$(CC) $(CFLAGS) -c $< -o $@
 ```
 
-#### Common Targets
+#### Cibles courantes
 
 ```makefile
 all: program          # Default target (builds everything)
@@ -80,16 +80,16 @@ clean:                # Remove generated files
 .PHONY: all clean     # Declare non-file targets
 ```
 
-### 2. GCC Compiler Options
+### 2. Options du compilateur GCC
 
-#### Compilation Phases
+#### Phases de compilation
 
 1. **Preprocessing** (`-E`): Expand macros, include headers
 2. **Compilation** (`-S`): Translate C to assembly
 3. **Assembly** (`-c`): Convert assembly to object code
 4. **Linking**: Combine object files into executable
 
-#### Important Flags
+#### Options importantes
 
 ```bash
 -c           # Compile only (don't link), produces .o files
@@ -107,7 +107,7 @@ clean:                # Remove generated files
 -l library   # Link with library
 ```
 
-#### Optimization Levels
+#### Niveaux d'optimisation
 
 - **-O0**: No optimization, fastest compilation, easiest debugging
 - **-O1**: Basic optimization, moderate compile time
@@ -116,13 +116,13 @@ clean:                # Remove generated files
 - **-Os**: Optimize for size
 - **-Og**: Optimize for debugging experience
 
-**80-20 Rule**: 80% of execution time is spent in 20% of the code. Optimize carefully!
+**Regle des 80-20** : 80% du temps d'execution est passe dans 20% du code. Optimiser avec precaution !
 
 ### 3. GDB - GNU Debugger
 
-**gdb** is an interactive debugger for finding bugs and understanding program behavior.
+**gdb** est un debogueur interactif pour trouver les bugs et comprendre le comportement des programmes.
 
-#### Basic Usage
+#### Utilisation de base
 
 ```bash
 # Compile with debugging symbols
@@ -135,7 +135,7 @@ gdb ./program
 gdb --args ./program arg1 arg2
 ```
 
-#### Essential GDB Commands
+#### Commandes GDB essentielles
 
 ```gdb
 run (r)                    # Start program execution
@@ -156,7 +156,7 @@ list (l)                   # Show source code
 quit (q)                   # Exit gdb
 ```
 
-#### Breakpoint Types
+#### Types de points d'arret
 
 ```gdb
 break main                 # Break at function entry
@@ -166,7 +166,7 @@ break main if argc > 2     # Conditional breakpoint
 watch variable             # Break when variable changes
 ```
 
-#### GDB Script Files
+#### Fichiers de script GDB
 
 Save commands in a file and execute:
 ```bash
@@ -183,7 +183,7 @@ gdb -x commands.gdb ./program
 
 #### Core Dumps
 
-When a program crashes:
+Quand un programme plante :
 ```bash
 # Enable core dumps
 ulimit -c unlimited
@@ -195,9 +195,9 @@ backtrace  # See where it crashed
 
 ### 4. Gprof - GNU Profiler
 
-**gprof** analyzes where your program spends its time, identifying performance bottlenecks.
+**gprof** analyse ou votre programme passe son temps, identifiant les goulots d'etranglement de performance.
 
-#### Usage Workflow
+#### Methode d'utilisation
 
 ```bash
 # 1. Compile with profiling enabled
@@ -213,7 +213,7 @@ gprof program gmon.out > analysis.txt
 less analysis.txt
 ```
 
-#### Reading Gprof Output
+#### Lire la sortie de Gprof
 
 **Flat Profile**: Shows time spent in each function
 ```
@@ -242,16 +242,16 @@ less analysis.txt
 - Functions with high **calls** might benefit from optimization or caching
 - **total s/call >> self s/call** means time is in callees, not the function itself
 
-#### Optimization Strategy
+#### Strategie d'optimisation
 
 1. **Profile first** - Don't guess where the bottleneck is
 2. **Optimize hotspots** - Focus on top 3-5 functions
 3. **Measure again** - Verify improvements with new profile
 4. **Don't over-optimize** - Stop when performance is acceptable
 
-### 5. Dependency Management
+### 5. Gestion des dependances
 
-#### Automatic Dependency Generation
+#### Generation automatique des dependances
 
 ```bash
 # Generate dependencies for file.c
@@ -261,7 +261,7 @@ gcc -MM file.c
 # file.o: file.c file.h common.h
 ```
 
-#### Including Dependencies in Makefile
+#### Inclure les dependances dans le Makefile
 
 ```makefile
 # Generate and include dependencies
@@ -273,23 +273,23 @@ DEPS = $(SOURCES:.c=.d)
 -include $(DEPS)
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Understand the Application
-Analyze a multi-module C program:
+### Exercice 1 : Comprendre l'application
+Analyser un programme C multi-modules :
 - `tableau.c/h` - Array data structure
 - `principal.c` - Main program
 
-**Tasks**:
+**Taches** :
 1. Read `commun.h` and `setValeur` function
 2. Compile with `-E` flag to see preprocessed output
 3. Compile without modifying sources using `-D` flags
 
-### Exercise 2: View Dependencies
+### Exercice 2 : Voir les dependances
 Use `gcc -MM` to see file dependencies for the Makefile.
 
-### Exercise 3: Create Makefile
-Build a Makefile that:
+### Exercice 3 : Creer le Makefile
+Construire un Makefile qui :
 - Generates object files (.o) from source files (.c)
 - Manages dependencies between .o and .h files
 - Links objects into executable
@@ -298,45 +298,45 @@ Build a Makefile that:
 - Uses variables (CC, SOURCES, OBJETS)
 - Defines compilation rules using pattern rules (`%.o: %.c`)
 
-### Exercise 4: Debugging with GDB
-Use gdb to debug the application:
+### Exercice 4 : Debogage avec GDB
+Utiliser gdb pour deboguer l'application :
 - Set breakpoints
 - Step through code
 - Inspect variables
 - Analyze function calls
 
-### Exercise 5: Performance Profiling
-Profile the application with gprof:
+### Exercice 5 : Profilage de performance
+Profiler l'application avec gprof :
 - Compile with `-pg` flag
 - Run program (generates `gmon.out`)
 - Analyze profile with `gprof program gmon.out`
 - Identify performance bottlenecks
 - Compare optimized vs unoptimized builds
 
-### Exercise 6: Optimization
-Build with different optimization levels and compare:
+### Exercice 6 : Optimisation
+Construire avec differents niveaux d'optimisation et comparer :
 - Non-optimized (`-O0`)
 - Optimized (`-O3`)
 - Profile both versions and compare performance
 
 ## Solutions
 
-See `src/` directory for:
-- `Makefile` - Complete makefile with all targets
-- `README_gdb.txt` - GDB command reference
-- `README_profiling.txt` - Profiling workflow and interpretation
+Voir le repertoire `src/` pour:
+- `Makefile` - Makefile complet avec toutes les cibles
+- `README_gdb.txt` - Reference des commandes GDB
+- `README_profiling.txt` - Methode de profilage et interpretation
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **make saves time** - Only rebuilds what changed
-2. **Dependencies matter** - Incorrect dependencies cause subtle bugs
-3. **Debug symbols are essential** - Always compile with `-g` during development
-4. **Profile before optimizing** - Measure, don't guess
-5. **Optimization has trade-offs** - Slower compilation, harder debugging, sometimes worse performance
+1. **make fait gagner du temps** - Ne reconstruit que ce qui a change
+2. **Les dependances comptent** - Des dependances incorrectes causent des bugs subtils
+3. **Les symboles de debogage sont essentiels** - Toujours compiler avec `-g` en developpement
+4. **Profiler avant d'optimiser** - Mesurer, ne pas deviner
+5. **L'optimisation a des compromis** - Compilation plus lente, debogage plus difficile, parfois performances moins bonnes
 
-## Common Patterns
+## Motifs courants
 
-### Basic Makefile Template
+### Modele de Makefile basique
 
 ```makefile
 CC = gcc
@@ -359,7 +359,7 @@ clean:
 .PHONY: all clean
 ```
 
-### Debugging Workflow
+### Methode de debogage
 
 1. Compile with `-g`
 2. Run in gdb: `gdb ./program`
@@ -368,7 +368,7 @@ clean:
 5. Step through: `next`, `step`
 6. Inspect: `print var`, `backtrace`
 
-### Profiling Workflow
+### Methode de profilage
 
 1. Compile with `-pg`
 2. Run program normally
@@ -376,17 +376,17 @@ clean:
 4. Focus on high % time functions
 5. Optimize and re-profile
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Using spaces instead of tabs in Makefiles** - Commands must start with TAB
-2. **Forgetting -g flag** - Can't debug without symbols
-3. **Not cleaning before rebuilding** - Old object files cause issues
-4. **Optimizing too early** - Profile first, optimize later
-5. **Ignoring warnings** - `-Wall` catches many bugs
-6. **Circular dependencies** - Make will report error
-7. **Forgetting .PHONY** - Targets with no output file need .PHONY
+1. **Utiliser des espaces au lieu de tabulations dans les Makefiles** - Les commandes doivent commencer par TAB
+2. **Oublier l'option -g** - Impossible de deboguer sans symboles
+3. **Ne pas nettoyer avant de reconstruire** - Les anciens fichiers objets causent des problemes
+4. **Optimiser trop tot** - Profiler d'abord, optimiser ensuite
+5. **Ignorer les avertissements** - `-Wall` detecte beaucoup de bugs
+6. **Dependances circulaires** - Make signalera une erreur
+7. **Oublier .PHONY** - Les cibles sans fichier de sortie necessitent .PHONY
 
-## Further Reading
+## Pour aller plus loin
 
 - GNU Make Manual: https://www.gnu.org/software/make/manual/
 - GDB Manual: https://www.gnu.org/software/gdb/documentation/
@@ -395,10 +395,10 @@ clean:
 - "The Art of Debugging with GDB, DDD, and Eclipse"
 - Donald Knuth: "Premature optimization is the root of all evil"
 
-## Performance Optimization Rules
+## Regles d'optimisation des performances
 
-1. **Profile first** - Don't optimize without data
-2. **Focus on bottlenecks** - 80-20 rule applies
-3. **Measure impact** - Verify optimizations help
-4. **Algorithm > Micro-optimizations** - Better algorithm beats faster code
-5. **Readability matters** - Don't sacrifice maintainability for 5% speedup
+1. **Profiler d'abord** - Ne pas optimiser sans donnees
+2. **Se concentrer sur les goulots d'etranglement** - La regle des 80-20 s'applique
+3. **Mesurer l'impact** - Verifier que les optimisations aident
+4. **Algorithme > Micro-optimisations** - Un meilleur algorithme bat un code plus rapide
+5. **La lisibilite compte** - Ne pas sacrifier la maintenabilite pour 5% de vitesse

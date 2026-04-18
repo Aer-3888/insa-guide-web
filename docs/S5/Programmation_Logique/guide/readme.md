@@ -20,7 +20,7 @@ Ce cours couvre la programmation logique avec Prolog, un paradigme declaratif ou
 | 3. Listes en Prolog | Tete/queue, operations classiques, append, member | [03-lists.md](/S5/Programmation_Logique/guide/03-lists) |
 | 4. Recursion en Prolog | Predicats recursifs, accumulateurs, terminaison | [04-recursion.md](/S5/Programmation_Logique/guide/04-recursion) |
 | 5. Arithmetique | is/2, operateurs de comparaison, Peano, binaire | [05-arithmetic.md](/S5/Programmation_Logique/guide/05-arithmetic) |
-| 6. Cut et Negation | Cut (!), green/red cut, negation par echec (\+) | [06-cut-negation.md](/S5/Programmation_Logique/guide/06-cut-negation) |
+| 6. Cut et Negation | Cut (!), cut vert/rouge, negation par echec (\+) | [06-cut-negation.md](/S5/Programmation_Logique/guide/06-cut-negation) |
 | 7. Sujets avances | findall, bagof, setof, assert/retract, BDD deductives | [07-advanced-topics.md](/S5/Programmation_Logique/guide/07-advanced-topics) |
 | 8. Arbres de resolution | Dessiner les arbres d'execution, visualiser le backtracking | [08-resolution-trees.md](/S5/Programmation_Logique/guide/08-resolution-trees) |
 

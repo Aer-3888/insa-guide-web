@@ -1,17 +1,17 @@
 ---
-title: "TP1 - Introduction to R and Probability Distributions"
+title: "TP1 - Introduction a R et distributions de probabilite"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction to R and Probability Distributions
+# TP1 - Introduction a R et distributions de probabilite
 
-> Following teacher instructions from: `S5/Probabilites/data/moodle/tp/tp1/README.md`
+> D'apres les instructions de l'enseignant dans : `S5/Probabilites/data/moodle/tp/tp1/README.md`
 
-## Part 1: Type Conversion and String Manipulation
+## Partie 1 : Conversion de types et manipulation de chaines
 
-### 1.1 Convert a string to integer and verify the type
+### 1.1 Convertir une chaine en entier et verifier le type
 
-**Answer:**
+**Reponse :**
 ```r
 txt <- "33"
 nbr <- as.integer(txt)
@@ -20,20 +20,20 @@ print(is.numeric(nbr))
 print(is.integer(nbr))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] TRUE
 [1] TRUE
 ```
 
-**Explanation:**
-`as.integer()` converts the string `"33"` to integer 33. In R, integers are a subtype of numeric, so both `is.numeric()` and `is.integer()` return TRUE. Type conversion is essential when loading data from CSV files where numeric columns may be read as strings.
+**Explication :**
+`as.integer()` convertit la chaine `"33"` en l'entier 33. En R, les entiers sont un sous-type de numeric, donc `is.numeric()` et `is.integer()` renvoient tous deux TRUE. La conversion de type est essentielle lors du chargement de donnees depuis des fichiers CSV ou les colonnes numeriques peuvent etre lues comme des chaines.
 
 ---
 
-### 1.2 Concatenate strings with `paste()` and count characters with `nchar()`
+### 1.2 Concatener des chaines avec `paste()` et compter les caracteres avec `nchar()`
 
-**Answer:**
+**Reponse :**
 ```r
 mot <- "petite"
 text1 <- paste("une", mot, "phrase")
@@ -43,20 +43,20 @@ text2 <- paste(text1, "compte", nchar(text1), "lettres")
 print(text2)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] "une petite phrase"
 [1] "une petite phrase compte 17 lettres"
 ```
 
-**Explanation:**
-`paste()` concatenates its arguments with a space separator by default. `nchar()` returns the number of characters including spaces: `"une petite phrase"` has 17 characters.
+**Explication :**
+`paste()` concatene ses arguments avec un espace separateur par defaut. `nchar()` renvoie le nombre de caracteres espaces compris : `"une petite phrase"` a 17 caracteres.
 
 ---
 
-### 1.3 Variable management with `rm()` and `ls()`
+### 1.3 Gestion des variables avec `rm()` et `ls()`
 
-**Answer:**
+**Reponse :**
 ```r
 pipo <- "une var texte"
 nombre <- 3
@@ -68,20 +68,20 @@ print("Les variables sont :")
 print(variables)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] "Les variables sont :"
 [1] "nombre" "text1" "text2" "txt" "nbr" "mot" "variables"
 ```
 
-**Explanation:**
-`rm()` removes a variable from the environment. After removing `pipo`, it no longer appears in `ls()`. The exact list depends on what variables exist in the current session.
+**Explication :**
+`rm()` supprime une variable de l'environnement. Apres avoir supprime `pipo`, elle n'apparait plus dans `ls()`. La liste exacte depend des variables presentes dans la session courante.
 
 ---
 
-### 1.4 Special values: `Inf` and `NA`
+### 1.4 Valeurs speciales : `Inf` et `NA`
 
-**Answer:**
+**Reponse :**
 ```r
 tmp <- 3/0
 print(tmp)
@@ -92,33 +92,33 @@ resultat <- paste(tmp, tmp+1, tmp+nsp)
 print(resultat)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] Inf
 [1] "Inf Inf NA"
 ```
 
-**Explanation:**
-Division by zero produces `Inf` (infinity). `Inf + 1` remains `Inf`. Any arithmetic involving `NA` (missing value) produces `NA`. This propagation behavior is critical in real data analysis -- one missing value can invalidate an entire computation unless handled with `na.rm = TRUE`.
+**Explication :**
+La division par zero produit `Inf` (infini). `Inf + 1` reste `Inf`. Toute arithmetique impliquant `NA` (valeur manquante) produit `NA`. Ce comportement de propagation est critique en analyse de donnees reelles -- une seule valeur manquante peut invalider un calcul entier a moins d'etre geree avec `na.rm = TRUE`.
 
 ---
 
-## Part 2: Vectors
+## Partie 2 : Vecteurs
 
-### Four construction methods for vectors
+### Quatre methodes de construction de vecteurs
 
-**Answer:**
+**Reponse :**
 ```r
-# Method 1: Explicit construction with c()
+# Methode 1 : Construction explicite avec c()
 vecteur1 <- c(1, 3, 5, 7, 9)
 
-# Method 2: Sequence with step
+# Methode 2 : Sequence avec pas
 vecteur2 <- seq(from=0, to=10, by=2)
 
-# Method 3: Range operator (inclusive on both ends)
+# Methode 3 : Operateur d'intervalle (inclusif aux deux bornes)
 vecteur3 <- 0:10
 
-# Method 4: Repeat pattern
+# Methode 4 : Repeter un motif
 vecteur4 <- rep(1:2, 5)
 
 print(vecteur1)
@@ -127,7 +127,7 @@ print(vecteur3)
 print(vecteur4)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] 1 3 5 7 9
 [1]  0  2  4  6  8 10
@@ -135,20 +135,20 @@ print(vecteur4)
 [1] 1 2 1 2 1 2 1 2 1 2
 ```
 
-**Mathematical explanation:**
-R's `:` operator generates inclusive sequences: `0:10` produces 11 elements (0 through 10). This differs from Python's `range()` which excludes the upper bound. R's `for(i in 1:10)` loops include both endpoints.
+**Explication mathematique :**
+L'operateur `:` de R genere des sequences inclusives : `0:10` produit 11 elements (de 0 a 10). Ceci differe du `range()` de Python qui exclut la borne superieure. La boucle `for(i in 1:10)` de R inclut les deux bornes.
 
 ---
 
-## Part 3: Data Frames
+## Partie 3 : Data frames
 
-### Create a data frame with named columns, access data, and export
+### Creer un data frame avec des colonnes nommees, acceder aux donnees et exporter
 
-**Answer:**
+**Reponse :**
 ```r noexec
-v1 <- c(175, 182, 165, 187, 158)  # Heights
+v1 <- c(175, 182, 165, 187, 158)  # Tailles
 v2 <- c(19, 18, 21, 22, 20)       # Ages
-v3 <- c("Louis", "Paule", "Pierre", "Remi", "Claude")  # Names
+v3 <- c("Louis", "Paule", "Pierre", "Remi", "Claude")  # Prenoms
 
 tableau <- data.frame(prenom=v3, taille=v1, age=v2)
 
@@ -157,14 +157,14 @@ print(tableau$prenom)
 print(tableau[1, ])
 print(tableau[, "taille"])
 
-# Export to CSV
+# Exporter en CSV
 write.table(tableau, "sortie.csv", sep=";", row.names=FALSE, col.names=FALSE)
 
 str(tableau)
 summary(tableau)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] "prenom" "taille" "age"
 [1] "Louis"  "Paule"  "Pierre" "Remi"   "Claude"
@@ -186,37 +186,37 @@ summary(tableau)
                     Max.   :187.0   Max.   :22.0
 ```
 
-**Explanation:**
-Data frames are R's primary structure for tabular data. `$` accesses columns by name, `[row, col]` uses positional indexing. `summary()` provides the five-number summary plus mean for numeric columns.
+**Explication :**
+Les data frames sont la structure principale de R pour les donnees tabulaires. `$` accede aux colonnes par nom, `[ligne, col]` utilise l'indexation positionnelle. `summary()` fournit le resume a cinq nombres plus la moyenne pour les colonnes numeriques.
 
 ---
 
-## Part 4: Probability Distribution Functions
+## Partie 4 : Fonctions de distributions de probabilite
 
-### Understand R's d/p/q/r naming convention
+### Comprendre la convention de nommage d/p/q/r de R
 
-R uses a systematic naming scheme for all distributions:
+R utilise un schema de nommage systematique pour toutes les distributions :
 
-| Prefix | Mathematical meaning | Formula |
+| Prefixe | Signification mathematique | Formule |
 |--------|---------------------|---------|
-| `d*` | Density/mass function | $f(x)$ or $P(X = x)$ |
-| `p*` | Cumulative distribution function | $F(x) = P(X \leq x)$ |
-| `q*` | Quantile (inverse CDF) | $F^{-1}(p) = \inf\{x : F(x) \geq p\}$ |
-| `r*` | Random sample generation | Draw from the distribution |
+| `d*` | Fonction de densite/masse | $f(x)$ ou $P(X = x)$ |
+| `p*` | Fonction de repartition | $F(x) = P(X \leq x)$ |
+| `q*` | Quantile (CDF inverse) | $F^{-1}(p) = \inf\{x : F(x) \geq p\}$ |
+| `r*` | Generation d'echantillons aleatoires | Tirage de la distribution |
 
-### 4.1 Normal distribution density and visualization
+### 4.1 Densite de la loi normale et visualisation
 
-**Answer:**
+**Reponse :**
 ```r
-# Density at specific points for N(1, 0.2)
+# Densite en des points specifiques pour N(1, 0.2)
 densities <- dnorm(c(0.8, 1, 1.2), mean=1, sd=0.2)
 print(densities)
 
-# Visualize two normal distributions
+# Visualiser deux lois normales
 curve(dnorm(x, mean=1, sd=0.4),
       from=-3, to=7,
-      xlab="x", ylab="Density",
-      main="Normal Distribution Comparison",
+      xlab="x", ylab="Densite",
+      main="Comparaison de lois normales",
       col="blue", lwd=2)
 
 curve(dnorm(x, mean=4, sd=3.4),
@@ -229,48 +229,48 @@ legend("topright",
        lwd=2)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] 0.1209854 1.9947114 0.1209854
 ```
 
-**Mathematical explanation:**
-For $X \sim \mathcal{N}(\mu=1, \sigma=0.2)$, the PDF is:
+**Explication mathematique :**
+Pour $X \sim \mathcal{N}(\mu=1, \sigma=0.2)$, la densite est :
 
 $$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
 
-At $x = 1$ (the mean), density is maximal: $f(1) = \frac{1}{0.2\sqrt{2\pi}} \approx 1.9947$. At $x = 0.8$ and $x = 1.2$ (symmetric about the mean), densities are equal at 0.1210, confirming bell curve symmetry.
+En $x = 1$ (la moyenne), la densite est maximale : $f(1) = \frac{1}{0.2\sqrt{2\pi}} \approx 1.9947$. En $x = 0.8$ et $x = 1.2$ (symetriques par rapport a la moyenne), les densites sont egales a 0.1210, confirmant la symetrie de la courbe en cloche.
 
-### 4.2 Binomial distribution
+### 4.2 Loi binomiale
 
-**Answer:**
+**Reponse :**
 ```r
 x <- 0:10
 y <- dbinom(x, size=10, prob=0.2)
 
 plot(x, y,
      type='h', lwd=30, lend="square",
-     ylab="P(X=x)", xlab="Number of successes",
-     main="Binomial Distribution B(10, 0.2)",
+     ylab="P(X=x)", xlab="Nombre de succes",
+     main="Loi binomiale B(10, 0.2)",
      col="darkgreen")
 points(x, y, pch=19, col="darkgreen", cex=1.5)
 ```
 
-**Expected output:**
-Plot showing vertical bars at each integer 0 to 10. Right-skewed distribution with mode at $x = 2$.
+**Sortie attendue :**
+Graphique montrant des barres verticales a chaque entier de 0 a 10. Distribution asymetrique a droite avec mode en $x = 2$.
 
-**Mathematical explanation:**
-For $X \sim B(n=10, p=0.2)$:
+**Explication mathematique :**
+Pour $X \sim B(n=10, p=0.2)$ :
 
 $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 
-Example: $P(X = 2) = \binom{10}{2} \times 0.2^2 \times 0.8^8 = 45 \times 0.04 \times 0.1678 = 0.3020$.
+Exemple : $P(X = 2) = \binom{10}{2} \times 0.2^2 \times 0.8^8 = 45 \times 0.04 \times 0.1678 = 0.3020$.
 
-### 4.3 CDF and quantile computations
+### 4.3 CDF et calculs de quantiles
 
-**Answer:**
+**Reponse :**
 ```r
-# P(X <= 5) for X ~ B(10, 0.2)
+# P(X <= 5) pour X ~ B(10, 0.2)
 prob_at_most_5 <- pbinom(5, size=10, prob=0.2)
 print(paste("P(X <= 5) =", round(prob_at_most_5, 4)))
 
@@ -278,28 +278,28 @@ print(paste("P(X <= 5) =", round(prob_at_most_5, 4)))
 prob_at_least_6 <- 1 - pbinom(5, size=10, prob=0.2)
 print(paste("P(X >= 6) =", round(prob_at_least_6, 4)))
 
-# Quantiles of N(0,1)
+# Quantiles de N(0,1)
 median_std_normal <- qnorm(0.5, mean=0, sd=1)
-print(paste("Median of N(0,1):", median_std_normal))
+print(paste("Mediane de N(0,1) :", median_std_normal))
 
 q95_std_normal <- qnorm(0.95, mean=0, sd=1)
-print(paste("95th percentile of N(0,1):", round(q95_std_normal, 3)))
+print(paste("95e percentile de N(0,1) :", round(q95_std_normal, 3)))
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
 [1] "P(X <= 5) = 0.9936"
 [1] "P(X >= 6) = 0.0064"
-[1] "Median of N(0,1): 0"
-[1] "95th percentile of N(0,1): 1.645"
+[1] "Mediane de N(0,1) : 0"
+[1] "95e percentile de N(0,1) : 1.645"
 ```
 
-**Mathematical explanation:**
-The quantile function is the inverse CDF: $q_p = F^{-1}(p) = \inf\{x : F(x) \geq p\}$. For the symmetric $\mathcal{N}(0,1)$, the median is exactly 0. The value 1.645 is the critical value used in one-sided hypothesis tests at $\alpha = 0.05$.
+**Explication mathematique :**
+La fonction quantile est la CDF inverse : $q_p = F^{-1}(p) = \inf\{x : F(x) \geq p\}$. Pour la $\mathcal{N}(0,1)$ symetrique, la mediane est exactement 0. La valeur 1.645 est la valeur critique utilisee dans les tests d'hypotheses unilateraux a $\alpha = 0.05$.
 
-### 4.4 Random generation and histogram overlay
+### 4.4 Generation aleatoire et superposition d'histogramme
 
-**Answer:**
+**Reponse :**
 ```r
 set.seed(42)
 normal_samples <- rnorm(1000, mean=100, sd=15)
@@ -307,42 +307,42 @@ normal_samples <- rnorm(1000, mean=100, sd=15)
 hist(normal_samples,
      freq=FALSE, breaks=30,
      col="lightblue", border="white",
-     main="Normal Samples vs Theoretical Density",
-     xlab="Value", ylab="Density")
+     main="Echantillons normaux vs densite theorique",
+     xlab="Valeur", ylab="Densite")
 
 curve(dnorm(x, mean=100, sd=15),
       add=TRUE, col="red", lwd=2)
 
 legend("topright",
-       legend=c("Empirical", "Theoretical"),
+       legend=c("Empirique", "Theorique"),
        fill=c("lightblue", NA),
        border=c("black", NA),
        col=c(NA, "red"),
        lwd=c(NA, 2))
 ```
 
-**Expected output:**
-Histogram of 1000 samples centered around 100 with the red $\mathcal{N}(100, 15)$ density curve overlaid. Setting `freq=FALSE` normalizes the histogram to density (area = 1), enabling direct comparison with the theoretical PDF.
+**Sortie attendue :**
+Histogramme de 1000 echantillons centres autour de 100 avec la courbe de densite $\mathcal{N}(100, 15)$ rouge superposee. Le parametre `freq=FALSE` normalise l'histogramme en densite (aire = 1), permettant la comparaison directe avec la densite theorique.
 
 ---
 
-## Exercise 1: Exponential Distribution Simulation
+## Exercice 1 : Simulation de la loi exponentielle
 
-### Visualize exponential curves for $\lambda = 0.5, 1, 2$ and simulate samples
+### Visualiser les courbes exponentielles pour $\lambda = 0.5, 1, 2$ et simuler des echantillons
 
-**Theory:** The exponential distribution $\text{Exp}(\lambda)$ has:
-- PDF: $f(x) = \lambda e^{-\lambda x}$ for $x \geq 0$
-- Mean: $E[X] = 1/\lambda$
-- Variance: $\text{Var}(X) = 1/\lambda^2$
-- Standard deviation: $\sigma = 1/\lambda$
+**Theorie :** La loi exponentielle $\text{Exp}(\lambda)$ possede :
+- Densite : $f(x) = \lambda e^{-\lambda x}$ pour $x \geq 0$
+- Moyenne : $E[X] = 1/\lambda$
+- Variance : $\text{Var}(X) = 1/\lambda^2$
+- Ecart-type : $\sigma = 1/\lambda$
 
-**Answer:**
+**Reponse :**
 ```r
-# Part 1: Plot density curves for different lambda values
+# Partie 1 : Tracer les densites pour differentes valeurs de lambda
 plot(NULL,
      xlim = c(0, 5), ylim = c(0, 2),
      xlab = "x", ylab = "f(x) = lambda * exp(-lambda * x)",
-     main = "Exponential Distribution Density Functions")
+     main = "Densites de la loi exponentielle")
 
 lambdas <- c(0.5, 1, 2)
 colors <- c("green", "red", "blue")
@@ -360,14 +360,14 @@ legend("topright",
 grid()
 ```
 
-**Expected output:**
-Three exponential decay curves:
-- Blue ($\lambda = 2$): starts at $f(0) = 2$, decays fastest, mean = 0.5
-- Red ($\lambda = 1$): starts at $f(0) = 1$, standard exponential, mean = 1
-- Green ($\lambda = 0.5$): starts at $f(0) = 0.5$, decays slowest, mean = 2
+**Sortie attendue :**
+Trois courbes de decroissance exponentielle :
+- Bleu ($\lambda = 2$) : commence a $f(0) = 2$, decroit le plus vite, moyenne = 0.5
+- Rouge ($\lambda = 1$) : commence a $f(0) = 1$, exponentielle standard, moyenne = 1
+- Vert ($\lambda = 0.5$) : commence a $f(0) = 0.5$, decroit le plus lentement, moyenne = 2
 
 ```r
-# Part 2: Generate 80 samples from Exp(2) and compare statistics
+# Partie 2 : Generer 80 echantillons de Exp(2) et comparer les statistiques
 set.seed(123)
 n_samples <- 80
 lambda <- 2
@@ -378,28 +378,28 @@ theoretical_sd <- 1 / lambda        # 0.5
 empirical_mean <- mean(samples)
 empirical_sd <- sd(samples)
 
-cat("Exponential Distribution with lambda = 2:\n")
-cat("Theoretical mean:", theoretical_mean, "\n")
-cat("Empirical mean:", round(empirical_mean, 3), "\n")
-cat("Theoretical SD:", theoretical_sd, "\n")
-cat("Empirical SD:", round(empirical_sd, 3), "\n")
+cat("Loi exponentielle avec lambda = 2 :\n")
+cat("Moyenne theorique :", theoretical_mean, "\n")
+cat("Moyenne empirique :", round(empirical_mean, 3), "\n")
+cat("Ecart-type theorique :", theoretical_sd, "\n")
+cat("Ecart-type empirique :", round(empirical_sd, 3), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
-Exponential Distribution with lambda = 2:
-Theoretical mean: 0.5
-Empirical mean: 0.482
-Theoretical SD: 0.5
-Empirical SD: 0.467
+Loi exponentielle avec lambda = 2 :
+Moyenne theorique : 0.5
+Moyenne empirique : 0.482
+Ecart-type theorique : 0.5
+Ecart-type empirique : 0.467
 ```
 
 ```r
-# Part 3: Histogram vs theoretical density
+# Partie 3 : Histogramme vs densite theorique
 hist(samples,
      freq = FALSE, breaks = 10,
-     main = "Exponential Samples vs Theoretical Density (lambda=2, n=80)",
-     xlab = "x", ylab = "Density",
+     main = "Echantillons exponentiels vs densite theorique (lambda=2, n=80)",
+     xlab = "x", ylab = "Densite",
      col = "lightblue", border = "black")
 
 curve(lambda * exp(-lambda * x),
@@ -407,69 +407,69 @@ curve(lambda * exp(-lambda * x),
       add = TRUE, col = "red", lwd = 2)
 
 legend("topright",
-       legend = c("Empirical samples", "Theoretical density"),
+       legend = c("Echantillons empiriques", "Densite theorique"),
        fill = c("lightblue", NA),
        border = c("black", NA),
        col = c(NA, "red"), lwd = c(NA, 2))
 ```
 
-**Expected output:**
-Right-skewed histogram with tallest bar near 0, overlaid by the red $f(x) = 2e^{-2x}$ curve.
+**Sortie attendue :**
+Histogramme asymetrique a droite avec la barre la plus haute pres de 0, superppose avec la courbe rouge $f(x) = 2e^{-2x}$.
 
-**Mathematical explanation:**
-With 80 samples, the empirical mean (0.482) is close to $E[X] = 1/\lambda = 0.5$ but not exact. The Law of Large Numbers guarantees convergence as $n \to \infty$. The standard error is $\text{SE} = \sigma/\sqrt{n} = 0.5/\sqrt{80} \approx 0.056$.
+**Explication mathematique :**
+Avec 80 echantillons, la moyenne empirique (0.482) est proche de $E[X] = 1/\lambda = 0.5$ mais pas exacte. La loi des grands nombres garantit la convergence lorsque $n \to \infty$. L'erreur standard est $\text{SE} = \sigma/\sqrt{n} = 0.5/\sqrt{80} \approx 0.056$.
 
 ---
 
-## Exercise 2: Urn Problem
+## Exercice 2 : Probleme de l'urne
 
-### An urn contains $p$ red balls and $q$ black balls. Draw $k$ balls without replacement.
+### Une urne contient $p$ boules rouges et $q$ boules noires. Tirer $k$ boules sans remise.
 
-**Theory:** Drawing without replacement follows the **hypergeometric distribution** $H(N, K, n)$:
+**Theorie :** Le tirage sans remise suit la **loi hypergeometrique** $H(N, K, n)$ :
 
 $$P(X = x) = \frac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}}$$
 
-With $N = p + q$, $K = p$ (red balls), $n = k$ (draws):
+Avec $N = p + q$, $K = p$ (boules rouges), $n = k$ (tirages) :
 - $E[X] = n \cdot K/N = k \cdot p/(p+q)$
 - $\text{Var}(X) = n \cdot \frac{K}{N} \cdot \frac{N-K}{N} \cdot \frac{N-n}{N-1}$
 
-**Answer:**
+**Reponse :**
 ```r
-# Define the urn function
+# Definir la fonction urne
 Urne <- function(k, p, q) {
   urne <- c(rep("Rouge", p), rep("Noire", q))
   tirages <- sample(urne, k, replace = FALSE)
   return(tirages)
 }
 
-# Parameters
+# Parametres
 set.seed(42)
-k <- 6   # Number of balls to draw
-p <- 8   # Red balls
-q <- 5   # Black balls
+k <- 6   # Nombre de boules a tirer
+p <- 8   # Boules rouges
+q <- 5   # Boules noires
 
-# Single draw
+# Un tirage
 single_draw <- Urne(k, p, q)
-print("Single draw result:")
+print("Resultat d'un tirage :")
 print(single_draw)
 
 counts <- table(single_draw)
-print("Counts:")
+print("Decompte :")
 print(counts)
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
-[1] "Single draw result:"
+[1] "Resultat d'un tirage :"
 [1] "Noire" "Rouge" "Rouge" "Noire" "Rouge" "Rouge"
-[1] "Counts:"
+[1] "Decompte :"
 single_draw
 Noire Rouge
     2     4
 ```
 
 ```r
-# Simulate 1000 experiments
+# Simuler 1000 experiences
 n_experiments <- 1000
 red_counts <- numeric(n_experiments)
 
@@ -481,22 +481,22 @@ for (i in 1:n_experiments) {
 
 theoretical_mean <- k * p / (p + q)
 
-cat("Statistics for", n_experiments, "draws:\n")
-cat("Empirical mean:", round(mean(red_counts), 3), "\n")
-cat("Theoretical mean:", round(theoretical_mean, 3), "\n")
-cat("Empirical SD:", round(sd(red_counts), 3), "\n")
+cat("Statistiques pour", n_experiments, "tirages :\n")
+cat("Moyenne empirique :", round(mean(red_counts), 3), "\n")
+cat("Moyenne theorique :", round(theoretical_mean, 3), "\n")
+cat("Ecart-type empirique :", round(sd(red_counts), 3), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
-Statistics for 1000 draws:
-Empirical mean: 3.681
-Theoretical mean: 3.692
-Empirical SD: 0.909
+Statistiques pour 1000 tirages :
+Moyenne empirique : 3.681
+Moyenne theorique : 3.692
+Ecart-type empirique : 0.909
 ```
 
 ```r
-# Compare empirical vs theoretical (hypergeometric) distribution
+# Comparer distribution empirique vs theorique (hypergeometrique)
 N <- p + q   # 13
 K <- p       # 8
 n <- k       # 6
@@ -510,17 +510,17 @@ barplot(rbind(theoretical_probs, empirical_probs[as.character(possible_values)])
         beside = TRUE,
         col = c("steelblue", "lightcoral"),
         names.arg = possible_values,
-        main = "Theoretical vs Empirical Distribution",
-        xlab = "Number of red balls drawn",
-        ylab = "Probability",
-        legend.text = c("Theoretical (Hypergeometric)", "Empirical"),
+        main = "Distribution theorique vs empirique",
+        xlab = "Nombre de boules rouges tirees",
+        ylab = "Probabilite",
+        legend.text = c("Theorique (hypergeometrique)", "Empirique"),
         args.legend = list(x = "topright"))
 ```
 
-**Expected output:**
-Paired bar chart showing close agreement between theoretical hypergeometric and empirical probabilities. Distribution peaks around 3-4 red balls.
+**Sortie attendue :**
+Diagramme en barres appariees montrant un bon accord entre les probabilites theoriques hypergeometriques et empiriques. La distribution a un pic autour de 3-4 boules rouges.
 
-| Red balls drawn | $P(X = x)$ theoretical | Empirical approximation |
+| Boules rouges tirees | $P(X = x)$ theorique | Approximation empirique |
 |----------------|------------------------|------------------------|
 | 0 | 0.0006 | ~0.001 |
 | 1 | 0.0175 | ~0.017 |
@@ -530,22 +530,22 @@ Paired bar chart showing close agreement between theoretical hypergeometric and 
 | 5 | 0.1632 | ~0.162 |
 | 6 | 0.0326 | ~0.034 |
 
-**Mathematical explanation:**
-`dhyper(x, m, n, k)` computes $P(X = x) = \frac{\binom{m}{x}\binom{n}{k-x}}{\binom{m+n}{k}}$. The expected number of red balls is $E[X] = k \cdot p/(p+q) = 6 \times 8/13 \approx 3.692$, matching the empirical result.
+**Explication mathematique :**
+`dhyper(x, m, n, k)` calcule $P(X = x) = \frac{\binom{m}{x}\binom{n}{k-x}}{\binom{m+n}{k}}$. Le nombre attendu de boules rouges est $E[X] = k \cdot p/(p+q) = 6 \times 8/13 \approx 3.692$, correspondant au resultat empirique.
 
 ---
 
-## Exercise 3: Dice Frequency (Law of Large Numbers)
+## Exercice 3 : Frequence du de (loi des grands nombres)
 
-### Roll a fair die repeatedly and observe convergence of frequency to $1/6$
+### Lancer un de equilibre de maniere repetee et observer la convergence de la frequence vers $1/6$
 
-**Theory:** For a fair die, each face has probability $p = 1/6$. The LLN predicts that as $n$ increases, the empirical frequency $\hat{f}_n$ converges to $p$. The standard error is:
+**Theorie :** Pour un de equilibre, chaque face a une probabilite $p = 1/6$. La LGN predit que lorsque $n$ augmente, la frequence empirique $\hat{f}_n$ converge vers $p$. L'erreur standard est :
 
 $$\text{SE}(\hat{f}_n) = \sqrt{\frac{p(1-p)}{n}} = \sqrt{\frac{5}{36n}}$$
 
-**Answer:**
+**Reponse :**
 ```r
-# Define frequency function
+# Definir la fonction de frequence
 Freq <- function(n, cible) {
   de <- 1:6
   tirages <- sample(de, n, replace = TRUE)
@@ -553,35 +553,35 @@ Freq <- function(n, cible) {
   return(frequence)
 }
 
-# Test with different sample sizes
+# Tester avec differentes tailles d'echantillon
 experience <- c(10, 100, 1000, 10000)
 cible <- 5
 
 set.seed(42)
 
-cat("Observing frequency of rolling a", cible, ":\n")
-cat("Theoretical probability: 1/6 =", round(1/6, 4), "\n\n")
+cat("Observation de la frequence d'obtention d'un", cible, ":\n")
+cat("Probabilite theorique : 1/6 =", round(1/6, 4), "\n\n")
 
 for (n in experience) {
   freq <- Freq(n, cible)
   error <- abs(freq - 1/6)
-  cat(sprintf("n = %5d rolls: frequency = %.4f (error: %.4f)\n", n, freq, error))
+  cat(sprintf("n = %5d lancers : frequence = %.4f (erreur : %.4f)\n", n, freq, error))
 }
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
-Observing frequency of rolling a 5 :
-Theoretical probability: 1/6 = 0.1667
+Observation de la frequence d'obtention d'un 5 :
+Probabilite theorique : 1/6 = 0.1667
 
-n =    10 rolls: frequency = 0.1000 (error: 0.0667)
-n =   100 rolls: frequency = 0.1700 (error: 0.0033)
-n =  1000 rolls: frequency = 0.1690 (error: 0.0023)
-n = 10000 rolls: frequency = 0.1651 (error: 0.0015)
+n =    10 lancers : frequence = 0.1000 (erreur : 0.0667)
+n =   100 lancers : frequence = 0.1700 (erreur : 0.0033)
+n =  1000 lancers : frequence = 0.1690 (erreur : 0.0023)
+n = 10000 lancers : frequence = 0.1651 (erreur : 0.0015)
 ```
 
 ```r
-# Visualize cumulative frequency convergence
+# Visualiser la convergence de la frequence cumulee
 max_rolls <- 1000
 cible <- 1
 
@@ -594,14 +594,14 @@ cumulative_frequency <- cumulative_successes / (1:max_rolls)
 
 plot(1:max_rolls, cumulative_frequency,
      type = "l", col = "blue", lwd = 2,
-     xlab = "Number of rolls (n)",
-     ylab = "Frequency of target outcome",
-     main = paste("Law of Large Numbers: Frequency of rolling", cible),
+     xlab = "Nombre de lancers (n)",
+     ylab = "Frequence du resultat cible",
+     main = paste("Loi des grands nombres : frequence d'obtention de", cible),
      ylim = c(0, 0.5))
 
 abline(h = 1/6, col = "red", lwd = 2, lty = 2)
 
-# 95% confidence bands
+# Bandes de confiance a 95%
 p <- 1/6
 n_seq <- 1:max_rolls
 se <- sqrt(p * (1 - p) / n_seq)
@@ -609,18 +609,18 @@ lines(n_seq, rep(p, max_rolls) + 1.96 * se, col = "gray", lty = 3)
 lines(n_seq, rep(p, max_rolls) - 1.96 * se, col = "gray", lty = 3)
 
 legend("topright",
-       legend = c("Empirical frequency", "Theoretical probability (1/6)",
-                  "95% confidence band"),
+       legend = c("Frequence empirique", "Probabilite theorique (1/6)",
+                  "Bande de confiance a 95%"),
        col = c("blue", "red", "gray"),
        lty = c(1, 2, 3), lwd = c(2, 2, 1))
 grid()
 ```
 
-**Expected output:**
-Blue line starting with wild fluctuations, gradually settling toward the red dashed line at $1/6 \approx 0.1667$. Gray confidence bands form a funnel shape that narrows as $n$ increases.
+**Sortie attendue :**
+Ligne bleue commencant avec de fortes fluctuations, se stabilisant progressivement vers la ligne rouge en pointilles a $1/6 \approx 0.1667$. Les bandes de confiance grises forment un entonnoir qui se retrecit lorsque $n$ augmente.
 
 ```r
-# Multiple independent experiments
+# Experiences independantes multiples
 n_experiments <- 10
 max_rolls <- 500
 cible <- 3
@@ -629,9 +629,9 @@ set.seed(456)
 
 plot(NULL,
      xlim = c(1, max_rolls), ylim = c(0, 0.5),
-     xlab = "Number of rolls (n)",
-     ylab = "Cumulative frequency",
-     main = paste(n_experiments, "Independent Experiments: Convergence to 1/6"))
+     xlab = "Nombre de lancers (n)",
+     ylab = "Frequence cumulee",
+     main = paste(n_experiments, "experiences independantes : convergence vers 1/6"))
 
 for (exp in 1:n_experiments) {
   tirages <- sample(1:6, max_rolls, replace = TRUE)
@@ -643,17 +643,17 @@ for (exp in 1:n_experiments) {
 
 abline(h = 1/6, col = "black", lwd = 3, lty = 2)
 legend("topright",
-       legend = c("Individual experiments", "Theoretical (1/6)"),
+       legend = c("Experiences individuelles", "Theorique (1/6)"),
        col = c(rainbow(n_experiments)[1], "black"),
        lwd = c(1.5, 3), lty = c(1, 2))
 grid()
 ```
 
-**Expected output:**
-10 colored lines all converging toward the black dashed line at $1/6$, demonstrating that the LLN holds for every realization.
+**Sortie attendue :**
+10 lignes colorees convergeant toutes vers la ligne noire en pointilles a $1/6$, demontrant que la LGN s'applique a chaque realisation.
 
 ```r
-# All faces frequency distribution
+# Distribution de frequence de toutes les faces
 max_rolls <- 10000
 set.seed(789)
 tirages <- sample(1:6, max_rolls, replace = TRUE)
@@ -662,49 +662,49 @@ face_counts <- table(tirages)
 face_frequencies <- face_counts / max_rolls
 
 barplot(face_frequencies,
-        main = paste("Frequency Distribution of Dice Rolls (n =", max_rolls, ")"),
-        xlab = "Die face", ylab = "Frequency",
+        main = paste("Distribution des frequences du de (n =", max_rolls, ")"),
+        xlab = "Face du de", ylab = "Frequence",
         col = rainbow(6), ylim = c(0, 0.25), border = "white")
 abline(h = 1/6, col = "black", lwd = 2, lty = 2)
 
-cat("Frequency distribution after", max_rolls, "rolls:\n")
+cat("Distribution des frequences apres", max_rolls, "lancers :\n")
 for (face in 1:6) {
   freq <- face_frequencies[as.character(face)]
   error <- abs(freq - 1/6)
-  cat(sprintf("Face %d: %.4f (error: %.4f)\n", face, freq, error))
+  cat(sprintf("Face %d : %.4f (erreur : %.4f)\n", face, freq, error))
 }
-cat("\nMax deviation from 1/6:", round(max(abs(face_frequencies - 1/6)), 4), "\n")
+cat("\nDeviation maximale par rapport a 1/6 :", round(max(abs(face_frequencies - 1/6)), 4), "\n")
 ```
 
-**Expected output:**
+**Sortie attendue :**
 ```
-Frequency distribution after 10000 rolls:
-Face 1: 0.1686 (error: 0.0019)
-Face 2: 0.1698 (error: 0.0031)
-Face 3: 0.1622 (error: 0.0045)
-Face 4: 0.1637 (error: 0.0030)
-Face 5: 0.1697 (error: 0.0030)
-Face 6: 0.1660 (error: 0.0007)
+Distribution des frequences apres 10000 lancers :
+Face 1 : 0.1686 (erreur : 0.0019)
+Face 2 : 0.1698 (erreur : 0.0031)
+Face 3 : 0.1622 (erreur : 0.0045)
+Face 4 : 0.1637 (erreur : 0.0030)
+Face 5 : 0.1697 (erreur : 0.0030)
+Face 6 : 0.1660 (erreur : 0.0007)
 
-Max deviation from 1/6: 0.0045
+Deviation maximale par rapport a 1/6 : 0.0045
 ```
 
-**Mathematical explanation:**
-The **Law of Large Numbers** states that for i.i.d. random variables $X_1, \ldots, X_n$ with $E[X_i] = \mu$:
+**Explication mathematique :**
+La **loi des grands nombres** enonce que pour des variables aleatoires i.i.d. $X_1, \ldots, X_n$ avec $E[X_i] = \mu$ :
 
-$$\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{P} \mu \quad \text{as } n \to \infty$$
+$$\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{P} \mu \quad \text{lorsque } n \to \infty$$
 
-The standard error $\text{SE} = \sqrt{p(1-p)/n}$ decreases as $1/\sqrt{n}$. At $n = 10000$, $\text{SE} = \sqrt{5/(36 \times 10000)} \approx 0.0037$, so all deviations are within 1--2 standard errors.
+L'erreur standard $\text{SE} = \sqrt{p(1-p)/n}$ decroit en $1/\sqrt{n}$. A $n = 10000$, $\text{SE} = \sqrt{5/(36 \times 10000)} \approx 0.0037$, donc toutes les deviations sont dans un intervalle de 1-2 erreurs standards.
 
 ---
 
-## Summary
+## Resume
 
-| Exercise | Concept | Key result |
+| Exercice | Concept | Resultat cle |
 |----------|---------|------------|
-| Part 2 | d/p/q/r system | Complete access to any distribution in R |
-| Exercise 1 | Exponential distribution | Mean = $1/\lambda$, empirical matches theoretical |
-| Exercise 1 | Law of Large Numbers | Empirical mean converges to $E[X]$ as $n$ grows |
-| Exercise 2 | Hypergeometric distribution | Drawing without replacement modeled by `dhyper()` |
-| Exercise 3 | Law of Large Numbers | Empirical frequency converges to $P(\text{event}) = 1/6$ |
-| Exercise 3 | Standard error | SE decreases as $1/\sqrt{n}$, creating funnel-shaped confidence bands |
+| Partie 2 | Systeme d/p/q/r | Acces complet a toute distribution en R |
+| Exercice 1 | Loi exponentielle | Moyenne = $1/\lambda$, l'empirique correspond au theorique |
+| Exercice 1 | Loi des grands nombres | La moyenne empirique converge vers $E[X]$ quand $n$ croit |
+| Exercice 2 | Loi hypergeometrique | Le tirage sans remise est modelise par `dhyper()` |
+| Exercice 3 | Loi des grands nombres | La frequence empirique converge vers $P(\text{evenement}) = 1/6$ |
+| Exercice 3 | Erreur standard | L'erreur standard decroit en $1/\sqrt{n}$, creant des bandes de confiance en entonnoir |

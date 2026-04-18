@@ -1,48 +1,48 @@
 ---
-title: "FUSGIT - Git Version Control"
+title: "FUSGIT - Controle de version Git"
 sidebar_position: 7
 ---
 
-# FUSGIT - Git Version Control
+# FUSGIT - Controle de version Git
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-Master Git for version control and collaborative development:
+Maitriser Git pour le controle de version et le developpement collaboratif :
 
-- Understand Git's data model (commits, branches, trees)
-- Create and manage repositories
-- Use branches for parallel development
-- Merge and resolve conflicts
-- Collaborate with remotes (push, pull, fetch)
-- Work with git history (log, diff, reset, revert)
+- Comprendre le modele de donnees de Git (commits, branches, arbres)
+- Creer et gerer des depots
+- Utiliser les branches pour le developpement parallele
+- Fusionner et resoudre les conflits
+- Collaborer avec les depots distants (push, pull, fetch)
+- Travailler avec l'historique git (log, diff, reset, revert)
 
-## Core Concepts
+## Concepts fondamentaux
 
-### Git Basics
+### Bases de Git
 
-**Repository**: A project tracked by Git
+**Depot** : un projet suivi par Git
 ```bash
 git init                 # Create new repo
 git clone url            # Clone existing repo
 ```
 
-**Staging Area**: Buffer between working directory and commits
+**Zone de staging** : tampon entre le repertoire de travail et les commits
 ```bash
 git add file.txt         # Stage file
 git add .                # Stage all changes
 git status               # See staged/unstaged changes
 ```
 
-**Commits**: Snapshots of your project
+**Commits** : instantanes de votre projet
 ```bash
 git commit -m "message"  # Commit staged changes
 git log                  # View commit history
 git show <commit>        # Show commit details
 ```
 
-### Branching & Merging
+### Branchement et fusion
 
-**Branches**: Independent lines of development
+**Branches** : lignes de developpement independantes
 ```bash
 git branch               # List branches
 git branch feature       # Create branch
@@ -50,20 +50,20 @@ git checkout feature     # Switch to branch
 git checkout -b feature  # Create and switch
 ```
 
-**Merging**: Integrate branches
+**Fusion** : integrer des branches
 ```bash
 git merge feature        # Merge feature into current branch
 git merge --no-ff        # Force merge commit
 ```
 
-**Conflicts**: When Git can't auto-merge
+**Conflits** : quand Git ne peut pas fusionner automatiquement
 ```bash
 # Edit conflicted files
 git add <resolved-files>
 git commit
 ```
 
-### Working with Remotes
+### Travailler avec les depots distants
 
 ```bash
 git remote add origin url    # Add remote
@@ -72,7 +72,7 @@ git pull origin main         # Fetch and merge
 git fetch origin             # Fetch without merging
 ```
 
-### History Navigation
+### Navigation dans l'historique
 
 ```bash
 git log                      # Show commits
@@ -83,7 +83,7 @@ git diff --staged            # Show staged changes
 git diff commit1 commit2     # Compare commits
 ```
 
-### Undoing Changes
+### Annuler des modifications
 
 ```bash
 git checkout -- file         # Discard working changes
@@ -93,16 +93,16 @@ git reset --hard HEAD~1      # Undo commit, discard changes
 git revert <commit>          # Create new commit undoing changes
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 0: Configuration
+### Exercice 0 : Configuration
 Set up Git with user name and email:
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "email@insa-rennes.fr"
 ```
 
-### Exercise 1: Basic Workflow
+### Exercice 1 : Flux de travail de base
 - Initialize repository (git init)
 - Check status (git status)
 - Create and stage files (git add)
@@ -111,19 +111,19 @@ git config --global user.email "email@insa-rennes.fr"
 - View history (git log)
 - Reset changes (git reset, git checkout)
 
-### Exercise 2: Branching
+### Exercice 2 : Branchement
 - Create branches (git branch)
 - Switch branches (git checkout)
 - View branch differences (git log, git diff)
 - Delete branches (git branch -d)
 
-### Exercise 3: Merging
+### Exercice 3 : Fusion
 - Merge branches (git merge)
 - Handle fast-forward merges
 - Handle three-way merges
 - Resolve merge conflicts
 
-### Exercise 4: Remotes
+### Exercice 4 : Depots distants
 - Add remote repository (git remote add)
 - Push changes (git push)
 - Fetch and pull updates (git fetch, git pull)
@@ -131,19 +131,19 @@ git config --global user.email "email@insa-rennes.fr"
 
 ## Solutions
 
-The `hellogit/` and `FUS TP git/` directories contain example repositories demonstrating these concepts.
+Les repertoires `hellogit/` et `FUS TP git/` contiennent des depots exemples illustrant ces concepts.
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Commit often** - Small, focused commits are better
-2. **Write good commit messages** - Explain WHY, not just WHAT
-3. **Branch for features** - Keep main/master stable
-4. **Pull before push** - Avoid conflicts
-5. **Never force push to shared branches** - Destroys others' work
+1. **Commiter souvent** - De petits commits cibles sont meilleurs
+2. **Ecrire de bons messages de commit** - Expliquer POURQUOI, pas seulement QUOI
+3. **Brancher pour les fonctionnalites** - Garder main/master stable
+4. **Tirer avant de pousser** - Eviter les conflits
+5. **Ne jamais forcer le push sur les branches partagees** - Detruit le travail des autres
 
-## Common Git Workflows
+## Flux de travail Git courants
 
-### Feature Branch Workflow
+### Flux de travail avec branche de fonctionnalite
 ```bash
 git checkout -b feature-x     # Create feature branch
 # ... make changes ...
@@ -154,7 +154,7 @@ git merge feature-x           # Merge when ready
 git branch -d feature-x       # Delete feature branch
 ```
 
-### Fixing Mistakes
+### Corriger des erreurs
 ```bash
 # Wrong commit message
 git commit --amend -m "Correct message"
@@ -167,23 +167,23 @@ git commit --amend --no-edit
 git reset --soft HEAD~1
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Forgetting to commit** - Changes only saved locally after commit
-2. **Working directly on main** - Use branches for development
-3. **Not pulling before starting work** - Causes conflicts
-4. **Adding too much in one commit** - Use git add selectively
-5. **Not understanding detached HEAD** - Checkout commits by hash carefully
-6. **Force pushing shared branches** - Use --force-with-lease if needed
+1. **Oublier de commiter** - Les modifications ne sont sauvegardees localement qu'apres le commit
+2. **Travailler directement sur main** - Utiliser les branches pour le developpement
+3. **Ne pas tirer avant de commencer** - Cause des conflits
+4. **Ajouter trop dans un seul commit** - Utiliser git add selectivement
+5. **Ne pas comprendre le HEAD detache** - Checkout de commits par hash avec precaution
+6. **Forcer le push sur des branches partagees** - Utiliser --force-with-lease si necessaire
 
-## Further Reading
+## Pour aller plus loin
 
 - Pro Git book: https://git-scm.com/book
 - Git cheat sheet: https://education.github.com/git-cheat-sheet-education.pdf
 - Interactive tutorial: https://learngitbranching.js.org/
 - Git workflows: Gitflow, GitHub Flow, GitLab Flow
 
-## Essential Git Commands Summary
+## Resume des commandes Git essentielles
 
 ```bash
 # Setup

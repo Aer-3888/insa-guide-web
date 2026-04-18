@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # TP6 - Bases de donnees deductives
 
-> Following teacher instructions from: `S5/Programmation_Logique/data/moodle/tp/tp6/README.md`
+> D'apres les consignes de l'enseignant : `S5/Programmation_Logique/data/moodle/tp/tp6/README.md`
 
 ---
 
@@ -72,11 +72,11 @@ livraison(f4, p1, 300).
 
 ---
 
-## Exercise Q2.1
+## Exercice Q2.1
 
 ### Selection : `selection_lyon/2` -- Pieces fabriquees a Lyon
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 selection_lyon(NumPiece, Nom) :-
@@ -85,7 +85,7 @@ selection_lyon(NumPiece, Nom) :-
 
 Equivalent SQL : `SELECT NumPiece, Nom FROM piece WHERE Lieu = 'lyon'`. L'unification avec la constante `lyon` realise le filtrage.
 
-**Query test:**
+**Test :**
 
 ```
 ?- selection_lyon(N, P).
@@ -96,11 +96,11 @@ false.
 
 ---
 
-## Exercise Q2.2
+## Exercice Q2.2
 
 ### Projection : `projection/2` -- Noms et lieux des pieces
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 projection(Nom, Lieu) :-
@@ -109,7 +109,7 @@ projection(Nom, Lieu) :-
 
 Equivalent SQL : `SELECT Nom, Lieu FROM piece`. Le `_` ignore les colonnes non desirees.
 
-**Query test:**
+**Test :**
 
 ```
 ?- projection(Nom, Lieu).
@@ -127,11 +127,11 @@ false.
 
 ---
 
-## Exercise Q2.3
+## Exercice Q2.3
 
 ### Union : `union/2` -- Union de demande et reference
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 union(Nom, Ville) :-
@@ -146,9 +146,9 @@ pas_demande_fournisseur(Nom, Ville) :-
 pas_demande_fournisseur(_, _).
 ```
 
-L'union = tout ce qui est dans A, plus ce qui est dans B mais pas dans A. La clause 2 evite les doublons via le pattern cut-fail.
+L'union = tout ce qui est dans A, plus ce qui est dans B mais pas dans A. La clause 2 evite les doublons via le schema cut-fail.
 
-**Query test:**
+**Test :**
 
 ```
 ?- union(Nom, Ville).
@@ -166,7 +166,7 @@ false.
 
 ### Intersection : `intersection/2` -- Intersection des deux
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 intersection(Nom, Ville) :-
@@ -176,7 +176,7 @@ intersection(Nom, Ville) :-
 
 La conjonction de deux sous-buts realise l'intersection.
 
-**Query test:**
+**Test :**
 
 ```
 ?- intersection(Nom, Ville).
@@ -193,7 +193,7 @@ false.
 
 ### Difference : `difference/2` -- Dans demande mais pas reference
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 difference(Nom, Ville) :-
@@ -206,9 +206,9 @@ pas_fournisseur_reference(Nom, Ville) :-
 pas_fournisseur_reference(_, _).
 ```
 
-Pattern cut-fail pour simuler `NOT EXISTS` : si on trouve le fournisseur dans la reference, le cut empeche de backtracker vers la clause 2 et fail force l'echec. Si on ne le trouve pas, la clause attrape-tout reussit.
+Schema cut-fail pour simuler `NOT EXISTS` : si on trouve le fournisseur dans la reference, le cut empeche de backtracker vers la clause 2 et fail force l'echec. Si on ne le trouve pas, la clause attrape-tout reussit.
 
-**Query test:**
+**Test :**
 
 ```
 ?- difference(Nom, Ville).
@@ -218,11 +218,11 @@ false.
 
 ---
 
-## Exercise Q2.4
+## Exercice Q2.4
 
 ### Produit cartesien : `produit_cartesien/6` -- Fournisseurs x Livraisons
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 produit_cartesien(NumF1, Nom, Ville, NumF2, Piece, Qte) :-
@@ -232,7 +232,7 @@ produit_cartesien(NumF1, Nom, Ville, NumF2, Piece, Qte) :-
 
 Equivalent SQL : `SELECT * FROM fournisseurReference CROSS JOIN livraison`. Deux sous-buts independants : Prolog genere toutes les combinaisons (6 x 10 = 60 resultats).
 
-**Query test:**
+**Test :**
 
 ```
 ?- produit_cartesien(f1, dupont, lyon, NumF2, Piece, Qte).
@@ -244,11 +244,11 @@ NumF2 = f3, Piece = p3, Qte = 200 ;
 
 ---
 
-## Exercise Q2.5
+## Exercice Q2.5
 
 ### Jointure : `jointure/5` -- Fournisseurs avec leurs livraisons
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 jointure(NumF, Nom, Ville, Piece, Qte) :-
@@ -258,7 +258,7 @@ jointure(NumF, Nom, Ville, Piece, Qte) :-
 
 La variable `NumF` partagee entre les deux sous-buts realise la condition de jointure (JOIN ON).
 
-**Query test:**
+**Test :**
 
 ```
 ?- jointure(NumF, Nom, Ville, Piece, Qte).
@@ -279,7 +279,7 @@ false.
 
 ### Jointure sup : `jointure_sup/5` -- Livraisons > 350
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 jointure_sup(NumF, Nom, Ville, Piece, Qte) :-
@@ -288,7 +288,7 @@ jointure_sup(NumF, Nom, Ville, Piece, Qte) :-
     Qte >= 350.
 ```
 
-**Query test:**
+**Test :**
 
 ```
 ?- jointure_sup(NumF, Nom, Ville, Piece, Qte).
@@ -300,11 +300,11 @@ false.
 
 ---
 
-## Exercise Q2.6
+## Exercice Q2.6
 
 ### Division : `division/1` -- Fournisseurs livrant toutes les pieces de Lyon
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 division(F) :-
@@ -318,7 +318,7 @@ existe_piece_lyon_non_fournie(F) :-
 
 Logique en double negation : F fournit toutes les pieces de Lyon = il n'existe PAS de piece de Lyon que F ne fournit PAS. Les pieces de Lyon sont p1 (tole) et p2 (jante).
 
-**Query test:**
+**Test :**
 
 ```
 ?- division(F).
@@ -329,11 +329,11 @@ false.
 
 ---
 
-## Exercise Q2.7
+## Exercice Q2.7
 
 ### Agregation : `total_pieces_livrees_fournisseur/2` -- Total livraisons par fournisseur
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 total_pieces_livrees_fournisseur(F, Total) :-
@@ -349,7 +349,7 @@ somme_liste([E | R], Res) :-
 
 `findall/3` collecte toutes les quantites livrees par F, puis `somme_liste` les additionne. Si F ne livre rien, `findall` retourne `[]` et la somme est 0.
 
-**Query test:**
+**Test :**
 
 ```
 ?- total_pieces_livrees_fournisseur(F, Total).
@@ -368,11 +368,11 @@ false.
 
 ---
 
-## Exercise Q3.1
+## Exercice Q3.1
 
 ### est_compose_de/2 : Composants et pieces necessaires (transitif)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 est_compose_de(C, U) :- assemblage(C, U, _).
@@ -381,7 +381,7 @@ est_compose_de(C, V) :- assemblage(C, U, _), est_compose_de(U, V).
 
 Fermeture transitive de la relation `assemblage`. Le cas direct utilise assemblage, le cas recursif compose transitivement. Ce type de requete est impossible en SQL standard (sans CTE RECURSIVE).
 
-**Query test:**
+**Test :**
 
 ```
 ?- est_compose_de(voiture, X).
@@ -407,11 +407,11 @@ false.    % jante est une piece de base
 
 ---
 
-## Exercise Q3.2
+## Exercice Q3.2
 
 ### nb_pieces_tot/3 : Nombre total de pieces de base par composant
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 nb_pieces_tot(Composant, Piece, Qte) :-
@@ -425,7 +425,7 @@ nb_pieces_tot(Composant, Piece, Qte) :-
 
 Clause 1 : lien direct vers une piece de base (pas de sous-assemblage). Clause 2 : passage par un intermediaire avec multiplication des quantites. Les pieces de base sont identifiees par `not(assemblage(Piece, _, _))` (feuilles du graphe).
 
-**Query test:**
+**Test :**
 
 ```
 ?- nb_pieces_tot(voiture, Piece, Qte).
@@ -445,11 +445,11 @@ false.
 
 ---
 
-## Exercise Q3.3
+## Exercice Q3.3
 
 ### nb_voiture/1 : Nombre de voitures constructibles avec les livraisons
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 nb_voiture(Nb) :-
@@ -469,7 +469,7 @@ min_liste([X, Y | R], Min) :- X > Y, min_liste([Y | R], Min).
 
 Pour chaque type de piece de base, on calcule combien de voitures cette piece permet de construire (quantite disponible / quantite necessaire par division entiere `//`). Le minimum donne le nombre maximal. Le goulot d'etranglement est la soupape : 1000 // 16 = 62.
 
-**Query test:**
+**Test :**
 
 ```
 ?- nb_voiture(Nb).

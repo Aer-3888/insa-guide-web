@@ -5,7 +5,7 @@ sidebar_position: 0
 
 # Exercices
 
-- [td solutions](td-solutions)
-- [tp1 solution](tp1-solution)
-- [tp2 solution](tp2-solution)
-- [tp3 solution](tp3-solution)
+- [Solutions TD](td-solutions)
+- [Solution TP1](tp1-solution)
+- [Solution TP2](tp2-solution)
+- [Solution TP3](tp3-solution)

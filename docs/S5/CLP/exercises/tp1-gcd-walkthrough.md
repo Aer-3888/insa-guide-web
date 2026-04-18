@@ -1,17 +1,17 @@
 ---
-title: "TP1 - Introduction to ARM Assembly: GCD Algorithm"
+title: "TP1 - Introduction a l'assembleur ARM : algorithme du PGCD"
 sidebar_position: 1
 ---
 
-# TP1 - Introduction to ARM Assembly: GCD Algorithm
+# TP1 - Introduction a l'assembleur ARM : algorithme du PGCD
 
-> Following teacher instructions from: S5/CLP/data/moodle/tp/tp1/README.md
+> D'apres les consignes enseignants : S5/CLP/data/moodle/tp/tp1/README.md
 
-This TP introduces ARM assembly fundamentals through two implementations of the Euclidean GCD algorithm: `assembleur_TP1.s` (exercise 2, French-style) and `pgcd.s` (English-style with cleaner structure).
+Ce TP introduit les fondamentaux de l'assembleur ARM a travers deux implementations de l'algorithme du PGCD d'Euclide : `assembleur_TP1.s` (exercice 2, style francais) et `pgcd.s` (style anglais avec une structure plus claire).
 
 ---
 
-## Exercise 1: assembleur_TP1.s -- GCD with Full Register Saving
+## Exercice 1: assembleur_TP1.s -- GCD with Full Register Saving
 
 ### Understand the data section and constants
 
@@ -185,7 +185,7 @@ fin:    @ Epilogue
 
 ---
 
-## Exercise 2: pgcd.s -- Cleaner GCD Implementation
+## Exercice 2: pgcd.s -- Cleaner GCD Implementation
 
 ### Identify the structural differences from assembleur_TP1.s
 
@@ -332,7 +332,7 @@ Low addresses (SP at deepest point)
 
 ---
 
-## Key Concepts Summary
+## Resume des concepts cles
 
 ### Addressing Modes Used
 

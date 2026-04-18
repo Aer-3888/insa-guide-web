@@ -1,25 +1,25 @@
 ---
-title: "TP2: Classification Hierarchique (CAH-MIXTE) apres ACP - Solution"
+title: "TP2 : Classification Hierarchique (CAH-MIXTE) apres ACP - Solution"
 sidebar_position: 2
 ---
 
-# TP2: Classification Hierarchique (CAH-MIXTE) apres ACP - Solution
+# TP2 : Classification Hierarchique (CAH-MIXTE) apres ACP - Solution
 
-> Following teacher instructions from: `S5/ADFD/data/moodle/tp/tp2/README.md`
+> Conforme aux instructions de l'enseignant dans : `S5/ADFD/data/moodle/tp/tp2/README.md`
 
-**Technique**: Hierarchical Agglomerative Clustering (CAH) applied after PCA on the principal components, following the CAH-MIXTE methodology.
+**Technique** : Classification Ascendante Hierarchique (CAH) appliquee apres ACP sur les composantes principales, selon la methodologie CAH-MIXTE.
 
-**Goal**: Group French cities into clusters with homogeneous climate profiles, using the principal components from the PCA as input features.
+**Objectif** : Regrouper les villes francaises en clusters aux profils climatiques homogenes, en utilisant les composantes principales issues de l'ACP comme variables d'entree.
 
-**Dataset**: Monthly average temperatures (12 months) for 15 French cities.
+**Jeu de donnees** : Temperatures mensuelles moyennes (12 mois) pour 15 villes francaises.
 
 ---
 
-## Exercise 1: Realisation de l'ACP normee
+## Exercice 1 : Realisation de l'ACP normee
 
 ### Standardiser les 12 variables (temperatures mensuelles), calculer les composantes principales, conserver les 2 premieres composantes.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 import pandas as pd
 import numpy as np
@@ -31,7 +31,7 @@ from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
 from scipy.spatial.distance import cdist
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 
-# Data: 15 French cities, 12 months of average temperatures
+# Donnees : 15 villes francaises, 12 mois de temperatures moyennes
 cities = ['Bordeaux', 'Brest', 'Clermont-Ferrand', 'Grenoble', 'Lille',
           'Lyon', 'Marseille', 'Montpellier', 'Nantes', 'Nice',
           'Paris', 'Rennes', 'Strasbourg', 'Toulouse', 'Vichy']
@@ -57,41 +57,41 @@ months = list(data.columns)
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(data)
 
-# Full PCA (all 12 components)
+# ACP complete (toutes les 12 composantes)
 pca_full = PCA()
 pca_full.fit(X_scaled)
 
-print("Variance expliquee par composante:")
+print("Variance expliquee par composante :")
 for i, v in enumerate(pca_full.explained_variance_ratio_):
     print(f"  PC{i+1}: {v*100:.2f}%")
 
 cumvar = np.cumsum(pca_full.explained_variance_ratio_) * 100
-print(f"\nVariance cumulee avec 2 PCs: {cumvar[1]:.1f}%")
+print(f"\nVariance cumulee avec 2 PCs : {cumvar[1]:.1f}%")
 
-# Keep 2 components
+# Conserver 2 composantes
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X_scaled)
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
-Variance expliquee par composante:
+Variance expliquee par composante :
   PC1: ~73%
   PC2: ~17%
   PC3: ~4%
   ...
-Variance cumulee avec 2 PCs: ~90%
+Variance cumulee avec 2 PCs : ~90%
 ```
 
-**Interpretation:** Two components capture approximately 87-90% of the total variance, well above the 80% threshold. The 12 monthly temperatures can be summarized by just 2 numbers per city with minimal information loss.
+**Interpretation :** Deux composantes capturent environ 87-90% de la variance totale, bien au-dessus du seuil de 80%. Les 12 temperatures mensuelles peuvent etre resumees par seulement 2 nombres par ville avec une perte d'information minimale.
 
 ---
 
-## Exercise 2: Scree plot
+## Exercice 2 : Diagramme des valeurs propres
 
 ### Tracer le diagramme des valeurs propres pour determiner le nombre de composantes a conserver.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -114,19 +114,19 @@ plt.tight_layout()
 plt.show()
 ```
 
-**Expected output/plot:**
-- Left panel: One very tall bar for PC1 (~73%), a medium bar for PC2 (~17%), then all remaining bars are tiny (<5%). The "elbow" is clear at k=2.
-- Right panel: Rises sharply to ~73% at PC1, then to ~90% at PC2, then slowly approaches 100%. The 80% threshold line is crossed at PC2.
+**Resultat attendu :**
+- Panneau gauche : Une tres grande barre pour PC1 (~73%), une barre moyenne pour PC2 (~17%), puis toutes les barres restantes sont minuscules (<5%). Le "coude" est clair a k=2.
+- Panneau droit : Monte fortement a ~73% a PC1, puis a ~90% a PC2, puis s'approche lentement de 100%. La ligne de seuil de 80% est franchie a PC2.
 
 ---
 
-## Exercise 3: Description des axes factoriels (methode DEFAC)
+## Exercice 3 : Description des axes factoriels (methode DEFAC)
 
 ### Tracer le cercle des correlations et interpreter les axes.
 
-**Answer:**
+**Reponse :**
 ```python noexec
-# Correlation of variables with PCs
+# Correlation des variables avec les PCs
 loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
 
 plt.figure(figsize=(10, 10))
@@ -151,22 +151,22 @@ plt.grid(alpha=0.3)
 plt.show()
 ```
 
-**Expected output/plot:** All 12 month arrows point roughly to the right (positive PC1), because all temperatures are positively correlated. The arrows fan out vertically:
-- Summer months (Juin, Juillet, Aout) angle upward (positive PC2) -- stronger "amplitude" component
-- Winter months (Decembre, Janvier, Fevrier) angle downward (negative PC2)
-- Transition months (Mars, Octobre) sit closest to the PC1 axis
+**Resultat attendu :** Toutes les 12 fleches des mois pointent approximativement vers la droite (PC1 positif), car toutes les temperatures sont positivement correlees. Les fleches s'etalent verticalement :
+- Les mois d'ete (Juin, Juillet, Aout) s'orientent vers le haut (PC2 positif) -- composante "amplitude" plus forte
+- Les mois d'hiver (Decembre, Janvier, Fevrier) s'orientent vers le bas (PC2 negatif)
+- Les mois de transition (Mars, Octobre) sont les plus proches de l'axe PC1
 
-**Interpretation of axes:**
-- **Axe 1 (~73%):** Temperature moyenne annuelle. Gradient Nord-Sud (latitude). Villes projetees a droite = chaudes toute l'annee.
-- **Axe 2 (~17%):** Amplitude thermique. Gradient Est-Ouest (continentalite). Villes projetees en haut = etes chauds et hivers froids (climat continental). Villes projetees en bas = temperatures douces toute l'annee (climat oceanique).
+**Interpretation des axes :**
+- **Axe 1 (~73%) :** Temperature moyenne annuelle. Gradient Nord-Sud (latitude). Villes projetees a droite = chaudes toute l'annee.
+- **Axe 2 (~17%) :** Amplitude thermique. Gradient Est-Ouest (continentalite). Villes projetees en haut = etes chauds et hivers froids (climat continental). Villes projetees en bas = temperatures douces toute l'annee (climat oceanique).
 
 ---
 
-## Exercise 4: Plan factoriel des individus
+## Exercice 4 : Plan factoriel des individus
 
 ### Projeter les villes sur le plan factoriel des 2 premiers axes.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(12, 10))
 plt.scatter(X_pca[:, 0], X_pca[:, 1], s=100, alpha=0.6, color='steelblue')
@@ -184,21 +184,21 @@ plt.grid(alpha=0.3)
 plt.show()
 ```
 
-**Expected output/plot:** Cities are spread in a roughly triangular pattern:
-- Right side (high PC1): Marseille, Nice, Montpellier, Toulouse, Bordeaux (warm southern cities)
-- Left side (low PC1): Lille, Strasbourg, Brest (cooler northern/western cities)
-- Top (high PC2): Grenoble, Lyon, Strasbourg (continental, large amplitude)
-- Bottom (low PC2): Brest, Rennes, Nantes (oceanic, small amplitude)
+**Resultat attendu :** Les villes sont reparties dans un motif approximativement triangulaire :
+- Cote droit (PC1 eleve) : Marseille, Nice, Montpellier, Toulouse, Bordeaux (villes chaudes du sud)
+- Cote gauche (PC1 faible) : Lille, Strasbourg, Brest (villes plus fraiches du nord/ouest)
+- Haut (PC2 eleve) : Grenoble, Lyon, Strasbourg (continental, grande amplitude)
+- Bas (PC2 faible) : Brest, Rennes, Nantes (oceanique, faible amplitude)
 
-Three natural groups are already visible.
+Trois groupes naturels sont deja visibles.
 
 ---
 
-## Exercise 5: Comparaison des methodes de liaison
+## Exercice 5 : Comparaison des methodes de liaison
 
 ### Comparer les dendrogrammes obtenus avec les methodes Ward, Complete, Average et Single.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 methods = ['ward', 'complete', 'average', 'single']
 
@@ -208,7 +208,7 @@ axes = axes.ravel()
 for idx, method in enumerate(methods):
     Z = linkage(X_pca, method=method)
     dendrogram(Z, labels=cities, ax=axes[idx], leaf_font_size=9)
-    axes[idx].set_title(f'Methode: {method.upper()}', fontsize=12)
+    axes[idx].set_title(f'Methode : {method.upper()}', fontsize=12)
     axes[idx].tick_params(axis='x', rotation=45)
     axes[idx].set_ylabel('Distance')
 
@@ -216,21 +216,21 @@ plt.tight_layout()
 plt.show()
 ```
 
-**Expected output/plot:**
-- **Ward:** Balanced tree with clear horizontal jumps. Three main branches correspond to three climate zones. Most appropriate method.
-- **Complete:** Similar to Ward but with slightly different branch heights.
-- **Average:** Less clear separation. Some merges happen at similar heights.
-- **Single:** "Chaining effect" -- cities added one by one. Dendrogram looks like a staircase. NOT appropriate.
+**Resultat attendu :**
+- **Ward :** Arbre equilibre avec des sauts horizontaux clairs. Trois branches principales correspondent aux trois zones climatiques. Methode la plus appropriee.
+- **Complete :** Similaire a Ward mais avec des hauteurs de branches legerement differentes.
+- **Average :** Separation moins nette. Certaines fusions se font a des hauteurs similaires.
+- **Single :** "Effet chaine" -- les villes sont ajoutees une par une. Le dendrogramme ressemble a un escalier. PAS appropriate.
 
-**Decision:** Use Ward because it minimizes within-cluster variance, producing compact, well-separated clusters.
+**Decision :** Utiliser Ward car il minimise la variance intra-cluster, produisant des clusters compacts et bien separes.
 
 ---
 
-## Exercise 6: Choix du nombre de clusters (methode du coude)
+## Exercice 6 : Choix du nombre de clusters (methode du coude)
 
-### Tracer la courbe du coude, le Silhouette score et le Davies-Bouldin index pour determiner le nombre optimal de clusters.
+### Tracer la courbe du coude, le score de silhouette et l'indice de Davies-Bouldin pour determiner le nombre optimal de clusters.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 inertias = []
 silhouettes = []
@@ -271,13 +271,13 @@ axes[0].grid(alpha=0.3)
 
 axes[1].plot(k_range, silhouettes, 'o-', linewidth=2, markersize=8, color='green')
 axes[1].set_xlabel('Nombre de clusters')
-axes[1].set_ylabel('Silhouette Score')
+axes[1].set_ylabel('Score de silhouette')
 axes[1].set_title('Silhouette (plus eleve = meilleur)')
 axes[1].grid(alpha=0.3)
 
 axes[2].plot(k_range, davies_bouldins, 'o-', linewidth=2, markersize=8, color='red')
 axes[2].set_xlabel('Nombre de clusters')
-axes[2].set_ylabel('Davies-Bouldin Index')
+axes[2].set_ylabel('Indice de Davies-Bouldin')
 axes[2].set_title('Davies-Bouldin (plus faible = meilleur)')
 axes[2].grid(alpha=0.3)
 
@@ -285,7 +285,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
 k=2: Inertie=~8.5,  Silhouette=~0.50, DB=~0.65
 k=3: Inertie=~4.5,  Silhouette=~0.55, DB=~0.55
@@ -293,53 +293,53 @@ k=4: Inertie=~3.2,  Silhouette=~0.48, DB=~0.68
 k=5: Inertie=~2.3,  Silhouette=~0.42, DB=~0.72
 ```
 
-**Expected output/plot:**
-- Elbow plot: Sharp drop from k=2 to k=3, then gradual decline. The "elbow" is at k=3.
-- Silhouette plot: Peak at k=3 (highest score ~0.55).
-- Davies-Bouldin plot: Trough at k=3 (lowest index ~0.55).
+**Resultat attendu :**
+- Courbe du coude : Forte chute de k=2 a k=3, puis declin progressif. Le "coude" est a k=3.
+- Courbe de silhouette : Pic a k=3 (score le plus eleve ~0.55).
+- Courbe de Davies-Bouldin : Creux a k=3 (indice le plus faible ~0.55).
 
-**Conclusion:** All three metrics agree that k=3 is the optimal number of clusters.
+**Conclusion :** Les trois metriques convergent : k=3 est le nombre optimal de clusters.
 
 ---
 
-## Exercise 7: Classification avec differents nombres de composantes
+## Exercice 7 : Classification avec differents nombres de composantes
 
 ### Classification avec la 1ere composante uniquement
 
-**Answer:**
+**Reponse :**
 ```python noexec
-# Using only PC1
+# Utilisation de PC1 uniquement
 Z_1pc = linkage(X_pca[:, :1], method='ward')
 clusters_1pc = fcluster(Z_1pc, t=2, criterion='maxclust')
 
-print("Classification avec 1 composante (2 groupes):")
+print("Classification avec 1 composante (2 groupes) :")
 for c in range(1, 3):
     cities_c = [cities[i] for i in range(len(cities)) if clusters_1pc[i] == c]
     print(f"  Groupe {c}: {', '.join(cities_c)}")
 ```
 
-**Expected output:**
-- Groupe 1 (Nord): Lille, Strasbourg, Brest, Vichy, Clermont-Ferrand, Grenoble, Rennes, Paris, Lyon, Nantes, Nice
-- Groupe 2 (Sud): Marseille, Montpellier, Toulouse, Bordeaux
+**Resultat attendu :**
+- Groupe 1 (Nord) : Lille, Strasbourg, Brest, Vichy, Clermont-Ferrand, Grenoble, Rennes, Paris, Lyon, Nantes, Nice
+- Groupe 2 (Sud) : Marseille, Montpellier, Toulouse, Bordeaux
 
-This simpler classification misses the oceanic vs continental distinction.
+Cette classification plus simple ne detecte pas la distinction oceanique vs continental.
 
 ---
 
 ### Classification avec 2 composantes, 3 clusters
 
-**Answer:**
+**Reponse :**
 ```python noexec
 Z = linkage(X_pca, method='ward')
 clusters = fcluster(Z, t=3, criterion='maxclust')
 
-print("Classification avec 2 composantes (3 clusters):")
+print("Classification avec 2 composantes (3 clusters) :")
 for c in range(1, 4):
     cities_c = [cities[i] for i in range(len(cities)) if clusters[i] == c]
     print(f"  Cluster {c}: {', '.join(cities_c)}")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 
 | Cluster | Type climatique | Villes |
 |---------|----------------|--------|
@@ -347,13 +347,13 @@ for c in range(1, 4):
 | 2 | **Oceanique** (Ouest) | Brest, Rennes, Nantes |
 | 3 | **Mediterraneen** (Sud) | Nice, Marseille, Montpellier, Toulouse, Bordeaux |
 
-Note: The exact cluster numbering may vary between runs, but the groupings are stable.
+Note : La numerotation exacte des clusters peut varier entre les executions, mais les regroupements sont stables.
 
 ---
 
 ### Classification avec toutes les composantes
 
-**Answer:**
+**Reponse :**
 ```python noexec
 pca_full_data = PCA()
 X_pca_full = pca_full_data.fit_transform(X_scaled)
@@ -361,21 +361,21 @@ X_pca_full = pca_full_data.fit_transform(X_scaled)
 Z_full = linkage(X_pca_full, method='ward')
 clusters_full = fcluster(Z_full, t=3, criterion='maxclust')
 
-print("Classification avec toutes les composantes (3 clusters):")
+print("Classification avec toutes les composantes (3 clusters) :")
 for c in range(1, 4):
     cities_c = [cities[i] for i in range(len(cities)) if clusters_full[i] == c]
     print(f"  Cluster {c}: {', '.join(cities_c)}")
 ```
 
-**Expected output:** Similar groupings but potentially more nuanced separations within clusters.
+**Resultat attendu :** Regroupements similaires mais potentiellement des separations plus nuancees au sein des clusters.
 
 ---
 
-## Exercise 8: Dendrogramme avec coupure
+## Exercice 8 : Dendrogramme avec coupure
 
 ### Afficher le dendrogramme avec la ligne de coupure a 3 clusters.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(14, 8))
 dendrogram(Z, labels=cities, leaf_font_size=11, leaf_rotation=45)
@@ -388,18 +388,18 @@ plt.tight_layout()
 plt.show()
 ```
 
-**Expected output/plot:** A tree where the bottom shows individual cities merging into small groups, and the top shows three large branches joining at high distances. The red horizontal line cuts through the two largest vertical jumps, producing 3 sub-trees. The three branches are:
-- Branch 1: Continental cities (7 cities)
-- Branch 2: Oceanic cities (3 cities)
-- Branch 3: Mediterranean cities (5 cities)
+**Resultat attendu :** Un arbre ou le bas montre les villes individuelles fusionnant en petits groupes, et le haut montre trois grandes branches se rejoignant a de grandes distances. La ligne horizontale rouge coupe a travers les deux plus grands sauts verticaux, produisant 3 sous-arbres. Les trois branches sont :
+- Branche 1 : Villes continentales (7 villes)
+- Branche 2 : Villes oceaniques (3 villes)
+- Branche 3 : Villes mediterraneennes (5 villes)
 
 ---
 
-## Exercise 9: Clusters sur le plan factoriel
+## Exercice 9 : Clusters sur le plan factoriel
 
 ### Visualiser les 3 clusters sur le plan factoriel avec les centres de gravite.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 plt.figure(figsize=(12, 10))
 colors = ['steelblue', 'orange', 'green']
@@ -434,20 +434,20 @@ plt.grid(alpha=0.3)
 plt.show()
 ```
 
-**Expected output/plot:** Three clearly separated groups with star markers at each centroid:
-- Blue (Continental): Spread across center-left, from Grenoble/Strasbourg (top-left) to Paris (center)
-- Orange (Oceanic): Small tight group in the bottom-left (Brest, Rennes, Nantes)
-- Green (Mediterranean): Spread along the right side, from Bordeaux to Nice/Marseille
+**Resultat attendu :** Trois groupes clairement separes avec des marqueurs etoiles a chaque centroide :
+- Bleu (Continental) : Reparti au centre-gauche, de Grenoble/Strasbourg (haut-gauche) a Paris (centre)
+- Orange (Oceanique) : Petit groupe serre en bas a gauche (Brest, Rennes, Nantes)
+- Vert (Mediterraneen) : Reparti le long du cote droit, de Bordeaux a Nice/Marseille
 
 ---
 
-## Exercise 10: Identification des paragons
+## Exercice 10 : Identification des parangons
 
-### Identifier les individus les plus representatifs (paragons) de chaque cluster.
+### Identifier les individus les plus representatifs (parangons) de chaque cluster.
 
-> Paragon = individu le plus proche du centre de gravite du cluster.
+> Parangon = individu le plus proche du centre de gravite du cluster.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 for c in range(1, 4):
     mask = clusters == c
@@ -460,32 +460,32 @@ for c in range(1, 4):
     # Distance de chaque ville au centre
     distances = cdist(cluster_points, [centroid], metric='euclidean').flatten()
 
-    # Paragon = point le plus proche
+    # Parangon = point le plus proche
     paragon_idx = np.argmin(distances)
 
-    print(f"Cluster {c}: paragon = {cluster_cities[paragon_idx]} "
+    print(f"Cluster {c}: parangon = {cluster_cities[paragon_idx]} "
           f"(distance = {distances[paragon_idx]:.4f})")
-    print(f"  Centre: PC1={centroid[0]:.4f}, PC2={centroid[1]:.4f}")
-    print(f"  Villes: {', '.join(cluster_cities)}")
+    print(f"  Centre : PC1={centroid[0]:.4f}, PC2={centroid[1]:.4f}")
+    print(f"  Villes : {', '.join(cluster_cities)}")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 
-| Cluster | Paragon | Distance au centre | Justification |
-|---------|---------|-------------------|--------------|
+| Cluster | Parangon | Distance au centre | Justification |
+|---------|----------|-------------------|---------------|
 | 1 (Continental) | **Vichy** ou Clermont-Ferrand | ~0.3 | Position centrale parmi 7 villes |
 | 2 (Oceanique) | **Rennes** | ~0.2 | Milieu du triangle Brest-Nantes-Rennes |
 | 3 (Mediterraneen) | **Toulouse** ou Montpellier | ~0.4 | Profil sudiste moyen |
 
-**Interpretation:** The paragon is useful for communication. Instead of listing 7 cities, you can say: "This cluster is characterized by cities like Vichy -- moderate temperature, strong seasonal amplitude, typical continental climate."
+**Interpretation :** Le parangon est utile pour la communication. Au lieu de lister 7 villes, on peut dire : "Ce cluster est caracterise par des villes comme Vichy -- temperature moderee, forte amplitude saisonniere, climat continental typique."
 
 ---
 
-## Exercise 11: Profilage des clusters
+## Exercice 11 : Profilage des clusters
 
 ### Analyser le profil climatique de chaque cluster (temperatures moyennes, amplitude thermique).
 
-**Answer:**
+**Reponse :**
 ```python noexec
 for c in range(1, 4):
     mask = clusters == c
@@ -498,23 +498,23 @@ for c in range(1, 4):
     print(f"Villes ({len(cluster_cities)}): {', '.join(cluster_cities)}")
 
     # Temperatures moyennes par mois
-    print("\nTemperatures moyennes par mois:")
+    print("\nTemperatures moyennes par mois :")
     print(cluster_data.mean().round(1))
 
     # Moyenne annuelle
     annual_mean = cluster_data.values.mean()
-    print(f"\nMoyenne annuelle: {annual_mean:.1f} C")
+    print(f"\nMoyenne annuelle : {annual_mean:.1f} C")
 
     # Amplitude thermique (ete - hiver)
     summer = cluster_data[['Juin', 'Juillet', 'Aout']].mean(axis=1).mean()
     winter = cluster_data[['Decembre', 'Janvier', 'Fevrier']].mean(axis=1).mean()
     amplitude = summer - winter
-    print(f"Moyenne ete: {summer:.1f} C")
-    print(f"Moyenne hiver: {winter:.1f} C")
-    print(f"Amplitude thermique: {amplitude:.1f} C")
+    print(f"Moyenne ete : {summer:.1f} C")
+    print(f"Moyenne hiver : {winter:.1f} C")
+    print(f"Amplitude thermique : {amplitude:.1f} C")
 ```
 
-**Expected results:**
+**Resultats attendus :**
 
 | Cluster | Type | Moyenne annuelle | Moyenne hiver | Moyenne ete | Amplitude |
 |---------|------|-----------------|---------------|-------------|-----------|
@@ -522,18 +522,18 @@ for c in range(1, 4):
 | 2 Oceanique | Ouest | ~11 C | ~7 C | ~18 C | ~11 C |
 | 3 Mediterraneen | Sud | ~14 C | ~7-8 C | ~22-23 C | ~15 C |
 
-**Interpretation:**
-- **Cluster 1 (Continental):** Cold winters (3-5 C), warm summers (20-23 C), large amplitude (~16 C). Inland cities away from the ocean's moderating influence.
-- **Cluster 2 (Oceanique):** Mild winters (6-7 C), cool summers (17-18 C), small amplitude (~11 C). Atlantic coast cities with a "flat" temperature curve.
-- **Cluster 3 (Mediterraneen):** Mild winters (7-8 C), hot summers (22-24 C), large amplitude (~15 C). Southern latitude with Mediterranean or semi-Mediterranean climate.
+**Interpretation :**
+- **Cluster 1 (Continental) :** Hivers froids (3-5 C), etes chauds (20-23 C), grande amplitude (~16 C). Villes interieures eloignees de l'influence moderatrice de l'ocean.
+- **Cluster 2 (Oceanique) :** Hivers doux (6-7 C), etes frais (17-18 C), faible amplitude (~11 C). Villes de la cote atlantique avec une courbe de temperature "plate".
+- **Cluster 3 (Mediterraneen) :** Hivers doux (7-8 C), etes chauds (22-24 C), grande amplitude (~15 C). Latitude meridionale avec climat mediterraneen ou semi-mediterraneen.
 
 ---
 
-## Exercise 12: Metriques d'evaluation
+## Exercice 12 : Metriques d'evaluation
 
-### Calculer le Silhouette Score et le Davies-Bouldin Index pour la classification en 3 clusters.
+### Calculer le score de silhouette et l'indice de Davies-Bouldin pour la classification en 3 clusters.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 sil = silhouette_score(X_pca, clusters)
 db = davies_bouldin_score(X_pca, clusters)
@@ -545,56 +545,56 @@ for c in range(1, 4):
     center = pts.mean(axis=0)
     inertia_intra += np.sum((pts - center) ** 2)
 
-print(f"Silhouette Score: {sil:.4f}")
-print(f"  Interpretation: [-1, 1], plus proche de 1 = meilleur")
-print(f"Davies-Bouldin Index: {db:.4f}")
-print(f"  Interpretation: Plus faible = meilleur")
-print(f"Inertie intra-cluster: {inertia_intra:.4f}")
-print(f"  Interpretation: Plus faible = clusters plus compacts")
+print(f"Score de silhouette : {sil:.4f}")
+print(f"  Interpretation : [-1, 1], plus proche de 1 = meilleur")
+print(f"Indice de Davies-Bouldin : {db:.4f}")
+print(f"  Interpretation : Plus faible = meilleur")
+print(f"Inertie intra-cluster : {inertia_intra:.4f}")
+print(f"  Interpretation : Plus faible = clusters plus compacts")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 ```
-Silhouette Score: ~0.55
-Davies-Bouldin Index: ~0.55
+Score de silhouette : ~0.55
+Indice de Davies-Bouldin : ~0.55
 ```
 
-**Interpretation:**
-- Silhouette of 0.55 indicates good separation (>0.5 is generally considered good, >0.7 excellent)
-- Davies-Bouldin of 0.55 is good (lower is better, 0 would be perfect)
+**Interpretation :**
+- Un score de silhouette de 0.55 indique une bonne separation (>0.5 est generalement considere comme bon, >0.7 excellent)
+- Un Davies-Bouldin de 0.55 est bon (plus faible = meilleur, 0 serait parfait)
 
 ---
 
-## Exercise 13: Choix de la meilleure classification
+## Exercice 13 : Choix de la meilleure classification
 
 ### Justifier le choix de 2 composantes et 3 clusters comme classification optimale.
 
-**Answer:**
+**Reponse :**
 
-Classification optimale: **2 composantes, 3 clusters**.
+Classification optimale : **2 composantes, 3 clusters**.
 
-Justification:
+Justification :
 1. Les 2 premieres composantes capturent 87-90% de l'information totale
-2. 3 clusters correspondent aux grandes zones climatiques francaises:
+2. 3 clusters correspondent aux grandes zones climatiques francaises :
    - Oceanique (Ouest)
    - Continental (Nord/Centre)
    - Mediterraneen (Sud)
-3. Le Silhouette score est maximise a k=3
+3. Le score de silhouette est maximise a k=3
 4. Bonne separation inter-cluster visible sur le plan factoriel
 5. Chaque cluster a une interpretation geographique et climatique coherente
-6. Les paragons sont des villes representant bien leur groupe
+6. Les parangons sont des villes representant bien leur groupe
 
 ---
 
-## Exercise 14: Classifications alternatives
+## Exercice 14 : Classifications alternatives
 
 ### Comparer les classifications en 2 et 4 classes.
 
-**Answer:**
+**Reponse :**
 ```python noexec
 # Classification en 2 classes
 clusters_2 = fcluster(Z, t=2, criterion='maxclust')
-print("Classification en 2 classes:")
+print("Classification en 2 classes :")
 for c in range(1, 3):
     cities_c = [cities[i] for i in range(len(cities)) if clusters_2[i] == c]
     print(f"  Classe {c}: {', '.join(cities_c)}")
@@ -603,22 +603,22 @@ print()
 
 # Classification en 4 classes
 clusters_4 = fcluster(Z, t=4, criterion='maxclust')
-print("Classification en 4 classes:")
+print("Classification en 4 classes :")
 for c in range(1, 5):
     cities_c = [cities[i] for i in range(len(cities)) if clusters_4[i] == c]
     print(f"  Classe {c}: {', '.join(cities_c)}")
 ```
 
-**Expected output:**
+**Resultat attendu :**
 
-**2 classes:**
-- Classe 1: Villes du Nord et de l'Ouest (temperatures plus basses)
-- Classe 2: Villes du Sud (temperatures plus elevees)
+**2 classes :**
+- Classe 1 : Villes du Nord et de l'Ouest (temperatures plus basses)
+- Classe 2 : Villes du Sud (temperatures plus elevees)
 
-**4 classes:**
-- Classe 1: Nord continental (Lille, Strasbourg)
-- Classe 2: Central (Paris, Vichy, Clermont-Ferrand, Lyon, Grenoble)
-- Classe 3: Oceanique (Brest, Rennes, Nantes)
-- Classe 4: Mediterraneen (Marseille, Nice, Montpellier, Toulouse, Bordeaux)
+**4 classes :**
+- Classe 1 : Nord continental (Lille, Strasbourg)
+- Classe 2 : Central (Paris, Vichy, Clermont-Ferrand, Lyon, Grenoble)
+- Classe 3 : Oceanique (Brest, Rennes, Nantes)
+- Classe 4 : Mediterraneen (Marseille, Nice, Montpellier, Toulouse, Bordeaux)
 
-**Conclusion:** 3 classes est le meilleur compromis entre granularite et interpretabilite.
+**Conclusion :** 3 classes est le meilleur compromis entre granularite et interpretabilite.

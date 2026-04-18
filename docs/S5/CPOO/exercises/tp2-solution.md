@@ -1,13 +1,13 @@
 ---
-title: "TP CPOO1 - Exercice 1: Forest Management System (Arbre/Foret)"
+title: "TP CPOO1 - Exercice 1 : Systeme de gestion forestiere (Arbre/Foret)"
 sidebar_position: 2
 ---
 
-# TP CPOO1 - Exercice 1: Forest Management System (Arbre/Foret)
+# TP CPOO1 - Exercice 1 : Systeme de gestion forestiere (Arbre/Foret)
 
-> Following teacher instructions from: `S5/CPOO/data/moodle/tp/tp3_gitlab_exercises/README.md` (Exercice 1)
+> D'apres les instructions de l'enseignant dans : `S5/CPOO/data/moodle/tp/tp3_gitlab_exercises/README.md` (Exercice 1)
 
-The teacher's original text:
+Texte original de l'enseignant :
 
 > Une foret se compose de deux types d'arbres : le chene et le pin. Un arbre se caracterise par son prix (euros/m3, une valeur `int`, mais pas forcement un attribut), son age (annees, `double`); son volume (m3, `double`); son age minimum pour etre coupe (annees, `double`). Le prix d'un chene est de 1000 euros/m3, tandis que celle d'un pin est de 500 euros/m3. Un chene doit avoir au moins 10 ans pour etre coupe, et 5 ans pour un pin. L'age minimum de la coupe est le meme pour chaque type d'arbre.
 
@@ -17,11 +17,11 @@ The teacher's original text:
 
 ### Dessinez le diagramme de classes correspondant au texte ci-dessus.
 
-**Answer:**
+**Reponse :**
 
-The key design decision: what goes in the base class vs the subclasses? Age, volume, and the operations vieillir/getPrix/peutEtreCoupe are common to all trees. The price per m3 and minimum cutting age are specific to each tree type. Since you cannot instantiate a generic "tree" (it must be either an oak or a pine), `Arbre` should be `abstract`.
+La decision de conception cle : qu'est-ce qui va dans la classe de base vs les sous-classes ? L'age, le volume et les operations vieillir/getPrix/peutEtreCoupe sont communs a tous les arbres. Le prix au m3 et l'age minimum de coupe sont specifiques a chaque type d'arbre. Comme on ne peut pas instancier un "arbre" generique (ce doit etre soit un chene, soit un pin), `Arbre` doit etre `abstract`.
 
-The teacher says prix is "une valeur int, mais pas forcement un attribut" -- meaning it can be a constant set in subclass constructors rather than a constructor parameter.
+L'enseignant dit que prix est "une valeur int, mais pas forcement un attribut" -- ce qui signifie que ca peut etre une constante definie dans les constructeurs des sous-classes plutot qu'un parametre du constructeur.
 
 ```
 +-----------------------------+
@@ -53,11 +53,11 @@ The teacher says prix is "une valeur int, mais pas forcement un attribut" -- mea
 +-----------------+  +-----------------+
 ```
 
-**Design decisions:**
-- `abstract class` rather than `interface` because `Arbre` carries state (fields) and shared implementations
-- `protected` fields so subclasses can set `prix` and `age_coupe` in their constructors
-- `prix` is set to a fixed constant by each subclass, not passed as a constructor parameter (would allow invalid values)
-- `age_coupe` is a species-level constant (same for all trees of the same type, as the teacher states)
+**Decisions de conception :**
+- `abstract class` plutot qu'`interface` car `Arbre` porte de l'etat (champs) et des implementations partagees
+- Champs `protected` pour que les sous-classes puissent definir `prix` et `age_coupe` dans leurs constructeurs
+- `prix` est defini a une constante fixe par chaque sous-classe, pas passe en parametre du constructeur (permettrait des valeurs invalides)
+- `age_coupe` est une constante au niveau de l'espece (identique pour tous les arbres du meme type, comme l'enseignant le precise)
 
 ---
 
@@ -65,9 +65,9 @@ The teacher says prix is "une valeur int, mais pas forcement un attribut" -- mea
 
 ### Implementez en Java ce diagramme. Ajouter des getters dans `Arbre` pour age et volume. Ecrire les tests necessaires. Est-ce utile de creer des tests pour des getters et des setters ?
 
-**Answer:**
+**Reponse :**
 
-Generally, testing simple getters that just return a field is **not useful** -- there is no logic to break. However, testing that the constructor correctly initializes values (which you verify through getters) **is** useful. The test is really about the constructor, not the getter.
+En general, tester des getters simples qui ne font que retourner un champ n'est **pas utile** -- il n'y a pas de logique a casser. Cependant, tester que le constructeur initialise correctement les valeurs (ce qu'on verifie via les getters) **est** utile. Le test porte en realite sur le constructeur, pas le getter.
 
 **Arbre.java:**
 
@@ -140,7 +140,7 @@ class ArbreTest {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Arbre.java`: Created as abstract class with protected fields and getters for age/volume
 - `Chene.java`: Extends Arbre, sets prix=1000 and age_coupe=10
 - `Pin.java`: Extends Arbre, sets prix=500 and age_coupe=5
@@ -151,11 +151,11 @@ class ArbreTest {
 
 ### Implementer un constructeur dans `Arbre` prenant en parametres les caracteristiques d'un arbre (age et volume). Cela impliquera des ajouts dans les sous-classes. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-When a subclass is instantiated, its constructor must call a superclass constructor via `super(...)`. Since `Arbre` will have only the parameterized constructor (no no-arg constructor), the compiler will require subclasses to call `super(age, volume)`.
+Quand une sous-classe est instanciee, son constructeur doit appeler un constructeur de la classe parente via `super(...)`. Comme `Arbre` n'aura que le constructeur parametre (pas de constructeur sans argument), le compilateur exigera que les sous-classes appellent `super(age, volume)`.
 
-Constructor chain: `new Chene(15, 2.5)` calls `super(15, 2.5)` which sets `this.age = 15`, `this.volume = 2.5`, then back in Chene: `this.prix = 1000`, `this.age_coupe = 10`.
+Chaine de constructeurs : `new Chene(15, 2.5)` appelle `super(15, 2.5)` qui definit `this.age = 15`, `this.volume = 2.5`, puis de retour dans Chene : `this.prix = 1000`, `this.age_coupe = 10`.
 
 **Arbre.java** (updated):
 
@@ -223,7 +223,7 @@ void testPinConstructor() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Arbre.java`: Added constructor `Arbre(double age, double volume)`
 - `Chene.java`: Added constructor calling `super(age, volume)`
 - `Pin.java`: Added constructor calling `super(age, volume)`
@@ -234,11 +234,11 @@ void testPinConstructor() {
 
 ### Ecrire une operation `vieillir` dans `Arbre` pour ajouter une annee a l'age d'un arbre. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-`vieillir()` is defined once in `Arbre` and inherited by all subclasses. Both `Chene` and `Pin` use the exact same implementation. This is the core benefit of inheritance: shared behavior lives in one place.
+`vieillir()` est defini une seule fois dans `Arbre` et herite par toutes les sous-classes. `Chene` et `Pin` utilisent exactement la meme implementation. C'est l'avantage fondamental de l'heritage : le comportement partage reside en un seul endroit.
 
-**Code addition to Arbre.java:**
+**Ajout au code de Arbre.java :**
 
 ```java
 public void vieillir() {
@@ -246,7 +246,7 @@ public void vieillir() {
 }
 ```
 
-**Complete Arbre.java at this point:**
+**Arbre.java complet a ce stade :**
 
 ```java
 public abstract class Arbre {
@@ -301,7 +301,7 @@ void testVieillirMultipleTimes() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Arbre.java`: Added `vieillir()` method that increments `this.age`
 
 ---
@@ -310,11 +310,11 @@ void testVieillirMultipleTimes() {
 
 ### Ajouter une operation `getPrix` dans `Arbre` pour retourner le prix d'un arbre (en fonction de son volume et de son prix au m3). Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-The formula `prix * volume` is the same for all tree types, but `prix` has different values (1000 for oak, 500 for pine). Because `prix` is set by each subclass, calling `getPrix()` on a `Chene` returns `1000 * volume`, while calling it on a `Pin` returns `500 * volume`. This is polymorphism through inherited state.
+La formule `prix * volume` est la meme pour tous les types d'arbres, mais `prix` a des valeurs differentes (1000 pour le chene, 500 pour le pin). Comme `prix` est defini par chaque sous-classe, appeler `getPrix()` sur un `Chene` retourne `1000 * volume`, tandis que l'appeler sur un `Pin` retourne `500 * volume`. C'est du polymorphisme par etat herite.
 
-**Code addition to Arbre.java:**
+**Ajout au code de Arbre.java :**
 
 ```java
 public double getPrix() {
@@ -344,7 +344,7 @@ void testGetPrixZeroVolume() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Arbre.java`: Added `getPrix()` returning `prix * volume`
 
 ---
@@ -353,11 +353,11 @@ void testGetPrixZeroVolume() {
 
 ### Ajouter une operation `peutEtreCoupe` dans `Arbre` pour retourner `true` si l'arbre en question peut etre coupe. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-Like `getPrix()`, this method uses a formula that works for all subclasses because `age_coupe` is set differently by each one. A Chene needs `age >= 10`, a Pin needs `age >= 5`, but the code is written once.
+Comme `getPrix()`, cette methode utilise une formule qui fonctionne pour toutes les sous-classes car `age_coupe` est defini differemment par chacune. Un Chene necessite `age >= 10`, un Pin necessite `age >= 5`, mais le code n'est ecrit qu'une fois.
 
-**Code addition to Arbre.java:**
+**Ajout au code de Arbre.java :**
 
 ```java
 public boolean peutEtreCoupe() {
@@ -405,7 +405,7 @@ void testPinJustUnder() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Arbre.java`: Added `peutEtreCoupe()` returning `age >= age_coupe`
 
 ---
@@ -414,9 +414,9 @@ void testPinJustUnder() {
 
 ### Definir la classe `Foret` contenant deux listes d'arbres : une liste contenant les arbres de la foret ; une liste contenant les arbres coupes. Ajouter des getters pour ces deux listes. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-The `Foret` uses `List<Arbre>` (polymorphism in collections) so it can hold both `Chene` and `Pin` objects. The critical point is initializing the lists in the constructor -- forgetting this causes `NullPointerException` when calling `.add()`.
+La `Foret` utilise `List<Arbre>` (polymorphisme dans les collections) pour pouvoir contenir a la fois des objets `Chene` et `Pin`. Le point critique est l'initialisation des listes dans le constructeur -- l'oublier provoque un `NullPointerException` lors de l'appel a `.add()`.
 
 **Foret.java:**
 
@@ -461,7 +461,7 @@ void testForetListsAreNotNull() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Foret.java`: Created with two `ArrayList<Arbre>` fields initialized in constructor, with getters
 
 ---
@@ -470,11 +470,11 @@ void testForetListsAreNotNull() {
 
 ### Dans `Foret`, ajouter une operation `planterArbre` qui ajoute a la foret un arbre donne en parametre. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-The parameter type is `Arbre`, but at runtime you pass `Chene` or `Pin` objects. This is the Liskov Substitution Principle in practice: any subclass of `Arbre` can be used where `Arbre` is expected.
+Le type du parametre est `Arbre`, mais a l'execution on passe des objets `Chene` ou `Pin`. C'est le Principe de Substitution de Liskov en pratique : toute sous-classe de `Arbre` peut etre utilisee la ou `Arbre` est attendu.
 
-**Code addition to Foret.java:**
+**Ajout au code de Foret.java :**
 
 ```java
 public void planterArbre(Arbre arbre) {
@@ -509,7 +509,7 @@ void testPlanterMultipleTrees() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Foret.java`: Added `planterArbre(Arbre arbre)` method
 
 ---
@@ -518,11 +518,11 @@ void testPlanterMultipleTrees() {
 
 ### Dans `Foret`, ajouter une operation `getPrixTotal` qui retourne le prix de tous les arbres de la foret pouvant etre coupes. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-**Important note:** The teacher says "le prix de tous les arbres de la foret **pouvant etre coupes**." This means `getPrixTotal` should only sum the prices of trees that satisfy `peutEtreCoupe()`. When iterating over `List<Arbre>` and calling `arbre.getPrix()`, the JVM dispatches to the correct implementation based on the runtime type (polymorphic dispatch).
+**Note importante :** L'enseignant dit "le prix de tous les arbres de la foret **pouvant etre coupes**." Cela signifie que `getPrixTotal` ne devrait sommer que les prix des arbres qui satisfont `peutEtreCoupe()`. En iterant sur `List<Arbre>` et en appelant `arbre.getPrix()`, la JVM dispatche vers l'implementation correcte basee sur le type reel (dispatch polymorphe).
 
-**Code addition to Foret.java:**
+**Ajout au code de Foret.java :**
 
 ```java
 public double getPrixTotal() {
@@ -536,7 +536,7 @@ public double getPrixTotal() {
 }
 ```
 
-**Note:** Some implementations sum ALL trees regardless of whether they can be cut. Read the teacher's exact wording carefully: "le prix de tous les arbres de la foret **pouvant etre coupes**." However, looking at the provided reference implementation in the source files, `getPrixTotal()` sums ALL standing trees without the `peutEtreCoupe()` check. This ambiguity in the exercise may be intentional. Here is the simpler version that matches the reference code:
+**Note :** Certaines implementations somment TOUS les arbres qu'ils puissent etre coupes ou non. Lisez attentivement la formulation exacte de l'enseignant : "le prix de tous les arbres de la foret **pouvant etre coupes**." Cependant, en examinant l'implementation de reference fournie dans les fichiers source, `getPrixTotal()` somme TOUS les arbres debout sans la verification `peutEtreCoupe()`. Cette ambiguite dans l'exercice est peut-etre intentionnelle. Voici la version plus simple qui correspond au code de reference :
 
 ```java
 public double getPrixTotal() {
@@ -548,7 +548,7 @@ public double getPrixTotal() {
 }
 ```
 
-**Tests (using the version that sums all trees):**
+**Tests (utilisant la version qui somme tous les arbres) :**
 
 ```java
 @Test
@@ -581,7 +581,7 @@ void testGetPrixTotalMultipleSameType() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Foret.java`: Added `getPrixTotal()` method that sums prices using polymorphic dispatch
 
 ---
@@ -590,11 +590,11 @@ void testGetPrixTotalMultipleSameType() {
 
 ### Dans `Foret`, ajouter une operation `couperArbre` qui prend le premier `Arbre` de la foret pouvant etre coupe et qui le coupe. Couper un arbre de la foret revient a le supprimer de la liste des arbres de la foret et a le mettre dans celle des arbres coupes. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-This is the most important question in this exercise. It teaches about `ConcurrentModificationException`, one of the most common bugs in Java code working with collections.
+C'est la question la plus importante de cet exercice. Elle enseigne la `ConcurrentModificationException`, l'un des bugs les plus courants dans le code Java travaillant avec les collections.
 
-**The WRONG way (ConcurrentModificationException):**
+**La MAUVAISE facon (ConcurrentModificationException) :**
 
 ```java
 // DO NOT DO THIS
@@ -610,9 +610,9 @@ public boolean couperArbre() {
 }
 ```
 
-The for-each loop uses an internal `Iterator`. When you call `arbres.remove(arbre)` during traversal, you modify the list "behind the iterator's back." The iterator detects this structural modification and throws `ConcurrentModificationException`.
+La boucle for-each utilise un `Iterator` interne. Quand vous appelez `arbres.remove(arbre)` pendant le parcours, vous modifiez la liste "dans le dos de l'iterateur". L'iterateur detecte cette modification structurelle et lance `ConcurrentModificationException`.
 
-**The CORRECT way (using Iterator explicitly):**
+**La BONNE facon (utilisant un Iterator explicitement) :**
 
 ```java
 import java.util.Iterator;
@@ -631,9 +631,9 @@ public boolean couperArbre() {
 }
 ```
 
-`iterator.remove()` removes the last element returned by `iterator.next()`. The iterator updates its internal state, so no concurrent modification is detected.
+`iterator.remove()` retire le dernier element retourne par `iterator.next()`. L'iterateur met a jour son etat interne, donc aucune modification concurrente n'est detectee.
 
-**Alternative correct way (reverse index loop):**
+**Autre facon correcte (boucle par indice) :**
 
 ```java
 public boolean couperArbre() {
@@ -649,7 +649,7 @@ public boolean couperArbre() {
 }
 ```
 
-This works because index-based loops do not use an iterator. Since we return immediately after one removal, a forward index loop works fine here.
+Cela fonctionne car les boucles par indice n'utilisent pas d'iterateur. Comme on retourne immediatement apres un retrait, une boucle par indice croissant fonctionne tres bien ici.
 
 **Tests:**
 
@@ -710,7 +710,7 @@ void testCouperArbreMultipleCuts() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Foret.java`: Added `couperArbre()` using `Iterator` for safe removal during iteration
 
 ---
@@ -719,13 +719,13 @@ void testCouperArbreMultipleCuts() {
 
 ### Ajouter une operation `getNombreChene` dans `Foret` retournant le nombre de chenes presents dans la foret. Ecrire les tests necessaires.
 
-**Answer:**
+**Reponse :**
 
-When you have a `List<Arbre>`, each element could be either a `Chene` or a `Pin`. To count only the oaks, use the `instanceof` operator to check the actual runtime type.
+Quand on a une `List<Arbre>`, chaque element peut etre soit un `Chene` soit un `Pin`. Pour ne compter que les chenes, on utilise l'operateur `instanceof` pour verifier le type reel a l'execution.
 
-Note: `instanceof` checks if an object is an instance of a class OR any of its subclasses. If `Chene` had a subclass `CheneRouge`, then `cheneRouge instanceof Chene` would return `true`.
+Note : `instanceof` verifie si un objet est une instance d'une classe OU de l'une de ses sous-classes. Si `Chene` avait une sous-classe `CheneRouge`, alors `cheneRouge instanceof Chene` retournerait `true`.
 
-**Code addition to Foret.java:**
+**Ajout au code de Foret.java :**
 
 ```java
 public int getNombreChenes() {
@@ -774,7 +774,7 @@ void testGetNombreChenesMixed() {
 }
 ```
 
-**Complete Foret.java at this point:**
+**Foret.java complet a ce stade :**
 
 ```java
 import java.util.ArrayList;
@@ -835,7 +835,7 @@ public class Foret {
 }
 ```
 
-**Complete Arbre.java at this point:**
+**Arbre.java complet a ce stade :**
 
 ```java
 public abstract class Arbre {
@@ -871,7 +871,7 @@ public abstract class Arbre {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Foret.java`: Added `getNombreChenes()` using `instanceof Chene`
 
 ---
@@ -884,9 +884,9 @@ public abstract class Arbre {
 
 ### Il existe deux types d'animaux. Les ecureuils et les cochons. Il existe deux types de fruits d'arbres : les glands produits par les chenes, et les cones produits par les pins. Creer ces six classes.
 
-**Answer:**
+**Reponse :**
 
-We need to create a type hierarchy for fruits and animals. `Fruit` is the base type (abstract class) with `Gland` and `Cone` as concrete subclasses. `Animal` is the base type (abstract class) with `Ecureuil` and `Cochon` as concrete subclasses.
+Il faut creer une hierarchie de types pour les fruits et les animaux. `Fruit` est le type de base (classe abstraite) avec `Gland` et `Cone` comme sous-classes concretes. `Animal` est le type de base (classe abstraite) avec `Ecureuil` et `Cochon` comme sous-classes concretes.
 
 **Fruit.java:**
 
@@ -936,7 +936,7 @@ public class Cochon extends Animal {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Fruit.java`, `Gland.java`, `Cone.java`: Fruit hierarchy created
 - `Animal.java`, `Ecureuil.java`, `Cochon.java`: Animal hierarchy created
 
@@ -946,9 +946,9 @@ public class Cochon extends Animal {
 
 ### Ajouter dans les classes d'arbres une methode `produireFruit` qui retournera un fruit d'arbre du bon type. Nous supposerons que tous les arbres produisent des fruits d'arbres. Il vous faudra ajouter un generique (*generics* Java) aux classes d'arbres.
 
-**Answer:**
+**Reponse :**
 
-Without generics, `produireFruit()` would return `Fruit`, and callers would need to cast. With generics, `Chene extends Arbre<Gland>`, so `produireFruit()` returns `Gland` directly -- no cast needed, type-safe at compile time.
+Sans generiques, `produireFruit()` retournerait `Fruit`, et les appelants devraient caster. Avec les generiques, `Chene extends Arbre<Gland>`, donc `produireFruit()` retourne `Gland` directement -- pas de cast necessaire, type-safe a la compilation.
 
 **Arbre.java** (rewritten with generic type parameter):
 
@@ -1069,17 +1069,17 @@ void testPinProduiresFruit() {
 }
 ```
 
-**Design changes from basic to advanced version:**
+**Changements de conception de la version basique a la version avancee :**
 
-| Aspect | Basic Version | Advanced Version |
+| Aspect | Version basique | Version avancee |
 |--------|---------------|------------------|
-| `prix` field | `protected int` in Arbre | Abstract method `getPrixM3()` |
-| `age_coupe` field | `protected double` in Arbre | Abstract method `getAgeMinCoupe()` |
-| Type parameter | None | `<F extends Fruit>` |
-| Constants | Assigned in constructor | `static final` in subclass |
-| Fruit production | Not present | `abstract F produireFruit()` |
+| Champ `prix` | `protected int` dans Arbre | Methode abstraite `getPrixM3()` |
+| Champ `age_coupe` | `protected double` dans Arbre | Methode abstraite `getAgeMinCoupe()` |
+| Parametre de type | Aucun | `<F extends Fruit>` |
+| Constantes | Assignees dans le constructeur | `static final` dans la sous-classe |
+| Production de fruits | Absente | `abstract F produireFruit()` |
 
-**File changes:**
+**Fichiers modifies :**
 - `Arbre.java`: Rewritten with `<F extends Fruit>` generic, abstract `produireFruit()`, `getPrixM3()`, `getAgeMinCoupe()`
 - `Chene.java`: Now `extends Arbre<Gland>`, implements all abstract methods
 - `Pin.java`: Now `extends Arbre<Cone>`, implements all abstract methods
@@ -1090,9 +1090,9 @@ void testPinProduiresFruit() {
 
 ### Tous les animaux mangent certains fruits d'arbres. Les ecureuils mangent des cones et les cochons mangent des glands. Ajouter une methode `manger` (qui ne fera rien) aux classes des animaux. Cette methode prendra en parametre un fruit d'arbre du bon type. Il vous faudra ajouter un generique aux classes d'animaux.
 
-**Answer:**
+**Reponse :**
 
-The `Animal<F extends Fruit>` class ensures at compile time that each animal can only eat its specific fruit type. This prevents bugs like feeding an acorn to a squirrel.
+La classe `Animal<F extends Fruit>` garantit a la compilation que chaque animal ne peut manger que son type de fruit specifique. Cela empeche les bugs comme nourrir un ecureuil avec un gland.
 
 **Animal.java** (rewritten with generic):
 
@@ -1126,7 +1126,7 @@ public class Ecureuil extends Animal<Cone> {
 }
 ```
 
-**Compile-time type safety demonstration:**
+**Demonstration de la surete de type a la compilation :**
 
 ```java
 Cochon pig = new Cochon();
@@ -1176,14 +1176,14 @@ void testFullTypeSafetyChain() {
 }
 ```
 
-**File changes:**
+**Fichiers modifies :**
 - `Animal.java`: Rewritten with `<F extends Fruit>` generic and abstract `manger(F fruit)`
 - `Cochon.java`: Now `extends Animal<Gland>`, implements `manger(Gland)`
 - `Ecureuil.java`: Now `extends Animal<Cone>`, implements `manger(Cone)`
 
 ---
 
-## Final UML Diagram (Advanced Version)
+## Diagramme UML final (version avancee)
 
 ```
                      +----------------------------+

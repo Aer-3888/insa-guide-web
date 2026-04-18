@@ -45,7 +45,7 @@ longueur([a, b, c], N)
 
 ## 4.2 Recursion sur les listes
 
-### Pattern 1 : Parcours simple
+### Schema 1 : Parcours simple
 
 ```prolog
 % Afficher tous les elements
@@ -55,7 +55,7 @@ afficher([H | T]) :-
     afficher(T).
 ```
 
-### Pattern 2 : Filtrage (construction d'une nouvelle liste)
+### Schema 2 : Filtrage (construction d'une nouvelle liste)
 
 ```prolog
 % Garder les elements > N
@@ -68,7 +68,7 @@ filtrer(N, [H | T], R) :-          % ignorer H sinon
     filtrer(N, T, R).
 ```
 
-### Pattern 3 : Transformation (mapper)
+### Schema 3 : Transformation (mapper)
 
 ```prolog
 % Doubler chaque element
@@ -78,7 +78,7 @@ doubler([H | T], [D | R]) :-
     doubler(T, R).
 ```
 
-### Pattern 4 : Reduction (fold)
+### Schema 4 : Reduction (fold)
 
 ```prolog
 % Somme des elements
@@ -270,7 +270,7 @@ ancetre(X, Y) :- parent(P, Y), ancetre(X, P).
 
 ---
 
-## CHEAT SHEET -- Recursion
+## AIDE-MEMOIRE -- Recursion
 
 ```
 SCHEMA RECURSIF

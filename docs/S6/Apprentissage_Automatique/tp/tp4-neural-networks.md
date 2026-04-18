@@ -1,57 +1,57 @@
 ---
-title: "TP4: Neural Networks and CNNs with TensorFlow/Keras"
+title: "TP4 : Reseaux de neurones et CNN avec TensorFlow/Keras"
 sidebar_position: 4
 ---
 
-# TP4: Neural Networks and CNNs with TensorFlow/Keras
+# TP4 : Reseaux de neurones et CNN avec TensorFlow/Keras
 
-## Overview
-This practical introduces neural networks and convolutional neural networks (CNNs) for image classification. Using the CIFAR-10 dataset, we compare simple perceptrons with deep CNNs to understand the power of deep learning for computer vision.
+## Presentation
+Ce TP introduit les reseaux de neurones et les reseaux de neurones convolutifs (CNN) pour la classification d'images. En utilisant le jeu de donnees CIFAR-10, on compare des perceptrons simples avec des CNN profonds pour comprendre la puissance du deep learning en vision par ordinateur.
 
-## Dataset: CIFAR-10
-**Problem**: Classify 32x32 color images into 10 categories
+## Jeu de donnees : CIFAR-10
+**Probleme** : Classer des images couleur 32x32 en 10 categories
 
-### Dataset Specifications
-- **Training samples**: 50,000 images
-- **Test samples**: 10,000 images
-- **Image dimensions**: 32×32 pixels, 3 color channels (RGB)
-- **Classes** (10): airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
-- **Input representation**: 
-  - Perceptron: Flattened vector (3072 values)
-  - CNN: 3D tensor (32×32×3)
+### Specifications du jeu de donnees
+- **Echantillons d'entrainement** : 50 000 images
+- **Echantillons de test** : 10 000 images
+- **Dimensions des images** : 32x32 pixels, 3 canaux couleur (RVB)
+- **Classes** (10) : airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
+- **Representation de l'entree** :
+  - Perceptron : Vecteur aplati (3072 valeurs)
+  - CNN : Tenseur 3D (32x32x3)
 
-### Data Preprocessing
+### Preprocessing des donnees
 ```python noexec
-# Load data
+# Charger les donnees
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
-# Normalize pixel values to [0, 1]
+# Normaliser les valeurs des pixels dans [0, 1]
 x_train = x_train / 255.0
 x_test = x_test / 255.0
 
-# Reshape for perceptron (flatten)
+# Reformater pour le perceptron (aplatir)
 x_train_flat = x_train.reshape(50000, 3072)
 
-# Reshape for CNN (preserve spatial structure)
+# Reformater pour le CNN (preserver la structure spatiale)
 x_train_cnn = x_train.reshape(50000, 32, 32, 3)
 ```
 
-## Models Implemented
+## Modeles implementes
 
-### 1. Simple Perceptron (Multi-Layer Perceptron)
-**Architecture**:
+### 1. Perceptron simple (Perceptron multi-couches)
+**Architecture** :
 ```
-Input (3072) → Dense(nbhidden, ReLU) → Dense(10, Softmax)
+Entree (3072) -> Dense(nbhidden, ReLU) -> Dense(10, Softmax)
 ```
 
-**Configuration**:
-- Input: Flattened image (3072 pixels)
-- Hidden layer: Variable size (e.g., 100, 1000, 10000 neurons)
-- Output: 10 classes with softmax activation
-- Loss: Sparse categorical crossentropy
-- Optimizer: Adam
+**Configuration** :
+- Entree : Image aplatie (3072 pixels)
+- Couche cachee : Taille variable (ex : 100, 1000, 10000 neurones)
+- Sortie : 10 classes avec activation softmax
+- Cout : Sparse categorical crossentropy
+- Optimiseur : Adam
 
-**Python Implementation**:
+**Implementation Python** :
 ```python noexec
 def perceptron(nbhidden=1):
     entree = tf.keras.Input(shape=(3072,))
@@ -65,71 +65,71 @@ def perceptron(nbhidden=1):
     return model
 ```
 
-**Training**:
+**Entrainement** :
 ```python noexec
 clf = perceptron(100000)
 clf.fit(x_train, y_train, epochs=20, batch_size=51)
 ```
 
-**Characteristics**:
-- Treats image as unstructured vector
-- No spatial awareness
-- Fully connected (many parameters)
-- Limited performance on visual tasks
+**Caracteristiques** :
+- Traite l'image comme un vecteur non structure
+- Pas de conscience spatiale
+- Entierement connecte (beaucoup de parametres)
+- Performance limitee sur les taches visuelles
 
-**Expected Results**:
-- Accuracy: ~45-55% (depending on hidden layer size)
-- Struggles with spatial patterns
-- Requires large hidden layers for decent performance
+**Resultats attendus** :
+- Precision : ~45-55% (selon la taille de la couche cachee)
+- Difficulte avec les motifs spatiaux
+- Necessite de grandes couches cachees pour une performance acceptable
 
-### 2. Convolutional Neural Network (CNN)
-**Architecture**:
+### 2. Reseau de neurones convolutif (CNN)
+**Architecture** :
 ```
-Input (32×32×3)
-→ Conv2D(32, 5×5, ReLU) → MaxPool(2×2)
-→ Conv2D(64, 5×5, ReLU) → MaxPool(2×2)
-→ Conv2D(128, 5×5, ReLU) → MaxPool(2×2)
-→ Dropout(0.37)
-→ Flatten()
-→ Dense(10000, ReLU)
-→ Dense(10, Softmax)
+Entree (32x32x3)
+-> Conv2D(32, 5x5, ReLU) -> MaxPool(2x2)
+-> Conv2D(64, 5x5, ReLU) -> MaxPool(2x2)
+-> Conv2D(128, 5x5, ReLU) -> MaxPool(2x2)
+-> Dropout(0.37)
+-> Flatten()
+-> Dense(10000, ReLU)
+-> Dense(10, Softmax)
 ```
 
-**Configuration Details**:
-- **Conv layers**: Extract spatial features
-  - Layer 1: 32 filters, 5×5 kernels
-  - Layer 2: 64 filters, 5×5 kernels
-  - Layer 3: 128 filters, 5×5 kernels
-- **MaxPooling**: Downsample feature maps (2×2)
-- **Dropout**: Regularization (37% dropout rate)
-- **Dense layers**: Classification head (10,000 → 10 neurons)
+**Details de configuration** :
+- **Couches conv** : Extraction de features spatiales
+  - Couche 1 : 32 filtres, noyaux 5x5
+  - Couche 2 : 64 filtres, noyaux 5x5
+  - Couche 3 : 128 filtres, noyaux 5x5
+- **MaxPooling** : Sous-echantillonnage des cartes de features (2x2)
+- **Dropout** : Regularisation (taux de dropout de 37%)
+- **Couches denses** : Tete de classification (10 000 -> 10 neurones)
 
-**Python Implementation**:
+**Implementation Python** :
 ```python noexec
 def cnn():
     entree = tf.keras.Input(shape=(32,32,3))
     
-    # First conv block
+    # Premier bloc conv
     layer = tf.keras.layers.Conv2D(32, kernel_size=(5,5), 
                                    strides=(1,1), activation='relu')(entree)
     layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2), 
                                          strides=(2,2))(layer)
     
-    # Second conv block
+    # Deuxieme bloc conv
     layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), 
                                    activation='relu')(layer)
     layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2))(layer)
     
-    # Third conv block
+    # Troisieme bloc conv
     layer = tf.keras.layers.Conv2D(128, kernel_size=(5,5), 
                                    activation='relu')(layer)
     layer = tf.keras.layers.MaxPooling2D(pool_size=(2,2), 
                                          strides=(2,2))(layer)
     
-    # Regularization
+    # Regularisation
     layer = tf.keras.layers.Dropout(0.37)(layer)
     
-    # Classification head
+    # Tete de classification
     layer = tf.keras.layers.Flatten()(layer)
     layer = tf.keras.layers.Dense(10000, activation='relu')(layer)
     out = tf.keras.layers.Dense(10, activation='softmax')(layer)
@@ -141,62 +141,62 @@ def cnn():
     return model
 ```
 
-**Training**:
+**Entrainement** :
 ```python noexec
 clf = cnn()
 clf.fit(x_train, y_train, epochs=20, batch_size=51)
 ```
 
-**Characteristics**:
-- Preserves spatial structure
-- Local connectivity (filters)
-- Parameter sharing (fewer parameters than fully connected)
-- Hierarchical feature learning (edges → textures → objects)
+**Caracteristiques** :
+- Preserve la structure spatiale
+- Connectivite locale (filtres)
+- Partage de parametres (moins de parametres qu'un reseau entierement connecte)
+- Apprentissage hierarchique de features (bords -> textures -> objets)
 
-**Expected Results**:
-- Accuracy: ~70-80% (significantly better than perceptron)
-- Learns spatial patterns effectively
-- More robust to translations and small distortions
+**Resultats attendus** :
+- Precision : ~70-80% (significativement meilleur que le perceptron)
+- Apprend les motifs spatiaux efficacement
+- Plus robuste aux translations et petites distorsions
 
-## Key Concepts
+## Concepts cles
 
-### Why CNNs Outperform Perceptrons for Images
+### Pourquoi les CNN surpassent les perceptrons pour les images
 
-1. **Spatial Structure**:
-   - Perceptron: Treats pixels as independent features
-   - CNN: Preserves 2D structure, exploits local correlations
+1. **Structure spatiale** :
+   - Perceptron : Traite les pixels comme des features independantes
+   - CNN : Preserve la structure 2D, exploite les correlations locales
 
-2. **Parameter Efficiency**:
-   - Perceptron: O(width × height × channels × neurons) parameters
-   - CNN: O(kernel_size² × channels × filters) parameters
-   - Weight sharing reduces overfitting
+2. **Efficacite parametrique** :
+   - Perceptron : O(largeur x hauteur x canaux x neurones) parametres
+   - CNN : O(taille_noyau^2 x canaux x filtres) parametres
+   - Le partage de poids reduit le sur-apprentissage
 
-3. **Translation Invariance**:
-   - Convolution detects features regardless of position
-   - MaxPooling provides robustness to small shifts
+3. **Invariance par translation** :
+   - La convolution detecte les features quelle que soit leur position
+   - Le MaxPooling apporte une robustesse aux petits decalages
 
-4. **Hierarchical Features**:
-   - Layer 1: Edges, colors
-   - Layer 2: Textures, patterns
-   - Layer 3: Object parts
-   - Dense layers: Full object recognition
+4. **Features hierarchiques** :
+   - Couche 1 : Bords, couleurs
+   - Couche 2 : Textures, motifs
+   - Couche 3 : Parties d'objets
+   - Couches denses : Reconnaissance complete d'objets
 
-### Convolutional Layer Mechanics
+### Mecanique de la couche convolutive
 ```
-Input: 32×32×3 image
-Conv2D(32 filters, 5×5): Produces 32 feature maps
-Each filter learns a specific pattern (edge detector, color blob, etc.)
-MaxPooling(2×2): Reduces spatial dimensions by 2× (16×16)
+Entree : image 32x32x3
+Conv2D(32 filtres, 5x5) : Produit 32 cartes de features
+Chaque filtre apprend un motif specifique (detecteur de bord, tache de couleur, etc.)
+MaxPooling(2x2) : Reduit les dimensions spatiales par 2 (16x16)
 ```
 
-### Dropout Regularization
-- Randomly deactivates 37% of neurons during training
-- Prevents co-adaptation of features
-- Reduces overfitting
-- Not applied during inference
+### Regularisation par Dropout
+- Desactive aleatoirement 37% des neurones pendant l'entrainement
+- Empeche la co-adaptation des features
+- Reduit le sur-apprentissage
+- Non applique pendant l'inference
 
-## GPU Memory Management
-The code includes GPU memory growth configuration to prevent TensorFlow from reserving all GPU memory:
+## Gestion de la memoire GPU
+Le code inclut une configuration de croissance memoire GPU pour empecher TensorFlow de reserver toute la memoire GPU :
 
 ```python noexec
 import tensorflow as tf
@@ -209,51 +209,51 @@ if gpus:
         print(e)
 ```
 
-## Model Evaluation
+## Evaluation du modele
 ```python noexec
-# Predict on test set
+# Predire sur le jeu de test
 predictions = clf.predict(x_test).argmax(-1)
 
-# Classification report (precision, recall, F1 per class)
+# Rapport de classification (precision, rappel, F1 par classe)
 print(classification_report(y_test, predictions))
 
-# Overall accuracy
+# Precision globale
 print('accuracy_score=', accuracy_score(y_test, predictions))
 ```
 
-## Architecture Experiments
+## Experiences d'architecture
 
-### Perceptron Variants
-Try different hidden layer sizes:
+### Variantes du perceptron
+Essayer differentes tailles de couche cachee :
 ```python noexec
-perceptron(100)       # Small: Fast but low accuracy
-perceptron(1000)      # Medium: Balance
-perceptron(100000)    # Large: Slow but better accuracy
+perceptron(100)       # Petit : Rapide mais faible precision
+perceptron(1000)      # Moyen : Equilibre
+perceptron(100000)    # Grand : Lent mais meilleure precision
 ```
 
-### CNN Variants
-**Original Architecture** (in code):
+### Variantes du CNN
+**Architecture originale** (dans le code) :
 ```
-Conv2D(32, 5×5) → MaxPool → Conv2D(64, 5×5) → MaxPool → 
-Conv2D(128, 5×5) → MaxPool → Dropout → Dense(10000) → Dense(10)
+Conv2D(32, 5x5) -> MaxPool -> Conv2D(64, 5x5) -> MaxPool -> 
+Conv2D(128, 5x5) -> MaxPool -> Dropout -> Dense(10000) -> Dense(10)
 ```
 
-**Note**: There's a bug in the original code! Layer 2 and 3 incorrectly use `entree` instead of `layer`:
+**Note** : Il y a un bug dans le code original ! Les couches 2 et 3 utilisent incorrectement `entree` au lieu de `layer` :
 ```python noexec
-# BUG (line 30, 32):
+# BUG (ligne 30, 32) :
 layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), 
-                               activation='relu')(entree)  # Should be (layer)!
+                               activation='relu')(entree)  # Devrait etre (layer) !
 ```
 
-**Corrected Architecture**:
+**Architecture corrigee** :
 ```python noexec
-# Layer 2 should take output from Layer 1
+# La couche 2 doit prendre la sortie de la couche 1
 layer = tf.keras.layers.Conv2D(64, kernel_size=(5,5), 
-                               activation='relu')(layer)  # Fixed!
+                               activation='relu')(layer)  # Corrige !
 ```
 
-### Commented Alternative
-The code includes a commented 4-layer variant:
+### Variante alternative commentee
+Le code inclut une variante a 4 couches commentee :
 ```python noexec
 # layer = tf.keras.layers.Conv2D(256, kernel_size=(3,3), 
 #                                activation='relu')(layer)
@@ -261,39 +261,39 @@ The code includes a commented 4-layer variant:
 #                                      strides=(2,2))(layer)
 ```
 
-## Performance Comparison
+## Comparaison des performances
 
-| Model | Accuracy | Training Time | Parameters |
-|-------|----------|---------------|------------|
-| Perceptron (100) | ~45% | Fast | ~300K |
-| Perceptron (10000) | ~50% | Medium | ~30M |
-| CNN (3 conv layers) | ~75-80% | Slow (GPU: Fast) | ~5-10M |
+| Modele | Precision | Temps d'entrainement | Parametres |
+|--------|-----------|---------------------|-----------|
+| Perceptron (100) | ~45% | Rapide | ~300K |
+| Perceptron (10000) | ~50% | Moyen | ~30M |
+| CNN (3 couches conv) | ~75-80% | Lent (GPU : Rapide) | ~5-10M |
 
-**Key Takeaway**: CNNs achieve much better accuracy with fewer parameters due to structural assumptions about images.
+**Point cle** : Les CNN atteignent une bien meilleure precision avec moins de parametres grace aux hypotheses structurelles sur les images.
 
-## Files
-- `tp_nn.py`: Complete implementation of perceptron and CNN models
-- Dataset loaded automatically via `tf.keras.datasets.cifar10`
+## Fichiers
+- `tp_nn.py` : Implementation complete des modeles perceptron et CNN
+- Jeu de donnees charge automatiquement via `tf.keras.datasets.cifar10`
 
-## Running the Code
+## Lancer le code
 ```bash noexec
-# Install dependencies
+# Installer les dependances
 pip install tensorflow numpy scikit-learn
 
-# Run with CPU
+# Lancer avec CPU
 python tp_nn.py
 
-# Run with GPU (if available)
+# Lancer avec GPU (si disponible)
 python tp_nn.py
 
-# The script will:
-# 1. Load CIFAR-10 dataset
-# 2. Train CNN for 20 epochs
-# 3. Print classification report
-# 4. Print final accuracy
+# Le script va :
+# 1. Charger le jeu de donnees CIFAR-10
+# 2. Entrainer le CNN pendant 20 epoques
+# 3. Afficher le rapport de classification
+# 4. Afficher la precision finale
 ```
 
-## Expected Output
+## Sortie attendue
 ```
 x_train.shape= (50000, 32, 32, 3)
 x_test.shape= (10000, 32, 32, 3)
@@ -313,43 +313,43 @@ Epoch 20/20
     accuracy                           0.79     10000
 ```
 
-## Exercises
+## Exercices
 
-### Exercise 1: Compare Architectures
-1. Train perceptron with different hidden layer sizes
-2. Train CNN with original architecture
-3. Compare test accuracies
+### Exercice 1 : Comparer les architectures
+1. Entrainer le perceptron avec differentes tailles de couche cachee
+2. Entrainer le CNN avec l'architecture originale
+3. Comparer les precisions sur le test
 
-**Expected Finding**: CNN >> Perceptron even with massive hidden layers
+**Resultat attendu** : CNN >> Perceptron meme avec des couches cachees massives
 
-### Exercise 2: Fix the Bug
-1. Identify the bug in lines 30-32 (using `entree` instead of `layer`)
-2. Fix it and retrain
-3. Observe performance improvement
+### Exercice 2 : Corriger le bug
+1. Identifier le bug aux lignes 30-32 (utilisation de `entree` au lieu de `layer`)
+2. Le corriger et re-entrainer
+3. Observer l'amelioration de la performance
 
-**Expected Improvement**: ~5-10% accuracy gain with corrected architecture
+**Amelioration attendue** : ~5-10% de gain de precision avec l'architecture corrigee
 
-### Exercise 3: Hyperparameter Tuning
-Experiment with:
-- Number of filters (16, 32, 64, 128, 256)
-- Kernel sizes (3×3, 5×5, 7×7)
-- Dropout rate (0.2, 0.4, 0.5)
-- Dense layer size (1000, 5000, 10000)
-- Batch size (32, 64, 128)
-- Learning rate (use `Adam(learning_rate=0.001)`)
+### Exercice 3 : Reglage des hyperparametres
+Experimenter avec :
+- Nombre de filtres (16, 32, 64, 128, 256)
+- Taille des noyaux (3x3, 5x5, 7x7)
+- Taux de dropout (0.2, 0.4, 0.5)
+- Taille de la couche dense (1000, 5000, 10000)
+- Taille de batch (32, 64, 128)
+- Taux d'apprentissage (utiliser `Adam(learning_rate=0.001)`)
 
-### Exercise 4: Add Batch Normalization
-Insert batch norm after convolutions:
+### Exercice 4 : Ajouter la normalisation par batch
+Inserer une batch normalization apres les convolutions :
 ```python noexec
 layer = tf.keras.layers.Conv2D(32, (5,5), activation='relu')(entree)
 layer = tf.keras.layers.BatchNormalization()(layer)
 layer = tf.keras.layers.MaxPooling2D((2,2))(layer)
 ```
 
-**Expected**: Faster convergence, slight accuracy improvement
+**Attendu** : Convergence plus rapide, legere amelioration de la precision
 
-### Exercise 5: Data Augmentation
-Add random transformations during training:
+### Exercice 5 : Augmentation de donnees
+Ajouter des transformations aleatoires pendant l'entrainement :
 ```python noexec
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
@@ -363,39 +363,39 @@ datagen = ImageDataGenerator(
 clf.fit(datagen.flow(x_train, y_train, batch_size=51), epochs=20)
 ```
 
-**Expected**: Better generalization, higher test accuracy
+**Attendu** : Meilleure generalisation, precision de test plus elevee
 
-## Common Issues
+## Problemes courants
 
-### GPU Out of Memory
-- Reduce batch size
-- Reduce dense layer size
-- Enable memory growth (already in code)
+### Memoire GPU insuffisante
+- Reduire la taille de batch
+- Reduire la taille de la couche dense
+- Activer la croissance memoire (deja dans le code)
 
-### Slow Training on CPU
-- Use GPU if available
-- Reduce model size
-- Reduce number of epochs
+### Entrainement lent sur CPU
+- Utiliser un GPU si disponible
+- Reduire la taille du modele
+- Reduire le nombre d'epoques
 
-### Overfitting
-- Add more dropout
-- Reduce model capacity
-- Use data augmentation
-- Use early stopping
+### Sur-apprentissage
+- Ajouter plus de dropout
+- Reduire la capacite du modele
+- Utiliser l'augmentation de donnees
+- Utiliser l'early stopping
 
-## Advanced Topics (Beyond Scope)
-- ResNet (skip connections)
-- Transfer learning (pre-trained models)
-- Learning rate scheduling
-- Advanced optimizers (SGD with momentum, RMSprop)
-- Mixed precision training
+## Sujets avances (hors programme)
+- ResNet (connexions residuelles)
+- Transfer learning (modeles pre-entraines)
+- Planification du taux d'apprentissage
+- Optimiseurs avances (SGD avec momentum, RMSprop)
+- Entrainement en precision mixte
 
-## Learning Outcomes
-1. Understand difference between perceptrons and CNNs
-2. Implement and train deep learning models with Keras
-3. Use TensorFlow/Keras functional API
-4. Apply CNNs to image classification
-5. Interpret convolutional layers and feature maps
-6. Use dropout for regularization
-7. Debug neural network architectures
-8. Evaluate models with classification reports
+## Objectifs d'apprentissage
+1. Comprendre la difference entre perceptrons et CNN
+2. Implementer et entrainer des modeles de deep learning avec Keras
+3. Utiliser l'API fonctionnelle de TensorFlow/Keras
+4. Appliquer les CNN a la classification d'images
+5. Interpreter les couches convolutives et les cartes de features
+6. Utiliser le dropout pour la regularisation
+7. Debugger les architectures de reseaux de neurones
+8. Evaluer les modeles avec des rapports de classification

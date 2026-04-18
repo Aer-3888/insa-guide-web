@@ -1,30 +1,30 @@
 ---
-title: "LDS3 - SQLite Database Management"
+title: "LDS3 - Gestion de bases de donnees SQLite"
 sidebar_position: 10
 ---
 
-# LDS3 - SQLite Database Management
+# LDS3 - Gestion de bases de donnees SQLite
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-Database integration with Python and Qt:
+Integration de bases de donnees avec Python et Qt :
 
-- Understand relational database concepts
-- Work with SQLite databases
-- Execute SQL queries from Python
-- Integrate databases with Qt GUI
-- Implement CRUD operations (Create, Read, Update, Delete)
-- Use Qt's Model-View architecture
+- Comprendre les concepts de bases de donnees relationnelles
+- Travailler avec les bases de donnees SQLite
+- Executer des requetes SQL depuis Python
+- Integrer des bases de donnees avec l'interface Qt
+- Implementer les operations CRUD (Create, Read, Update, Delete)
+- Utiliser l'architecture Modele-Vue de Qt
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. SQLite Basics
+### 1. Bases de SQLite
 
-**SQLite**: Lightweight, file-based relational database
-- No server required
-- Single file storage
-- SQL standard support
-- Perfect for desktop applications
+**SQLite** : base de donnees relationnelle legere basee sur un fichier
+- Pas de serveur necessaire
+- Stockage dans un seul fichier
+- Support du standard SQL
+- Parfait pour les applications de bureau
 
 ```python noexec
 import sqlite3
@@ -46,7 +46,7 @@ rows = cursor.fetchall()
 conn.close()
 ```
 
-### 2. SQL Fundamentals
+### 2. Fondamentaux du SQL
 
 **CREATE TABLE**:
 ```sql
@@ -88,7 +88,7 @@ JOIN enrollments ON students.id = enrollments.student_id
 JOIN courses ON enrollments.course_id = courses.id;
 ```
 
-### 3. Python SQLite Module
+### 3. Module SQLite de Python
 
 ```python noexec
 import sqlite3
@@ -123,7 +123,7 @@ class Database:
         self.conn.close()
 ```
 
-### 4. Qt Database Integration
+### 4. Integration Qt avec les bases de donnees
 
 ```python noexec
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery, QSqlTableModel
@@ -149,11 +149,11 @@ model.select()
 table_view.setModel(model)
 ```
 
-### 5. Model-View Architecture
+### 5. Architecture Modele-Vue
 
-**Model**: Manages data (QSqlTableModel, QSqlQueryModel)
-**View**: Displays data (QTableView, QListView)
-**Controller**: Handles user input
+**Modele** : gere les donnees (QSqlTableModel, QSqlQueryModel)
+**Vue** : affiche les donnees (QTableView, QListView)
+**Controleur** : gere les entrees utilisateur
 
 ```python noexec
 # Create model
@@ -173,9 +173,9 @@ view.setModel(model)
 view.hideColumn(0)  # Hide ID column
 ```
 
-### 6. Parameterized Queries
+### 6. Requetes parametrees
 
-**Always use parameterized queries** to prevent SQL injection:
+**Toujours utiliser des requetes parametrees** pour prevenir l'injection SQL :
 
 ```python noexec
 # WRONG (SQL injection vulnerable)
@@ -185,57 +185,57 @@ cursor.execute(f"SELECT * FROM users WHERE name = '{user_input}'")
 cursor.execute("SELECT * FROM users WHERE name = ?", (user_input,))
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Database Creation
-Create SQLite database with tables for student registry.
+### Exercice 1 : Creation de base de donnees
+Creer une base de donnees SQLite avec des tables pour un registre d'etudiants.
 
-**Schema**:
+**Schema** :
 - Students table (id, name, birth_date, etc.)
 - Courses table
 - Enrollments table (many-to-many relationship)
 
-### Exercise 2: CRUD Operations
-Implement complete CRUD interface:
+### Exercice 2 : Operations CRUD
+Implementer une interface CRUD complete :
 - Create new records
 - Read/display records
 - Update existing records
 - Delete records
 
-### Exercise 3: Qt Integration
-Build Qt application with database backend.
+### Exercice 3 : Integration Qt
+Construire une application Qt avec une base de donnees en backend.
 
-**Features**:
+**Fonctionnalites** :
 - Table view displaying database content
 - Forms for adding/editing records
 - Search and filter functionality
 - Data validation
 
-### Exercise 4: Reports and Queries
-Generate reports from database:
+### Exercice 4 : Rapports et requetes
+Generer des rapports depuis la base de donnees :
 - Student lists
 - Grade statistics
 - Course enrollments
 
 ## Solutions
 
-See `src/` directory and original files:
-- `gestionBD.py` - Database management class
-- `SqliteQt.py` - Qt integration example
-- `principalSqlite.py` - Main application
-- `BDRegMat.py` - Student registry database
+See `src/` directory et les fichiers originaux :
+- `gestionBD.py` - Classe de gestion de base de donnees
+- `SqliteQt.py` - Exemple d'integration Qt
+- `principalSqlite.py` - Application principale
+- `BDRegMat.py` - Base de donnees du registre etudiant
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **SQLite is perfect for desktop apps** - No server, no configuration
-2. **Always use parameterized queries** - Prevents SQL injection
-3. **Commit after writes** - Changes aren't saved until commit()
-4. **Close connections** - Use context managers or finally blocks
-5. **Model-View separates concerns** - Clean architecture
+1. **SQLite est parfait pour les applications de bureau** - Pas de serveur, pas de configuration
+2. **Toujours utiliser des requetes parametrees** - Previent l'injection SQL
+3. **Valider apres les ecritures** - Les modifications ne sont pas sauvegardees avant commit()
+4. **Fermer les connexions** - Utiliser les gestionnaires de contexte ou les blocs finally
+5. **Modele-Vue separe les responsabilites** - Architecture propre
 
-## Common Patterns
+## Motifs courants
 
-### Context Manager Pattern
+### Patron de gestionnaire de contexte
 ```python noexec
 import sqlite3
 
@@ -258,7 +258,7 @@ with Database('db.sqlite') as cursor:
     rows = cursor.fetchall()
 ```
 
-### Repository Pattern
+### Patron de depot
 ```python noexec
 class StudentRepository:
     def __init__(self, db_connection):
@@ -284,16 +284,16 @@ class StudentRepository:
         return cursor.lastrowid
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Not committing changes** - Writes need conn.commit()
-2. **SQL injection** - Use parameterized queries
-3. **Forgetting to close connections** - Causes lock issues
-4. **Mixing string formatting with SQL** - Use ? placeholders
-5. **Not handling exceptions** - Database errors need error handling
-6. **Inefficient queries** - Use indexes, avoid SELECT *
+1. **Ne pas valider les modifications** - Les ecritures necessitent conn.commit()
+2. **Injection SQL** - Utiliser des requetes parametrees
+3. **Oublier de fermer les connexions** - Cause des problemes de verrouillage
+4. **Melanger le formatage de chaines avec le SQL** - Utiliser les marqueurs ?
+5. **Ne pas gerer les exceptions** - Les erreurs de base de donnees necessitent une gestion d'erreurs
+6. **Requetes inefficaces** - Utiliser des index, eviter SELECT *
 
-## Further Reading
+## Pour aller plus loin
 
 - SQLite Documentation: https://www.sqlite.org/docs.html
 - SQL Tutorial: https://www.sqlitetutorial.net/
@@ -301,19 +301,19 @@ class StudentRepository:
 - Database design: Normalization, foreign keys, indexes
 - ORM libraries: SQLAlchemy, Peewee (alternatives to raw SQL)
 
-## Database Design Tips
+## Conseils de conception de bases de donnees
 
-1. **Primary keys** - Use INTEGER PRIMARY KEY AUTOINCREMENT
-2. **Foreign keys** - Enforce referential integrity
-3. **Indexes** - Speed up queries on frequently searched columns
-4. **Normalization** - Avoid data duplication
-5. **Data types** - INTEGER, TEXT, REAL, BLOB
-6. **Constraints** - NOT NULL, UNIQUE, CHECK
+1. **Cles primaires** - Utiliser INTEGER PRIMARY KEY AUTOINCREMENT
+2. **Cles etrangeres** - Imposer l'integrite referentielle
+3. **Index** - Accelerer les requetes sur les colonnes frequemment recherchees
+4. **Normalisation** - Eviter la duplication des donnees
+5. **Types de donnees** - INTEGER, TEXT, REAL, BLOB
+6. **Contraintes** - NOT NULL, UNIQUE, CHECK
 
-## SQL Best Practices
+## Bonnes pratiques SQL
 
-1. **Use transactions** - Group related operations
-2. **Handle errors** - Check return values, catch exceptions
-3. **Validate input** - Before inserting into database
-4. **Use indexes wisely** - Speed up reads, slow down writes
-5. **Backup regularly** - SQLite files can be copied
+1. **Utiliser les transactions** - Regrouper les operations liees
+2. **Gerer les erreurs** - Verifier les valeurs de retour, attraper les exceptions
+3. **Valider les entrees** - Avant d'inserer dans la base de donnees
+4. **Utiliser les index judicieusement** - Accelere les lectures, ralentit les ecritures
+5. **Sauvegarder regulierement** - Les fichiers SQLite peuvent etre copies

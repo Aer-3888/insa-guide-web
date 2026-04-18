@@ -1,15 +1,15 @@
 ---
-title: "TP3 - Card Game with Types and Graphics"
+title: "TP3 - Jeu de cartes avec types et graphique"
 sidebar_position: 3
 ---
 
-# TP3 - Card Game with Types and Graphics
+# TP3 - Jeu de cartes avec types et graphique
 
-> Following teacher instructions from: `data/moodle/tp/tp3/README.md`
+> D'apres les consignes de l'enseignant : `data/moodle/tp/tp3/README.md`
 
 ---
 
-## Type Definitions
+## Definitions de types
 
 ```ocaml
 type coul = Coeur | Trefle | Pique | Carreau
@@ -19,20 +19,20 @@ type carte = {h : haut; c : coul}
 
 ---
 
-## Exercise 1
+## Exercice 1
 
-### Define card types and accessor functions
+### Definir les types de cartes et les fonctions d'acces
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Accessor: get the suit of a card *)
+(* Accesseur : obtenir la couleur d'une carte *)
 let coul c = c.c
 
-(* Accessor: get the height of a card *)
+(* Accesseur : obtenir la hauteur d'une carte *)
 let haut c = c.h
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # let c = {h = As; c = Coeur};;
 val c : carte = {h = As; c = Coeur}
@@ -44,13 +44,13 @@ val c : carte = {h = As; c = Coeur}
 
 ---
 
-## Exercise 2
+## Exercice 2
 
-### Conversion functions: `haut_of_int`, `coul_of_string`, `carte` constructor, `string_of_carte`
+### Fonctions de conversion : `haut_of_int`, `coul_of_string`, constructeur `carte`, `string_of_carte`
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Convert integer to card height *)
+(* Convertir un entier en hauteur de carte *)
 let haut_of_int i = match i with
   | 7 -> Sept
   | 8 -> Huit
@@ -62,7 +62,7 @@ let haut_of_int i = match i with
   | 14 -> As
   | _ -> failwith "Invalid card height"
 
-(* Convert string to card suit *)
+(* Convertir une chaine en couleur de carte *)
 let coul_of_string s = match s with
   | "Coeur" -> Coeur
   | "Trefle" -> Trefle
@@ -70,10 +70,10 @@ let coul_of_string s = match s with
   | "Pique" -> Pique
   | _ -> failwith "Invalid card suit"
 
-(* Create a card from integer height and string suit *)
+(* Creer une carte a partir d'un entier (hauteur) et d'une chaine (couleur) *)
 let carte i s = {c = coul_of_string s; h = haut_of_int i}
 
-(* Convert card height to string *)
+(* Convertir une hauteur de carte en chaine *)
 let string_of_haut h = match h with
   | Sept -> "Sept"
   | Huit -> "Huit"
@@ -84,18 +84,18 @@ let string_of_haut h = match h with
   | Roi -> "Roi"
   | As -> "As"
 
-(* Convert card suit to string *)
+(* Convertir une couleur de carte en chaine *)
 let string_of_coul c = match c with
   | Coeur -> "Coeur"
   | Trefle -> "Trefle"
   | Carreau -> "Carreau"
   | Pique -> "Pique"
 
-(* Pretty-print a card *)
+(* Afficher une carte sous forme lisible *)
 let string_of_carte c = (string_of_haut c.h) ^ " de " ^ (string_of_coul c.c)
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # haut_of_int 12;;
 - : haut = Dame
@@ -115,13 +115,13 @@ let string_of_carte c = (string_of_haut c.h) ^ " de " ^ (string_of_coul c.c)
 
 ---
 
-## Exercise 3
+## Exercice 3
 
-### Random card generation without duplicates
+### Generation aleatoire de cartes sans doublons
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* Convert integer to suit *)
+(* Convertir un entier en couleur *)
 let coul_of_int a = match a with
   | 0 -> Coeur
   | 1 -> Trefle
@@ -129,27 +129,27 @@ let coul_of_int a = match a with
   | 3 -> Pique
   | _ -> failwith "Invalid suit number"
 
-(* Generate a random card *)
+(* Generer une carte aleatoire *)
 let random_carte () =
   {c = coul_of_int (Random.int 4);
    h = haut_of_int ((Random.int 8) + 7)}
 
-(* Check if a card exists in a list *)
+(* Verifier si une carte existe dans une liste *)
 let rec exist c l = match l with
   | [] -> false
   | x :: l' -> if c = x then true else exist c l'
 
-(* Add a new unique random card to the list *)
+(* Ajouter une nouvelle carte aleatoire unique a la liste *)
 let rec ajtcarte l =
   let c = random_carte () in
   if not (exist c l) then c :: l else ajtcarte l
 
-(* Create a game with n unique cards, each as a single-card pile *)
+(* Creer un jeu avec n cartes uniques, chacune formant une pile individuelle *)
 let rec faitjeu n =
   if n = 0 then [] else ajtcarte (faitjeu (n - 1))
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # random_carte ();;
 - : carte = {h = Neuf; c = Carreau}
@@ -165,15 +165,15 @@ let rec faitjeu n =
 
 ---
 
-## Exercise 4
+## Exercice 4
 
-### Solitaire game logic: reduction rules
+### Logique du jeu de reussite : regles de reduction
 
-Rules: examine piles 3 by 3 (A, B, C). If the top card of A and top card of C have the same suit or same height, pile B is placed on top of A (B @ A), and the 3 piles become 2.
+Regles : on examine les piles 3 par 3 (A, B, C). Si la carte au sommet de A et la carte au sommet de C ont la meme couleur ou la meme hauteur, la pile B est placee au-dessus de A (B @ A), et les 3 piles deviennent 2.
 
-**Answer:**
+**Reponse :**
 ```ocaml
-(* One reduction step on the list of card piles *)
+(* Une etape de reduction sur la liste de piles de cartes *)
 let rec reduc l = match l with
   | (e1 :: l1') :: l2 :: (e3 :: l3') :: l' ->
       if e1.c = e3.c || e1.h = e3.h then
@@ -182,13 +182,13 @@ let rec reduc l = match l with
         (e1 :: l1') :: (reduc (l2 :: (e3 :: l3') :: l'))
   | _ -> l
 
-(* Apply reductions until no more are possible (fixed point) *)
+(* Appliquer les reductions jusqu'a ce qu'il n'y en ait plus (point fixe) *)
 let rec reussite l =
   let l' = reduc l in
   if l = l' then l else reussite l'
 ```
 
-**utop test:**
+**Test utop :**
 ```
 # let p1 = [carte 14 "Trefle";  carte 10 "Coeur"];;
 # let p2 = [carte 7 "Pique";    carte 11 "Carreau"];;
@@ -204,15 +204,15 @@ let rec reussite l =
 
 ---
 
-## Exercise 5 (Optional)
+## Exercice 5 (Optionnel)
 
-### Display cards using the Graphics module
+### Afficher les cartes avec le module Graphics
 
-Requires the Graphics library:
+Necessite la bibliotheque Graphics :
 ```ocaml noexec
 #load "graphics.cma";;
 open Graphics;;
 open_graph "";;
 ```
 
-This exercise involves drawing card sprites and implementing an interactive game display. See the original TP source for complete graphics code.
+Cet exercice consiste a dessiner des sprites de cartes et a implementer un affichage interactif du jeu. Voir le source du TP original pour le code graphique complet.

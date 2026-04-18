@@ -13,7 +13,7 @@ sidebar_position: 0
 
 | Fichier | Sujet | Exercices |
 |---------|-------|-----------|
-| [tp1_shell_security.md](/S6/Vulnerabilites/exercises/tp1-shell-security) | TP1 : Shell for Security -- Analyse de fichiers | Commandes shell, extraction de balises, recherche de credentials, Base64, CVSS |
+| [tp1_shell_security.md](/S6/Vulnerabilites/exercises/tp1-shell-security) | TP1 : Shell for Security -- Analyse de fichiers | Commandes shell, extraction de balises, recherche d'identifiants, Base64, CVSS |
 | [exercices_injection_sql.md](/S6/Vulnerabilites/exercises/exercices-injection-sql) | Injection SQL | Identification de champs, contournement de login, UNION SELECT, second ordre, CVSS |
 | [exercices_xss_csrf.md](/S6/Vulnerabilites/exercises/exercices-xss-csrf) | XSS et CSRF | XSS reflete/stocke/DOM-based, CSRF GET/POST, CSP, comparaison XSS vs CSRF, CVSS |
 | [exercices_protocoles.md](/S6/Vulnerabilites/exercises/exercices-protocoles) | Protocoles de securite | Inference de messages, secret, attaque de Lowe, challenge-response, Scyther, NSPKL |

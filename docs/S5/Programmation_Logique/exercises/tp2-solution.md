@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # TP2 - Manipulation de termes construits (Poker)
 
-> Following teacher instructions from: `S5/Programmation_Logique/data/moodle/tp/tp2/README.md`
+> D'apres les consignes de l'enseignant : `S5/Programmation_Logique/data/moodle/tp/tp2/README.md`
 
 ---
 
@@ -37,11 +37,11 @@ succ_couleur(coeur, pique).
 
 ---
 
-## Exercise 1
+## Exercice 1
 
 ### est_carte/1 : verifie qu'un terme est une carte valide (52 cartes au total)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 est_carte(carte(Hauteur, Couleur)) :-
@@ -51,7 +51,7 @@ est_carte(carte(Hauteur, Couleur)) :-
 
 L'unification decompose le terme `carte(H, C)` pour extraire H et C. On verifie ensuite que H est une hauteur valide et C une couleur valide. 13 x 4 = 52 cartes.
 
-**Query test:**
+**Test :**
 
 ```
 ?- est_carte(carte(sept, trefle)).
@@ -69,11 +69,11 @@ false.    % sept n'est pas un terme carte/2
 
 ---
 
-## Exercise 2
+## Exercice 2
 
 ### est_main/1 : verifie qu'un terme est une main de 5 cartes toutes differentes
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 est_main(main(C1, C2, C3, C4, C5)) :-
@@ -87,7 +87,7 @@ est_main(main(C1, C2, C3, C4, C5)) :-
 
 L'unification avec `main(C1, C2, C3, C4, C5)` verifie la structure (exactement 5 arguments). On valide chaque carte puis on verifie C(5,2) = 10 paires de non-egalite. On utilise `\==` (non-identite structurelle) plutot que `\=` qui tente l'unification.
 
-**Query test:**
+**Test :**
 
 ```
 ?- est_main(main(carte(sept,trefle), carte(valet,coeur), carte(dame,carreau),
@@ -101,13 +101,13 @@ false.    % seulement 4 cartes (arite 4 vs 5)
 
 ---
 
-## Exercise 3
+## Exercice 3
 
 ### inf_carte/2 : ordre total sur les cartes (d'abord par hauteur, puis par couleur)
 
 Utilise `inf_hauteur/2` et `inf_couleur/2` definis recursivement via `succ_hauteur` et `succ_couleur`.
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 % inf_hauteur(H1, H2) : H1 est strictement inferieure a H2
@@ -138,7 +138,7 @@ inf_carte(carte(H, C1), carte(H, C2)) :-
 
 L'ordre est defini par les faits `succ_hauteur` et `succ_couleur`, pas par l'arithmetique. La transitivite est obtenue par recursion : on descend vers le predecesseur de H2 jusqu'a atteindre H1.
 
-**Query test:**
+**Test :**
 
 ```
 ?- inf_carte(carte(quatre, pique), carte(cinq, coeur)).
@@ -153,11 +153,11 @@ false.   % as est la plus haute hauteur
 
 ---
 
-## Exercise 4
+## Exercice 4
 
 ### est_main_triee/1 : la main est une main valide dont les cartes sont en ordre croissant
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 est_main_triee(main(C1, C2, C3, C4, C5)) :-
@@ -170,7 +170,7 @@ est_main_triee(main(C1, C2, C3, C4, C5)) :-
 
 On verifie que la main est valide puis que chaque paire de cartes consecutives respecte l'ordre strict.
 
-**Query test:**
+**Test :**
 
 ```
 ?- est_main_triee(main(carte(sept,trefle), carte(valet,coeur),
@@ -186,11 +186,11 @@ false.    % ordre decroissant
 
 ---
 
-## Exercise 5
+## Exercice 5
 
 ### une_paire/1 : la main contient au moins 2 cartes de meme hauteur (consecutives en main triee)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 une_paire(main(carte(H,_), carte(H,_), carte(_,_), carte(_,_), carte(_,_))).
@@ -201,7 +201,7 @@ une_paire(main(carte(_,_), carte(_,_), carte(_,_), carte(H,_), carte(H,_))).
 
 Dans une main triee, deux cartes de meme hauteur sont forcement adjacentes. On enumere les 4 positions possibles. La variable `H` partagee entre deux positions force l'egalite des hauteurs par unification. Chaque `_` est une variable independante.
 
-**Query test:**
+**Test :**
 
 ```
 ?- une_paire(main(carte(sept,trefle), carte(valet,coeur),
@@ -217,11 +217,11 @@ false.   % aucune paire (c'est une suite)
 
 ---
 
-## Exercise 6
+## Exercice 6
 
 ### deux_paires/1 : la main contient au moins 2 paires distinctes
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 deux_paires(main(carte(H,_), carte(H,_), carte(K,_), carte(K,_), carte(_,_))).
@@ -234,7 +234,7 @@ Trois dispositions possibles dans une main triee de 5 cartes :
 - Positions 1-2 et 4-5 : `PPXQQ`
 - Positions 2-3 et 4-5 : `XPPQQ`
 
-**Query test:**
+**Test :**
 
 ```
 ?- deux_paires(main(carte(valet,trefle), carte(valet,coeur),
@@ -245,11 +245,11 @@ true.    % paire de valets + paire de rois
 
 ---
 
-## Exercise 7
+## Exercice 7
 
 ### brelan/1 : 3 cartes consecutives de meme hauteur
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 brelan(main(carte(H,_), carte(H,_), carte(H,_), carte(_,_), carte(_,_))).
@@ -259,7 +259,7 @@ brelan(main(carte(_,_), carte(_,_), carte(H,_), carte(H,_), carte(H,_))).
 
 3 positions possibles dans une main triee : `BBBXX`, `XBBBX`, `XXBBB`.
 
-**Query test:**
+**Test :**
 
 ```
 ?- brelan(main(carte(sept,trefle), carte(dame,carreau),
@@ -270,11 +270,11 @@ true.    % brelan de dames en positions 2-3-4
 
 ---
 
-## Exercise 8
+## Exercice 8
 
 ### suite/1 : 5 hauteurs consecutives (utilise `succ_hauteur`)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 suite(main(carte(H1,_), carte(H2,_), carte(H3,_), carte(H4,_), carte(H5,_))) :-
@@ -286,7 +286,7 @@ suite(main(carte(H1,_), carte(H2,_), carte(H3,_), carte(H4,_), carte(H5,_))) :-
 
 On verifie que chaque paire de hauteurs consecutives dans la main est liee par `succ_hauteur`. Pas de recursion necessaire : on teste directement les 4 paires adjacentes.
 
-**Query test:**
+**Test :**
 
 ```
 ?- suite(main(carte(sept,trefle), carte(huit,pique),
@@ -302,11 +302,11 @@ false.    % huit -> dix n'est pas un successeur direct
 
 ---
 
-## Exercise 9
+## Exercice 9
 
 ### full/1 : une paire + un brelan (hauteurs differentes)
 
-**Answer:**
+**Reponse :**
 
 ```prolog
 full(main(carte(H,_), carte(H,_), carte(P,_), carte(P,_), carte(P,_))) :-
@@ -317,7 +317,7 @@ full(main(carte(P,_), carte(P,_), carte(P,_), carte(H,_), carte(H,_))) :-
 
 Dans une main triee, un full a deux dispositions : `PPBBB` ou `BBBPP`. La condition `P \== H` garantit que la paire et le brelan sont de hauteurs differentes.
 
-**Query test:**
+**Test :**
 
 ```
 ?- full(main(carte(deux,coeur), carte(deux,pique), carte(quatre,trefle),

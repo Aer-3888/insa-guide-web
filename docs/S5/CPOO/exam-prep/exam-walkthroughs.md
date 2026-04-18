@@ -1,15 +1,15 @@
 ---
-title: "Exam Walkthroughs"
+title: "Corriges d'examens"
 sidebar_position: 2
 ---
 
-# Exam Walkthroughs
+# Corriges d'examens
 
-## Exam 2024-2025 (cpoo1-2024-2025.pdf)
+## Examen 2024-2025 (cpoo1-2024-2025.pdf)
 
-### Exercise 1 (~5 points) -- Testing Traitement
+### Exercice 1 (~5 points) -- Tester Traitement
 
-**Given code**:
+**Code donne** :
 ```java
 public class Traitement {
     private final Observateur obs;
@@ -33,11 +33,11 @@ public interface Observateur {
 }
 ```
 
-**Task**: Write `TestTraitement`. A defect is present in the code, and you must write a test that exposes it.
+**Consigne** : Ecrire `TestTraitement`. Un defaut est present dans le code, et vous devez ecrire un test qui le met en evidence.
 
-**The defect**: the constructor does not validate `obs`. If `obs` is `null`, calling `analyser()` will throw a `NullPointerException` instead of a proper error at construction time.
+**Le defaut** : le constructeur ne valide pas `obs`. Si `obs` est `null`, appeler `analyser()` lancera un `NullPointerException` au lieu d'une erreur appropriee a la construction.
 
-**Solution**:
+**Solution** :
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -51,57 +51,57 @@ public class TestTraitement {
         traitement = new Traitement(obs);
     }
 
-    // Test case "a" -> calls obs.a()
+    // Test cas "a" -> appelle obs.a()
     @Test
     void testAnalyserA() {
         traitement.analyser("a");
         Mockito.verify(obs).a();
     }
 
-    // Test case "b" -> calls obs.b(str)
+    // Test cas "b" -> appelle obs.b(str)
     @Test
     void testAnalyserB() {
         traitement.analyser("b");
         Mockito.verify(obs).b("b");
     }
 
-    // Test default -> throws IllegalArgumentException
+    // Test default -> lance IllegalArgumentException
     @Test
     void testAnalyserDefault() {
         assertThrows(IllegalArgumentException.class,
             () -> traitement.analyser("xyz"));
     }
 
-    // Test the DEFECT: constructor accepts null
+    // Test du DEFAUT : le constructeur accepte null
     @Test
     void testConstructorWithNull() {
         Traitement t = new Traitement(null);
-        // This should throw or be prevented, but the constructor allows it
-        // Calling analyser will cause NullPointerException
+        // Cela devrait etre empeche, mais le constructeur l'autorise
+        // Appeler analyser provoquera NullPointerException
         assertThrows(NullPointerException.class, () -> t.analyser("a"));
     }
 }
 ```
 
-### Exercise 2 (~5 points) -- QCM and Questions
+### Exercice 2 (~5 points) -- QCM et questions
 
-**Q.2**: Testing code is: **"apporter de la confiance vis-a-vis du code developpe"** (bring confidence about the developed code). Testing does NOT prove absence of bugs; it increases confidence.
+**Q.2** : Tester du code c'est : **"apporter de la confiance vis-a-vis du code developpe"**. Tester ne prouve PAS l'absence de bugs ; cela augmente la confiance.
 
-**Q.3**: Executing tests to measure code coverage is a technique of: **"analyse dynamique"** (dynamic analysis). The code must actually run to measure coverage.
+**Q.3** : Executer des tests pour mesurer la couverture de code est une technique d' : **"analyse dynamique"**. Le code doit reellement s'executer pour mesurer la couverture.
 
-**Q.4**: A "mock" allows... the FALSE statement is: **"tester le fonctionnement de l'objet mocke"** (test the functioning of the mocked object). Mocks simulate dependencies; they test the code that USES the mock, not the mock itself.
+**Q.4** : Un "mock" permet... La proposition FAUSSE est : **"tester le fonctionnement de l'objet mocke"**. Les mocks simulent les dependances ; ils testent le code qui UTILISE le mock, pas le mock lui-meme.
 
-**Q.5**: User stories and class diagrams are useful because: user stories capture requirements from the user's perspective and define acceptance criteria; class diagrams model the system's structure, relationships, and responsibilities. Together, they bridge the gap between what the system should do (stories) and how it is designed (diagrams).
+**Q.5** : Les user stories et les diagrammes de classes sont utiles car : les user stories capturent les besoins du point de vue de l'utilisateur et definissent les criteres d'acceptation ; les diagrammes de classes modelisent la structure du systeme, les relations et les responsabilites. Ensemble, ils font le lien entre ce que le systeme doit faire (stories) et comment il est concu (diagrammes).
 
-**Q.6**: Acceptance tests in Agile and software testing: in Agile, a user story includes acceptance criteria that define "done." These criteria translate directly into acceptance tests. The term "test" has the same meaning in both contexts: a verifiable condition that, when met, confirms the feature works as specified.
+**Q.6** : Les tests d'acceptation en Agile et dans le test logiciel : en Agile, une user story inclut des criteres d'acceptation qui definissent le "termine". Ces criteres se traduisent directement en tests d'acceptation. Le terme "test" a la meme signification dans les deux contextes : une condition verifiable qui, une fois satisfaite, confirme que la fonctionnalite fonctionne comme specifie.
 
-**Q.7**: "A class abstract... possede que des methodes abstraites" is FALSE. An abstract class can have both abstract and concrete methods. (Interfaces in Java also had only abstract methods before Java 8, but abstract classes have always allowed concrete methods.)
+**Q.7** : "Une classe abstraite... ne possede que des methodes abstraites" est FAUX. Une classe abstraite peut avoir a la fois des methodes abstraites et concretes. (Les interfaces en Java n'avaient que des methodes abstraites avant Java 8, mais les classes abstraites ont toujours autorise les methodes concretes.)
 
-### Exercise 3 (~5 points) -- UML Class Diagram (Devis)
+### Exercice 3 (~5 points) -- Diagramme de classes UML (Devis)
 
-**Text summary**: A devis (quote) concerns a client and has a date. A client has a name and address. A client can be an enterprise (with a number). A task has a designation, quantity, unit price, and unit of measure (ML, M2, U). A task references materials (at least one). A material has a designation and is supplied by one or more suppliers. A supplier has a name.
+**Resume du texte** : Un devis concerne un client et possede une date. Un client a un nom et une adresse. Un client peut etre une entreprise (avec un numero). Une tache a une designation, quantite, prix unitaire, et unite de mesure (ML, M2, U). Une tache fait reference a du materiel (au moins un). Un materiel a une designation et est fourni par un ou plusieurs fournisseurs. Un fournisseur a un nom.
 
-**Solution diagram**:
+**Diagramme solution** :
 
 ```
   +-------------------+     1    +-------------------+
@@ -139,15 +139,15 @@ public class TestTraitement {
   +-------------------+
 ```
 
-Key decisions:
-- `UniteDeMesure` is an enumeration (three fixed values)
-- `Entreprise extends Client` (inheritance: "un client peut etre une entreprise")
-- `Materiel <-> Fournisseur` is many-to-many (1..* on both sides)
-- `Devis -> Tache` is 1..* (at least one task)
+Decisions cles :
+- `UniteDeMesure` est une enumeration (trois valeurs fixes)
+- `Entreprise extends Client` (heritage : "un client peut etre une entreprise")
+- `Materiel <-> Fournisseur` est plusieurs-a-plusieurs (1..* des deux cotes)
+- `Devis -> Tache` est 1..* (au moins une tache)
 
-### Exercise 4 (~5 points) -- Polygone Control Flow
+### Exercice 4 (~5 points) -- Flot de controle de Polygone
 
-**Given code**:
+**Code donne** :
 ```java
 public void deplacerPoints(List<Integer> positions, double vecteurTranslation) {
     for(int position : positions) {                    // A
@@ -162,87 +162,87 @@ public void deplacerPoints(List<Integer> positions, double vecteurTranslation) {
 }
 ```
 
-**Q.9 -- Truth table for line B**:
+**Q.9 -- Table de verite pour la ligne B** :
 
-| a: `position < 0` | b: `position >= points.size()` | Evaluated? | Result |
+| a : `position < 0` | b : `position >= points.size()` | Evalue ? | Resultat |
 |---|---|---|---|
-| true | not evaluated (short-circuit) | Only a | true (return) |
-| false | true | Both | true (return) |
-| false | false | Both | false (continue) |
+| true | non evalue (court-circuit) | Seulement a | true (return) |
+| false | true | Les deux | true (return) |
+| false | false | Les deux | false (continue) |
 
-**Q.10 -- Control flow graph**:
+**Q.10 -- Graphe de flot de controle** :
 
 ```
-  A (for loop: has next position?) ---no---> D
+  A (boucle for : a-t-on un prochain position ?) ---non---> D
   |
-  yes
+  oui
   v
-  a (position < 0?) ---true---> C (return)
+  a (position < 0 ?) ---vrai---> C (return)
   |
-  false
+  faux
   v
-  b (position >= points.size()?) ---true---> C (return)
+  b (position >= points.size() ?) ---vrai---> C (return)
   |
-  false
+  faux
   v
-  A (loop back)
+  A (retour boucle)
 
-  D (for loop: has next position?) ---no---> F (println)
+  D (boucle for : a-t-on un prochain position ?) ---non---> F (println)
   |
-  yes
+  oui
   v
   E (translation)
   |
   v
-  D (loop back)
+  D (retour boucle)
 
-  F -> [end]
+  F -> [fin]
 ```
 
-**Q.11 -- Equivalence classes for `position`**:
+**Q.11 -- Classes d'equivalence pour `position`** :
 
-Given a polygon with 3 points (indices 0, 1, 2):
-- Class 1: `position < 0` (e.g., -1) -- invalid, causes return
-- Class 2: `0 <= position < 3` (e.g., 0, 1, 2) -- valid
-- Class 3: `position >= 3` (e.g., 3, 4) -- invalid, causes return
+Etant donne un polygone a 3 points (indices 0, 1, 2) :
+- Classe 1 : `position < 0` (par ex., -1) -- invalide, provoque return
+- Classe 2 : `0 <= position < 3` (par ex., 0, 1, 2) -- valide
+- Classe 3 : `position >= 3` (par ex., 3, 4) -- invalide, provoque return
 
-Boundary values: -1, 0, 2, 3
+Valeurs limites : -1, 0, 2, 3
 
-**Q.12 -- Values for 100% line coverage** (polygon with 3 points):
+**Q.12 -- Valeurs pour 100% de couverture de lignes** (polygone a 3 points) :
 
-Test 1: `positions = [-1]` -- covers A, B (a=true), C (return)
-Test 2: `positions = [0, 1, 2]` -- covers A, B (a=false, b=false), D, E, F
+Test 1 : `positions = [-1]` -- couvre A, B (a=true), C (return)
+Test 2 : `positions = [0, 1, 2]` -- couvre A, B (a=false, b=false), D, E, F
 
-**Q.13 -- Values for 100% condition coverage**:
+**Q.13 -- Valeurs pour 100% de couverture de conditions** :
 
-Need each sub-condition true and false:
-- `a` true: position = -1
-- `a` false, `b` true: position = 3
-- `a` false, `b` false: position = 0
+Besoin que chaque sous-condition soit vraie et fausse :
+- `a` vrai : position = -1
+- `a` faux, `b` vrai : position = 3
+- `a` faux, `b` faux : position = 0
 
-Tests: `[-1]`, `[3]`, `[0, 1, 2]`
+Tests : `[-1]`, `[3]`, `[0, 1, 2]`
 
-### Exercise 5 (Bonus ~1 point) -- Mutation Testing
+### Exercice 5 (Bonus ~1 point) -- Tests de mutation
 
-Mutation testing modifies the source code (creates "mutants") and reruns the test suite. If tests still pass after a mutation, the tests are too weak to detect that change. A good test suite should "kill" all mutants (every mutation causes at least one test to fail). The mutation score = (killed mutants / total mutants) * 100%. A high score indicates robust tests.
+Les tests de mutation modifient automatiquement le code source pour creer des "mutants" (par ex., changer `>` en `>=`, supprimer un appel de methode, inverser une condition). La suite de tests est ensuite executee contre chaque mutant. Si un test echoue, le mutant est "tue" (detecte). Si tous les tests passent, le mutant "survit", indiquant une lacune dans la suite de tests. Le score de mutation = (mutants tues / total) * 100%. Un score eleve indique des tests robustes.
 
 ---
 
-## Exam 2021-2022 (DS-CPOO1-2021-2022.pdf)
+## Examen 2021-2022 (DS-CPOO1-2021-2022.pdf)
 
-### Exercise 1 -- Testing Class A
+### Exercice 1 -- Tester la classe A
 
-**Given code**: Class `A` with constructor validation, `getB()`, `getStr()`, `al(boolean value)`, `doSomething()` (private), and `create(B b)` (static factory).
+**Code donne** : La classe `A` avec validation du constructeur, `getB()`, `getStr()`, `al(boolean value)`, `doSomething()` (privee), et `create(B b)` (fabrique statique).
 
-**Q.1 -- Maximum coverage analysis**:
+**Q.1 -- Analyse de couverture maximale** :
 
-1. **Line coverage 100%?** Analyze: `doSomething()` sets `str = "yolo"`. After calling `al()`, `str` is always `"yolo"` (never null). All lines of `al()` are still reachable: `return 0` is triggered when `!value` is true; `return str.length() * b.getB1()` is triggered when `value` is true. The `throws SecurityException, NumberFormatException` are only declared in the signature -- they add no coverable lines. **100% line coverage IS achievable**.
+1. **Couverture de lignes 100% ?** Analyse : `doSomething()` definit `str = "yolo"`. Apres avoir appele `al()`, `str` est toujours `"yolo"` (jamais null). Toutes les lignes de `al()` restent atteignables : `return 0` est declenche quand `!value` est vrai ; `return str.length() * b.getB1()` est declenche quand `value` est vrai. Les `throws SecurityException, NumberFormatException` ne sont que declares dans la signature -- ils n'ajoutent pas de lignes couvrables. **100% de couverture de lignes EST atteignable**.
 
-2. **Branch coverage 100%?** The condition `str == null || !value` after `doSomething()` runs: `str` is always `"yolo"`, so `str == null` is always `false`. The short-circuit means we enter the branch only when `!value` is true. We can never cover the branch where `str == null` is true (since `doSomething()` always runs first).
+2. **Couverture de branches 100% ?** La condition `str == null || !value` apres l'execution de `doSomething()` : `str` est toujours `"yolo"`, donc `str == null` est toujours `false`. Le court-circuit fait que l'on entre dans la branche uniquement quand `!value` est vrai. On ne peut jamais couvrir la branche ou `str == null` est vrai (puisque `doSomething()` s'execute toujours avant).
 
-3. **Condition coverage 100%?** `str == null` is always `false` after `doSomething()`, so we cannot make it `true`.
+3. **Couverture de conditions 100% ?** `str == null` est toujours `false` apres `doSomething()`, donc on ne peut pas le rendre `true`.
 
-**Solution test class**:
+**Classe de test solution** :
 
 ```java
 public class TestA {
@@ -270,7 +270,7 @@ public class TestA {
 
     @Test void testAlFalse() throws Exception {
         assertEquals(0, a.al(false));
-        // After al(), str is "yolo" (doSomething was called)
+        // Apres al(), str vaut "yolo" (doSomething a ete appele)
     }
 
     @Test void testAlTrue() throws Exception {
@@ -297,7 +297,7 @@ public class TestA {
 }
 ```
 
-**Q.2 -- Additional test for create**: verify that `create` returns a NEW instance each time (not a singleton):
+**Q.2 -- Test supplementaire pour create** : verifier que `create` retourne une NOUVELLE instance a chaque appel (pas un singleton) :
 
 ```java
 @Test void testCreateReturnsNewInstance() {
@@ -307,7 +307,7 @@ public class TestA {
 }
 ```
 
-**Q.3 -- Tests that do not increase coverage but are necessary**: testing that `getStr()` returns `"yolo"` after `al()` is called (verifying the side effect of `doSomething()`):
+**Q.3 -- Tests qui n'augmentent pas la couverture mais sont necessaires** : tester que `getStr()` retourne `"yolo"` apres l'appel de `al()` (verifier l'effet de bord de `doSomething()`) :
 
 ```java
 @Test void testStrAfterAl() throws Exception {
@@ -316,25 +316,25 @@ public class TestA {
 }
 ```
 
-### Exercise 2 -- UML Football Championship
+### Exercice 2 -- UML Championnat de football
 
-This is a complex class diagram exercise. Key classes:
+C'est un exercice complexe de diagramme de classes. Classes cles :
 - `Championnat`, `Equipe`, `Joueur`, `Entraineur`, `Arbitre`, `Rencontre`
-- Event types: `Penalty`, `Carton`, `But`, `Remplacement`, `Expulsion`
-- Arbitre specializations: `ArbitreCentral`, `ArbitreTouche`, `ArbitreVideo`
+- Types d'evenements : `Penalty`, `Carton`, `But`, `Remplacement`, `Expulsion`
+- Specialisations d'arbitres : `ArbitreCentral`, `ArbitreTouche`, `ArbitreVideo`
 
-Key relationships:
-- `Rencontre` belongs to exactly 1 `Championnat`
-- `Equipe` can be in multiple `Championnat`s
-- `Rencontre` involves 2 `Equipe` (local + visiteur)
-- `Carton` has a color (enum: JAUNE, ROUGE) and targets a `Joueur` or `Entraineur`
-- `ArbitreCentral` can do everything `ArbitreTouche` and `ArbitreVideo` can, plus more
+Relations cles :
+- `Rencontre` appartient a exactement 1 `Championnat`
+- `Equipe` peut participer a plusieurs `Championnat`s
+- `Rencontre` implique 2 `Equipe` (local + visiteur)
+- `Carton` a une couleur (enum : JAUNE, ROUGE) et cible un `Joueur` ou `Entraineur`
+- `ArbitreCentral` peut faire tout ce que `ArbitreTouche` et `ArbitreVideo` peuvent faire, et plus encore
 
 ---
 
-## Exam 2020-2021 (DS-CPOO1-2020-2021.pdf)
+## Examen 2020-2021 (DS-CPOO1-2020-2021.pdf)
 
-### Exercise 1 -- Control Flow of Foo
+### Exercice 1 -- Flot de controle de Foo
 
 ```java
 public int foo(int i, int j) {
@@ -345,38 +345,38 @@ public int foo(int i, int j) {
 }
 ```
 
-**Q.1**: Minimum tests for 100% control flow coverage: **2 tests** (one for the `true` branch, one for the `false` branch).
+**Q.1** : Nombre minimum de tests pour 100% de couverture de flot de controle : **2 tests** (un pour la branche `true`, un pour la branche `false`).
 
-**Q.2**: Test values:
-- Test 1 (true branch): `i < 0` (e.g., i=-1, j=0) OR `j > 0` (e.g., i=0, j=1)
-- Test 2 (false branch): `i >= 0 AND j <= 0` (e.g., i=1, j=0 or i=0, j=-1)
+**Q.2** : Valeurs de test :
+- Test 1 (branche true) : `i < 0` (par ex., i=-1, j=0) OU `j > 0` (par ex., i=0, j=1)
+- Test 2 (branche false) : `i >= 0 ET j <= 0` (par ex., i=1, j=0 ou i=0, j=-1)
 
-For condition coverage (each sub-condition true and false): need 3 tests.
+Pour la couverture de conditions (chaque sous-condition vraie et fausse) : 3 tests necessaires.
 
-**Q.3**: Control flow graph:
+**Q.3** : Graphe de flot de controle :
 ```
-  [entry: line 2]
+  [entree : ligne 2]
   |
   v
-  [i<0?] --true--> [return i+j: line 4]
+  [i<0?] --vrai--> [return i+j : ligne 4]
   |
-  false
+  faux
   v
-  [j>0?] --true--> [return i+j: line 4]
+  [j>0?] --vrai--> [return i+j : ligne 4]
   |
-  false
+  faux
   v
-  [return i*j: line 6]
+  [return i*j : ligne 6]
 ```
 
-### Exercise 2 -- Assertion Fixes
+### Exercice 2 -- Corrections d'assertions
 
-| Wrong | Correct |
-|-------|---------|
+| Incorrect | Correct |
+|-----------|---------|
 | `assertTrue(a.equals(b))` | `assertEquals(a, b)` |
 | `assertFalse(!a.foo())` | `assertTrue(a.foo())` |
-| try/catch with `fail()` | `assertThrows(VeryBadException.class, () -> foobar.m())` followed by `assertEquals(1, foobar.m())` for the normal case |
+| try/catch avec `fail()` | `assertThrows(VeryBadException.class, () -> foobar.m())` suivi de `assertEquals(1, foobar.m())` pour le cas normal |
 
-### Exercise 3 -- UML Arithmetic Formula
+### Exercice 3 -- UML Formule arithmetique
 
-See the worked example in [04-uml-diagrams.md](/S5/CPOO/guide/04-uml-diagrams). Key: identify the Composite pattern where `Noeud` (node) is either a `Valeur`, `RefConstante`, or `Operateur` (with `Addition` and `Soustraction` as subtypes).
+Voir l'exemple detaille dans [04-uml-diagrams.md](/S5/CPOO/guide/04-uml-diagrams). Point cle : identifier le patron Composite ou `Noeud` est soit une `Valeur`, une `RefConstante`, ou un `Operateur` (avec `Addition` et `Soustraction` comme sous-types).

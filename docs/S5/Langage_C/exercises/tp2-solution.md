@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # TP2 - Structures de Controle et Calculs Numeriques
 
-> Following teacher instructions from: `S5/Langage_C/data/moodle/tp/tp2/README.md`
+> D'apres les instructions du TP : `S5/Langage_C/data/moodle/tp/tp2/README.md`
 
 ## Exercice 1
 
@@ -19,7 +19,7 @@ n! = 1 x 2 x 3 x ... x n
 
 **Probleme :** La factorielle croit tres rapidement. A partir de n=13, le resultat depasse `INT_MAX` (2147483647).
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 /*!
@@ -104,7 +104,7 @@ int main() {
 }
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 cd tp2/src
@@ -112,7 +112,7 @@ make factorial
 ./factorial
 ```
 
-**Expected output:**
+**Sortie attendue :**
 
 ```
 Rentrez n 
@@ -172,7 +172,7 @@ sin(x) = x - x^3/3! + x^5/5! - x^7/7! + ...
 terme_suivant = terme_precedent * x^2 / (n * (n-1))
 ```
 
-**Answer:**
+**Reponse :**
 
 ```c
 /*!
@@ -320,14 +320,14 @@ int main() {
 }
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 make sinus
 ./sinus
 ```
 
-**Expected output:**
+**Sortie attendue :**
 
 ```
 Rentrez x puis n : 
@@ -359,7 +359,7 @@ u_n = e - n x u_{n-1}
 
 **Probleme de stabilite :** La version recursive amplifie les erreurs d'arrondi a chaque iteration (erreur multipliee par n). La version descendante les reduit (erreur divisee par n).
 
-**Answer:**
+**Reponse :**
 
 ```c
 /*!
@@ -452,14 +452,14 @@ int main() {
 }
 ```
 
-**Compilation:**
+**Compilation :**
 
 ```bash
 make suite
 ./suite
 ```
 
-**Expected output:**
+**Sortie attendue :**
 
 ```
 === Methode Recursive Ascendante (INSTABLE) ===

@@ -1,51 +1,51 @@
 ---
-title: "Chapter 1: Probability Foundations"
+title: "Chapitre 1 : Fondements des probabilites"
 sidebar_position: 1
 ---
 
-# Chapter 1: Probability Foundations
+# Chapitre 1 : Fondements des probabilites
 
-## 1.1 Random Experiments and Sample Spaces
+## 1.1 Experiences aleatoires et espaces probabilises
 
 ### Definitions
 
-A **random experiment** is an experiment whose outcome cannot be predicted with certainty due to randomness.
+Une **experience aleatoire** est une experience dont le resultat ne peut pas etre predit avec certitude en raison du hasard.
 
-- **Sample space** $\Omega$: The set of all possible outcomes (also called the universal set or fundamental set).
-- **Event** $A$: A subset of $\Omega$. An event "occurs" when the outcome $\omega \in A$.
-- **Elementary event**: A singleton $\{\omega\}$ containing a single outcome.
+- **Espace fondamental** $\Omega$ : L'ensemble de tous les resultats possibles (aussi appele ensemble universel).
+- **Evenement** $A$ : Un sous-ensemble de $\Omega$. Un evenement est « realise » lorsque le resultat $\omega \in A$.
+- **Evenement elementaire** : Un singleton $\{\omega\}$ contenant un seul resultat.
 
-**Discrete** sample spaces are at most countable ($\subseteq \mathbb{N}$). **Continuous** sample spaces are uncountable ($\subseteq \mathbb{R}$).
+Les espaces fondamentaux **discrets** sont au plus denombrables ($\subseteq \mathbb{N}$). Les espaces fondamentaux **continus** sont non denombrables ($\subseteq \mathbb{R}$).
 
-### Sigma-Algebra (Tribe)
+### Tribu (sigma-algebre)
 
-A **sigma-algebra** $\mathcal{F}$ on $\Omega$ is a collection of events satisfying:
+Une **tribu** $\mathcal{F}$ sur $\Omega$ est une collection d'evenements satisfaisant :
 
-1. $\Omega \in \mathcal{F}$ and $\emptyset \in \mathcal{F}$
-2. If $A \in \mathcal{F}$, then $\bar{A} = \Omega \setminus A \in \mathcal{F}$ (closure under complement)
-3. If $A_i \in \mathcal{F}$ for all $i$, then $\bigcup_i A_i \in \mathcal{F}$ (closure under countable union)
+1. $\Omega \in \mathcal{F}$ et $\emptyset \in \mathcal{F}$
+2. Si $A \in \mathcal{F}$, alors $\bar{A} = \Omega \setminus A \in \mathcal{F}$ (stabilite par complementaire)
+3. Si $A_i \in \mathcal{F}$ pour tout $i$, alors $\bigcup_i A_i \in \mathcal{F}$ (stabilite par union denombrable)
 
-The **Borel sigma-algebra** on $\mathbb{R}$ is the smallest sigma-algebra containing all open intervals $]-\infty, a[$.
+La **tribu de Borel** sur $\mathbb{R}$ est la plus petite tribu contenant tous les intervalles ouverts $]-\infty, a[$.
 
-**Example**: For $\Omega = \{a, b, c\}$, the trivial tribe is $\{\emptyset, \Omega\}$. The power set $\{\emptyset, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \Omega\}$ is also a valid tribe.
+**Exemple** : Pour $\Omega = \{a, b, c\}$, la tribu triviale est $\{\emptyset, \Omega\}$. L'ensemble des parties $\{\emptyset, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \Omega\}$ est egalement une tribu valide.
 
 ---
 
-## 1.2 Axioms of Probability (Kolmogorov)
+## 1.2 Axiomes de probabilite (Kolmogorov)
 
-A **probability measure** $P: \mathcal{F} \to [0,1]$ assigns a real number to each event such that:
+Une **mesure de probabilite** $P: \mathcal{F} \to [0,1]$ attribue un nombre reel a chaque evenement tel que :
 
-| Axiom | Statement |
+| Axiome | Enonce |
 |-------|-----------|
-| Axiom 1 | $0 \leq P(A) \leq 1$ for all $A \in \mathcal{F}$ |
-| Axiom 2 | $P(\Omega) = 1$ (certain event) |
-| Axiom 3 | For disjoint events $A_i \cap A_j = \emptyset$: $P\left(\bigcup_i A_i\right) = \sum_i P(A_i)$ (sigma-additivity) |
+| Axiome 1 | $0 \leq P(A) \leq 1$ pour tout $A \in \mathcal{F}$ |
+| Axiome 2 | $P(\Omega) = 1$ (evenement certain) |
+| Axiome 3 | Pour des evenements disjoints $A_i \cap A_j = \emptyset$ : $P\left(\bigcup_i A_i\right) = \sum_i P(A_i)$ (sigma-additivite) |
 
-The triplet $(\Omega, \mathcal{F}, P)$ is called a **probability space**.
+Le triplet $(\Omega, \mathcal{F}, P)$ est appele un **espace probabilise**.
 
-### Fundamental Properties
+### Proprietes fondamentales
 
-From the axioms, the following hold:
+A partir des axiomes, les proprietes suivantes sont verifiees :
 
 $$P(\emptyset) = 0$$
 
@@ -55,71 +55,71 @@ $$A \subseteq B \implies P(A) \leq P(B)$$
 
 $$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
 
-$$P(A \cup B) \leq P(A) + P(B) \quad \text{(union bound / Boole's inequality)}$$
+$$P(A \cup B) \leq P(A) + P(B) \quad \text{(borne de l'union / inegalite de Boole)}$$
 
-### Classical (Uniform) Probability
+### Probabilite classique (uniforme)
 
-When all elementary events are equally likely:
+Lorsque tous les evenements elementaires sont equiprobables :
 
-$$P(A) = \frac{|A|}{|\Omega|} = \frac{\text{number of favorable outcomes}}{\text{total number of outcomes}}$$
+$$P(A) = \frac{|A|}{|\Omega|} = \frac{\text{nombre de cas favorables}}{\text{nombre total de cas}}$$
 
-### Frequentist (Statistical) Interpretation
+### Interpretation frequentiste (statistique)
 
-Repeat the experiment $N$ times and observe how often $A$ occurs:
+Repeter l'experience $N$ fois et observer combien de fois $A$ se realise :
 
-$$P(A) = \lim_{N \to \infty} \frac{\text{number of times } A \text{ occurred}}{N}$$
+$$P(A) = \lim_{N \to \infty} \frac{\text{nombre de fois ou } A \text{ s'est realise}}{N}$$
 
 ---
 
-## 1.3 Conditional Probability
+## 1.3 Probabilite conditionnelle
 
 ### Definition
 
-The **conditional probability** of $A$ given $B$ (with $P(B) > 0$) is:
+La **probabilite conditionnelle** de $A$ sachant $B$ (avec $P(B) > 0$) est :
 
 $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
 
-This represents the probability of $A$ occurring, knowing that $B$ has occurred.
+Cela represente la probabilite que $A$ se realise, sachant que $B$ s'est realise.
 
-**Note**: $B$ conditioning $A$ does not imply $B$ happened chronologically before $A$.
+**Remarque** : Le fait que $B$ conditionne $A$ n'implique pas que $B$ s'est produit chronologiquement avant $A$.
 
-### Worked Example
+### Exemple corrige
 
-> A fair die is rolled and the result is even (event $A$). What is $P(\text{result} \geq 4 \mid \text{result is even})$?
+> On lance un de equilibre et le resultat est pair (evenement $A$). Quelle est $P(\text{resultat} \geq 4 \mid \text{resultat pair})$ ?
 
-$A = \{2, 4, 6\}$ (even), $B = \{4, 5, 6\}$ (at least 4).
+$A = \{2, 4, 6\}$ (pair), $B = \{4, 5, 6\}$ (au moins 4).
 
 $$P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{P(\{4, 6\})}{P(\{2, 4, 6\})} = \frac{2/6}{3/6} = \frac{2}{3}$$
 
 ---
 
-## 1.4 Total Probability and Bayes' Theorem
+## 1.4 Probabilite totale et theoreme de Bayes
 
-### Law of Total Probability
+### Formule des probabilites totales
 
-If $A_1, \ldots, A_n$ is a **partition** of $\Omega$ (mutually exclusive, collectively exhaustive) with $P(A_i) > 0$:
+Si $A_1, \ldots, A_n$ est une **partition** de $\Omega$ (mutuellement exclusifs, collectivement exhaustifs) avec $P(A_i) > 0$ :
 
 $$P(B) = \sum_{i=1}^{n} P(A_i) \cdot P(B \mid A_i)$$
 
-### Bayes' Theorem
+### Theoreme de Bayes
 
 $$P(A \mid B) = \frac{P(B \mid A) \cdot P(A)}{P(B)}$$
 
-**Generalized form** (with partition $A_1, \ldots, A_n$):
+**Forme generalisee** (avec la partition $A_1, \ldots, A_n$) :
 
 $$P(A_i \mid B) = \frac{P(B \mid A_i) \cdot P(A_i)}{\sum_{j=1}^{n} P(A_j) \cdot P(B \mid A_j)}$$
 
-| Term | Name | Interpretation |
+| Terme | Nom | Interpretation |
 |------|------|----------------|
-| $P(A)$ | Prior (a priori) | Belief about $A$ before observing $B$ |
-| $P(A \mid B)$ | Posterior (a posteriori) | Updated belief after observing $B$ |
-| $P(B \mid A)$ | Likelihood | How likely $B$ is if $A$ holds |
+| $P(A)$ | A priori | Croyance sur $A$ avant d'observer $B$ |
+| $P(A \mid B)$ | A posteriori | Croyance mise a jour apres observation de $B$ |
+| $P(B \mid A)$ | Vraisemblance | Probabilite de $B$ si $A$ est vrai |
 
-### Worked Example
+### Exemple corrige
 
-> A factory has two machines: Machine 1 produces 60% of items, Machine 2 produces 40%. Defect rates are 3% for Machine 1 and 5% for Machine 2. Given a defective item, what is the probability it came from Machine 1?
+> Une usine possede deux machines : la Machine 1 produit 60% des articles, la Machine 2 en produit 40%. Les taux de defaut sont de 3% pour la Machine 1 et 5% pour la Machine 2. Sachant qu'un article est defectueux, quelle est la probabilite qu'il provienne de la Machine 1 ?
 
-Let $M_1$: from Machine 1, $D$: defective.
+Soit $M_1$ : provient de la Machine 1, $D$ : defectueux.
 
 $$P(M_1 \mid D) = \frac{P(D \mid M_1) P(M_1)}{P(D \mid M_1) P(M_1) + P(D \mid M_2) P(M_2)}$$
 
@@ -127,45 +127,45 @@ $$= \frac{0.03 \times 0.60}{0.03 \times 0.60 + 0.05 \times 0.40} = \frac{0.018}{
 
 ---
 
-## 1.5 Independence
+## 1.5 Independance
 
 ### Definition
 
-Two events $A$ and $B$ are **independent** if and only if:
+Deux evenements $A$ et $B$ sont **independants** si et seulement si :
 
 $$P(A \cap B) = P(A) \cdot P(B)$$
 
-Equivalently: $P(A \mid B) = P(A)$ (knowing $B$ does not change the probability of $A$).
+De maniere equivalente : $P(A \mid B) = P(A)$ (connaitre $B$ ne change pas la probabilite de $A$).
 
-### Mutual Independence
+### Independance mutuelle
 
-A family of events $A_1, \ldots, A_n$ is **mutually independent** if for every subset $J \subseteq \{1, \ldots, n\}$:
+Une famille d'evenements $A_1, \ldots, A_n$ est **mutuellement independante** si pour tout sous-ensemble $J \subseteq \{1, \ldots, n\}$ :
 
 $$P\left(\bigcap_{i \in J} A_i\right) = \prod_{i \in J} P(A_i)$$
 
-**Warning**: Pairwise independence does NOT imply mutual independence.
+**Attention** : L'independance deux a deux N'implique PAS l'independance mutuelle.
 
 ---
 
-## 1.6 Combinatorics Refresher
+## 1.6 Rappels de combinatoire
 
-| Concept | Formula | Order matters? | Repetition? |
+| Concept | Formule | Ordre important ? | Repetition ? |
 |---------|---------|:-:|:-:|
-| Permutation | $n!$ | Yes | No |
-| Arrangement ($k$ from $n$) | $\frac{n!}{(n-k)!}$ | Yes | No |
-| Combination | $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ | No | No |
-| With replacement | $n^k$ | Yes | Yes |
+| Permutation | $n!$ | Oui | Non |
+| Arrangement ($k$ parmi $n$) | $\frac{n!}{(n-k)!}$ | Oui | Non |
+| Combinaison | $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ | Non | Non |
+| Avec remise | $n^k$ | Oui | Oui |
 
 ---
 
-## CHEAT SHEET -- Probability Foundations
+## AIDE-MEMOIRE -- Fondements des probabilites
 
-| Concept | Formula |
+| Concept | Formule |
 |---------|---------|
-| Complement | $P(\bar{A}) = 1 - P(A)$ |
+| Complementaire | $P(\bar{A}) = 1 - P(A)$ |
 | Union | $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ |
-| Conditional | $P(A \mid B) = P(A \cap B) / P(B)$ |
-| Total probability | $P(B) = \sum_i P(A_i) P(B \mid A_i)$ |
+| Conditionnelle | $P(A \mid B) = P(A \cap B) / P(B)$ |
+| Probabilite totale | $P(B) = \sum_i P(A_i) P(B \mid A_i)$ |
 | Bayes | $P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}$ |
-| Independence | $P(A \cap B) = P(A) P(B)$ |
-| Uniform | $P(A) = |A| / |\Omega|$ |
+| Independance | $P(A \cap B) = P(A) P(B)$ |
+| Uniforme | $P(A) = |A| / |\Omega|$ |

@@ -1,83 +1,83 @@
 ---
-title: "TP5: Random Vectors and Multivariate Distributions"
+title: "TP5 : Vecteurs aleatoires et distributions multivariees"
 sidebar_position: 5
 ---
 
-# TP5: Random Vectors and Multivariate Distributions
+# TP5 : Vecteurs aleatoires et distributions multivariees
 
-## Overview
-Introduction to joint probability distributions, marginal and conditional distributions, and multivariate normal distributions.
+## Presentation
+Introduction aux distributions de probabilite jointes, distributions marginales et conditionnelles, et distributions normales multivariees.
 
-## Topics Covered
-1. **Joint distributions** (discrete and continuous)
-2. **Marginal distributions**
-3. **Conditional distributions**
-4. **Multinomial distribution**
-5. **Multivariate normal distribution**
+## Sujets abordes
+1. **Distributions jointes** (discretes et continues)
+2. **Distributions marginales**
+3. **Distributions conditionnelles**
+4. **Loi multinomiale**
+5. **Loi normale multivariee**
 
-## Key Concepts
+## Concepts cles
 
-### Joint Probability
-For discrete random variables X and Y:
-- P(X=x, Y=y) = joint probability
-- Sum over all (x,y) = 1
+### Probabilite jointe
+Pour des variables aleatoires discretes X et Y :
+- P(X=x, Y=y) = probabilite jointe
+- La somme sur tous les (x,y) = 1
 
-### Marginal Probability
-Probability of one variable ignoring the other:
-- P(X=x) = Σ_y P(X=x, Y=y)
-- In R: `apply(matrix, 1, sum)` (rows) or `apply(matrix, 2, sum)` (columns)
+### Probabilite marginale
+Probabilite d'une variable en ignorant l'autre :
+- P(X=x) = Somme_y P(X=x, Y=y)
+- En R : `apply(matrix, 1, sum)` (lignes) ou `apply(matrix, 2, sum)` (colonnes)
 
-### Conditional Probability
+### Probabilite conditionnelle
 P(X=x | Y=y) = P(X=x, Y=y) / P(Y=y)
 
-### Multinomial Distribution
-Extension of binomial to k > 2 categories:
-- n trials, k outcomes
-- Probabilities: (p₁, p₂, ..., p_k) where Σp_i = 1
-- R function: `dmultinom(x, prob)`
+### Loi multinomiale
+Extension de la binomiale a k > 2 categories :
+- n epreuves, k resultats
+- Probabilites : (p_1, p_2, ..., p_k) ou Somme p_i = 1
+- Fonction R : `dmultinom(x, prob)`
 
-### R Functions
+### Fonctions R
 
 ```r noexec
-# Matrix operations
-apply(matrix, 1, fun)         # Apply to rows
-apply(matrix, 2, fun)         # Apply to columns
-margin.table(table, margin)   # Marginal sums
+# Operations matricielles
+apply(matrix, 1, fun)         # Appliquer aux lignes
+apply(matrix, 2, fun)         # Appliquer aux colonnes
+margin.table(table, margin)   # Sommes marginales
 
-# Multivariate distributions
+# Distributions multivariees
 library(mvtnorm)
-dmvnorm(x, mean, sigma)       # Multivariate normal PDF
-rmvnorm(n, mean, sigma)       # Generate samples
+dmvnorm(x, mean, sigma)       # Densite normale multivariee
+rmvnorm(n, mean, sigma)       # Generer des echantillons
 
-# Multinomial
-dmultinom(x, prob=p)          # Probability
-rmultinom(n, size, prob)      # Generate samples
+# Multinomiale
+dmultinom(x, prob=p)          # Probabilite
+rmultinom(n, size, prob)      # Generer des echantillons
 
-# Visualization
-scatterplot3d(x, y, z)        # 3D scatter plot
+# Visualisation
+scatterplot3d(x, y, z)        # Nuage de points 3D
 ```
 
-## Exercises
+## Exercices
 
-### Ex 1: Discrete Joint Distribution
-Given joint probability table for (X, Y):
-- Calculate marginal P(X) and P(Y)
-- Calculate conditional P(X | Y=5)
-- Use `margin.table()` and `conditionTable()`
+### Ex 1 : Distribution jointe discrete
+Etant donne un tableau de probabilite jointe pour (X, Y) :
+- Calculer les marginales P(X) et P(Y)
+- Calculer la conditionnelle P(X | Y=5)
+- Utiliser `margin.table()` et `conditionTable()`
 
-### Ex 2: Roulette Multinomial Model
-12 spins, outcomes: red (18/38), black (18/38), green (2/38)
-- Model as Multinomial(12, p)
-- Generate all possible outcomes
-- Calculate probabilities
-- Visualize in 3D
+### Ex 2 : Modele multinomial de la roulette
+12 tours, resultats : rouge (18/38), noir (18/38), vert (2/38)
+- Modeliser par Multinomiale(12, p)
+- Generer tous les resultats possibles
+- Calculer les probabilites
+- Visualiser en 3D
 
-### Ex 3: Bivariate Normal
-Explore 2D normal distribution with correlation
+### Ex 3 : Loi normale bivariee
+Explorer la distribution normale 2D avec correlation
 
-## Key Insights
-1. Marginal probabilities ignore other variables
-2. Conditional probabilities restrict to subset
-3. Independence: P(X,Y) = P(X)P(Y)
-4. Multinomial generalizes binomial
-5. Correlation in multivariate normal
+## Points cles
+1. Les probabilites marginales ignorent les autres variables
+2. Les probabilites conditionnelles se restreignent a un sous-ensemble
+3. Independance : P(X,Y) = P(X)P(Y)
+4. La loi multinomiale generalise la binomiale
+5. Correlation dans la loi normale multivariee

@@ -156,8 +156,8 @@ fonction() OVER (
 | `LEAD(col, n)` | Valeur de n lignes **apres** | Comparaison avec la ligne suivante |
 | `FIRST_VALUE(col)` | Premiere valeur de la fenetre | -- |
 | `LAST_VALUE(col)` | Derniere valeur de la fenetre | -- |
-| `SUM(col)` | Somme cumulee | Running total |
-| `AVG(col)` | Moyenne mobile | Moving average |
+| `SUM(col)` | Somme cumulee | Total cumulatif |
+| `AVG(col)` | Moyenne mobile | Moyenne glissante |
 
 ### Exemples pratiques
 
@@ -297,7 +297,7 @@ JOIN facture f ON c.customerId = f.customerId;
 |-------|-------------|
 | Vue modifiable | Toutes les vues ne sont pas modifiables (INSERT/UPDATE). Les vues avec JOIN, GROUP BY, DISTINCT ne le sont generalement pas. |
 | CTE non materialise | Un CTE est recalcule a chaque reference dans certains SGBD. Preferer une table temporaire si le CTE est utilise plusieurs fois. |
-| Window function dans WHERE | Impossible directement. Emballer dans un CTE ou sous-requete. |
+| Fonction fenetre dans WHERE | Impossible directement. Emballer dans un CTE ou une sous-requete. |
 | LAST_VALUE sans frame | Par defaut, la fenetre va jusqu'a la ligne courante. Ajouter `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`. |
 | Trigger recursif | Un trigger qui modifie sa propre table peut boucler a l'infini. |
 

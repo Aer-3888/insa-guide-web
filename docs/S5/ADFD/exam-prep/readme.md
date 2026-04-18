@@ -1,218 +1,218 @@
 ---
-title: "ADFD Exam Preparation Guide"
+title: "Guide de preparation aux examens ADFD"
 sidebar_position: 0
 ---
 
-# ADFD Exam Preparation Guide
+# Guide de preparation aux examens ADFD
 
-## Exam Format
+## Format des examens
 
-The ADFD course typically has **two separate exams**:
+Le cours ADFD comporte generalement **deux examens distincts** :
 
-| Exam | Name | Duration | Weight | Key Topics |
-|------|------|----------|--------|------------|
-| **DS AD** | Analyse de Donnees | ~1.5-2h | ~50% | PCA, Correlation Circle, Preprocessing, Dimensionality Reduction |
-| **DS FD** | Fouille de Donnees | ~1.5-2h | ~50% | Clustering (DBSCAN, K-means, CAH), Apriori, Pattern Mining |
+| Examen | Nom | Duree | Poids | Sujets cles |
+|--------|-----|-------|-------|-------------|
+| **DS AD** | Analyse de Donnees | ~1.5-2h | ~50% | ACP, Cercle des correlations, Pretraitement, Reduction de dimension |
+| **DS FD** | Fouille de Donnees | ~1.5-2h | ~50% | Clustering (DBSCAN, K-means, CAH), Apriori, Fouille de motifs |
 
-Some years combine both into a single **DS ADFD** exam.
+Certaines annees combinent les deux en un seul **DS ADFD**.
 
-**Allowed materials**: Generally no documents allowed (closed-book). Check with the professor.
+**Documents autorises** : Generalement aucun document autorise (examen sans document). Verifiez aupres de l'enseignant.
 
-## Available Past Exams
+## Annales disponibles
 
-| Year | Part | File |
-|------|------|------|
+| Annee | Partie | Fichier |
+|-------|--------|---------|
 | 2025 | AD | `Analyse de donnees.pdf` |
 | 2025 | FD | `Fouille de donnees.pdf` |
 | 2024 | FD | `adfd_2024_fouille.pdf` |
-| 2024 | Combined | `main24_final.pdf` |
+| 2024 | Combine | `main24_final.pdf` |
 | 2023 | AD | `Sujet AD.pdf` |
 | 2023 | FD | `Sujet FD.pdf` |
-| 2023 | Student copy | `Youenn ADFD.pdf` |
-| 2021 | Combined | `Sujet 2021.pdf` |
-| 2021 | Student copy | `Hugo DS 2021.pdf` |
+| 2023 | Copie etudiant | `Youenn ADFD.pdf` |
+| 2021 | Combine | `Sujet 2021.pdf` |
+| 2021 | Copie etudiant | `Hugo DS 2021.pdf` |
 | 2020 | AD | `Sujet AD 2020.pdf` |
 | 2020 | Correction | `Exo1 Correction_.docx` |
-| 2019 | Combined | `Sujet.pdf` |
+| 2019 | Combine | `Sujet.pdf` |
 | 2017 | AD | `Sujet AD 2017.pdf` + correction |
-| 2016 | AD | `Sujet AD 2016.pdf` + student copy |
+| 2016 | AD | `Sujet AD 2016.pdf` + copie etudiant |
 | 2016 | FD | `Sujet FD 2016.pdf` + corrections |
 | 2015 | AD | `Sujet AD 2015.pdf` |
 | 2013 | FD | `Sujet FD 2013.pdf` |
 
-## Exam Strategy
+## Strategie d'examen
 
-### Time Management
+### Gestion du temps
 
-| Exam Part | Recommended Strategy |
-|-----------|---------------------|
-| First 5 min | Read ALL questions, identify easy vs hard |
-| Questions with data tables | Do these first -- they are mechanical and score-worthy |
-| PCA interpretation | Spend time on the correlation circle -- this is where most points are |
-| Apriori by hand | Follow the algorithm step by step, show your work |
-| Short answer / justification | Be concise but precise -- 2-3 sentences max |
+| Partie d'examen | Strategie recommandee |
+|-----------------|----------------------|
+| 5 premieres minutes | Lire TOUTES les questions, identifier les faciles et les difficiles |
+| Questions avec tableaux de donnees | Les faire en premier -- elles sont mecaniques et rapportent des points |
+| Interpretation de l'ACP | Passer du temps sur le cercle des correlations -- c'est la ou se trouvent la plupart des points |
+| Apriori a la main | Suivre l'algorithme etape par etape, montrer le travail |
+| Reponse courte / justification | Etre concis mais precis -- 2-3 phrases maximum |
 
-### What to Prioritize
+### Ce qu'il faut prioriser
 
-**High-yield topics** (frequently tested, many points):
+**Sujets a haut rendement** (frequemment testes, beaucoup de points) :
 
-1. **Reading the correlation circle** -- Almost every AD exam includes this. Know how to:
-   - Identify which variables are correlated with which axes
-   - Explain what each axis "means" in domain terms
-   - Identify correlated/anti-correlated/independent variable pairs
-   - Assess quality of representation (how close to the circle edge)
+1. **Lecture du cercle des correlations** -- Presque chaque examen AD l'inclut. Savoir :
+   - Identifier quelles variables sont correlees avec quels axes
+   - Expliquer ce que chaque axe "signifie" en termes du domaine
+   - Identifier les paires de variables correlees/anti-correlees/independantes
+   - Evaluer la qualite de representation (proximite du bord du cercle)
 
-2. **Apriori algorithm by hand** -- Every FD exam asks you to:
-   - Compute support of given itemsets
-   - Generate candidates and prune using anti-monotonicity
-   - Find all frequent itemsets for a given minsup
+2. **Algorithme Apriori a la main** -- Chaque examen FD demande de :
+   - Calculer le support d'itemsets donnes
+   - Generer les candidats et elaguer par anti-monotonie
+   - Trouver tous les itemsets frequents pour un minsup donne
 
-3. **DBSCAN step-by-step** -- Many FD exams include:
-   - Classifying points as core, border, or noise
-   - Tracing the algorithm on a small 2D example
-   - Comparing DBSCAN with K-means
+3. **DBSCAN pas a pas** -- Beaucoup d'examens FD incluent :
+   - Classifier les points en noyau, frontiere ou bruit
+   - Derouler l'algorithme sur un petit exemple 2D
+   - Comparer DBSCAN avec K-means
 
-4. **Eigenvalue / variance interpretation** -- Know how to:
-   - Read a scree plot
-   - Decide how many components to keep
-   - Compute cumulative explained variance
+4. **Interpretation des valeurs propres / variance** -- Savoir :
+   - Lire un diagramme des valeurs propres
+   - Decider combien de composantes garder
+   - Calculer la variance cumulee expliquee
 
-### Common Question Types
+### Types de questions courants
 
-#### Type 1: "Interpret this correlation circle"
-Given a correlation circle plot, explain:
-- What does each axis represent?
-- Which variables contribute most to each axis?
-- Are there correlated variables? Which ones?
-- What about individual X -- where would it be on the factorial plane and why?
+#### Type 1 : "Interpretez ce cercle des correlations"
+A partir d'un trace du cercle des correlations, expliquer :
+- Que represente chaque axe ?
+- Quelles variables contribuent le plus a chaque axe ?
+- Y a-t-il des variables correlees ? Lesquelles ?
+- Qu'en est-il de l'individu X -- ou serait-il sur le plan factoriel et pourquoi ?
 
-**Strategy**: Look at which variables are closest to each axis. Name the axis based on the domain meaning of those variables. Then look for variable clusters on the circle.
+**Strategie** : Regarder quelles variables sont les plus proches de chaque axe. Nommer l'axe en fonction de la signification dans le domaine de ces variables. Puis chercher les groupes de variables sur le cercle.
 
-#### Type 2: "Apply Apriori to this dataset"
-Given a small transaction database and minsup:
-- Find L_1 (frequent 1-itemsets)
-- Generate C_2, compute supports, find L_2
-- Generate C_3 with anti-monotonicity pruning, find L_3
-- List all frequent itemsets
+#### Type 2 : "Appliquer Apriori a ce jeu de donnees"
+A partir d'une petite base de transactions et d'un minsup :
+- Trouver L_1 (itemsets frequents de taille 1)
+- Generer C_2, calculer les supports, trouver L_2
+- Generer C_3 avec elagage par anti-monotonie, trouver L_3
+- Lister tous les itemsets frequents
 
-**Strategy**: Use a systematic table approach. Show every candidate and its support count. Clearly indicate pruning steps.
+**Strategie** : Utiliser une approche systematique par tableaux. Montrer chaque candidat et son comptage de support. Indiquer clairement les etapes d'elagage.
 
-#### Type 3: "Given these DBSCAN parameters, classify these points"
-Given a set of 2D points, eps, and min_samples:
-- For each point, list its neighbors
-- Classify as core, border, or noise
-- Form clusters
-- Compare with K-means result
+#### Type 3 : "Avec ces parametres DBSCAN, classifiez ces points"
+A partir d'un ensemble de points 2D, eps et min_samples :
+- Pour chaque point, lister ses voisins
+- Classifier en noyau, frontiere ou bruit
+- Former les clusters
+- Comparer avec le resultat K-means
 
-**Strategy**: Draw the points, draw circles of radius eps around each. Count neighbors methodically.
+**Strategie** : Dessiner les points, tracer des cercles de rayon eps autour de chacun. Compter les voisins methodiquement.
 
-#### Type 4: "Explain the difference between..."
-Comparison questions (CAH vs K-means, DBSCAN vs K-means, ACP normee vs non normee):
+#### Type 4 : "Expliquer la difference entre..."
+Questions de comparaison (CAH vs K-means, DBSCAN vs K-means, ACP normee vs non normee) :
 
-**Strategy**: Use a structured comparison table. Hit these points:
-- When to use each
-- Advantages and disadvantages
-- Parameters required
-- Type of clusters produced
+**Strategie** : Utiliser un tableau de comparaison structure. Aborder ces points :
+- Quand utiliser chacun
+- Avantages et inconvenients
+- Parametres requis
+- Type de clusters produits
 
-#### Type 5: "How many components to keep?"
-Given eigenvalues or a scree plot:
-- Apply the 80% rule
-- Apply the Kaiser criterion (eigenvalue > 1)
-- Identify the elbow
+#### Type 5 : "Combien de composantes garder ?"
+A partir de valeurs propres ou d'un diagramme :
+- Appliquer la regle des 80%
+- Appliquer le critere de Kaiser (valeur propre > 1)
+- Identifier le coude
 
-**Strategy**: Show all three methods and state your conclusion. If they disagree, prioritize the 80% rule.
+**Strategie** : Montrer les trois methodes et enoncer votre conclusion. En cas de desaccord, privilegier la regle des 80%.
 
-## Topic-by-Topic Exam Checklist
+## Checklist sujet par sujet
 
-### PCA / ACP (Data Analysis Exam)
+### ACP (examen Analyse de Donnees)
 
-- [ ] Know when to use ACP normee vs. non normee
-  - Normee: variables have different units or very different scales
-  - Non normee: variables are homogeneous and comparable
-- [ ] Be able to compute eigenvalues from a correlation matrix (2x2 case)
-- [ ] Read scree plots and determine number of components
-- [ ] Interpret correlation circle (most important skill)
-- [ ] Interpret factorial plane of individuals
-- [ ] Compute contributions and quality of representation
-- [ ] Link axes to original variables using the circle
-- [ ] Explain PCA to a non-expert in 2-3 sentences
-- [ ] Know the mathematical steps: center, compute correlation matrix, eigendecompose, project
+- [ ] Savoir quand utiliser l'ACP normee vs non normee
+  - Normee : variables avec des unites ou des echelles tres differentes
+  - Non normee : variables homogenes et comparables
+- [ ] Savoir calculer les valeurs propres d'une matrice de correlation (cas 2x2)
+- [ ] Lire un diagramme des valeurs propres et determiner le nombre de composantes
+- [ ] Interpreter le cercle des correlations (competence la plus importante)
+- [ ] Interpreter le plan factoriel des individus
+- [ ] Calculer les contributions et la qualite de representation
+- [ ] Relier les axes aux variables originales via le cercle
+- [ ] Expliquer l'ACP a un non-expert en 2-3 phrases
+- [ ] Connaitre les etapes mathematiques : centrer, calculer la matrice de correlation, decomposition en valeurs propres, projeter
 
-### Clustering (Data Mining Exam)
+### Clustering (examen Fouille de Donnees)
 
-- [ ] Trace K-means algorithm step by step (2D, small example)
-- [ ] Trace DBSCAN algorithm step by step
-- [ ] Classify points as core/border/noise for DBSCAN
-- [ ] Know Ward's criterion formula and meaning
-- [ ] Read a dendrogram and choose number of clusters
-- [ ] Compare CAH, K-means, DBSCAN (table format)
-- [ ] Compute silhouette score for a simple example
-- [ ] Know what inertia intra-classe and inter-classe mean
-- [ ] Explain the elbow method for choosing K
-- [ ] Know why DBSCAN is preferred for spatial data
+- [ ] Derouler l'algorithme K-means pas a pas (2D, petit exemple)
+- [ ] Derouler l'algorithme DBSCAN pas a pas
+- [ ] Classifier les points en noyau/frontiere/bruit pour DBSCAN
+- [ ] Connaitre la formule et la signification du critere de Ward
+- [ ] Lire un dendrogramme et choisir le nombre de clusters
+- [ ] Comparer CAH, K-means, DBSCAN (format tableau)
+- [ ] Calculer le score de silhouette sur un exemple simple
+- [ ] Savoir ce que signifient inertie intra-classe et inter-classe
+- [ ] Expliquer la methode du coude pour choisir K
+- [ ] Savoir pourquoi DBSCAN est prefere pour les donnees spatiales
 
-### Frequent Itemsets (Data Mining Exam)
+### Itemsets frequents (examen Fouille de Donnees)
 
-- [ ] Compute support by hand
-- [ ] Apply Apriori step by step
-- [ ] Use anti-monotonicity to prune candidates
-- [ ] Compute confidence and lift of association rules
-- [ ] Know the difference between closed, maximal, and frequent itemsets
-- [ ] Know what minsup does and how to choose it
+- [ ] Calculer le support a la main
+- [ ] Appliquer Apriori etape par etape
+- [ ] Utiliser l'anti-monotonie pour elaguer les candidats
+- [ ] Calculer la confiance et le lift des regles d'association
+- [ ] Connaitre la difference entre itemsets fermes, maximaux et frequents
+- [ ] Savoir ce que fait le minsup et comment le choisir
 
-### Preprocessing
+### Pretraitement
 
-- [ ] Name strategies for handling missing values
-- [ ] Know the difference between imputation methods (mean, median, mode)
-- [ ] Explain why standardization is needed before PCA
-- [ ] Know what log transform does and when to use it
-- [ ] Explain the difference between normalization and standardization
+- [ ] Nommer les strategies de traitement des valeurs manquantes
+- [ ] Connaitre la difference entre les methodes d'imputation (moyenne, mediane, mode)
+- [ ] Expliquer pourquoi la standardisation est necessaire avant l'ACP
+- [ ] Savoir ce que fait la transformation log et quand l'utiliser
+- [ ] Expliquer la difference entre normalisation et standardisation
 
-## Critical Formulas
+## Formules critiques
 
-### PCA
+### ACP
 
 ```
-Standardize:    z = (x - mean) / std
-Correlation:    r(x_j, F_k) = v_jk * sqrt(lambda_k)
-Variance %:     lambda_k / sum(lambda_i) * 100
-Contribution:   CTR(i,k) = F_ik^2 / (n * lambda_k)
-cos^2:          F_ik^2 / sum_j(F_ij^2)
+Standardiser :    z = (x - moyenne) / ecart-type
+Correlation :     r(x_j, F_k) = v_jk * sqrt(lambda_k)
+Variance % :      lambda_k / somme(lambda_i) * 100
+Contribution :    CTR(i,k) = F_ik^2 / (n * lambda_k)
+cos^2 :           F_ik^2 / somme_j(F_ij^2)
 ```
 
 ### Clustering
 
 ```
-Ward:           Delta(A,B) = (n_A*n_B)/(n_A+n_B) * ||c_A - c_B||^2
-Silhouette:     s(i) = (b(i) - a(i)) / max(a(i), b(i))
-K-means:        min sum_k sum_{i in C_k} ||x_i - c_k||^2
-DBSCAN:         core point if |N_eps(p)| >= min_samples
+Ward :            Delta(A,B) = (n_A*n_B)/(n_A+n_B) * ||c_A - c_B||^2
+Silhouette :      s(i) = (b(i) - a(i)) / max(a(i), b(i))
+K-means :         min somme_k somme_{i dans C_k} ||x_i - c_k||^2
+DBSCAN :          point noyau si |N_eps(p)| >= min_samples
 ```
 
 ### Apriori
 
 ```
-Support:        sup(X) = |{T : X in T}| / |DB|
-Confidence:     conf(X->Y) = sup(X union Y) / sup(X)
-Lift:           lift(X->Y) = conf(X->Y) / sup(Y)
-Anti-mono:      sup(X) < minsup => sup(X union Y) < minsup
+Support :         sup(X) = |{T : X dans T}| / |DB|
+Confiance :       conf(X->Y) = sup(X union Y) / sup(X)
+Lift :            lift(X->Y) = conf(X->Y) / sup(Y)
+Anti-mono :       sup(X) < minsup => sup(X union Y) < minsup
 ```
 
-## Common Mistakes to Avoid
+## Erreurs courantes a eviter
 
-1. **Confusing the correlation circle with the factorial plane**: The circle shows VARIABLES (months, features). The factorial plane shows INDIVIDUALS (cities, houses). Never mix them.
+1. **Confondre le cercle des correlations et le plan factoriel** : Le cercle montre les VARIABLES (mois, caracteristiques). Le plan factoriel montre les INDIVIDUS (villes, maisons). Ne les melangez jamais.
 
-2. **Forgetting to justify DBSCAN over K-means**: When asked to choose an algorithm, always explain WHY. For spatial data with noise, the answer is almost always DBSCAN.
+2. **Oublier de justifier DBSCAN plutot que K-means** : Quand on vous demande de choisir un algorithme, expliquez toujours POURQUOI. Pour des donnees spatiales avec bruit, la reponse est presque toujours DBSCAN.
 
-3. **Not showing pruning in Apriori**: Examiners want to see that you apply anti-monotonicity. Explicitly write "pruned because {A,C} not in L_2" when generating C_3.
+3. **Ne pas montrer l'elagage dans Apriori** : Les correcteurs veulent voir que vous appliquez l'anti-monotonie. Ecrivez explicitement "elague car {A,C} absent de L_2" lors de la generation de C_3.
 
-4. **Misreading correlation circle variables near the origin**: If a variable's arrow is short (near center), it is NOT well represented -- do not interpret its position.
+4. **Mal lire les variables proches de l'origine sur le cercle des correlations** : Si la fleche d'une variable est courte (pres du centre), elle n'est PAS bien representee -- n'interpretez pas sa position.
 
-5. **Saying "PCA reduces noise"**: More precisely, PCA keeps the high-variance directions and discards low-variance ones. If noise is in low-variance directions, it is removed. But PCA does not "know" what noise is.
+5. **Dire "l'ACP reduit le bruit"** : Plus precisement, l'ACP conserve les directions a forte variance et ecarte celles a faible variance. Si le bruit est dans les directions a faible variance, il est elimine. Mais l'ACP ne "sait" pas ce qu'est le bruit.
 
-6. **Using DBSCAN on non-metric coordinates**: If given GPS coordinates, mention that conversion to meters is needed for eps to be meaningful.
+6. **Utiliser DBSCAN sur des coordonnees non metriques** : Si on vous donne des coordonnees GPS, mentionnez que la conversion en metres est necessaire pour que eps soit significatif.
 
-7. **Forgetting that K-means is non-deterministic**: Different initializations give different results. Always mention `random_state` or `n_init`.
+7. **Oublier que K-means est non deterministe** : Differentes initialisations donnent des resultats differents. Mentionnez toujours `random_state` ou `n_init`.
 
-8. **Not computing cumulative variance**: When asked "how many components?", always show the cumulative variance reaching the 80% threshold.
+8. **Ne pas calculer la variance cumulee** : Quand on demande "combien de composantes ?", montrez toujours la variance cumulee atteignant le seuil de 80%.

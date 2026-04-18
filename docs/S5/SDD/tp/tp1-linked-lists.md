@@ -1,83 +1,83 @@
 ---
-title: "TP01 - Linked Lists (Listes Chainees)"
+title: "TP01 - Listes Chainees"
 sidebar_position: 1
 ---
 
-# TP01 - Linked Lists (Listes Chainees)
+# TP01 - Listes Chainees
 
-## Objective
+## Objectif
 
-Implement and understand fundamental linked list data structures:
-- Simple linked list (singly-linked)
-- Doubly-linked list with sentinel nodes
-- Cursor-based navigation pattern
+Implementer et comprendre les structures de donnees fondamentales des listes chainees :
+- Liste simplement chainee
+- Liste doublement chainee avec noeuds sentinelles
+- Pattern de navigation par curseur
 
-## Theory: Linked Lists
+## Theorie : Listes Chainees
 
-### What is a Linked List?
+### Qu'est-ce qu'une liste chainee ?
 
-A **linked list** is a linear data structure where elements are stored in nodes. Each node contains:
-1. **Data** - the actual value
-2. **Reference(s)** - pointer(s) to next (and possibly previous) node(s)
+Une **liste chainee** est une structure de donnees lineaire ou les elements sont stockes dans des noeuds. Chaque noeud contient :
+1. **Donnee** - la valeur reelle
+2. **Reference(s)** - pointeur(s) vers le(s) noeud(s) suivant (et eventuellement precedent)
 
-Unlike arrays, linked lists:
-- Don't require contiguous memory
-- Allow O(1) insertion/deletion at cursor position
-- Require O(n) access to arbitrary elements
+Contrairement aux tableaux, les listes chainees :
+- Ne necessitent pas de memoire contigue
+- Permettent l'insertion/suppression en O(1) a la position du curseur
+- Necessitent un acces O(n) pour les elements arbitraires
 
-### Singly vs. Doubly Linked
+### Simple vs. Double chainage
 
-**Singly-Linked**: Each node points only to the **next** node
+**Simple chainage** : Chaque noeud pointe uniquement vers le noeud **suivant**
 ```
 [Data|Next] -> [Data|Next] -> [Data|Next] -> null
 ```
 
-**Doubly-Linked**: Each node points to **both** next and previous
+**Double chainage** : Chaque noeud pointe vers le **suivant** et le **precedent**
 ```
 null <- [Prev|Data|Next] <-> [Prev|Data|Next] <-> [Prev|Data|Next] -> null
 ```
 
-Advantages of doubly-linked:
-- Bidirectional traversal
-- Easier deletion (no need to track previous node)
-- Slightly more memory overhead (extra pointer per node)
+Avantages du double chainage :
+- Parcours bidirectionnel
+- Suppression plus simple (pas besoin de suivre le noeud precedent)
+- Surcharge memoire legere (un pointeur supplementaire par noeud)
 
-### Sentinel Nodes
+### Noeuds sentinelles
 
-A **sentinel node** (or dummy node) is a special node that:
-- Doesn't contain actual data
-- Simplifies edge cases (empty list, first/last element)
-- Acts as a fixed reference point
+Un **noeud sentinelle** (ou noeud factice) est un noeud special qui :
+- Ne contient pas de donnees reelles
+- Simplifie les cas limites (liste vide, premier/dernier element)
+- Sert de point de reference fixe
 
-This implementation uses **two sentinels**:
-- **head**: Permanent first node (predecessor of first real element)
-- **tail**: Permanent last node (successor of last real element)
+Cette implementation utilise **deux sentinelles** :
+- **head** : Noeud permanent au debut (predecesseur du premier element reel)
+- **tail** : Noeud permanent a la fin (successeur du dernier element reel)
 
 ```
 head <-> [elem1] <-> [elem2] <-> [elem3] <-> tail
 ```
 
-Benefits:
-- No null checks for first/last
-- Consistent insertion/deletion logic
-- Cursor never truly "null"
+Avantages :
+- Pas de verifications null pour le premier/dernier
+- Logique d'insertion/suppression coherente
+- Le curseur n'est jamais vraiment "null"
 
-### Cursor Pattern
+### Pattern Curseur
 
-The **cursor** is a pointer to the "current" node in the list. Operations:
-- `entete()` - Move cursor to first element
-- `succ()` - Move cursor forward
-- `pred()` - Move cursor backward
-- `valec()` - Get value at cursor
-- `ajouterD()` - Add element to the right of cursor
-- `oterec()` - Remove element at cursor
-- `estSorti()` - Check if cursor is out of bounds (on sentinel)
+Le **curseur** est un pointeur vers le noeud "courant" dans la liste. Operations :
+- `entete()` - Deplacer le curseur sur le premier element
+- `succ()` - Avancer le curseur
+- `pred()` - Reculer le curseur
+- `valec()` - Obtenir la valeur au curseur
+- `ajouterD()` - Ajouter un element a droite du curseur
+- `oterec()` - Supprimer l'element au curseur
+- `estSorti()` - Verifier si le curseur est hors-limites (sur une sentinelle)
 
 ## Implementation
 
-### Interface: `MyList<T>`
+### Interface : `MyList<T>`
 
-Generic interface defining list operations:
+Interface generique definissant les operations de la liste :
 
 ```java
 public interface MyList<T> {
@@ -92,11 +92,11 @@ public interface MyList<T> {
 }
 ```
 
-### Class: `ListeDoubleChainage`
+### Classe : `ListeDoubleChainage`
 
-Doubly-linked list with sentinel nodes.
+Liste doublement chainee avec noeuds sentinelles.
 
-#### Node Structure
+#### Structure du Noeud
 
 ```java
 static class Node {
@@ -107,13 +107,13 @@ static class Node {
 }
 ```
 
-#### Key Attributes
+#### Attributs principaux
 
-- `head` - Sentinel node at the beginning
-- `tail` - Sentinel node at the end
-- `cursor` - Current position in the list
+- `head` - Noeud sentinelle au debut
+- `tail` - Noeud sentinelle a la fin
+- `cursor` - Position courante dans la liste
 
-#### Constructor
+#### Constructeur
 
 ```java
 public ListeDoubleChainage() {
@@ -123,14 +123,14 @@ public ListeDoubleChainage() {
 }
 ```
 
-Initially:
+Etat initial :
 ```
 head <-> tail
  ^
 cursor
 ```
 
-#### Core Operations
+#### Operations principales
 
 **1. Navigation**
 
@@ -156,7 +156,7 @@ public void pred() {
 
 **2. Insertion (ajouterD)**
 
-Adds a new element to the **right** of the cursor:
+Ajoute un nouvel element a **droite** du curseur :
 
 ```java
 public void ajouterD(Object o) {
@@ -184,20 +184,20 @@ public void ajouterD(Object o) {
 }
 ```
 
-Visual example:
+Exemple visuel :
 ```
-Before: head <-> [A] <-> tail
+Avant : head <-> [A] <-> tail
                   ^
-                cursor
+                curseur
 
-After:  head <-> [A] <-> [B] <-> tail
+Apres : head <-> [A] <-> [B] <-> tail
                           ^
-                        cursor
+                        curseur
 ```
 
-**3. Deletion (oterec)**
+**3. Suppression (oterec)**
 
-Removes the element at cursor:
+Supprime l'element au curseur :
 
 ```java
 public void oterec() {
@@ -214,18 +214,18 @@ public void oterec() {
 }
 ```
 
-Visual example:
+Exemple visuel :
 ```
-Before: head <-> [A] <-> [B] <-> [C] <-> tail
+Avant : head <-> [A] <-> [B] <-> [C] <-> tail
                           ^
-                        cursor
+                        curseur
 
-After:  head <-> [A] <-> [C] <-> tail
+Apres : head <-> [A] <-> [C] <-> tail
                           ^
-                        cursor
+                        curseur
 ```
 
-**4. State Checks**
+**4. Verifications d'etat**
 
 ```java
 public boolean estSorti() {
@@ -246,24 +246,24 @@ public Object valec() {
 }
 ```
 
-## Complexity Analysis
+## Analyse de Complexite
 
-| Operation | Time Complexity | Notes |
+| Operation | Complexite temps | Notes |
 |-----------|----------------|-------|
-| `entete()` | O(1) | Direct pointer assignment |
-| `succ()` | O(1) | Follow next pointer |
-| `pred()` | O(1) | Follow previous pointer (doubly-linked advantage) |
-| `ajouterD()` | O(1) | Insert at cursor position |
-| `oterec()` | O(1) | Delete at cursor position |
-| `valec()` | O(1) | Direct access |
-| `estVide()` | O(1) | Check head.successor |
-| `estSorti()` | O(1) | Compare cursor to sentinels |
+| `entete()` | O(1) | Affectation directe de pointeur |
+| `succ()` | O(1) | Suivre le pointeur suivant |
+| `pred()` | O(1) | Suivre le pointeur precedent (avantage du double chainage) |
+| `ajouterD()` | O(1) | Insertion a la position du curseur |
+| `oterec()` | O(1) | Suppression a la position du curseur |
+| `valec()` | O(1) | Acces direct |
+| `estVide()` | O(1) | Verification de head.successor |
+| `estSorti()` | O(1) | Comparaison du curseur aux sentinelles |
 
-**All operations are O(1)** - this is the key advantage of the cursor pattern!
+**Toutes les operations sont en O(1)** -- c'est l'avantage principal du pattern curseur !
 
-Note: Finding a specific value requires O(n) traversal, but once at the right position, modifications are constant time.
+Note : Trouver une valeur specifique necessite un parcours O(n), mais une fois a la bonne position, les modifications sont en temps constant.
 
-## Usage Example
+## Exemple d'utilisation
 
 ```java
 MyList<Object> list = new ListeDoubleChainage();
@@ -291,10 +291,10 @@ System.out.println(list.estVide()); // true
 
 ### `MyListOutOfBoundsException`
 
-Thrown when:
-- Trying to move past list boundaries
-- Attempting to access/modify when cursor is out of bounds
-- Calling `oterec()` on sentinel
+Lancee quand :
+- On essaie de depasser les limites de la liste
+- On tente d'acceder/modifier quand le curseur est hors-limites
+- On appelle `oterec()` sur une sentinelle
 
 ```java
 public class MyListOutOfBoundsException extends RuntimeException {
@@ -305,7 +305,7 @@ public class MyListOutOfBoundsException extends RuntimeException {
 
 ### `MyListEmptyException`
 
-Thrown when operations require a non-empty list:
+Lancee quand des operations necessitent une liste non vide :
 
 ```java
 public class MyListEmptyException extends RuntimeException {
@@ -314,64 +314,64 @@ public class MyListEmptyException extends RuntimeException {
 }
 ```
 
-## Testing
+## Tests
 
-The included test file `ListeDoubleChainageTest.java` verifies:
-- Constructor initializes empty list
-- `ajouterD()` correctly inserts elements
-- `oterec()` correctly removes elements
-- Navigation methods (`entete`, `succ`, `pred`) work correctly
-- Exceptions are thrown for invalid operations
-- Edge cases (empty list, single element, boundary conditions)
+Le fichier de tests fourni `ListeDoubleChainageTest.java` verifie :
+- Le constructeur initialise une liste vide
+- `ajouterD()` insere correctement les elements
+- `oterec()` supprime correctement les elements
+- Les methodes de navigation (`entete`, `succ`, `pred`) fonctionnent correctement
+- Les exceptions sont lancees pour les operations invalides
+- Les cas limites (liste vide, element unique, conditions aux bornes)
 
-Run tests:
+Lancer les tests :
 ```bash
-# IntelliJ: Right-click ListeDoubleChainageTest.java > Run
-# Or compile manually:
+# IntelliJ: Clic droit sur ListeDoubleChainageTest.java > Run
+# Ou compiler manuellement :
 javac -cp .:junit.jar src/test/ListeDoubleChainageTest.java
 java -cp .:junit.jar org.junit.runner.JUnitCore test.ListeDoubleChainageTest
 ```
 
-## Comparison: Array vs. Linked List
+## Comparaison : Tableau vs. Liste Chainee
 
-| Feature | Array | Linked List |
+| Caracteristique | Tableau | Liste Chainee |
 |---------|-------|-------------|
-| Access by index | O(1) | O(n) |
-| Insert at cursor | O(n) (shift) | O(1) |
-| Delete at cursor | O(n) (shift) | O(1) |
-| Memory | Contiguous | Scattered |
-| Cache locality | Excellent | Poor |
-| Overhead | None | Pointer per element |
+| Acces par index | O(1) | O(n) |
+| Insertion au curseur | O(n) (decalage) | O(1) |
+| Suppression au curseur | O(n) (decalage) | O(1) |
+| Memoire | Contigue | Dispersee |
+| Localite de cache | Excellente | Mauvaise |
+| Surcharge | Aucune | Pointeur par element |
 
-**Use linked lists when**:
-- Frequent insertions/deletions at arbitrary positions
-- Size unknown or highly variable
-- Sequential access is sufficient
+**Utiliser les listes chainees quand** :
+- Insertions/suppressions frequentes a des positions arbitraires
+- Taille inconnue ou tres variable
+- L'acces sequentiel est suffisant
 
-**Use arrays when**:
-- Random access needed
-- Memory layout matters (cache)
-- Size is fixed or rarely changes
+**Utiliser les tableaux quand** :
+- Acces aleatoire necessaire
+- La disposition memoire compte (cache)
+- La taille est fixe ou change rarement
 
-## Extensions (Not Implemented)
+## Extensions (non implementees)
 
-Possible enhancements:
-1. **Generic typing**: Make `ListeDoubleChainage<T>` instead of using `Object`
-2. **Iterator interface**: Implement `Iterable<T>` for for-each loops
-3. **Additional operations**: `length()`, `contains()`, `indexOf()`, `reverse()`
-4. **Circular list**: Make tail.successor = head
-5. **XOR linked list**: Space-efficient doubly-linked variant
+Ameliorations possibles :
+1. **Typage generique** : Faire `ListeDoubleChainage<T>` au lieu d'utiliser `Object`
+2. **Interface Iterator** : Implementer `Iterable<T>` pour les boucles for-each
+3. **Operations supplementaires** : `length()`, `contains()`, `indexOf()`, `reverse()`
+4. **Liste circulaire** : Faire tail.successor = head
+5. **Liste chainee XOR** : Variante doublement chainee economique en espace
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Forgetting sentinel checks**: Always check `estSorti()` before operations
-2. **Null pointer access**: Happens if you don't initialize head/tail properly
-3. **Incorrect linking order**: When inserting, link backwards first, then forward
-4. **Cursor position after deletion**: Remember cursor moves to successor
-5. **Memory leaks** (in languages like C): In Java, GC handles it, but in C/C++ you must free deleted nodes
+1. **Oublier les verifications de sentinelles** : Toujours verifier `estSorti()` avant les operations
+2. **Acces pointeur null** : Se produit si on n'initialise pas head/tail correctement
+3. **Ordre de chainage incorrect** : Lors de l'insertion, chainer en arriere d'abord, puis en avant
+4. **Position du curseur apres suppression** : Retenir que le curseur se deplace sur le successeur
+5. **Fuites memoire** (dans les langages comme C) : En Java, le GC s'en charge, mais en C/C++ il faut liberer les noeuds supprimes
 
-## See Also
+## Voir aussi
 
-- **TP02**: Iterators (separation of concerns)
-- **TP03**: Geographic database application
-- [Java LinkedList](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html) - Standard library implementation
+- **TP02** : Iterateurs (separation des preoccupations)
+- **TP03** : Application de base de donnees geographique
+- [Java LinkedList](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html) - Implementation de la bibliotheque standard

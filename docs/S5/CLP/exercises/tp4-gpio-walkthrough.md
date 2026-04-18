@@ -1,17 +1,17 @@
 ---
-title: "TP4 - Raspberry Pi GPIO Control (Bare Metal)"
+title: "TP4 - Controle GPIO Raspberry Pi (bare metal)"
 sidebar_position: 4
 ---
 
-# TP4 - Raspberry Pi GPIO Control (Bare Metal)
+# TP4 - Controle GPIO Raspberry Pi (bare metal)
 
-> Following teacher instructions from: S5/CLP/data/moodle/tp/tp4/README.md
+> D'apres les consignes enseignants : S5/CLP/data/moodle/tp/tp4/README.md
 
-This TP is a bare-metal programming exercise on the Raspberry Pi. There is no operating system -- the assembly code runs directly on the hardware. The program blinks the ACT (Activity) LED in an SOS Morse code pattern. This TP differs fundamentally from TPs 1-3: there is no stack, no function calling convention, and hardware registers are controlled through memory-mapped I/O.
+Ce TP est un exercice de programmation bare metal sur le Raspberry Pi. Il n'y a pas de systeme d'exploitation -- le code assembleur s'execute directement sur le materiel. Le programme fait clignoter la LED ACT (Activite) selon un patron de code Morse SOS. Ce TP differe fondamentalement des TP 1-3 : il n'y a pas de pile, pas de convention d'appel de fonction, et les registres materiels sont commandes par des entrees/sorties mappees en memoire.
 
 ---
 
-## Exercise 1: Hardware Background and GPIO Configuration
+## Exercice 1: Hardware Background and GPIO Configuration
 
 ### Understand memory-mapped I/O and GPIO registers
 
@@ -79,7 +79,7 @@ Binary: 0000 0000 0000 0000 1000 0000 0000 0000 = 0x00008000
 
 ---
 
-## Exercise 2: main.s -- Complete LED Control Program
+## Exercice 2: main.s -- Complete LED Control Program
 
 ### Implement GPIO initialization
 
@@ -215,7 +215,7 @@ end_sleep_loop:
 
 ---
 
-## Exercise 3: Execution Flow Trace
+## Exercice 3: Execution Flow Trace
 
 ### Trace one complete "S" (three short blinks)
 
@@ -243,7 +243,7 @@ T12     bx r3                   OFF    ...           ...           1800000      
 
 ---
 
-## Exercise 4: GPIO Calculation Reference
+## Exercice 4: GPIO Calculation Reference
 
 ### General formula for any GPIO pin
 
@@ -282,7 +282,7 @@ Value: 1 << 17 = 0x00020000
 
 ---
 
-## Key Differences from TPs 1-3
+## Differences cles avec les TP 1-3
 
 | Aspect | TP1-3 (User-space) | TP4 (Bare-metal) |
 |--------|---------------------|-------------------|

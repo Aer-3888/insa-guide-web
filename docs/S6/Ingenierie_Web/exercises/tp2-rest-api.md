@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # TP2 : REST API avec Jersey/JAX-RS
 
-> Following teacher instructions from: `S6/Ingenierie_Web/data/moodle/tp/tp2_rest_api/README.md` et `S6/Ingenierie_Web/data/moodle/tp/tp2_rest_api/jersey_calendar_api/README.md`
+> D'apres les consignes de l'enseignant dans : `S6/Ingenierie_Web/data/moodle/tp/tp2_rest_api/README.md` et `S6/Ingenierie_Web/data/moodle/tp/tp2_rest_api/jersey_calendar_api/README.md`
 
 Ce TP porte sur la creation d'API RESTful en Java avec Jersey (implementation de reference de JAX-RS). Le sujet complet est dans `sujet_rest.pdf`.
 
@@ -32,9 +32,9 @@ CalendarElement (abstract, id auto-incremente)
 
 ## Exercice 1 : Comprendre le modele -- CalendarElement
 
-### Q1 : Comment fonctionne l'auto-incrementation des IDs ?
+### Q1 : Comment fonctionne l'auto-incrementation des identifiants ?
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Fichier : model/CalendarElement.java (fourni)
@@ -56,7 +56,7 @@ public abstract class CalendarElement {
 }
 ```
 
-`ID_CPT` est un compteur statique : chaque nouvelle instance de n'importe quelle sous-classe (Enseignant, Matiere, Cours) incremente le meme compteur. Cela simule `@GeneratedValue` de JPA sans base de donnees.
+`ID_CPT` est un compteur statique : chaque nouvelle instance de n'importe quelle sous-classe (Enseignant, Matiere, Cours) incremente le meme compteur. Cela simule le comportement de `@GeneratedValue` de JPA sans base de donnees.
 
 ---
 
@@ -64,7 +64,7 @@ public abstract class CalendarElement {
 
 ### Q2.1 : Enseignant et Matiere
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Fichier : model/Enseignant.java (fourni)
@@ -120,9 +120,9 @@ L'annotation `@XmlRootElement` est necessaire pour que JAXB puisse serialiser/de
 
 ---
 
-### Q2.2 : Cours, CM, TD avec heritage polymorphique
+### Q2.2 : Cours, CM, TD avec heritage polymorphe
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Fichier : model/Cours.java (fourni)
@@ -179,9 +179,9 @@ public class TD extends Cours {
 
 ---
 
-### Q2.3 : Agenda -- Conteneur avec validation metier
+### Q2.3 : Agenda -- Conteneur avec regles de validation metier
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Fichier : model/Agenda.java (fourni)
@@ -245,7 +245,7 @@ public class Agenda extends CalendarElement {
 
 ### Q3.1 : POST /calendar/ens/{name} -- Creer un enseignant
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Fichier : resource/CalendarResource.java
@@ -294,7 +294,7 @@ curl -X POST "http://localhost:4444/calendar/ens/Blouin"
 
 ### Q3.2 : POST /calendar/mat/{annee}/{name} -- Creer une matiere
 
-**Answer:**
+**Reponse :**
 
 ```java
     @POST
@@ -323,7 +323,7 @@ curl -X POST "http://localhost:4444/calendar/mat/4/BDD"
 
 ### Q3.3 : GET /calendar/mat/{id} -- Recuperer une matiere
 
-**Answer:**
+**Reponse :**
 
 ```java
     @GET
@@ -347,7 +347,7 @@ curl -X GET "http://localhost:4444/calendar/mat/999"   # -> 404
 
 ### Q3.4 : PUT /calendar/mat/{id}/{newname} -- Modifier le nom
 
-**Answer:**
+**Reponse :**
 
 ```java
     @PUT
@@ -374,7 +374,7 @@ curl -X PUT "http://localhost:4444/calendar/mat/2/WebAvance"
 
 ### Q3.5 : DELETE /calendar/mat/{id} -- Supprimer une matiere
 
-**Answer:**
+**Reponse :**
 
 ```java
     @DELETE
@@ -396,7 +396,7 @@ curl -v -X GET "http://localhost:4444/calendar/mat/2"    # -> 404
 
 ### Q3.6 : POST /calendar/cours/new -- Creer un cours (XML)
 
-**Answer:**
+**Reponse :**
 
 ```java
     @POST
@@ -427,9 +427,9 @@ curl -X POST "http://localhost:4444/calendar/cours/new" \
 
 ## Exercice 4 : Le client JavaScript
 
-### Q4.1 : Page de recherche de matiere
+### Q4.1 : Page de recherche de matiere (cote client)
 
-**Answer:**
+**Reponse :**
 
 ```javascript noexec
 // Fichier : webapp/js/main.js (fourni)
@@ -457,9 +457,9 @@ document.getElementById('searchbutton').onclick = function () {
 
 ## Exercice 5 : Les tests JUnit 5
 
-### Q5.1 : Ecrire les tests de la ressource REST
+### Q5.1 : Ecrire les tests de la ressource REST (tests unitaires)
 
-**Answer:**
+**Reponse :**
 
 ```java
 // Fichier : test/TestCalendarResource.java (extraits)
@@ -514,7 +514,7 @@ public class TestCalendarResource {
 }
 ```
 
-Lancer les tests :
+Executer les tests :
 ```bash
 cd jersey_calendar_api
 mvn test
@@ -522,17 +522,17 @@ mvn test
 
 ---
 
-## Comparaison JAX-RS (Jersey) vs Spring Boot
+## Comparaison entre JAX-RS (Jersey) et Spring Boot
 
 | Aspect | JAX-RS (Jersey) | Spring Boot |
 |--------|-----------------|-------------|
 | Controleur | `@Path("...")` | `@RestController` + `@RequestMapping` |
 | GET | `@GET` + `@Path` | `@GetMapping(path = "...")` |
 | POST | `@POST` + `@Path` | `@PostMapping(path = "...")` |
-| Parametre chemin | `@PathParam("id")` | `@PathVariable("id")` |
-| Parametre corps | parametre sans annotation | `@RequestBody` |
+| Parametre de chemin | `@PathParam("id")` | `@PathVariable("id")` |
+| Parametre du corps | parametre sans annotation | `@RequestBody` |
 | Reponse | `Response.status(...).entity(...).build()` | `ResponseEntity<>` ou retour direct |
-| Erreur | `WebApplicationException` | `ResponseStatusException` |
+| Gestion d'erreur | `WebApplicationException` | `ResponseStatusException` |
 | Singleton | `@Singleton` | Singleton par defaut |
 | Serialisation | JAXB (XML) | Jackson (JSON) par defaut |
 

@@ -1,27 +1,27 @@
 ---
-title: "FUS3 - Regular Expressions & Pattern Matching"
+title: "FUS3 - Expressions regulieres et recherche de motifs"
 sidebar_position: 3
 ---
 
-# FUS3 - Regular Expressions & Pattern Matching
+# FUS3 - Expressions regulieres et recherche de motifs
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-This TP focuses on regular expressions (regex) for text pattern matching and manipulation:
+Ce TP se concentre sur regular expressions (regex) for text pattern matching and manipulation:
 
-- Understand regex syntax and metacharacters
-- Use regex in scripting languages (Ruby, Perl)
-- Process structured text files (HTML, XML, TeX)
-- Extract and transform data using pattern matching
-- Work with line-oriented text processing
+- Comprendre la syntaxe des regex et les metacaracteres
+- Utiliser les regex dans les langages de script (Ruby, Perl)
+- Traiter des fichiers texte structures (HTML, XML, TeX)
+- Extraire et transformer des donnees par recherche de motifs
+- Travailler avec le traitement de texte oriente lignes
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. Regular Expression Basics
+### 1. Bases des expressions regulieres
 
-Regular expressions are patterns that describe text. They use special metacharacters:
+Les expressions regulieres sont des motifs qui decrivent du texte. Elles utilisent des metacaracteres speciaux :
 
-#### Basic Metacharacters
+#### Metacaracteres de base
 - `.` - Matches any single character (except newline)
 - `^` - Start of line anchor
 - `$` - End of line anchor
@@ -33,18 +33,18 @@ Regular expressions are patterns that describe text. They use special metacharac
 - `|` - Alternation (OR)
 - `()` - Grouping and capture
 
-#### Character Classes
+#### Classes de caracteres
 - `\d` - Digit `[0-9]`
 - `\w` - Word character `[A-Za-z0-9_]`
 - `\s` - Whitespace (space, tab, newline)
 - `\D`, `\W`, `\S` - Negations of above
 
-#### Quantifiers
+#### Quantificateurs
 - `{n}` - Exactly n times
 - `{n,}` - At least n times
 - `{n,m}` - Between n and m times
 
-### 2. Examples
+### 2. Exemples
 
 ```regex
 ^a          # Lines starting with 'a'
@@ -55,9 +55,9 @@ end$        # Lines ending with 'end'
 <[^>]+>     # HTML/XML tags
 ```
 
-### 3. Ruby Regex
+### 3. Regex Ruby
 
-Ruby has first-class regex support:
+Ruby offre un support natif des regex :
 
 ```ruby
 # Match operator
@@ -75,7 +75,7 @@ line.gsub(/old/, "new")     # Replace all occurrences (global)
 /pattern/x    # Extended mode (ignore whitespace, allow comments)
 ```
 
-### 4. Command-Line Options
+### 4. Options en ligne de commande
 
 Ruby's `-n` and `-p` flags enable one-liner scripts:
 
@@ -94,16 +94,16 @@ while gets
 end
 ```
 
-### 5. Practical Applications
+### 5. Applications pratiques
 
-#### Grep Simulation
+#### Simulation de grep
 ```ruby
 #!/usr/bin/ruby -n
 # Print lines matching pattern
 print if $_ =~ /pattern/
 ```
 
-#### Text Transformation
+#### Transformation de texte
 ```ruby
 #!/usr/bin/ruby -p
 # Remove leading whitespace
@@ -113,16 +113,16 @@ $_.sub!(/^\s+/, "")
 $_.gsub!(/\s+/, " ")
 ```
 
-#### HTML/XML Formatting
+#### Formatage HTML/XML
 ```ruby
 #!/usr/bin/ruby -p
 # Insert newlines between tags
 $_.gsub!(/>([^<>]+)</, ">\n<")
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Pattern Matching in C Code
+### Exercice 1 : Recherche de motifs dans du code C
 Use regex to find specific patterns in source code:
 - Function declarations
 - Control structures (while, if, for)
@@ -140,45 +140,45 @@ Use regex to find specific patterns in source code:
 /^\s*\S.*$/          # Non-empty lines
 ```
 
-### Exercise 2: HTML/XML Tag Formatting
+### Exercice 2 : Formatage de balises HTML/XML
 Transform inline tags into properly formatted multi-line structure.
 
 **Script**: `uneBalise.rb` - Adds newlines between tags
 
-### Exercise 3: TeX Processing
+### Exercice 3 : Traitement TeX
 Work with LaTeX source files to extract or transform document structure.
 
 **File**: `f.tex` - Sample LaTeX document
 
-### Exercise 4: HTML Data Extraction
+### Exercice 4 : Extraction de donnees HTML
 Parse HTML tables and extract structured data.
 
 **File**: `etudiants3.html` - HTML table with student information
 
 ## Solutions
 
-See `src/` directory for cleaned, commented implementations:
-- `grep_simulator.rb` - Pattern matching examples
-- `tag_formatter.rb` - HTML/XML tag processing
-- `c_code_analyzer.rb` - Analyze C source patterns
-- `latex_processor.rb` - TeX file manipulation
+Voir le repertoire `src/` pour les implementations commentees :
+- `grep_simulator.rb` - Exemples de recherche de motifs
+- `tag_formatter.rb` - Traitement de balises HTML/XML
+- `c_code_analyzer.rb` - Analyse de motifs dans le code C
+- `latex_processor.rb` - Manipulation de fichiers TeX
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Start simple** - Build complex patterns from simple pieces
-2. **Test incrementally** - Verify each part of regex before combining
-3. **Use raw strings** - In most languages, avoid double-escaping with r"" or //
-4. **Non-greedy matching** - Use `*?` or `+?` to match minimally
-5. **Capture groups** - Use () to extract matched substrings
+1. **Commencer simple** - Construire des motifs complexes a partir de pieces simples
+2. **Tester incrementalement** - Verifier chaque partie de la regex avant de les combiner
+3. **Utiliser les chaines brutes** - Dans la plupart des langages, eviter le double echappement avec r"" ou //
+4. **Correspondance non-greedy** - Utiliser `*?` ou `+?` pour correspondre au minimum
+5. **Groupes de capture** - Utiliser () pour extraire les sous-chaines correspondantes
 
-## Regex Tools & Testing
+## Outils et test de regex
 
 - Online testers: regex101.com, regexr.com
 - Command line: `grep -E` (extended regex), `grep -P` (Perl regex)
 - Ruby: `irb` interactive shell for testing patterns
 - Perl: `perl -ne 'print if /pattern/' file`
 
-## Common Patterns
+## Motifs courants
 
 ### Validate Email
 ```regex
@@ -201,15 +201,15 @@ https?://[^\s<>"{}|\\^`\[\]]+
 //.*$             # // style
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Greediness** - `.*` matches as much as possible; use `.*?` for minimal match
-2. **Not escaping metacharacters** - `\.` for literal dot, `\+` for literal plus
-3. **Forgetting anchors** - `^` and `$` prevent partial matches
-4. **Catastrophic backtracking** - Complex patterns with many alternations can hang
-5. **Character class mistakes** - `[a-z-9]` vs `[a-z0-9]` (hyphen position matters)
+1. **Gourmandise** - `.*` correspond au maximum possible ; utiliser `.*?` pour la correspondance minimale
+2. **Ne pas echapper les metacaracteres** - `\.` pour un point litteral, `\+` pour un plus litteral
+3. **Oublier les ancres** - `^` et `$` empechent les correspondances partielles
+4. **Retour en arriere catastrophique** - Les motifs complexes avec beaucoup d'alternances peuvent bloquer
+5. **Erreurs de classes de caracteres** - `[a-z-9]` vs `[a-z0-9]` (la position du tiret compte)
 
-## Further Reading
+## Pour aller plus loin
 
 - Mastering Regular Expressions (O'Reilly)
 - Ruby regex: https://ruby-doc.org/core/Regexp.html

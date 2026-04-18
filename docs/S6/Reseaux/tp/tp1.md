@@ -1,183 +1,183 @@
 ---
-title: "TP1 - Network Discovery"
+title: "TP1 - Decouverte reseau"
 sidebar_position: 1
 ---
 
-# TP1 - Network Discovery
+# TP1 - Decouverte reseau
 
-Network fundamentals through command-line tools and packet analysis with Wireshark.
+Fondamentaux du reseau a travers les outils en ligne de commande et l'analyse de paquets avec Wireshark.
 
-## Objectives
+## Objectifs
 
-Learn to inspect and analyze network configuration, routing, and protocols at the packet level using Linux networking tools and Wireshark.
+Apprendre a inspecter et analyser la configuration reseau, le routage et les protocoles au niveau paquet en utilisant les outils reseau Linux et Wireshark.
 
-## Topics Covered
+## Themes abordes
 
-1. **IP & Ethernet** - Interface configuration and addressing
-2. **ARP & ICMP** - Address resolution and ping analysis
-3. **IP Fragmentation** - MTU and packet fragmentation
-4. **Internet Services** - Port numbers and service mapping
-5. **DNS** - Domain name resolution
-6. **TCP & HTTP** - Connection establishment and data transfer
+1. **IP & Ethernet** - Configuration des interfaces et adressage
+2. **ARP & ICMP** - Resolution d'adresses et analyse du ping
+3. **Fragmentation IP** - MTU et fragmentation des paquets
+4. **Services Internet** - Numeros de port et correspondance avec les services
+5. **DNS** - Resolution de noms de domaine
+6. **TCP & HTTP** - Etablissement de connexion et transfert de donnees
 
 ---
 
-## Section 1: IP & Ethernet
+## Section 1 : IP & Ethernet
 
-### Commands
+### Commandes
 ```bash
-hostname                    # Machine name
-ifconfig                    # Network interfaces (deprecated)
-ip addr show               # Modern interface listing
-ip route show              # Routing table
+hostname                    # Nom de la machine
+ifconfig                    # Interfaces reseau (obsolete)
+ip addr show               # Liste moderne des interfaces
+ip route show              # Table de routage
 ```
 
-### Key Findings
+### Observations cles
 
-**Q1: Machine identification**
-- Hostname: Machine name on the network
-- Interfaces: `lo` (loopback), `wlp3s0` (WiFi), `enp0s25` (Ethernet), `tun1` (VPN)
-- IPv4 addresses: `127.0.0.1` (loopback), `192.168.x.x` (local network)
-- IPv6 addresses: `::1` (loopback), link-local `fe80::/64`
+**Q1 : Identification de la machine**
+- Hostname : nom de la machine sur le reseau
+- Interfaces : `lo` (loopback), `wlp3s0` (WiFi), `enp0s25` (Ethernet), `tun1` (VPN)
+- Adresses IPv4 : `127.0.0.1` (loopback), `192.168.x.x` (reseau local)
+- Adresses IPv6 : `::1` (loopback), link-local `fe80::/64`
 
-**Q2: MTU (Maximum Transmission Unit)**
-| Interface | MTU | Notes |
-|-----------|-----|-------|
-| lo | 65536 | Loopback - no fragmentation needed |
-| enp0s25, wlp3s0 | 1500 | Standard Ethernet MTU |
-| tun1 | 1420 | VPN tunnel - slightly smaller |
+**Q2 : MTU (Maximum Transmission Unit)**
+| Interface | MTU | Remarques |
+|-----------|-----|-----------|
+| lo | 65536 | Loopback - pas de fragmentation necessaire |
+| enp0s25, wlp3s0 | 1500 | MTU Ethernet standard |
+| tun1 | 1420 | Tunnel VPN - legerement inferieur |
 
-**Q3: Routing table**
+**Q3 : Table de routage**
 ```
 # IPv4
-default via 192.168.43.1 dev wlp3s0        # Default gateway
-10.8.1.0/24 dev tun1                       # VPN network
-192.168.43.0/24 dev wlp3s0                 # Local network
+default via 192.168.43.1 dev wlp3s0        # Passerelle par defaut
+10.8.1.0/24 dev tun1                       # Reseau VPN
+192.168.43.0/24 dev wlp3s0                 # Reseau local
 
 # IPv6
-default dev tun1                           # VPN default route
-fd11:1::/64 dev tun1                       # VPN IPv6 network
+default dev tun1                           # Route par defaut VPN
+fd11:1::/64 dev tun1                       # Reseau IPv6 VPN
 ```
 
-**Routing explanation:**
-- Packets to local network go directly via `wlp3s0`
-- All other traffic goes through default gateway or VPN tunnel
-- VPN routes can override default routing for specific destinations
+**Explication du routage :**
+- Les paquets a destination du reseau local passent directement par `wlp3s0`
+- Tout le reste passe par la passerelle par defaut ou le tunnel VPN
+- Les routes VPN peuvent remplacer le routage par defaut pour certaines destinations
 
-**Q4: Remote machine comparison**
-Connected to VPS `vulpinecitrus.info` to compare network setup:
-- More interfaces: `eth0` (public), `docker0`, `tun0`, multiple `veth*` (Docker containers)
-- Public IPv4: `51.91.58.45`
-- Public IPv6: `2001:41d0:305:2100::4547`
-- Docker creates bridge networks for container isolation
+**Q4 : Comparaison avec une machine distante**
+Connexion au VPS `vulpinecitrus.info` pour comparer la configuration reseau :
+- Plus d'interfaces : `eth0` (publique), `docker0`, `tun0`, plusieurs `veth*` (conteneurs Docker)
+- IPv4 publique : `51.91.58.45`
+- IPv6 publique : `2001:41d0:305:2100::4547`
+- Docker cree des reseaux bridge pour l'isolation des conteneurs
 
 ---
 
-## Section 2: ARP & ICMP Analysis
+## Section 2 : Analyse ARP et ICMP
 
 ### ARP (Address Resolution Protocol)
 
-**Purpose:** Map IP addresses to MAC addresses on local network.
+**Role :** Associer les adresses IP aux adresses MAC sur le reseau local.
 
-**Q5: ARP table**
+**Q5 : Table ARP**
 ```bash
 arp -a
 ```
 
-Shows mappings like:
+Affiche des associations comme :
 ```
 192.168.43.1    ether   0c:70:4a:f8:8a:47   C   wlp3s0
 ```
 
-**Q7: ARP packet structure** (captured after clearing ARP cache)
+**Q7 : Structure du paquet ARP** (capture apres purge du cache ARP)
 ```
 Ethernet type: 0x0806 (ARP)
 Hardware type: 1 (Ethernet)
 Protocol type: 0x0800 (IPv4)
-Hardware size: 6 (MAC address length)
-Protocol size: 4 (IPv4 address length)
+Hardware size: 6 (taille adresse MAC)
+Protocol size: 4 (taille adresse IPv4)
 Opcode: 1 (request) / 2 (reply)
 Sender MAC: 0c:70:4a:f8:8a:47
 Sender IP: 192.168.43.1
-Target MAC: 00:00:00:00:00:00 (broadcast for request)
+Target MAC: 00:00:00:00:00:00 (broadcast pour la requete)
 Target IP: 192.168.43.251
 ```
 
-**Process:**
-1. Phone/AP asks: "Who has 192.168.43.251? Tell 192.168.43.1"
-2. Laptop replies: "192.168.43.251 is at a4:4e:31:08:ac:84"
+**Deroulement :**
+1. Le telephone/AP demande : "Qui a 192.168.43.251 ? Dites-le a 192.168.43.1"
+2. Le laptop repond : "192.168.43.251 se trouve a a4:4e:31:08:ac:84"
 
 ### ICMP (Internet Control Message Protocol)
 
-**Q6: Ping analysis**
+**Q6 : Analyse du ping**
 ```bash
 ping -c 4 1.1.1.1
 ```
 
-Captured on VPN interface for cleaner traffic.
+Capture sur l'interface VPN pour un trafic plus propre.
 
-**ICMP Echo Request/Reply structure:**
+**Structure ICMP Echo Request/Reply :**
 ```
 Type: 8 (Echo Request) / 0 (Echo Reply)
 Code: 0
-Checksum: 2 bytes
-Identifier: 2 bytes (BE and LE)
-Sequence number: 2 bytes
-Timestamp: 8 bytes
-Data: 48 bytes (echoed back in reply)
+Checksum: 2 octets
+Identifier: 2 octets (BE et LE)
+Sequence number: 2 octets
+Timestamp: 8 octets
+Data: 48 octets (renvoyes a l'identique dans le Reply)
 ```
 
-**Key points:**
-- ICMP is encapsulated in IP packets (IP protocol number: 1)
-- Echo request/reply used by `ping` to test connectivity
-- Round-trip time (RTT) measured between request and reply
+**Points cles :**
+- ICMP est encapsule dans les paquets IP (numero de protocole IP : 1)
+- Echo Request/Reply est utilise par `ping` pour tester la connectivite
+- Le RTT (Round-Trip Time) est mesure entre la requete et la reponse
 
 ---
 
-## Section 3: IP Fragmentation
+## Section 3 : Fragmentation IP
 
-**Q14: Testing fragmentation**
+**Q14 : Test de la fragmentation**
 ```bash
-ping -s 2000 1.1.1.1    # Packet size > MTU (1420)
+ping -s 2000 1.1.1.1    # Taille du paquet > MTU (1420)
 ```
 
-**Q15: Fragment analysis in Wireshark**
+**Q15 : Analyse des fragments dans Wireshark**
 
-First fragment:
+Premier fragment :
 ```
 Flags: More Fragments = 1
 Fragment Offset: 0
 Total Length: 1420
-Identification: 0x1234 (same for all fragments)
+Identification: 0x1234 (identique pour tous les fragments)
 ```
 
-Last fragment:
+Dernier fragment :
 ```
 Flags: More Fragments = 0
 Fragment Offset: 1400
 Total Length: 628
-Identification: 0x1234 (matches first fragment)
+Identification: 0x1234 (correspond au premier fragment)
 ```
 
-**Q16: Differences between fragments**
+**Q16 : Differences entre les fragments**
 - Total length (1420 vs 628)
-- More Fragments flag (1 vs 0)
+- Flag More Fragments (1 vs 0)
 - Fragment offset (0 vs 1400)
-- Checksum (recalculated for each fragment)
-- Same identification field to group fragments
+- Checksum (recalcule pour chaque fragment)
+- Meme champ identification pour regrouper les fragments
 
-**Why fragmentation happens:**
-When packet size exceeds MTU, IP layer splits it into smaller fragments that fit within MTU. Receiving host reassembles using identification and offset fields.
+**Pourquoi la fragmentation se produit :**
+Quand la taille du paquet depasse le MTU, la couche IP le decoupe en fragments plus petits qui tiennent dans le MTU. L'hote recepteur reassemble les fragments grace aux champs identification et offset.
 
 ---
 
-## Section 4: Internet Services
+## Section 4 : Services Internet
 
-**Q17: Service-to-port mapping**
+**Q17 : Correspondance service-port**
 
-File: `/etc/services`
+Fichier : `/etc/services`
 
-Common services:
+Services courants :
 ```
 ftp         20/tcp, 21/tcp      # File Transfer Protocol
 ssh         22/tcp              # Secure Shell
@@ -191,180 +191,180 @@ imap        143/tcp             # Internet Message Access
 https       443/tcp             # HTTP over TLS/SSL
 ```
 
-**Q18: Active connections**
+**Q18 : Connexions actives**
 ```bash
-netstat -tuln    # Show TCP/UDP listening ports
-netstat -tun     # Show established connections
+netstat -tuln    # Afficher les ports TCP/UDP en ecoute
+netstat -tun     # Afficher les connexions etablies
 ```
 
-Sample output shows:
-- Many HTTPS connections (port 443) to various services
-- HTTP connection (port 80) to package mirrors
-- DHCP client on UDP bootpc port
-- Connections in states: ESTABLISHED, TIME_WAIT
+La sortie montre :
+- De nombreuses connexions HTTPS (port 443) vers divers services
+- Une connexion HTTP (port 80) vers des miroirs de paquets
+- Un client DHCP sur le port UDP bootpc
+- Des connexions dans les etats : ESTABLISHED, TIME_WAIT
 
-**Connection states:**
-- ESTABLISHED: Active connection
-- TIME_WAIT: Connection closed, waiting to ensure remote received FIN
-- LISTEN: Server waiting for connections
+**Etats de connexion :**
+- ESTABLISHED : connexion active
+- TIME_WAIT : connexion fermee, en attente pour s'assurer que le distant a bien recu le FIN
+- LISTEN : serveur en attente de connexions
 
 ---
 
-## Section 5: DNS & Network Testing
+## Section 5 : DNS et tests reseau
 
-**Q19: Ping tests to different locations**
+**Q19 : Tests de ping vers differents emplacements**
 ```bash
-ping google.com           # ~142ms, 0.8% loss
-ping namibia-server.com   # ~283ms, 0% loss
-ping victoria.ac.nz       # ~135ms, 1.2% loss
+ping google.com           # ~142ms, 0.8% de perte
+ping namibia-server.com   # ~283ms, 0% de perte
+ping victoria.ac.nz       # ~135ms, 1.2% de perte
 ```
 
-**Q20: Traceroute analysis**
+**Q20 : Analyse du traceroute**
 ```bash
-traceroute google.com     # 11 hops through ISP to Google
-traceroute namibia-site   # 22 hops via international backbone
-traceroute victoria.ac.nz # 12 hops through CDN
+traceroute google.com     # 11 sauts via le FAI jusqu'a Google
+traceroute namibia-site   # 22 sauts via les backbones internationaux
+traceroute victoria.ac.nz # 12 sauts via CDN
 ```
 
-**Insights:**
-- More hops = longer latency (generally)
-- Some hops don't respond (`* * *`) - firewalls blocking ICMP
-- ISP routes through peering points (Cogent, etc.)
-- CDNs reduce hops (New Zealand site actually served from Paris)
+**Observations :**
+- Plus de sauts = plus de latence (en general)
+- Certains sauts ne repondent pas (`* * *`) - pare-feu bloquant ICMP
+- Le FAI route via des points de peering (Cogent, etc.)
+- Les CDN reduisent le nombre de sauts (le site neo-zelandais est en fait servi depuis Paris)
 
-**Q21: DNS lookups**
+**Q21 : Lookups DNS**
 ```bash
 nslookup www.free.fr
 nslookup www.insa-rennes.fr
 ```
 
-Results:
-- `www.free.fr`: `212.27.48.10`, `2a01:e0c:1::1`
-- `www.insa-rennes.fr`: `193.52.94.51` (no IPv6)
+Resultats :
+- `www.free.fr` : `212.27.48.10`, `2a01:e0c:1::1`
+- `www.insa-rennes.fr` : `193.52.94.51` (pas d'IPv6)
 
 ---
 
-## Section 6: TCP & HTTP
+## Section 6 : TCP & HTTP
 
-**Q22-30: TCP handshake analysis**
+**Q22-30 : Analyse du handshake TCP**
 
-Captured HTTPS connection to analyze TCP three-way handshake.
+Capture d'une connexion HTTPS pour analyser le three-way handshake TCP.
 
 ### Three-Way Handshake
 
-**Packet 1: SYN**
+**Paquet 1 : SYN**
 ```
-Client → Server
+Client -> Serveur
 Flags: SYN
-Seq: 238730258 (random initial)
+Seq: 238730258 (initial aleatoire)
 Ack: 0
 Window: 64860
 Options: MSS, SACK, timestamps, window scale
 ```
 
-**Packet 2: SYN-ACK**
+**Paquet 2 : SYN-ACK**
 ```
-Server → Client
+Serveur -> Client
 Flags: SYN, ACK
-Seq: 1347695507 (server's random initial)
-Ack: 238730259 (client seq + 1)
+Seq: 1347695507 (initial aleatoire du serveur)
+Ack: 238730259 (seq client + 1)
 Window: 64296
 ```
 
-**Packet 3: ACK**
+**Paquet 3 : ACK**
 ```
-Client → Server
+Client -> Serveur
 Flags: ACK
 Seq: 238730259
-Ack: 1347695508 (server seq + 1)
+Ack: 1347695508 (seq serveur + 1)
 Window: 64896
 ```
 
-### Key Observations
+### Observations cles
 
-**Q22:** HTTPS uses TCP port 443
+**Q22 :** HTTPS utilise le port TCP 443
 
-**Q23:** TCP header is 32 bytes (20 base + 12 options)
+**Q23 :** L'en-tete TCP fait 32 octets (20 de base + 12 d'options)
 
-**Q24:** Segment length = 0 for all handshake packets (no data, only control)
+**Q24 :** La longueur du segment est 0 pour tous les paquets du handshake (pas de donnees, uniquement du controle)
 
-**Q25:** Wireshark shows relative sequence numbers starting at 0 for readability
+**Q25 :** Wireshark affiche des numeros de sequence relatifs commencant a 0 pour la lisibilite
 
-**Q26:** Ethernet frame (not visible in VPN tunnel):
+**Q26 :** Trame Ethernet (non visible dans le tunnel VPN) :
 ```
 Src MAC: a4:4e:31:08:ac:84
 Dst MAC: 0c:70:4a:f8:8a:47
 Type: 0x0800 (IPv4)
 ```
 
-**Q27:** MSS (Maximum Segment Size) = min(client window, server window) = 64296
+**Q27 :** MSS (Maximum Segment Size) = min(fenetre client, fenetre serveur) = 64296
 
-**Q28:** Final ACK completes handshake with Seq=238730259, Ack=1347695508
+**Q28 :** Le dernier ACK complete le handshake avec Seq=238730259, Ack=1347695508
 
-**Q29:** Connection established, ready for data transfer
+**Q29 :** La connexion est etablie, prete pour le transfert de donnees
 
-**Q30:** TCP ensures reliable, ordered delivery through:
-- Sequence numbers (track byte order)
-- Acknowledgments (confirm receipt)
-- Retransmission on timeout
-- Flow control via window size
-
----
-
-## Tools & Commands Summary
-
-| Tool | Purpose | Example |
-|------|---------|---------|
-| `hostname` | Machine name | `hostname` |
-| `ip addr` | Interface info | `ip addr show wlp3s0` |
-| `ip route` | Routing table | `ip route show` |
-| `arp` | ARP cache | `arp -a` |
-| `ping` | Test connectivity | `ping -c 4 google.com` |
-| `traceroute` | Trace route | `traceroute google.com` |
-| `netstat` | Connections | `netstat -tuln` |
-| `nslookup` | DNS lookup | `nslookup google.com` |
-| `dig` | DNS details | `dig google.com` |
-| `wireshark` | Packet capture | Start GUI, select interface |
+**Q30 :** TCP assure une livraison fiable et ordonnee grace a :
+- Les numeros de sequence (suivi de l'ordre des octets)
+- Les accuses de reception (confirmation de reception)
+- La retransmission en cas de timeout
+- Le controle de flux via la taille de fenetre
 
 ---
 
-## Wireshark Filters
+## Resume des outils et commandes
+
+| Outil | Role | Exemple |
+|-------|------|---------|
+| `hostname` | Nom de la machine | `hostname` |
+| `ip addr` | Info interfaces | `ip addr show wlp3s0` |
+| `ip route` | Table de routage | `ip route show` |
+| `arp` | Cache ARP | `arp -a` |
+| `ping` | Test de connectivite | `ping -c 4 google.com` |
+| `traceroute` | Tracer la route | `traceroute google.com` |
+| `netstat` | Connexions | `netstat -tuln` |
+| `nslookup` | Lookup DNS | `nslookup google.com` |
+| `dig` | Details DNS | `dig google.com` |
+| `wireshark` | Capture de paquets | Lancer l'interface, selectionner l'interface |
+
+---
+
+## Filtres Wireshark
 
 ```
-arp                         # ARP packets only
-icmp                        # ICMP packets
-tcp.flags.syn == 1          # TCP SYN packets
-tcp.port == 443             # HTTPS traffic
-ip.addr == 192.168.1.1      # Specific IP
-tcp.stream eq 0             # Follow TCP stream
+arp                         # Paquets ARP uniquement
+icmp                        # Paquets ICMP
+tcp.flags.syn == 1          # Paquets TCP SYN
+tcp.port == 443             # Trafic HTTPS
+ip.addr == 192.168.1.1      # IP specifique
+tcp.stream eq 0             # Suivre un flux TCP
 ```
 
 ---
 
-## Key Takeaways
+## Points a retenir
 
-1. **Layered architecture**: Each protocol layer adds its own header
-2. **ARP is local**: Only works on same network segment
-3. **ICMP for diagnostics**: Ping, traceroute rely on ICMP
-4. **Fragmentation overhead**: Avoid when possible (Path MTU Discovery)
-5. **TCP reliability**: Handshake, sequence numbers, ACKs ensure delivery
-6. **Port numbers**: Identify specific services on a host
-7. **Routing decisions**: Based on destination IP and routing table
-
----
-
-## Further Exploration
-
-- Capture DNS queries with Wireshark (UDP port 53)
-- Analyze HTTP GET/POST requests (TCP port 80)
-- Observe TCP retransmissions under packet loss
-- Compare TCP window scaling with different servers
-- Examine IPv6 Neighbor Discovery (replaces ARP for IPv6)
+1. **Architecture en couches** : chaque couche de protocole ajoute son propre en-tete
+2. **ARP est local** : fonctionne uniquement sur le meme segment reseau
+3. **ICMP pour le diagnostic** : ping et traceroute reposent sur ICMP
+4. **Surcout de la fragmentation** : a eviter quand possible (Path MTU Discovery)
+5. **Fiabilite TCP** : handshake, numeros de sequence et ACK assurent la livraison
+6. **Numeros de port** : identifient les services specifiques sur un hote
+7. **Decisions de routage** : basees sur l'IP de destination et la table de routage
 
 ---
 
-## Files in This Directory
+## Pour aller plus loin
 
-- `CR.md` - Original lab report (French)
-- `tp(11).pdf` - Assignment instructions
-- `TP1_GONZALEZ.pdf` - Completed report
+- Capturer des requetes DNS avec Wireshark (port UDP 53)
+- Analyser des requetes HTTP GET/POST (port TCP 80)
+- Observer les retransmissions TCP en cas de perte de paquets
+- Comparer le window scaling TCP avec differents serveurs
+- Examiner le Neighbor Discovery IPv6 (remplace ARP pour IPv6)
+
+---
+
+## Fichiers dans ce repertoire
+
+- `CR.md` - Compte rendu de TP original (francais)
+- `tp(11).pdf` - Enonce du TP
+- `TP1_GONZALEZ.pdf` - Rapport complete

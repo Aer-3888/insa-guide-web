@@ -1,28 +1,28 @@
 ---
-title: "FUS4 - Genealogy Data Parsing (GEDCOM)"
+title: "FUS4 - Analyse de donnees genealogiques (GEDCOM)"
 sidebar_position: 4
 ---
 
-# FUS4 - Genealogy Data Parsing (GEDCOM)
+# FUS4 - Analyse de donnees genealogiques (GEDCOM)
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-This TP introduces parsing structured data formats using scripting languages:
+Ce TP introduit parsing structured data formats using scripting languages:
 
-- Understand hierarchical data formats (GEDCOM)
-- Parse and transform data with Ruby/Perl
-- Work with stacks for managing nested structures
-- Convert between data formats (GEDCOM → XML)
-- Handle file I/O with error checking
+- Comprendre les formats de donnees hierarchiques (GEDCOM)
+- Analyser et transformer des donnees avec Ruby/Perl
+- Travailler avec des piles pour gerer les structures imbriquees
+- Convertir entre formats de donnees (GEDCOM → XML)
+- Gerer les E/S fichier avec verification d'erreurs
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. GEDCOM Format
+### 1. Format GEDCOM
 
-GEDCOM (GEnealogical Data COMmunication) is a standard format for genealogical data exchange.
+GEDCOM (GEnealogical Data COMmunication) est un format standard pour l'echange de donnees genealogiques.
 
 #### Structure
-Each line has three parts:
+Chaque ligne comporte trois parties :
 ```
 <level> <tag> <optional_value>
 ```
@@ -37,7 +37,7 @@ Example:
 2 PLAC Cherrueix...      # Level 2: Birth place
 ```
 
-#### Key Tags
+#### Balises cles
 - `INDI` - Individual person
 - `FAM` - Family unit
 - `NAME` - Person's name (format: Given/SURNAME/)
@@ -55,9 +55,9 @@ Identifiers use @ID@ syntax:
 1 FAMS @142074@          # Reference to family 142074
 ```
 
-### 2. XML Conversion
+### 2. Conversion XML
 
-The goal is to convert GEDCOM's level-based format to hierarchical XML:
+L'objectif est de convertir le format GEDCOM base sur les niveaux en XML hierarchique :
 
 **GEDCOM**:
 ```gedcom
@@ -79,9 +79,9 @@ The goal is to convert GEDCOM's level-based format to hierarchical XML:
 </INDI>
 ```
 
-### 3. Stack-Based Parsing
+### 3. Analyse basee sur une pile
 
-To handle nested structures, use a stack to track open tags:
+Pour gerer les structures imbriquees, utiliser une pile pour suivre les balises ouvertes :
 
 ```ruby
 tag_stack = []
@@ -99,7 +99,7 @@ while last_level > current_level
 end
 ```
 
-### 4. Ruby File I/O
+### 4. E/S fichier Ruby
 
 ```ruby
 # Open file for reading
@@ -122,7 +122,7 @@ end
 file.close
 ```
 
-### 5. Regular Expressions for Parsing
+### 5. Expressions regulieres pour l'analyse
 
 ```ruby
 # Extract level and remainder
@@ -143,15 +143,15 @@ if line =~ /NAME ([\w\s]+)\/([\w\-]+)\//
 end
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Parse GEDCOM to XML
-Write a converter that transforms GEDCOM files to XML format.
+### Exercice 1 : Convertir GEDCOM en XML
+Ecrire un convertisseur qui transforme les fichiers GEDCOM en format XML.
 
 **Input**: `.ged` files (GassotRed.ged, mouche.ged)
-**Output**: XML with proper nesting and attributes
+**Sortie** : XML with proper nesting and attributes
 
-**Five line classes**:
+**Cinq classes de lignes** :
 
 1. **Class 1: Simple tag + value**
    - `SEX M`, `DATE 1754`, `PLAC Paris`
@@ -173,43 +173,43 @@ Write a converter that transforms GEDCOM files to XML format.
    - Similar to Class 1 but different tags
    - Format: `<tag>data</tag>`
 
-### Exercise 2: Generate HTML Report
-Transform the XML or GEDCOM into human-readable HTML with CSS styling.
+### Exercice 2 : Generer un rapport HTML
+Transformer le XML ou le GEDCOM en HTML lisible avec du style CSS.
 
-**Output**: Family tree visualization
+**Sortie** : Family tree visualization
 
-### Exercise 3: Data Validation
-Check GEDCOM files for consistency:
-- All referenced IDs exist
-- Dates are valid
-- Required fields are present
+### Exercice 3 : Validation des donnees
+Verifier la coherence des fichiers GEDCOM :
+- Tous les ID references existent
+- Les dates sont valides
+- Les champs obligatoires sont presents
 
 ## Solutions
 
-See `src/` directory for cleaned, commented implementations:
-- `ged2xml.rb` - GEDCOM to XML converter
-- `ged2html.rb` - GEDCOM to HTML reporter
-- `ged_validator.rb` - GEDCOM file validator
+Voir le repertoire `src/` pour les implementations commentees :
+- `ged2xml.rb` - Convertisseur GEDCOM vers XML
+- `ged2html.rb` - Generateur de rapports HTML depuis GEDCOM
+- `ged_validator.rb` - Validateur de fichiers GEDCOM
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Hierarchical data needs careful tracking** - Use stacks or counters
-2. **Regex is essential for parsing** - Learn capture groups
-3. **Handle errors gracefully** - Check file existence, handle EOFError
-4. **Test with small datasets** - Use GassotRed.ged before mouche.ged
-5. **Close tags properly** - Don't leave unclosed tags at EOF
+1. **Les donnees hierarchiques necessitent un suivi attentif** - Utiliser des piles ou des compteurs
+2. **Les regex sont essentielles pour l'analyse** - Apprendre les groupes de capture
+3. **Gerer les erreurs proprement** - Verifier l'existence des fichiers, gerer EOFError
+4. **Tester avec de petits jeux de donnees** - Utiliser GassotRed.ged avant mouche.ged
+5. **Fermer les balises correctement** - Ne pas laisser de balises non fermees en fin de fichier
 
-## Parsing Strategy
+## Strategie d'analyse
 
-1. **Read line by line** - Don't load entire file into memory
-2. **Extract level first** - Determines nesting depth
-3. **Match patterns by priority** - Most specific first
-4. **Track state** - Remember previous level, open tags
-5. **Close tags when level decreases** - Pop from stack
+1. **Lire ligne par ligne** - Ne pas charger le fichier entier en memoire
+2. **Extraire le niveau d'abord** - Determine la profondeur d'imbrication
+3. **Correspondre les motifs par priorite** - Le plus specifique d'abord
+4. **Suivre l'etat** - Retenir le niveau precedent, les balises ouvertes
+5. **Fermer les balises quand le niveau diminue** - Depiler
 
-## Common Patterns
+## Motifs courants
 
-### Argument Validation
+### Validation des arguments
 ```ruby
 if ARGV.size != 2
     abort "Usage: #{$0} input.ged output.xml"
@@ -223,7 +223,7 @@ unless File.exist?(filename)
 end
 ```
 
-### Safe File Operations
+### Operations securisees sur les fichiers
 ```ruby
 begin
     file = File.open(filename, "r")
@@ -233,15 +233,15 @@ ensure
 end
 ```
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Not closing tags at EOF** - Always flush the stack
-2. **Incorrect level tracking** - Off-by-one errors in nesting
-3. **Greedy regex** - `.*` can match too much
-4. **Not handling edge cases** - Empty names, missing dates
-5. **Forgetting to escape XML** - `<`, `>`, `&` need escaping
+1. **Ne pas fermer les balises en fin de fichier** - Toujours vider la pile
+2. **Suivi de niveau incorrect** - Erreurs de decalage dans l'imbrication
+3. **Regex gourmande** - `.*` peut correspondre a trop de texte
+4. **Ne pas gerer les cas limites** - Noms vides, dates manquantes
+5. **Oublier d'echapper le XML** - `<`, `>`, `&` necessitent un echappement
 
-## Further Reading
+## Pour aller plus loin
 
 - GEDCOM 5.5 specification
 - Ruby regex: https://ruby-doc.org/core/Regexp.html
@@ -249,20 +249,20 @@ end
 - Stack data structure and applications
 - Recursive descent parsing
 
-## Data Format Notes
+## Notes sur les formats de donnees
 
-### GEDCOM Naming Convention
-Names in GEDCOM use slash delimiters:
+### Convention de nommage GEDCOM
+Les noms en GEDCOM utilisent des delimiteurs slash :
 ```
 Given Names/SURNAME/
 ```
 
-### XML Attributes vs Elements
-- Use attributes for IDs and references: `ID="123"`, `REF="456"`
-- Use elements for content: `<DATE>1754</DATE>`
+### Attributs XML vs elements
+- Utiliser les attributs pour les ID et les references : `ID="123"`, `REF="456"`
+- Utiliser les elements pour le contenu : `<DATE>1754</DATE>`
 
 ### Indentation
-Maintain proper XML indentation matching GEDCOM levels:
+Maintenir une indentation XML correcte correspondant aux niveaux GEDCOM :
 - Level 0 → No indent
 - Level 1 → One tab
 - Level 2 → Two tabs

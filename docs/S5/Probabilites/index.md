@@ -1,9 +1,9 @@
 ---
-title: "Probabilites -- Course Guide"
+title: "Probabilites -- Guide de cours"
 sidebar_position: 0
 ---
 
-# Probabilites -- Course Guide
+# Probabilites -- Guide de cours
 
 - [Guide](guide/)
 - [Exercices](exercises/)

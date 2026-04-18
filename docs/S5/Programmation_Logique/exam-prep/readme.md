@@ -24,7 +24,7 @@ L'examen de Programmation Logique suit un format regulier (analyse de 12 ans d'a
 | Comprehension de predicat mystere | Frequent | Deviner ce que fait un predicat donne |
 | Impact du cut | Frequent | Que se passe-t-il si on ajoute/enleve un cut ? |
 | Predicat recursif avec accumulateur | Moyen | Transformer un predicat naif en version avec accumulateur |
-| Negation et double negation | Moyen | Division relationnelle, NOT EXISTS |
+| Negation et double negation | Moyen | Division relationnelle, `NOT EXISTS` |
 | Interpreteur en Prolog | Recent (2024) | Ecrire un interpreteur de langage a pile |
 
 ## Strategie de resolution
@@ -97,7 +97,7 @@ Regles essentielles :
 Voir les fichiers suivants pour les corrections completes :
 - [annale-2024.md](/S5/Programmation_Logique/exam-prep/annale-2024) -- Annale 2024 (films, mystere, interpreteur)
 - [annale-2023.md](/S5/Programmation_Logique/exam-prep/annale-2023) -- Annale 2023 (listes, COVID)
-- [annale-recurrent-patterns.md](/S5/Programmation_Logique/exam-prep/annale-recurrent-patterns) -- Patterns recurrents toutes annales
+- [annale-recurrent-patterns.md](/S5/Programmation_Logique/exam-prep/annale-recurrent-patterns) -- Motifs recurrents toutes annales
 
 ## Priorites de revision
 
@@ -111,7 +111,7 @@ Voir les fichiers suivants pour les corrections completes :
 ### Important (apparait souvent)
 
 5. **Trace d'execution** : suivre le modele 4 ports
-6. **Cut** : green vs red, impact sur l'arbre de recherche
+6. **Cut** : vert vs rouge, impact sur l'arbre de recherche
 7. **findall** : collecter toutes les solutions
 8. **Arithmetique** : `is/2`, comparaisons, accumulateurs
 
@@ -120,7 +120,7 @@ Voir les fichiers suivants pour les corrections completes :
 9. **Arbres** : representation, parcours, ABR
 10. **Peano** : addition, multiplication par unification
 11. **Division relationnelle** : double negation
-12. **Termes construits** : pattern matching sur structures complexes
+12. **Termes construits** : filtrage par motif sur structures complexes
 
 ## Erreurs a eviter le jour de l'examen
 

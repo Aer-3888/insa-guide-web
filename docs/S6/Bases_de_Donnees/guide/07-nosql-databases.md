@@ -44,9 +44,9 @@ Dans un systeme distribue, il est **impossible** de garantir simultanement :
 
 ```mermaid
 flowchart TD
-    C["Consistency (C)\nTous les noeuds voient\nles memes donnees"]
-    A["Availability (A)\nChaque requete\nobtient une reponse"]
-    P["Partition tolerance (P)\nFonctionne malgre\ncoupure reseau"]
+    C["Coherence (C)\nTous les noeuds voient\nles memes donnees"]
+    A["Disponibilite (A)\nChaque requete\nobtient une reponse"]
+    P["Tolerance aux partitions (P)\nFonctionne malgre\ncoupure reseau"]
     C --- A
     A --- P
     P --- C
@@ -182,7 +182,7 @@ RETURN a.nom, b.nom
 | Cas d'usage | Pourquoi |
 |-------------|---------|
 | Reseau social | Amis, followers, recommandations |
-| Detection de fraude | Patterns de connexions suspectes |
+| Detection de fraude | Motifs de connexions suspectes |
 | Recommandation | "Les gens qui aiment X aiment aussi Y" |
 | Genealogie | Ancetres, descendants |
 | Transport | Plus court chemin, accessibilite |
@@ -218,7 +218,7 @@ db.etudiants.find()
 // Filtrer (WHERE)
 db.etudiants.find({ age: { $gt: 21 } })
 db.etudiants.find({ cours: "BD" })
-db.etudiants.find({ "adresse.ville": "Rennes" })  // dot notation
+db.etudiants.find({ "adresse.ville": "Rennes" })  // notation pointee
 
 // Projection (SELECT colonnes)
 db.etudiants.find({ age: { $gt: 21 } }, { nom: 1, age: 1, _id: 0 })

@@ -1,298 +1,298 @@
 ---
-title: "Regular Expressions"
+title: "Expressions regulieres"
 sidebar_position: 7
 ---
 
-# Regular Expressions
+# Expressions regulieres
 
-## Overview
+## Apercu
 
-Regular expressions (regex) are patterns that describe text. They are used for searching, matching, and transforming text. Regex knowledge is critical for the FUS exam -- it appears in nearly every past paper, usually combined with `grep`, `sed`, or `awk`.
+Les expressions regulieres (regex) sont des motifs qui decrivent du texte. Elles sont utilisees pour rechercher, filtrer et transformer du texte. La connaissance des regex est essentielle pour l'examen FUS -- elles apparaissent dans quasiment tous les sujets d'annales, generalement combinees avec `grep`, `sed` ou `awk`.
 
-## Metacharacters
+## Metacaracteres
 
-### Anchors
-| Pattern | Meaning | Example |
-|---------|---------|---------|
-| `^` | Start of line | `^Hello` matches lines starting with "Hello" |
-| `$` | End of line | `world$` matches lines ending with "world" |
-| `^$` | Empty line | Matches lines with no content |
-| `\b` | Word boundary | `\bcat\b` matches "cat" but not "concatenate" |
+### Ancres
+| Motif | Signification | Exemple |
+|-------|---------------|---------|
+| `^` | Debut de ligne | `^Hello` correspond aux lignes commencant par "Hello" |
+| `$` | Fin de ligne | `world$` correspond aux lignes finissant par "world" |
+| `^$` | Ligne vide | Correspond aux lignes sans contenu |
+| `\b` | Frontiere de mot | `\bcat\b` correspond a "cat" mais pas a "concatenate" |
 
-### Character Classes
-| Pattern | Meaning | Example |
-|---------|---------|---------|
-| `.` | Any character (except newline) | `a.c` matches "abc", "a1c", "a-c" |
-| `[abc]` | Any of a, b, or c | `[aeiou]` matches vowels |
-| `[^abc]` | NOT a, b, or c | `[^0-9]` matches non-digits |
-| `[a-z]` | Range a to z | `[A-Za-z]` matches any letter |
-| `[0-9]` | Any digit | `[0-9]+` matches one or more digits |
+### Classes de caracteres
+| Motif | Signification | Exemple |
+|-------|---------------|---------|
+| `.` | N'importe quel caractere (sauf retour a la ligne) | `a.c` correspond a "abc", "a1c", "a-c" |
+| `[abc]` | Un parmi a, b ou c | `[aeiou]` correspond aux voyelles |
+| `[^abc]` | PAS a, b ou c | `[^0-9]` correspond aux non-chiffres |
+| `[a-z]` | Intervalle de a a z | `[A-Za-z]` correspond a toute lettre |
+| `[0-9]` | N'importe quel chiffre | `[0-9]+` correspond a un ou plusieurs chiffres |
 
-### Shorthand Classes (Perl-style)
-| Pattern | Equivalent | Meaning |
-|---------|------------|---------|
-| `\d` | `[0-9]` | Digit |
-| `\D` | `[^0-9]` | Non-digit |
-| `\w` | `[A-Za-z0-9_]` | Word character |
-| `\W` | `[^A-Za-z0-9_]` | Non-word character |
-| `\s` | `[ \t\n\r]` | Whitespace |
-| `\S` | `[^ \t\n\r]` | Non-whitespace |
+### Classes raccourcies (style Perl)
+| Motif | Equivalent | Signification |
+|-------|------------|---------------|
+| `\d` | `[0-9]` | Chiffre |
+| `\D` | `[^0-9]` | Non-chiffre |
+| `\w` | `[A-Za-z0-9_]` | Caractere de mot |
+| `\W` | `[^A-Za-z0-9_]` | Non-caractere de mot |
+| `\s` | `[ \t\n\r]` | Espace blanc |
+| `\S` | `[^ \t\n\r]` | Non-espace blanc |
 
-### Quantifiers
-| Pattern | Meaning | Example |
-|---------|---------|---------|
-| `*` | Zero or more | `ab*c` matches "ac", "abc", "abbc" |
-| `+` | One or more | `ab+c` matches "abc", "abbc" but not "ac" |
-| `?` | Zero or one | `colou?r` matches "color" and "colour" |
-| `{n}` | Exactly n | `a{3}` matches "aaa" |
-| `{n,}` | At least n | `a{2,}` matches "aa", "aaa", "aaaa" |
-| `{n,m}` | Between n and m | `a{2,4}` matches "aa", "aaa", "aaaa" |
+### Quantificateurs
+| Motif | Signification | Exemple |
+|-------|---------------|---------|
+| `*` | Zero ou plus | `ab*c` correspond a "ac", "abc", "abbc" |
+| `+` | Un ou plus | `ab+c` correspond a "abc", "abbc" mais pas "ac" |
+| `?` | Zero ou un | `colou?r` correspond a "color" et "colour" |
+| `{n}` | Exactement n | `a{3}` correspond a "aaa" |
+| `{n,}` | Au moins n | `a{2,}` correspond a "aa", "aaa", "aaaa" |
+| `{n,m}` | Entre n et m | `a{2,4}` correspond a "aa", "aaa", "aaaa" |
 
-### Greedy vs Non-Greedy
-| Pattern | Behavior | Example on `<b>bold</b>` |
-|---------|----------|--------------------------|
-| `<.*>` | Greedy (match as much as possible) | Matches `<b>bold</b>` |
-| `<.*?>` | Non-greedy (match as little as possible) | Matches `<b>` |
+### Greedy vs Non-greedy
+| Motif | Comportement | Exemple sur `<b>bold</b>` |
+|-------|--------------|---------------------------|
+| `<.*>` | Greedy (correspondre le plus possible) | Correspond a `<b>bold</b>` |
+| `<.*?>` | Non-greedy (correspondre le moins possible) | Correspond a `<b>` |
 
-### Grouping and Alternation
-| Pattern | Meaning | Example |
-|---------|---------|---------|
-| `(abc)` | Group and capture | `(cat\|dog)` matches "cat" or "dog" |
-| `\|` | OR (alternation) | `yes\|no` matches "yes" or "no" |
-| `\1` | Back-reference to group 1 | `(word)\1` matches "wordword" |
+### Groupes et alternation
+| Motif | Signification | Exemple |
+|-------|---------------|---------|
+| `(abc)` | Groupe et capture | `(cat\|dog)` correspond a "cat" ou "dog" |
+| `\|` | OU (alternation) | `yes\|no` correspond a "yes" ou "no" |
+| `\1` | Reference arriere au groupe 1 | `(word)\1` correspond a "wordword" |
 
-## grep Usage
+## Utilisation de grep
 
-### Basic grep
+### grep basique
 ```bash
-grep "pattern" file              # Lines containing pattern
-grep -i "pattern" file           # Case-insensitive
-grep -v "pattern" file           # Lines NOT matching (invert)
-grep -c "pattern" file           # Count matching lines
-grep -n "pattern" file           # Show line numbers
-grep -l "pattern" *.txt          # List files containing pattern
-grep -r "pattern" dir/           # Recursive search
-grep -w "word" file              # Match whole word only
-grep -o "pattern" file           # Print only the matching part
+grep "pattern" file              # Lignes contenant le motif
+grep -i "pattern" file           # Insensible a la casse
+grep -v "pattern" file           # Lignes NE correspondant PAS (inversion)
+grep -c "pattern" file           # Compter les lignes correspondantes
+grep -n "pattern" file           # Afficher les numeros de ligne
+grep -l "pattern" *.txt          # Lister les fichiers contenant le motif
+grep -r "pattern" dir/           # Recherche recursive
+grep -w "word" file              # Correspondre au mot entier uniquement
+grep -o "pattern" file           # Afficher seulement la partie correspondante
 ```
 
-### Extended grep (egrep / grep -E)
+### grep etendu (egrep / grep -E)
 ```bash
-grep -E "pattern1|pattern2" file     # OR
-grep -E "^[A-Z]" file               # Lines starting with uppercase
-grep -E "[0-9]{3}-[0-9]{4}" file     # Phone number pattern
-grep -E "^.{80,}$" file             # Lines longer than 80 chars
+grep -E "pattern1|pattern2" file     # OU
+grep -E "^[A-Z]" file               # Lignes commencant par une majuscule
+grep -E "[0-9]{3}-[0-9]{4}" file     # Motif de numero de telephone
+grep -E "^.{80,}$" file             # Lignes de plus de 80 caracteres
 ```
 
-### Common exam grep patterns
+### Motifs grep courants a l'examen
 
 ```bash
-# Lines starting with a digit
+# Lignes commencant par un chiffre
 grep "^[0-9]" file
 
-# Lines ending with a period
+# Lignes finissant par un point
 grep "\.$" file
 
-# Lines containing exactly 3 digits
+# Lignes contenant exactement 3 chiffres
 grep -E "^[^0-9]*[0-9][^0-9]*[0-9][^0-9]*[0-9][^0-9]*$" file
 
-# Empty lines
+# Lignes vides
 grep "^$" file
 
-# Non-empty lines
+# Lignes non vides
 grep -v "^$" file
 
-# Lines containing an IP address (simplified)
+# Lignes contenant une adresse IP (simplifie)
 grep -E "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" file
 
-# Lines containing a C comment
+# Lignes contenant un commentaire C
 grep "/\*" file
 
-# Lines starting with # (comments in config files)
+# Lignes commencant par # (commentaires dans les fichiers de configuration)
 grep "^#" file
 
-# Lines NOT starting with # (exclude comments)
+# Lignes NE commencant PAS par # (exclure les commentaires)
 grep -v "^#" file
 
-# Lines with email-like pattern
+# Lignes avec un motif de type email
 grep -E "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" file
 ```
 
-## sed Usage
+## Utilisation de sed
 
 ### Substitution
 ```bash
-sed 's/old/new/' file              # Replace first per line
-sed 's/old/new/g' file             # Replace all per line
-sed 's/old/new/2' file             # Replace 2nd occurrence
-sed -i 's/old/new/g' file          # Edit in-place
-sed 's/old/new/gi' file            # Case-insensitive replace
+sed 's/old/new/' file              # Remplacer la premiere par ligne
+sed 's/old/new/g' file             # Remplacer toutes par ligne
+sed 's/old/new/2' file             # Remplacer la 2e occurrence
+sed -i 's/old/new/g' file          # Editer en place
+sed 's/old/new/gi' file            # Remplacement insensible a la casse
 ```
 
-### Line operations
+### Operations sur les lignes
 ```bash
-sed -n '5p' file                   # Print line 5 only
-sed -n '5,10p' file                # Print lines 5-10
-sed '5d' file                      # Delete line 5
-sed '/pattern/d' file              # Delete matching lines
-sed '/^$/d' file                   # Delete empty lines
-sed '5a\New line' file             # Append after line 5
-sed '5i\New line' file             # Insert before line 5
+sed -n '5p' file                   # Afficher uniquement la ligne 5
+sed -n '5,10p' file                # Afficher les lignes 5 a 10
+sed '5d' file                      # Supprimer la ligne 5
+sed '/pattern/d' file              # Supprimer les lignes correspondantes
+sed '/^$/d' file                   # Supprimer les lignes vides
+sed '5a\New line' file             # Ajouter apres la ligne 5
+sed '5i\New line' file             # Inserer avant la ligne 5
 ```
 
-### Regex in sed
+### Regex dans sed
 ```bash
-# Remove HTML tags
+# Supprimer les balises HTML
 sed 's/<[^>]*>//g' file
 
-# Extract content between tags
+# Extraire le contenu entre balises
 sed -n 's/.*<title>\(.*\)<\/title>.*/\1/p' file
 
-# Add prefix to each line
+# Ajouter un prefixe a chaque ligne
 sed 's/^/PREFIX: /' file
 
-# Remove trailing whitespace
+# Supprimer les espaces en fin de ligne
 sed 's/[[:space:]]*$//' file
 
-# Replace multiple spaces with single space
+# Remplacer les espaces multiples par un seul
 sed 's/  */ /g' file
 ```
 
-## awk Usage
+## Utilisation de awk
 
-### Basic syntax
+### Syntaxe de base
 ```bash
 awk '/pattern/ {action}' file
-awk '{print $1, $3}' file           # Print columns 1 and 3
-awk -F: '{print $1}' /etc/passwd    # Use : as delimiter
+awk '{print $1, $3}' file           # Afficher les colonnes 1 et 3
+awk -F: '{print $1}' /etc/passwd    # Utiliser : comme delimiteur
 ```
 
-### Built-in variables
-| Variable | Meaning |
-|----------|---------|
-| `$0` | Entire line |
-| `$1, $2, ...` | Fields (columns) |
-| `NF` | Number of fields |
-| `NR` | Line number (record number) |
-| `FS` | Field separator (default: space) |
-| `OFS` | Output field separator |
+### Variables integrees
+| Variable | Signification |
+|----------|---------------|
+| `$0` | Ligne entiere |
+| `$1, $2, ...` | Champs (colonnes) |
+| `NF` | Nombre de champs |
+| `NR` | Numero de ligne (numero d'enregistrement) |
+| `FS` | Separateur de champs (par defaut : espace) |
+| `OFS` | Separateur de champs en sortie |
 
-### Examples
+### Exemples
 ```bash
-# Print lines longer than 80 characters
+# Afficher les lignes de plus de 80 caracteres
 awk 'length > 80' file
 
-# Sum a column
+# Sommer une colonne
 awk '{sum += $2} END {print sum}' file
 
-# Print last column
+# Afficher la derniere colonne
 awk '{print $NF}' file
 
-# Conditional printing
+# Affichage conditionnel
 awk '$3 > 100 {print $1, $3}' file
 
-# Count lines matching pattern
+# Compter les lignes correspondant a un motif
 awk '/error/ {count++} END {print count}' file
 ```
 
-## Ruby Regex (for GEDCOM/FUS TPs)
+## Regex Ruby (pour les TP GEDCOM/FUS)
 
-Ruby uses first-class regex with the `=~` operator:
+Ruby utilise les regex comme type natif avec l'operateur `=~` :
 
 ```ruby
-# Match operator
+# Operateur de correspondance
 if line =~ /pattern/
     puts "Match found"
 end
 
-# Capture groups
+# Groupes de capture
 if line =~ /(\d+)\s+(.*)/
-    level = $1    # First capture group
-    rest = $2     # Second capture group
+    level = $1    # Premier groupe de capture
+    rest = $2     # Deuxieme groupe de capture
 end
 
-# Named captures (Ruby 2.0+)
+# Captures nommees (Ruby 2.0+)
 if /(?<tag>BIRT|DEAT)\s+(?<data>.*)/ =~ line
-    puts tag      # "BIRT" or "DEAT"
-    puts data     # Rest of line
+    puts tag      # "BIRT" ou "DEAT"
+    puts data     # Reste de la ligne
 end
 
 # Substitution
-line.sub(/old/, "new")      # First occurrence
-line.gsub(/old/, "new")     # All occurrences
-line.sub!(/old/, "new")     # In-place modification
+line.sub(/old/, "new")      # Premiere occurrence
+line.gsub(/old/, "new")     # Toutes les occurrences
+line.sub!(/old/, "new")     # Modification en place
 
-# Modifiers
-/pattern/i    # Case-insensitive
-/pattern/m    # Multiline (. matches newline)
-/pattern/x    # Extended (ignore whitespace, allow comments)
+# Modificateurs
+/pattern/i    # Insensible a la casse
+/pattern/m    # Multiligne (. correspond au retour a la ligne)
+/pattern/x    # Etendu (ignorer les espaces, autoriser les commentaires)
 ```
 
-### Ruby command-line flags
+### Drapeaux en ligne de commande Ruby
 ```bash
-# -n: Wraps code in while-gets loop, does NOT auto-print
+# -n: Encapsule le code dans une boucle while-gets, N'affiche PAS automatiquement
 ruby -n -e 'print if /pattern/' file.txt
 
-# -p: Like -n but auto-prints $_ after each iteration
+# -p: Comme -n mais affiche automatiquement $_ apres chaque iteration
 ruby -p -e '$_.gsub!(/old/, "new")' file.txt
 ```
 
-## Python Regex
+## Regex Python
 
 ```python
 import re
 
-# Match at start of string
+# Correspondre au debut de la chaine
 match = re.match(r'^\d{3}', '123abc')
 
-# Search anywhere in string
+# Rechercher n'importe ou dans la chaine
 match = re.search(r'\d+', 'Order 12345')
 if match:
     print(match.group())    # '12345'
 
-# Find all matches
+# Trouver toutes les correspondances
 numbers = re.findall(r'\d+', 'a1 b22 c333')  # ['1', '22', '333']
 
-# Replace
+# Remplacer
 result = re.sub(r'\d+', 'X', 'a1 b22')  # 'aX bX'
 
-# Split
+# Decouper
 parts = re.split(r'\s+', 'split  on   spaces')  # ['split', 'on', 'spaces']
 
-# Compile for reuse
+# Compiler pour reutilisation
 pattern = re.compile(r'\d{3}-\d{4}')
 matches = pattern.findall(text)
 ```
 
-## Common Patterns for Exams
+## Motifs courants pour les examens
 
-### Validate formats
+### Validation de formats
 ```regex
-# Email (simplified)
+# Email (simplifie)
 ^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$
 
-# IP Address (simplified)
+# Adresse IP (simplifiee)
 ^(\d{1,3}\.){3}\d{1,3}$
 
-# Date (DD/MM/YYYY)
+# Date (JJ/MM/AAAA)
 ^\d{2}/\d{2}/\d{4}$
 
-# Phone number (French)
+# Numero de telephone (francais)
 ^0[1-9](s-d-2){4}$
 ```
 
-### Extract data
+### Extraction de donnees
 ```regex
-# HTML tags
+# Balises HTML
 <([a-z]+)[^>]*>(.*?)</\1>
 
-# C comments /* ... */
+# Commentaires C /* ... */
 /\*.*?\*/
 
-# C single-line comments
+# Commentaires C en ligne
 //.*$
 
-# Quoted strings
+# Chaines entre guillemets
 "[^"]*"
 '[^']*'
 
@@ -300,71 +300,71 @@ matches = pattern.findall(text)
 https?://[^\s]+
 ```
 
-### Text manipulation
+### Manipulation de texte
 ```regex
-# Leading whitespace
+# Espaces en debut de ligne
 ^\s+
 
-# Trailing whitespace
+# Espaces en fin de ligne
 \s+$
 
-# Multiple spaces to one
-\s+  (replace with single space)
+# Espaces multiples en un seul
+\s+  (remplacer par un seul espace)
 
-# Empty lines
+# Lignes vides
 ^$
 
-# Non-empty lines
+# Lignes non vides
 \S
 ```
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### Metacharacters
+### Metacaracteres
 ```
-.       Any character           ^       Start of line
-$       End of line             *       Zero or more
-+       One or more             ?       Zero or one
-[]      Character class         [^]     Negated class
-()      Group                   |       OR
-\       Escape                  {n,m}   Quantifier
-```
-
-### Character Classes
-```
-\d  digit       \D  non-digit
-\w  word char   \W  non-word
-\s  whitespace  \S  non-whitespace
+.       N'importe quel caractere    ^       Debut de ligne
+$       Fin de ligne                *       Zero ou plus
++       Un ou plus                  ?       Zero ou un
+[]      Classe de caracteres        [^]     Classe inversee
+()      Groupe                      |       OU
+\       Echappement                 {n,m}   Quantificateur
 ```
 
-### grep Quick Reference
+### Classes de caracteres
 ```
-grep "pattern" file          Basic search
-grep -i                      Case-insensitive
-grep -v                      Invert match
-grep -c                      Count matches
-grep -n                      Line numbers
-grep -E                      Extended regex
-grep -o                      Only matching part
-grep -w                      Whole word
+\d  chiffre      \D  non-chiffre
+\w  car. de mot  \W  non-car. de mot
+\s  espace blanc \S  non-espace blanc
 ```
 
-### sed Quick Reference
+### Reference rapide grep
 ```
-sed 's/old/new/'             Replace first
-sed 's/old/new/g'            Replace all
-sed -n '5,10p'               Print range
-sed '/pattern/d'             Delete matching
-sed -i                       In-place edit
+grep "pattern" file          Recherche basique
+grep -i                      Insensible a la casse
+grep -v                      Inverser la correspondance
+grep -c                      Compter les correspondances
+grep -n                      Numeros de ligne
+grep -E                      Regex etendue
+grep -o                      Seulement la partie correspondante
+grep -w                      Mot entier
 ```
 
-### awk Quick Reference
+### Reference rapide sed
 ```
-awk '{print $1}'             First column
-awk -F:                      Set delimiter
-awk '/pattern/'              Filter lines
-awk '{sum+=$1} END{print sum}' Sum column
-$NF = last field, NR = line number
+sed 's/old/new/'             Remplacer la premiere
+sed 's/old/new/g'            Remplacer toutes
+sed -n '5,10p'               Afficher un intervalle
+sed '/pattern/d'             Supprimer les correspondances
+sed -i                       Edition en place
+```
+
+### Reference rapide awk
+```
+awk '{print $1}'             Premiere colonne
+awk -F:                      Definir le delimiteur
+awk '/pattern/'              Filtrer les lignes
+awk '{sum+=$1} END{print sum}' Sommer une colonne
+$NF = dernier champ, NR = numero de ligne
 ```

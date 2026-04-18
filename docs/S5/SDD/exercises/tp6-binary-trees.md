@@ -1,11 +1,11 @@
 ---
-title: "TP6 - Arbres Binaires et Expressions Arithmetiques (Binary Trees)"
+title: "TP6 - Arbres Binaires et Expressions Arithmetiques"
 sidebar_position: 6
 ---
 
-# TP6 - Arbres Binaires et Expressions Arithmetiques (Binary Trees)
+# TP6 - Arbres Binaires et Expressions Arithmetiques
 
-> Following teacher instructions from: `S5/SDD/data/moodle/tp/tp6_binary_trees/README.md`
+> D'apres les consignes de l'enseignant : `S5/SDD/data/moodle/tp/tp6_binary_trees/README.md`
 
 ## Objectif
 
@@ -59,7 +59,7 @@ Infixe : `( 4 * pi ) + ( 5 / 2 )`
 
 ### Definir la classe interne Noeud et le constructeur de TreeTwo
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -88,7 +88,7 @@ public class TreeTwo implements Arbre {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 `TreeTwo(Object root)` cree un noeud feuille. Les sous-arbres sont ajoutes ensuite via `modifArbreG` et `modifArbreD`.
 
 ---
@@ -97,7 +97,7 @@ public class TreeTwo implements Arbre {
 
 ### Implementer racine(), arbreG(), arbreD(), estVide()
 
-**Answer:**
+**Reponse :**
 
 ```java
     public Object racine() {
@@ -125,7 +125,7 @@ public class TreeTwo implements Arbre {
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 - `arbreG()` / `arbreD()` retournent un `TreeTwo(null)` (arbre vide) quand le fils n'existe pas, plutot que `null`. Cela permet d'appeler `estVide()` sur le resultat sans risque de NullPointerException.
 - Le TreeTwo retourne pointe vers le meme Noeud interne -- les modifications sur le sous-arbre modifient l'arbre original.
 
@@ -135,7 +135,7 @@ public class TreeTwo implements Arbre {
 
 ### Implementer les methodes de modification : vider(), modifRacine(), modifArbreG(), modifArbreD()
 
-**Answer:**
+**Reponse :**
 
 ```java
     public void vider() {
@@ -167,7 +167,7 @@ public class TreeTwo implements Arbre {
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 
 Construction de l'arbre de test :
 ```java
@@ -190,7 +190,7 @@ tr.modifArbreG(gauche);
 
 Produire une representation en notation postfixe (gauche, droit, racine).
 
-**Answer:**
+**Reponse :**
 
 ```java
     private String postfixTraversal(Noeud r) {
@@ -210,7 +210,7 @@ Produire une representation en notation postfixe (gauche, droit, racine).
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Pour l'arbre de test, `toString()` retourne `"4 pi * 5 2 / +"`. La notation postfixe (Reverse Polish Notation) n'a pas besoin de parentheses et est facile a evaluer avec une pile.
 
 ---
@@ -219,7 +219,7 @@ Pour l'arbre de test, `toString()` retourne `"4 pi * 5 2 / +"`. La notation post
 
 ### Implementer hauteur() -- hauteur de l'arbre
 
-**Answer:**
+**Reponse :**
 
 ```java
     private int recursiveHeight(Noeud r) {
@@ -235,7 +235,7 @@ Pour l'arbre de test, `toString()` retourne `"4 pi * 5 2 / +"`. La notation post
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Hauteur de l'arbre de test = 2 (racine au niveau 0, operateurs au niveau 1, feuilles au niveau 2). Un noeud seul a hauteur 0.
 
 ---
@@ -244,7 +244,7 @@ Hauteur de l'arbre de test = 2 (racine au niveau 0, operateurs au niveau 1, feui
 
 ### Implementer denombrer() -- compter les occurrences d'une valeur
 
-**Answer:**
+**Reponse :**
 
 ```java
     public int denombrer(String n) {
@@ -264,7 +264,7 @@ Hauteur de l'arbre de test = 2 (racine au niveau 0, operateurs au niveau 1, feui
     }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Approche iterative utilisant une pile explicite (ArrayList utilisee comme pile). Parcourt tous les noeuds et compte ceux dont la valeur correspond. Evite le debordement de pile pour les arbres tres profonds.
 
 ---
@@ -273,7 +273,7 @@ Approche iterative utilisant une pile explicite (ArrayList utilisee comme pile).
 
 ### Implementer remplacer() -- remplacer toutes les occurrences
 
-**Answer:**
+**Reponse :**
 
 ```java
     public void remplacer(String n1, String n2) {
@@ -295,7 +295,7 @@ Approche iterative utilisant une pile explicite (ArrayList utilisee comme pile).
     public void dessiner() { Trees.draw(this); }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 Meme schema iteratif que `denombrer()`, mais au lieu de compter, on remplace la valeur.
 
 ---
@@ -304,7 +304,7 @@ Meme schema iteratif que `denombrer()`, mais au lieu de compter, on remplace la 
 
 ### Implementer ExprArith -- evaluateur, conversion infixe, simplification
 
-**Answer:**
+**Reponse :**
 
 ```java
 package main;
@@ -439,7 +439,7 @@ public class ExprArith {
 }
 ```
 
-**How the code works:**
+**Fonctionnement du code :**
 
 **toString() -- conversion postfixe vers infixe :**
 1. Decoupe la chaine postfixe en tokens : `["4", "pi", "*", "5", "2", "/", "+"]`

@@ -1,327 +1,327 @@
 ---
-title: "Shell & Bash Scripting"
+title: "Shell et scripting Bash"
 sidebar_position: 8
 ---
 
-# Shell & Bash Scripting
+# Shell et scripting Bash
 
-## Overview
+## Apercu
 
-The shell is the command-line interface to the operating system. Bash (Bourne Again Shell) is the default shell on most Linux distributions. Mastering the shell is essential for the FUS exam and for daily engineering work.
+Le shell est l'interface en ligne de commande du systeme d'exploitation. Bash (Bourne Again Shell) est le shell par defaut sur la plupart des distributions Linux. Maitriser le shell est essentiel pour l'examen FUS et pour le travail quotidien d'ingenieur.
 
-## Shell Types
+## Types de shell
 
 | Shell | Description | Shebang |
 |-------|-------------|---------|
-| `bash` | Bourne Again Shell, most common | `#!/bin/bash` |
-| `tcsh` | TENEX C Shell, C-like syntax | `#!/bin/tcsh` |
-| `sh` | Original Bourne Shell, POSIX compliant | `#!/bin/sh` |
-| `zsh` | Z Shell, extended bash features | `#!/bin/zsh` |
+| `bash` | Bourne Again Shell, le plus courant | `#!/bin/bash` |
+| `tcsh` | TENEX C Shell, syntaxe proche du C | `#!/bin/tcsh` |
+| `sh` | Shell Bourne original, conforme POSIX | `#!/bin/sh` |
+| `zsh` | Z Shell, fonctionnalites etendues de bash | `#!/bin/zsh` |
 
-The **shebang** (`#!`) on the first line of a script tells the system which interpreter to use.
+Le **shebang** (`#!`) sur la premiere ligne d'un script indique au systeme quel interpreteur utiliser.
 
-## File System Navigation
+## Navigation dans le systeme de fichiers
 
 ```bash
-pwd                        # Print working directory
-ls                         # List directory contents
-ls -l                      # Long format: permissions, size, date
-ls -la                     # Long format including hidden files
-ls -lh                     # Human-readable file sizes
-cd /path/to/dir            # Change directory (absolute)
-cd ../                     # Go up one level
-cd ~                       # Go to home directory
-cd -                       # Go to previous directory
-mkdir dirname              # Create directory
-mkdir -p path/to/nested    # Create nested directories
-rmdir dirname              # Remove empty directory
-rm -r dirname              # Remove directory and contents (careful!)
+pwd                        # Afficher le repertoire courant
+ls                         # Lister le contenu du repertoire
+ls -l                      # Format long : permissions, taille, date
+ls -la                     # Format long avec fichiers caches
+ls -lh                     # Tailles de fichiers lisibles
+cd /path/to/dir            # Changer de repertoire (chemin absolu)
+cd ../                     # Remonter d'un niveau
+cd ~                       # Aller au repertoire personnel
+cd -                       # Aller au repertoire precedent
+mkdir dirname              # Creer un repertoire
+mkdir -p path/to/nested    # Creer des repertoires imbriques
+rmdir dirname              # Supprimer un repertoire vide
+rm -r dirname              # Supprimer un repertoire et son contenu (attention !)
 ```
 
-## File Operations
+## Operations sur les fichiers
 
 ```bash
-cp source dest             # Copy file
-cp -r source/ dest/        # Copy directory recursively
-mv source dest             # Move/rename file
-rm file                    # Remove file
-rm -f file                 # Force remove (no confirmation)
-touch newfile              # Create empty file or update timestamp
-cat file                   # Display file contents
-less file                  # Page through file (q to quit)
-head -n 5 file             # Show first 5 lines
-tail -n 5 file             # Show last 5 lines
-wc file                    # Word count: lines, words, bytes
-wc -l file                 # Count lines only
-wc -w file                 # Count words only
+cp source dest             # Copier un fichier
+cp -r source/ dest/        # Copier un repertoire recursivement
+mv source dest             # Deplacer/renommer un fichier
+rm file                    # Supprimer un fichier
+rm -f file                 # Suppression forcee (sans confirmation)
+touch newfile              # Creer un fichier vide ou mettre a jour l'horodatage
+cat file                   # Afficher le contenu d'un fichier
+less file                  # Parcourir un fichier page par page (q pour quitter)
+head -n 5 file             # Afficher les 5 premieres lignes
+tail -n 5 file             # Afficher les 5 dernieres lignes
+wc file                    # Comptage : lignes, mots, octets
+wc -l file                 # Compter les lignes uniquement
+wc -w file                 # Compter les mots uniquement
 ```
 
-## File Permissions
+## Permissions de fichiers
 
 ```bash
-chmod +x script.sh         # Make executable
+chmod +x script.sh         # Rendre executable
 chmod 755 file             # rwxr-xr-x
 chmod 644 file             # rw-r--r--
-chown user:group file      # Change ownership
+chown user:group file      # Changer le proprietaire
 ```
 
-Permission format: `rwxrwxrwx` (owner/group/others)
-- `r` = read (4), `w` = write (2), `x` = execute (1)
+Format des permissions : `rwxrwxrwx` (proprietaire/groupe/autres)
+- `r` = lecture (4), `w` = ecriture (2), `x` = execution (1)
 
-## Text Processing Commands
+## Commandes de traitement de texte
 
-### `echo` -- Print text
+### `echo` -- Afficher du texte
 ```bash
-echo "Hello World"         # Print string
-echo $VAR                  # Print variable value
-echo -n "No newline"       # Suppress trailing newline
-echo -e "Tab\there"        # Enable escape sequences
+echo "Hello World"         # Afficher une chaine
+echo $VAR                  # Afficher la valeur d'une variable
+echo -n "No newline"       # Supprimer le retour a la ligne final
+echo -e "Tab\there"        # Activer les sequences d'echappement
 ```
 
-### `cat` -- Concatenate and display
+### `cat` -- Concatener et afficher
 ```bash
-cat file.txt               # Display file
-cat file1 file2            # Concatenate files
-cat > newfile.txt          # Create file from stdin (Ctrl+D to end)
-cat >> file.txt            # Append stdin to file
+cat file.txt               # Afficher un fichier
+cat file1 file2            # Concatener des fichiers
+cat > newfile.txt          # Creer un fichier depuis stdin (Ctrl+D pour terminer)
+cat >> file.txt            # Ajouter stdin a un fichier
 ```
 
-### `grep` -- Search for patterns
+### `grep` -- Rechercher des motifs
 ```bash
-grep "pattern" file        # Lines containing pattern
-grep -i "pattern" file     # Case-insensitive
-grep -v "pattern" file     # Lines NOT containing pattern
-grep -c "pattern" file     # Count matching lines
-grep -n "pattern" file     # Show line numbers
-grep -r "pattern" dir/     # Recursive search in directory
-grep -E "regex" file       # Extended regex (egrep)
-grep "^start" file         # Lines starting with "start"
-grep "end$" file           # Lines ending with "end"
-grep "[0-9]" file          # Lines containing digits
+grep "pattern" file        # Lignes contenant le motif
+grep -i "pattern" file     # Insensible a la casse
+grep -v "pattern" file     # Lignes NE contenant PAS le motif
+grep -c "pattern" file     # Compter les lignes correspondantes
+grep -n "pattern" file     # Afficher les numeros de ligne
+grep -r "pattern" dir/     # Recherche recursive dans un repertoire
+grep -E "regex" file       # Regex etendue (egrep)
+grep "^start" file         # Lignes commencant par "start"
+grep "end$" file           # Lignes finissant par "end"
+grep "[0-9]" file          # Lignes contenant des chiffres
 ```
 
-### `sed` -- Stream editor
+### `sed` -- Editeur de flux
 ```bash
-sed 's/old/new/' file      # Replace first occurrence per line
-sed 's/old/new/g' file     # Replace ALL occurrences
-sed -i 's/old/new/g' file  # Edit file in-place
-sed -n '5,10p' file        # Print lines 5 to 10
-sed '/pattern/d' file      # Delete lines matching pattern
-sed 's/^/prefix/' file     # Add prefix to each line
+sed 's/old/new/' file      # Remplacer la premiere occurrence par ligne
+sed 's/old/new/g' file     # Remplacer TOUTES les occurrences
+sed -i 's/old/new/g' file  # Editer le fichier en place
+sed -n '5,10p' file        # Afficher les lignes 5 a 10
+sed '/pattern/d' file      # Supprimer les lignes correspondant au motif
+sed 's/^/prefix/' file     # Ajouter un prefixe a chaque ligne
 ```
 
-### `awk` -- Pattern scanning and processing
+### `awk` -- Analyse et traitement de motifs
 ```bash
-awk '{print $1}' file      # Print first column (space-delimited)
-awk -F: '{print $1}' file  # Print first column (colon-delimited)
-awk '{print NR, $0}' file  # Print with line numbers
-awk '/pattern/' file       # Print matching lines
-awk '{sum+=$1} END {print sum}' file  # Sum first column
+awk '{print $1}' file      # Afficher la premiere colonne (delimiteur espace)
+awk -F: '{print $1}' file  # Afficher la premiere colonne (delimiteur deux-points)
+awk '{print NR, $0}' file  # Afficher avec les numeros de ligne
+awk '/pattern/' file       # Afficher les lignes correspondantes
+awk '{sum+=$1} END {print sum}' file  # Sommer la premiere colonne
 ```
 
-### `sort` and `uniq`
+### `sort` et `uniq`
 ```bash
-sort file                  # Sort lines alphabetically
-sort -n file               # Sort numerically
-sort -r file               # Reverse sort
-sort -k2 file              # Sort by 2nd column
-uniq file                  # Remove adjacent duplicates
-sort file | uniq           # Remove all duplicates
-sort file | uniq -c        # Count occurrences
+sort file                  # Trier les lignes alphabetiquement
+sort -n file               # Trier numeriquement
+sort -r file               # Tri inverse
+sort -k2 file              # Trier par la 2e colonne
+uniq file                  # Supprimer les doublons adjacents
+sort file | uniq           # Supprimer tous les doublons
+sort file | uniq -c        # Compter les occurrences
 ```
 
-### `cut` -- Extract columns
+### `cut` -- Extraire des colonnes
 ```bash
-cut -d: -f1 /etc/passwd    # Extract first field, colon delimiter
-cut -c1-10 file            # Extract characters 1-10
+cut -d: -f1 /etc/passwd    # Extraire le premier champ, delimiteur deux-points
+cut -c1-10 file            # Extraire les caracteres 1 a 10
 ```
 
-### `tr` -- Translate characters
+### `tr` -- Traduire des caracteres
 ```bash
-echo "hello" | tr 'a-z' 'A-Z'    # Uppercase
-echo "hello" | tr -d 'l'          # Delete 'l' characters
-echo "hello" | tr -s ' '          # Squeeze repeated spaces
+echo "hello" | tr 'a-z' 'A-Z'    # Majuscules
+echo "hello" | tr -d 'l'          # Supprimer les caracteres 'l'
+echo "hello" | tr -s ' '          # Comprimer les espaces repetes
 ```
 
-## Pipes and Redirection
+## Pipes et redirections
 
 ```bash
-# Pipes: connect stdout of one command to stdin of another
+# Pipes : connecter la sortie standard d'une commande a l'entree d'une autre
 command1 | command2        # Pipe
-ls -l | grep ".txt"        # List, then filter for .txt files
-cat file | sort | uniq     # Chain multiple commands
+ls -l | grep ".txt"        # Lister, puis filtrer les fichiers .txt
+cat file | sort | uniq     # Enchainer plusieurs commandes
 
-# Redirection
-command > file             # Redirect stdout to file (overwrite)
-command >> file            # Redirect stdout to file (append)
-command 2> file            # Redirect stderr to file
-command 2>&1               # Redirect stderr to stdout
-command > file 2>&1        # Redirect both stdout and stderr
-command < file             # Redirect file to stdin
-command << EOF             # Here document (inline input)
+# Redirections
+command > file             # Rediriger stdout vers un fichier (ecrasement)
+command >> file            # Rediriger stdout vers un fichier (ajout)
+command 2> file            # Rediriger stderr vers un fichier
+command 2>&1               # Rediriger stderr vers stdout
+command > file 2>&1        # Rediriger stdout et stderr
+command < file             # Rediriger un fichier vers stdin
+command << EOF             # Here document (entree en ligne)
 line1
 line2
 EOF
 ```
 
-### Practical pipe examples (exam favorites)
+### Exemples pratiques de pipes (favoris d'examen)
 
 ```bash
-# Count files in current directory
+# Compter les fichiers dans le repertoire courant
 ls -l | grep "^-" | wc -l
 
-# Count directories
+# Compter les repertoires
 ls -l | grep "^d" | wc -l
 
-# Find 10 most common words
+# Trouver les 10 mots les plus frequents
 cat file | tr ' ' '\n' | sort | uniq -c | sort -rn | head -10
 
-# Extract unique IP addresses from log
+# Extraire les adresses IP uniques d'un journal
 cat access.log | awk '{print $1}' | sort | uniq
 
-# Find largest files
+# Trouver les plus gros fichiers
 ls -lS | head -5
 ```
 
 ## Variables
 
 ```bash
-# Assignment (NO spaces around =)
+# Affectation (PAS d'espaces autour du =)
 name="Alice"
 age=25
 readonly CONST="immutable"
 
-# Access
+# Acces
 echo $name
-echo ${name}               # Safer form
-echo "${name} is ${age}"   # Within string
+echo ${name}               # Forme plus sure
+echo "${name} is ${age}"   # Dans une chaine
 
-# Special variables
-$0                         # Script name
-$1, $2, ...                # Positional arguments
-$#                         # Number of arguments
-$@                         # All arguments as separate words
-$*                         # All arguments as single string
-$?                         # Exit status of last command
-$$                         # Current process ID
+# Variables speciales
+$0                         # Nom du script
+$1, $2, ...                # Arguments positionnels
+$#                         # Nombre d'arguments
+$@                         # Tous les arguments comme mots separes
+$*                         # Tous les arguments comme une seule chaine
+$?                         # Code de retour de la derniere commande
+$$                         # PID du processus courant
 
-# Default values
-name=${name:-"default"}    # Use "default" if name is unset/empty
-name=${name:="default"}    # Set and use "default" if unset/empty
+# Valeurs par defaut
+name=${name:-"default"}    # Utiliser "default" si name est non defini/vide
+name=${name:="default"}    # Definir et utiliser "default" si non defini/vide
 ```
 
-## Conditional Statements
+## Instructions conditionnelles
 
 ```bash
-# Basic if-then-else
+# if-then-else de base
 if [ condition ]; then
-    # commands
+    # commandes
 elif [ another_condition ]; then
-    # commands
+    # commandes
 else
-    # commands
+    # commandes
 fi
 
-# Numeric comparisons
-[ $a -eq $b ]              # Equal
-[ $a -ne $b ]              # Not equal
-[ $a -lt $b ]              # Less than
-[ $a -le $b ]              # Less than or equal
-[ $a -gt $b ]              # Greater than
-[ $a -ge $b ]              # Greater than or equal
+# Comparaisons numeriques
+[ $a -eq $b ]              # Egal
+[ $a -ne $b ]              # Different
+[ $a -lt $b ]              # Inferieur a
+[ $a -le $b ]              # Inferieur ou egal
+[ $a -gt $b ]              # Superieur a
+[ $a -ge $b ]              # Superieur ou egal
 
-# String comparisons
-[ "$s1" = "$s2" ]          # Equal
-[ "$s1" != "$s2" ]         # Not equal
-[ -z "$str" ]              # String is empty
-[ -n "$str" ]              # String is not empty
+# Comparaisons de chaines
+[ "$s1" = "$s2" ]          # Egal
+[ "$s1" != "$s2" ]         # Different
+[ -z "$str" ]              # Chaine vide
+[ -n "$str" ]              # Chaine non vide
 
-# File tests
-[ -f file ]                # Is a regular file
-[ -d dir ]                 # Is a directory
-[ -e path ]                # Exists (any type)
-[ -r file ]                # Is readable
-[ -w file ]                # Is writable
-[ -x file ]                # Is executable
-[ -s file ]                # File is non-empty
+# Tests sur les fichiers
+[ -f file ]                # Est un fichier regulier
+[ -d dir ]                 # Est un repertoire
+[ -e path ]                # Existe (tout type)
+[ -r file ]                # Est lisible
+[ -w file ]                # Est modifiable
+[ -x file ]                # Est executable
+[ -s file ]                # Fichier non vide
 
-# Logical operators
-[ cond1 ] && [ cond2 ]     # AND
-[ cond1 ] || [ cond2 ]     # OR
-[ ! condition ]             # NOT
+# Operateurs logiques
+[ cond1 ] && [ cond2 ]     # ET
+[ cond1 ] || [ cond2 ]     # OU
+[ ! condition ]             # NON
 ```
 
-## Loops
+## Boucles
 
 ```bash
-# For loop over list
+# Boucle for sur une liste
 for item in one two three; do
     echo "$item"
 done
 
-# For loop with range
+# Boucle for avec intervalle
 for i in {1..10}; do
     echo "$i"
 done
 
-# For loop over files
+# Boucle for sur des fichiers
 for file in *.txt; do
     echo "Processing $file"
 done
 
-# For loop C-style
+# Boucle for style C
 for ((i=0; i<10; i++)); do
     echo "$i"
 done
 
-# While loop
+# Boucle while
 counter=0
 while [ $counter -lt 10 ]; do
     echo $counter
     counter=$((counter + 1))
 done
 
-# Read file line by line
+# Lire un fichier ligne par ligne
 while IFS= read -r line; do
     echo "$line"
 done < file.txt
 ```
 
-## Functions
+## Fonctions
 
 ```bash
-# Define function
+# Definir une fonction
 greet() {
-    local name=$1          # Local variable
+    local name=$1          # Variable locale
     echo "Hello, $name!"
-    return 0               # Return status (0 = success)
+    return 0               # Code de retour (0 = succes)
 }
 
-# Call function
+# Appeler une fonction
 greet "Alice"
 
-# Capture function output
+# Capturer la sortie d'une fonction
 result=$(greet "Bob")
 ```
 
-## Arithmetic
+## Arithmetique
 
 ```bash
-# Arithmetic expansion
+# Expansion arithmetique
 result=$((3 + 5))
 result=$((a * b))
-result=$((10 / 3))        # Integer division
+result=$((10 / 3))        # Division entiere
 result=$((10 % 3))        # Modulo
 
 # Increment
 count=$((count + 1))
-((count++))                # Bash shorthand
+((count++))                # Raccourci Bash
 
-# expr (older method)
+# expr (methode plus ancienne)
 result=$(expr 3 + 5)
 ```
 
-## Script Structure Template
+## Modele de structure de script
 
 ```bash
 #!/bin/bash
@@ -358,89 +358,89 @@ echo "Done. Output written to $output_file"
 exit 0
 ```
 
-## Debugging Shell Scripts
+## Debogage de scripts shell
 
 ```bash
-set -x                     # Print each command before executing
-set -e                     # Exit immediately on error
-set -u                     # Treat unset variables as error
-set -o pipefail            # Pipe fails if any command fails
+set -x                     # Afficher chaque commande avant execution
+set -e                     # Quitter immediatement en cas d'erreur
+set -u                     # Traiter les variables non definies comme erreur
+set -o pipefail            # Un pipe echoue si une commande echoue
 
-# Combine at script top:
+# Combiner en debut de script :
 set -euo pipefail
 
-# Trace a specific section
+# Tracer une section specifique
 set -x
-# ... commands to trace ...
+# ... commandes a tracer ...
 set +x
 ```
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ### Navigation
-| Command | Action |
+| Commande | Action |
+|----------|--------|
+| `pwd` | Afficher le repertoire courant |
+| `cd dir` | Changer de repertoire |
+| `ls -la` | Lister tous les fichiers avec details |
+| `tree` | Afficher l'arborescence |
+
+### Manipulation de fichiers
+| Commande | Action |
+|----------|--------|
+| `cp src dst` | Copier |
+| `mv src dst` | Deplacer/renommer |
+| `rm file` | Supprimer |
+| `touch file` | Creer/mettre a jour l'horodatage |
+| `chmod +x file` | Rendre executable |
+
+### Traitement de texte
+| Commande | Action |
+|----------|--------|
+| `cat file` | Afficher le contenu |
+| `grep pattern file` | Rechercher un motif |
+| `sed 's/a/b/g' file` | Remplacer tous les a par b |
+| `awk '{print $1}' file` | Afficher la premiere colonne |
+| `sort file` | Trier les lignes |
+| `uniq` | Supprimer les doublons |
+| `wc -l file` | Compter les lignes |
+| `cut -d: -f1 file` | Extraire un champ |
+| `tr 'a-z' 'A-Z'` | Traduire des caracteres |
+| `head -n 5 file` | 5 premieres lignes |
+| `tail -n 5 file` | 5 dernieres lignes |
+
+### Redirections et pipes
+| Syntaxe | Action |
 |---------|--------|
-| `pwd` | Print working directory |
-| `cd dir` | Change directory |
-| `ls -la` | List all files with details |
-| `tree` | Show directory tree |
+| `cmd > file` | Stdout vers fichier (ecrasement) |
+| `cmd >> file` | Stdout vers fichier (ajout) |
+| `cmd 2> file` | Stderr vers fichier |
+| `cmd < file` | Fichier vers stdin |
+| `cmd1 \| cmd2` | Pipe stdout vers la commande suivante |
 
-### File Manipulation
-| Command | Action |
+### Variables et arithmetique
+| Syntaxe | Action |
 |---------|--------|
-| `cp src dst` | Copy |
-| `mv src dst` | Move/rename |
-| `rm file` | Delete |
-| `touch file` | Create/update timestamp |
-| `chmod +x file` | Make executable |
-
-### Text Processing
-| Command | Action |
-|---------|--------|
-| `cat file` | Show contents |
-| `grep pattern file` | Search for pattern |
-| `sed 's/a/b/g' file` | Replace all a with b |
-| `awk '{print $1}' file` | Print first column |
-| `sort file` | Sort lines |
-| `uniq` | Remove duplicates |
-| `wc -l file` | Count lines |
-| `cut -d: -f1 file` | Extract field |
-| `tr 'a-z' 'A-Z'` | Translate chars |
-| `head -n 5 file` | First 5 lines |
-| `tail -n 5 file` | Last 5 lines |
-
-### Redirection & Pipes
-| Syntax | Action |
-|--------|--------|
-| `cmd > file` | Stdout to file (overwrite) |
-| `cmd >> file` | Stdout to file (append) |
-| `cmd 2> file` | Stderr to file |
-| `cmd < file` | File to stdin |
-| `cmd1 \| cmd2` | Pipe stdout to next command |
-
-### Variables & Arithmetic
-| Syntax | Action |
-|--------|--------|
-| `VAR="value"` | Assign (no spaces!) |
-| `$VAR` or `${VAR}` | Read variable |
-| `$((expr))` | Arithmetic |
-| `$?` | Last exit code |
-| `$#` | Argument count |
-| `$1` | First argument |
+| `VAR="value"` | Affecter (pas d'espaces !) |
+| `$VAR` ou `${VAR}` | Lire une variable |
+| `$((expr))` | Arithmetique |
+| `$?` | Dernier code de retour |
+| `$#` | Nombre d'arguments |
+| `$1` | Premier argument |
 
 ### Tests
-| Test | Meaning |
-|------|---------|
-| `-f file` | Is regular file |
-| `-d dir` | Is directory |
-| `-e path` | Exists |
-| `-z "$str"` | String empty |
-| `$a -eq $b` | Numeric equal |
-| `"$s1" = "$s2"` | String equal |
+| Test | Signification |
+|------|---------------|
+| `-f file` | Est un fichier regulier |
+| `-d dir` | Est un repertoire |
+| `-e path` | Existe |
+| `-z "$str"` | Chaine vide |
+| `$a -eq $b` | Egalite numerique |
+| `"$s1" = "$s2"` | Egalite de chaines |
 
-### Control Flow
+### Structures de controle
 ```
 if [ cond ]; then ... elif ... else ... fi
 for x in list; do ... done

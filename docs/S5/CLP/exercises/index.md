@@ -5,11 +5,11 @@ sidebar_position: 0
 
 # Exercices
 
-- [td assembly](td-assembly)
-- [td combinational](td-combinational)
-- [td processor](td-processor)
-- [td sequential](td-sequential)
-- [tp1 gcd walkthrough](tp1-gcd-walkthrough)
-- [tp2 matrix walkthrough](tp2-matrix-walkthrough)
-- [tp3 graph walkthrough](tp3-graph-walkthrough)
-- [tp4 gpio walkthrough](tp4-gpio-walkthrough)
+- [TD Assembleur](td-assembly)
+- [TD Logique combinatoire](td-combinational)
+- [TD Processeur](td-processor)
+- [TD Logique sequentielle](td-sequential)
+- [TP1 PGCD -- Correction detaillee](tp1-gcd-walkthrough)
+- [TP2 Matrices -- Correction detaillee](tp2-matrix-walkthrough)
+- [TP3 Graphes -- Correction detaillee](tp3-graph-walkthrough)
+- [TP4 GPIO -- Correction detaillee](tp4-gpio-walkthrough)

@@ -1,73 +1,73 @@
 ---
-title: "Chapter 4: Data Mining & NLP (Fouille de Donnees et Traitement du Langage)"
+title: "Chapitre 4 : Fouille de donnees et NLP (traitement du langage naturel)"
 sidebar_position: 4
 ---
 
-# Chapter 4: Data Mining & NLP (Fouille de Donnees et Traitement du Langage)
+# Chapitre 4 : Fouille de donnees et NLP (traitement du langage naturel)
 
-## Overview
+## Presentation
 
-The Data Mining (Fouille de Donnees / FD) part of the course covers unsupervised pattern extraction from data: frequent itemset mining using the Apriori algorithm, association rules, and basic NLP preprocessing for text mining. These techniques are applied in TP3-4 to characterize POI clusters using photo tags.
+La partie Fouille de Donnees (FD) du cours couvre l'extraction non supervisee de motifs a partir de donnees : l'extraction d'itemsets frequents avec l'algorithme Apriori, les regles d'association et le pretraitement NLP de base pour la fouille de texte. Ces techniques sont appliquees dans les TP3-4 pour caracteriser les clusters de POI a l'aide de tags de photos.
 
-## 1. Frequent Itemset Mining (Extraction de Motifs Frequents)
+## 1. Extraction d'itemsets frequents (motifs frequents)
 
 ### Definitions
 
-| Term | French | Definition |
-|------|--------|-----------|
-| **Item** | Item | A single element (e.g., "Milk", "rennes", a product) |
-| **Itemset** | Motif / Itemset | A set of items (e.g., {Milk, Eggs}) |
-| **Transaction** | Transaction | A record containing a set of items (e.g., a shopping basket) |
-| **Support** | Support | Fraction of transactions containing the itemset |
-| **Frequent itemset** | Motif frequent | An itemset with support >= minimum support threshold |
-| **Minimum support** (minsup) | Support minimum | User-defined threshold |
+| Terme | Definition |
+|-------|-----------|
+| **Item** | Un element unique (ex. "Lait", "rennes", un produit) |
+| **Itemset** (motif) | Un ensemble d'items (ex. {Lait, Oeufs}) |
+| **Transaction** | Un enregistrement contenant un ensemble d'items (ex. un panier d'achat) |
+| **Support** | Fraction des transactions contenant l'itemset |
+| **Itemset frequent** (motif frequent) | Un itemset dont le support >= seuil de support minimum |
+| **Support minimum** (minsup) | Seuil defini par l'utilisateur |
 
-### Support Formula
-
-```
-support(X) = |{T in DB : X is subset of T}| / |DB|
-```
-
-Where DB is the database of transactions and T is an individual transaction.
-
-**Example**: If 3 out of 5 transactions contain {Eggs, Kidney Beans}, then:
-```
-support({Eggs, Kidney Beans}) = 3/5 = 0.6 = 60%
-```
-
-### Anti-Monotonicity Property (Propriete d'Anti-Monotonie)
-
-**Key theorem**: If an itemset is infrequent, all its supersets are also infrequent.
-
-Contrapositive: If an itemset is frequent, all its subsets are also frequent.
-
-This is the foundation of the Apriori algorithm -- it allows pruning the search space.
-
-## 2. The Apriori Algorithm
-
-### Algorithm Overview
-
-Apriori finds all frequent itemsets by iteratively generating candidates of increasing size and pruning infrequent ones.
+### Formule du support
 
 ```
-1. L_1 = {frequent 1-itemsets}  (scan database, count, filter by minsup)
-2. For k = 2, 3, ...
-   a. C_k = generate candidates from L_{k-1}  (join + prune)
-   b. Scan database, count support of each candidate in C_k
-   c. L_k = {candidates in C_k with support >= minsup}
-   d. If L_k is empty, stop
-3. Return union of all L_k
+support(X) = |{T dans DB : X est sous-ensemble de T}| / |DB|
 ```
 
-### Candidate Generation (Step 2a)
+Ou DB est la base de transactions et T une transaction individuelle.
 
-**Join step**: Merge two itemsets from L_{k-1} that share the first k-2 items.
+**Exemple** : Si 3 transactions sur 5 contiennent {Oeufs, Haricots Rouges}, alors :
+```
+support({Oeufs, Haricots Rouges}) = 3/5 = 0.6 = 60%
+```
 
-**Prune step**: Remove any candidate that has a (k-1)-subset not in L_{k-1} (by anti-monotonicity, it cannot be frequent).
+### Propriete d'anti-monotonie
 
-### Worked Example
+**Theoreme cle** : Si un itemset est non frequent, tous ses sur-ensembles sont aussi non frequents.
 
-**Database**:
+Contraposee : Si un itemset est frequent, tous ses sous-ensembles sont aussi frequents.
+
+C'est le fondement de l'algorithme Apriori -- il permet d'elaguer l'espace de recherche.
+
+## 2. L'algorithme Apriori
+
+### Presentation de l'algorithme
+
+Apriori trouve tous les itemsets frequents en generant iterativement des candidats de taille croissante et en elaguant les non frequents.
+
+```
+1. L_1 = {itemsets frequents de taille 1}  (scanner la base, compter, filtrer par minsup)
+2. Pour k = 2, 3, ...
+   a. C_k = generer les candidats a partir de L_{k-1}  (jointure + elagage)
+   b. Scanner la base, compter le support de chaque candidat de C_k
+   c. L_k = {candidats de C_k avec support >= minsup}
+   d. Si L_k est vide, arreter
+3. Retourner l'union de tous les L_k
+```
+
+### Generation des candidats (etape 2a)
+
+**Etape de jointure** : Fusionner deux itemsets de L_{k-1} qui partagent les k-2 premiers items.
+
+**Etape d'elagage** : Supprimer tout candidat ayant un sous-ensemble de taille (k-1) absent de L_{k-1} (par anti-monotonie, il ne peut pas etre frequent).
+
+### Exemple detaille
+
+**Base de donnees** :
 
 | Transaction | Items |
 |-------------|-------|
@@ -79,132 +79,132 @@ Apriori finds all frequent itemsets by iteratively generating candidates of incr
 
 **minsup = 60% (= 3 transactions)**
 
-**Step 1: Frequent 1-itemsets (L_1)**
+**Etape 1 : Itemsets frequents de taille 1 (L_1)**
 
-| Item | Count | Support | Frequent? |
-|------|-------|---------|-----------|
-| Eggs | 4 | 80% | Yes |
-| Kidney Beans | 5 | 100% | Yes |
-| Milk | 3 | 60% | Yes |
-| Onion | 3 | 60% | Yes |
-| Yogurt | 3 | 60% | Yes |
-| Corn | 2 | 40% | No |
-| Nutmeg | 2 | 40% | No |
-| Apple | 1 | 20% | No |
-| Dill | 1 | 20% | No |
-| Ice cream | 1 | 20% | No |
-| Unicorn | 1 | 20% | No |
+| Item | Comptage | Support | Frequent ? |
+|------|----------|---------|------------|
+| Eggs | 4 | 80% | Oui |
+| Kidney Beans | 5 | 100% | Oui |
+| Milk | 3 | 60% | Oui |
+| Onion | 3 | 60% | Oui |
+| Yogurt | 3 | 60% | Oui |
+| Corn | 2 | 40% | Non |
+| Nutmeg | 2 | 40% | Non |
+| Apple | 1 | 20% | Non |
+| Dill | 1 | 20% | Non |
+| Ice cream | 1 | 20% | Non |
+| Unicorn | 1 | 20% | Non |
 
 L_1 = {Eggs, Kidney Beans, Milk, Onion, Yogurt}
 
-**Step 2: Frequent 2-itemsets (L_2)**
+**Etape 2 : Itemsets frequents de taille 2 (L_2)**
 
-Generate all pairs from L_1, count support:
+Generer toutes les paires de L_1, compter le support :
 
-| Itemset | Support | Frequent? |
-|---------|---------|-----------|
-| {Eggs, Kidney Beans} | 4/5 = 80% | Yes |
-| {Eggs, Onion} | 3/5 = 60% | Yes |
-| {Kidney Beans, Milk} | 3/5 = 60% | Yes |
-| {Kidney Beans, Onion} | 3/5 = 60% | Yes |
-| {Yogurt, Kidney Beans} | 3/5 = 60% | Yes |
-| {Eggs, Milk} | 2/5 = 40% | No |
-| {Eggs, Yogurt} | 2/5 = 40% | No |
-| {Milk, Onion} | 1/5 = 20% | No |
-| {Milk, Yogurt} | 2/5 = 40% | No |
-| {Onion, Yogurt} | 2/5 = 40% | No |
+| Itemset | Support | Frequent ? |
+|---------|---------|------------|
+| {Eggs, Kidney Beans} | 4/5 = 80% | Oui |
+| {Eggs, Onion} | 3/5 = 60% | Oui |
+| {Kidney Beans, Milk} | 3/5 = 60% | Oui |
+| {Kidney Beans, Onion} | 3/5 = 60% | Oui |
+| {Yogurt, Kidney Beans} | 3/5 = 60% | Oui |
+| {Eggs, Milk} | 2/5 = 40% | Non |
+| {Eggs, Yogurt} | 2/5 = 40% | Non |
+| {Milk, Onion} | 1/5 = 20% | Non |
+| {Milk, Yogurt} | 2/5 = 40% | Non |
+| {Onion, Yogurt} | 2/5 = 40% | Non |
 
-**Step 3: Frequent 3-itemsets (L_3)**
+**Etape 3 : Itemsets frequents de taille 3 (L_3)**
 
-From L_2, candidates must have all 2-subsets in L_2.
+A partir de L_2, les candidats doivent avoir tous leurs sous-ensembles de taille 2 dans L_2.
 
-| Candidate | All 2-subsets frequent? | Support | Frequent? |
-|-----------|------------------------|---------|-----------|
-| {Eggs, Kidney Beans, Onion} | EK:Yes, EO:Yes, KO:Yes | 3/5=60% | Yes |
-| {Eggs, Kidney Beans, Milk} | EK:Yes, EM:No | -- | Pruned |
-| {Eggs, Kidney Beans, Yogurt} | EK:Yes, EY:No | -- | Pruned |
+| Candidat | Tous les sous-ensembles de taille 2 frequents ? | Support | Frequent ? |
+|----------|------------------------------------------------|---------|------------|
+| {Eggs, Kidney Beans, Onion} | EK:Oui, EO:Oui, KO:Oui | 3/5=60% | Oui |
+| {Eggs, Kidney Beans, Milk} | EK:Oui, EM:Non | -- | Elague |
+| {Eggs, Kidney Beans, Yogurt} | EK:Oui, EY:Non | -- | Elague |
 | ... | ... | ... | ... |
 
 L_3 = {{Eggs, Kidney Beans, Onion}}
 
-**Final result**: All frequent itemsets = L_1 union L_2 union L_3
+**Resultat final** : Tous les itemsets frequents = L_1 union L_2 union L_3
 
-### Python Implementation
+### Implementation Python
 
 ```python noexec
 from mlxtend.frequent_patterns import apriori
 from mlxtend.preprocessing import TransactionEncoder
 
-# Transform transactions to boolean matrix
+# Transformer les transactions en matrice booleenne
 te = TransactionEncoder()
 te_array = te.fit(dataset).transform(dataset)
 df = pd.DataFrame(te_array, columns=te.columns_)
 
-# Run Apriori
+# Executer Apriori
 frequent_itemsets = apriori(df, min_support=0.6, use_colnames=True)
 
-# Add length column
+# Ajouter une colonne longueur
 frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(len)
 
-# Filter by length
+# Filtrer par longueur
 long_itemsets = frequent_itemsets[frequent_itemsets['length'] >= 2]
 ```
 
-## 3. Association Rules (Regles d'Association)
+## 3. Regles d'association
 
 ### Definitions
 
-An association rule has the form: X --> Y (if X then Y), where X and Y are disjoint itemsets.
+Une regle d'association a la forme : X --> Y (si X alors Y), ou X et Y sont des itemsets disjoints.
 
-| Metric | Formula | Meaning |
-|--------|---------|---------|
-| **Support** | support(X union Y) | How often X and Y appear together |
-| **Confidence** | support(X union Y) / support(X) | P(Y \| X) -- probability of Y given X |
-| **Lift** | confidence(X->Y) / support(Y) | How much more likely Y is given X vs. random |
+| Metrique | Formule | Signification |
+|----------|---------|---------------|
+| **Support** | support(X union Y) | Frequence a laquelle X et Y apparaissent ensemble |
+| **Confiance** | support(X union Y) / support(X) | P(Y \| X) -- probabilite de Y sachant X |
+| **Lift** | confiance(X->Y) / support(Y) | Combien Y est plus probable etant donne X par rapport au hasard |
 
 ### Interpretation
 
-| Lift Value | Meaning |
-|-----------|---------|
-| lift > 1 | Positive association (X and Y appear together more than expected) |
-| lift = 1 | Independent (no association) |
-| lift < 1 | Negative association (X and Y avoid each other) |
+| Valeur du lift | Signification |
+|----------------|---------------|
+| lift > 1 | Association positive (X et Y apparaissent ensemble plus que prevu) |
+| lift = 1 | Independants (pas d'association) |
+| lift < 1 | Association negative (X et Y s'evitent) |
 
-### Example
+### Exemple
 
-From the previous data:
-- Rule: {Onion, Kidney Beans} --> {Eggs}
+A partir des donnees precedentes :
+- Regle : {Onion, Kidney Beans} --> {Eggs}
 - support({Onion, KB, Eggs}) = 60%
-- confidence = 60% / 60% = 100%
+- confiance = 60% / 60% = 100%
 - lift = 100% / 80% = 1.25
 
-Interpretation: If a basket contains Onion and Kidney Beans, it always contains Eggs. The lift of 1.25 means this combination is 25% more likely than random.
+Interpretation : Si un panier contient Onion et Kidney Beans, il contient toujours des Eggs. Le lift de 1.25 signifie que cette combinaison est 25% plus probable que le hasard.
 
-## 4. Text Preprocessing for NLP (Pretraitement de Texte)
+## 4. Pretraitement de texte pour le NLP
 
-In TP3-4, tags from Flickr photos are preprocessed before mining. The pipeline:
+Dans les TP3-4, les tags des photos Flickr sont pretraites avant l'extraction de motifs. La pipeline :
 
-### Step 1: Lowercase Conversion
+### Etape 1 : Conversion en minuscules
 
 ```python noexec
 def lowerCase(tags):
     return tags.lower()
 ```
 
-### Step 2: Accent Removal (Suppression des Accents)
+### Etape 2 : Suppression des accents
 
 ```python noexec
 def supprimeAccent(tags):
-    # Maps accented characters to their unaccented equivalents
-    # e.g., 'e' with acute -> 'e', 'a' with grave -> 'a', etc.
-    # Note: The actual accented keys (e.g., unicode chars) may not render
-    # correctly in all editors. The principle is a character-by-character map.
+    # Associe les caracteres accentues a leurs equivalents non accentues
+    # ex. 'e' accent aigu -> 'e', 'a' accent grave -> 'a', etc.
+    # Note : Les cles accentuees (caracteres unicode) peuvent ne pas s'afficher
+    # correctement dans tous les editeurs. Le principe est une correspondance caractere par caractere.
     accent_map = {
-        '\u00e0': 'a', '\u00e2': 'a', '\u00e4': 'a',  # a grave, circumflex, diaeresis
-        '\u00e9': 'e', '\u00e8': 'e', '\u00ea': 'e', '\u00eb': 'e',  # e acute, grave, circumflex, diaeresis
-        '\u00ee': 'i', '\u00ef': 'i',  # i circumflex, diaeresis
-        '\u00f4': 'o', '\u00f6': 'o',  # o circumflex, diaeresis
-        '\u00f9': 'u', '\u00fb': 'u', '\u00fc': 'u',  # u grave, circumflex, diaeresis
+        '\u00e0': 'a', '\u00e2': 'a', '\u00e4': 'a',  # a grave, circonflexe, trema
+        '\u00e9': 'e', '\u00e8': 'e', '\u00ea': 'e', '\u00eb': 'e',  # e aigu, grave, circonflexe, trema
+        '\u00ee': 'i', '\u00ef': 'i',  # i circonflexe, trema
+        '\u00f4': 'o', '\u00f6': 'o',  # o circonflexe, trema
+        '\u00f9': 'u', '\u00fb': 'u', '\u00fc': 'u',  # u grave, circonflexe, trema
     }
     result = []
     for char in tags:
@@ -212,7 +212,7 @@ def supprimeAccent(tags):
     return ''.join(result)
 ```
 
-More robust approach (recommended):
+Approche plus robuste (recommandee) :
 ```python noexec
 import unicodedata
 def remove_accents(text):
@@ -220,9 +220,9 @@ def remove_accents(text):
     return ''.join(c for c in nfkd if not unicodedata.combining(c))
 ```
 
-### Step 3: Stopword Removal (Suppression des Mots Vides)
+### Etape 3 : Suppression des mots vides (stopwords)
 
-Stopwords are common words that carry no semantic meaning (le, la, de, des, un, une, etc.).
+Les mots vides sont des mots courants sans signification semantique (le, la, de, des, un, une, etc.).
 
 ```python noexec
 from nltk.corpus import stopwords
@@ -233,9 +233,9 @@ def supprimeStopwords(tags):
     return ' '.join(w for w in words if w not in stopwordslist)
 ```
 
-### Step 4: Remove Photo Identifiers
+### Etape 4 : Suppression des identifiants de photos
 
-Tags like "IMG_7719" or "DSC_2692" are camera-generated and carry no meaning.
+Les tags comme "IMG_7719" ou "DSC_2692" sont generes par l'appareil photo et ne portent aucune signification.
 
 ```python noexec
 import re
@@ -248,9 +248,9 @@ def supprimeIdentPhoto(tags):
                     if not regex_img.match(w) and not regex_dsc.match(w))
 ```
 
-### Step 5: Keep Only Alphanumeric Words
+### Etape 5 : Ne garder que les mots alphanumeriques
 
-Remove words containing special characters (URLs, emojis, punctuation).
+Supprimer les mots contenant des caracteres speciaux (URLs, emojis, ponctuation).
 
 ```python noexec
 def supprimeCarSpeciaux(tags):
@@ -259,7 +259,7 @@ def supprimeCarSpeciaux(tags):
     return ' '.join(w for w in words if pattern.match(w))
 ```
 
-### Complete Pipeline
+### Pipeline complete
 
 ```python noexec
 photos["tags"] = photos["tags"].fillna("")
@@ -273,16 +273,16 @@ for idx, row in photos.iterrows():
     photos.at[idx, "tags"] = tags
 ```
 
-## 5. Cluster Labeling with Apriori (from TP3-4)
+## 5. Etiquetage des clusters avec Apriori (issu des TP3-4)
 
-After clustering photos with DBSCAN, use Apriori on the tags of each cluster to find its most characteristic label:
+Apres le clustering des photos avec DBSCAN, on utilise Apriori sur les tags de chaque cluster pour trouver son etiquette la plus caracteristique :
 
 ```python noexec
 def identify_cluster(cluster_nb, photos, cluster_labels):
-    # Get photos in this cluster
+    # Obtenir les photos de ce cluster
     cluster_photos = photos[photos['cluster'] == cluster_nb]
     
-    # Build transaction list from tags
+    # Construire la liste des transactions a partir des tags
     transactions = []
     for tags in cluster_photos['tags']:
         if tags and tags.strip():
@@ -291,93 +291,93 @@ def identify_cluster(cluster_nb, photos, cluster_labels):
     if not transactions:
         return
     
-    # Encode as boolean matrix
+    # Encoder en matrice booleenne
     te = TransactionEncoder()
     te_array = te.fit(transactions).transform(transactions)
     df_tags = pd.DataFrame(te_array, columns=te.columns_)
     
-    # Apply Apriori (play with min_support: 0.3-0.6)
+    # Appliquer Apriori (jouer avec min_support : 0.3-0.6)
     freq = apriori(df_tags, min_support=0.3, use_colnames=True)
     
     if freq.empty:
         return
     
-    # Keep itemsets of length >= 2
+    # Garder les itemsets de longueur >= 2
     freq['length'] = freq['itemsets'].apply(len)
     freq = freq[freq['length'] >= 2]
     
     if freq.empty:
         return
     
-    # Sort by support (descending), then by length (descending)
+    # Trier par support (decroissant), puis par longueur (decroissant)
     freq = freq.sort_values(['support', 'length'], ascending=[False, False])
     
-    # Take the top itemset as the cluster label
+    # Prendre le meilleur itemset comme etiquette du cluster
     best = freq.iloc[0]['itemsets']
     cluster_labels[cluster_nb] = ', '.join(sorted(best))
 ```
 
-## 6. Advanced Pattern Mining (Lecture Content)
+## 6. Fouille de motifs avancee (contenu du cours)
 
-The course also covers (in lecture7 and lecture10):
+Le cours couvre egalement (dans les cours 7 et 10) :
 
-### Sequential Pattern Mining
-Finding ordered sequences of itemsets that appear frequently in a sequence database.
+### Fouille de motifs sequentiels
+Trouver des sequences ordonnees d'itemsets qui apparaissent frequemment dans une base de sequences.
 
-Example: {Bread, Butter} --> {Milk} --> {Eggs} (customers who buy bread and butter, then buy milk, then buy eggs)
+Exemple : {Pain, Beurre} --> {Lait} --> {Oeufs} (les clients qui achetent du pain et du beurre, puis du lait, puis des oeufs)
 
-### Closed and Maximal Itemsets
-- **Closed itemset**: Frequent itemset with no proper superset having the same support
-- **Maximal itemset**: Frequent itemset with no frequent proper superset
+### Itemsets fermes et maximaux
+- **Itemset ferme** : Itemset frequent sans sur-ensemble propre ayant le meme support
+- **Itemset maximal** : Itemset frequent sans sur-ensemble propre frequent
 
-These reduce the number of patterns while preserving all information.
+Ces notions reduisent le nombre de motifs tout en preservant toute l'information.
 
-## Common Pitfalls
+## Pieges courants
 
-1. **Setting minsup too low**: Produces exponentially many itemsets, most of which are uninteresting.
-2. **Setting minsup too high**: Misses important patterns. Start around 0.3-0.5 and adjust.
-3. **Confusing support and confidence**: Support is about frequency of the entire itemset; confidence is the conditional probability.
-4. **Not handling empty tags**: Always check for NaN/empty strings before Apriori.
-5. **Forgetting to remove stopwords**: Common words like "rennes" or "france" will dominate all clusters if not handled properly.
+1. **Definir minsup trop bas** : Produit un nombre exponentiel d'itemsets, dont la plupart ne sont pas interessants.
+2. **Definir minsup trop haut** : Rate des motifs importants. Commencez autour de 0.3-0.5 et ajustez.
+3. **Confondre support et confiance** : Le support concerne la frequence de l'itemset entier ; la confiance est la probabilite conditionnelle.
+4. **Ne pas gerer les tags vides** : Verifiez toujours les NaN/chaines vides avant Apriori.
+5. **Oublier de supprimer les mots vides** : Les mots courants comme "rennes" ou "france" domineront tous les clusters s'ils ne sont pas traites.
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### Apriori Step-by-Step (for exam)
-
-```
-1. Count support of all single items --> L_1
-2. Generate pairs from L_1 --> C_2
-3. Count support of C_2 --> keep frequent --> L_2
-4. Generate triples from L_2 (prune by anti-monotonicity) --> C_3
-5. Count support of C_3 --> keep frequent --> L_3
-6. Continue until L_k is empty
-```
-
-### Anti-Monotonicity Rules
+### Apriori pas a pas (pour l'examen)
 
 ```
-{A} infrequent  -->  {A, B}, {A, C}, {A, B, C}, ... all infrequent
-{A, B} frequent  -->  {A} and {B} must be frequent
+1. Compter le support de tous les items individuels --> L_1
+2. Generer les paires a partir de L_1 --> C_2
+3. Compter le support de C_2 --> garder les frequents --> L_2
+4. Generer les triplets a partir de L_2 (elagage par anti-monotonie) --> C_3
+5. Compter le support de C_3 --> garder les frequents --> L_3
+6. Continuer jusqu'a ce que L_k soit vide
 ```
 
-### Key Formulas
-
-| Metric | Formula |
-|--------|---------|
-| support(X) | count(X in DB) / \|DB\| |
-| confidence(X -> Y) | support(X union Y) / support(X) |
-| lift(X -> Y) | confidence(X -> Y) / support(Y) |
-
-### NLP Preprocessing Pipeline
+### Regles d'anti-monotonie
 
 ```
-Raw tags --> lowercase --> remove accents --> remove stopwords
-         --> remove IMG/DSC --> remove special chars --> clean tags
+{A} non frequent  -->  {A, B}, {A, C}, {A, B, C}, ... tous non frequents
+{A, B} frequent   -->  {A} et {B} doivent etre frequents
 ```
 
-### Python Quick Reference
+### Formules cles
+
+| Metrique | Formule |
+|----------|---------|
+| support(X) | comptage(X dans DB) / \|DB\| |
+| confiance(X -> Y) | support(X union Y) / support(X) |
+| lift(X -> Y) | confiance(X -> Y) / support(Y) |
+
+### Pipeline de pretraitement NLP
+
+```
+Tags bruts --> minuscules --> supprimer accents --> supprimer mots vides
+           --> supprimer IMG/DSC --> supprimer caracteres speciaux --> tags propres
+```
+
+### Reference rapide Python
 
 ```python noexec
 # Apriori
@@ -388,15 +388,15 @@ te = TransactionEncoder()
 df = pd.DataFrame(te.fit(data).transform(data), columns=te.columns_)
 freq = apriori(df, min_support=0.6, use_colnames=True)
 
-# Association rules
+# Regles d'association
 from mlxtend.frequent_patterns import association_rules
 rules = association_rules(freq, metric="confidence", min_threshold=0.7)
 ```
 
-### French Exam Vocabulary
+### Vocabulaire d'examen (Francais/Anglais)
 
-| French | English |
-|--------|---------|
+| Francais | Anglais |
+|----------|---------|
 | Motif frequent | Frequent itemset |
 | Support minimal | Minimum support |
 | Regle d'association | Association rule |

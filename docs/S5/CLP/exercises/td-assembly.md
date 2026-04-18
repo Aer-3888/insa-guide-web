@@ -1,25 +1,25 @@
 ---
-title: "TD Solutions -- ARM Assembly"
+title: "Corrections de TD -- Assembleur ARM"
 sidebar_position: 1
 ---
 
-# TD Solutions -- ARM Assembly
+# Corrections de TD -- Assembleur ARM
 
-> Following teacher instructions from: S5/CLP/data/moodle/td/TDAsm1.pdf and S5/CLP/data/moodle/td/Assembleur/
+> D'apres les consignes enseignants : S5/CLP/data/moodle/td/TDAsm1.pdf et S5/CLP/data/moodle/td/Assembleur/
 
-This file covers the ARM assembly TD exercises: character-to-number conversion (carastruct.s), the Collatz sequence (collatz.s), factorial computation (factorial.s), and array analysis (CodeTest.s).
+Ce fichier couvre les exercices de TD en assembleur ARM : conversion caractere vers nombre (carastruct.s), la suite de Collatz (collatz.s), le calcul de la factorielle (factorial.s), et l'analyse de tableau (CodeTest.s).
 
 ---
 
-## Exercise 1: Character-to-Number Conversion (carastruct.s)
+## Exercice 1 : Conversion caractere vers nombre (carastruct.s)
 
-### Convert a string of digit characters to an integer
+### Convertir une chaine de caracteres numeriques en entier
 
-**Question:** Given a struct containing a length field and a character array "5487", convert it to the integer 5487.
+**Question :** Etant donne une structure contenant un champ longueur et un tableau de caracteres "5487", le convertir en l'entier 5487.
 
-**Answer:**
+**Reponse :**
 
-**Struct layout:**
+**Organisation de la structure :**
 ```c noexec
 struct chain {
     int lg;        // offset 0: length of the string
@@ -27,7 +27,7 @@ struct chain {
 };
 ```
 
-**Complete annotated assembly:**
+**Assembleur complet annote :**
 ```arm
 .data
 t_chain:
@@ -90,7 +90,7 @@ loop_done:
     ldr r0, [r0]         @ r0 = 5487
 ```
 
-**Register trace:**
+**Trace des registres :**
 
 | Iteration | i (r0) | char (r7) | digit (r7) | N before (r1) | N after (r1) |
 |-----------|--------|-----------|------------|----------------|---------------|
@@ -100,7 +100,7 @@ loop_done:
 | 3 | 3 | '7' (55) | 7 | 548 | 548*10 + 7 = 5487 |
 | 4 | 4 | -- | -- | 5487 | (loop exits: 4 >= 4) |
 
-**How it works:**
+**Fonctionnement :**
 - **LDRB for byte access:** `ldrb r7, [r8, r0]` loads exactly 1 byte, zero-extending to 32 bits. Using `LDR` would load 4 bytes (wrong).
 - **ASCII conversion:** Characters '0'-'9' have values 48-57. Subtracting '0' gives 0-9.
 - **BCS (Branch if Carry Set):** For unsigned `cmp r0, r9`, carry is set when r0 >= r9. Equivalent to BHS.
@@ -108,13 +108,13 @@ loop_done:
 
 ---
 
-## Exercise 2: Collatz Sequence (collatz.s)
+## Exercice 2 : Suite de Collatz (collatz.s)
 
-### Apply Collatz conjecture rules until reaching 1
+### Appliquer les regles de la conjecture de Collatz jusqu'a atteindre 1
 
-**Question:** Starting from x = 32 (0x20), apply: if x is even, x = x/2; if x is odd, x = 3x + 1. Stop when x = 1.
+**Question :** En partant de x = 32 (0x20), appliquer : si x est pair, x = x/2 ; si x est impair, x = 3x + 1. S'arreter quand x = 1.
 
-**Answer:**
+**Reponse :**
 
 ```arm
 .data
@@ -154,9 +154,9 @@ collatz_done:
     @ x = 1, sequence complete
 ```
 
-**Execution trace (x = 32):**
+**Trace d'execution (x = 32) :**
 
-| Step | x | Bit 0 | Operation | New x |
+| Etape | x | Bit 0 | Operation | Nouveau x |
 |------|---|-------|-----------|-------|
 | 1 | 32 | 0 | even: 32 >> 1 | 16 |
 | 2 | 16 | 0 | even: 16 >> 1 | 8 |
@@ -165,9 +165,9 @@ collatz_done:
 | 5 | 2 | 0 | even: 2 >> 1 | 1 |
 | 6 | 1 | -- | x == 1, STOP | -- |
 
-Starting value 32 = 2^5 is purely even, so it divides down in 5 steps. A more interesting trace uses x = 7:
+La valeur de depart 32 = 2^5 est purement paire, donc elle se divise en 5 etapes. Une trace plus interessante utilise x = 7 :
 
-| Step | x | Bit 0 | Operation | New x |
+| Etape | x | Bit 0 | Operation | Nouveau x |
 |------|---|-------|-----------|-------|
 | 1 | 7 | 1 | odd: 3*7+1 | 22 |
 | 2 | 22 | 0 | even: 22/2 | 11 |
@@ -183,20 +183,20 @@ Starting value 32 = 2^5 is purely even, so it divides down in 5 steps. A more in
 | 12 | 5 | 1 | odd: 3*5+1 | 16 |
 | 13-17 | 16->1 | 0 | even path | 1 |
 
-**How it works:**
+**Fonctionnement :**
 - **Parity test with AND:** `and r3, r0, #1` isolates bit 0. Faster and cleaner than division.
 - **LSR for unsigned division:** `mov r0, r0, lsr #1` shifts all bits right by 1 = divide by 2. Vacated MSB filled with 0.
 - **MLA for 3x+1:** `mla r0, r0, r6, r7` computes x*3+1 in a single instruction.
 
 ---
 
-## Exercise 3: Factorial (factorial.s)
+## Exercice 3 : Factorielle (factorial.s)
 
-### Compute N! for N = 12
+### Calculer N! pour N = 12
 
-**Question:** Implement iterative factorial. Why is 12 the maximum for 32-bit?
+**Question :** Implementer la factorielle iterative. Pourquoi 12 est-il le maximum pour 32 bits ?
 
-**Answer:**
+**Reponse :**
 
 ```arm
 .set N, 12
@@ -233,7 +233,7 @@ loop_done:
     str r0, [r9]         @ Store final result
 ```
 
-**Register trace:**
+**Trace des registres :**
 
 | i | fact (r0) before | fact (r0) after |
 |---|-----------------|-----------------|
@@ -251,23 +251,23 @@ loop_done:
 | 12 | 39,916,800 | 479,001,600 |
 | 13 | -- | loop exits (13 > 12) |
 
-**Final result:** r0 = 479,001,600 = 0x1C8CFC00
+**Resultat final :** r0 = 479 001 600 = 0x1C8CFC00
 
-**Why 12 is maximum:** 13! = 6,227,020,800 exceeds 2^32 - 1 = 4,294,967,295. A 32-bit `MUL` would silently overflow. For larger factorials, use `UMULL` (unsigned multiply long) for a 64-bit result.
+**Pourquoi 12 est le maximum :** 13! = 6 227 020 800 depasse 2^32 - 1 = 4 294 967 295. Un `MUL` 32 bits deborderait silencieusement. Pour des factorielles plus grandes, utiliser `UMULL` (multiplication non signee longue) pour un resultat sur 64 bits.
 
-**How it works:**
+**Fonctionnement :**
 - **BHI (Branch if Higher):** Unsigned greater-than. Exits when i=13 > 12.
 - **Accumulator in register:** Unlike i (loaded/stored each iteration), fact stays in r0 throughout -- a natural optimization.
 
 ---
 
-## Exercise 4: Array Analysis (CodeTest.s)
+## Exercice 4 : Analyse de tableau (CodeTest.s)
 
-### Count negative, zero, and positive values in an array
+### Compter les valeurs negatives, nulles et positives dans un tableau
 
-**Question:** Given an array of 10 integers, count negative, zero, and positive values.
+**Question :** Etant donne un tableau de 10 entiers, compter les valeurs negatives, nulles et positives.
 
-**Answer:**
+**Reponse :**
 
 ```arm
 .data
@@ -300,11 +300,11 @@ Boucle:
     bge Boucle           @ Loop continues while element >= 0
 ```
 
-**Important note:** The loop termination `bge Boucle` is BUGGY in the original code. It exits on the first negative element:
-- Elements processed: 4, 8, 12, 9, 0 (then -1 causes exit)
-- Elements MISSED: 0, -18, 2, 0
+**Remarque importante :** La condition de fin de boucle `bge Boucle` est BUGUEE dans le code original. Elle sort au premier element negatif :
+- Elements traites : 4, 8, 12, 9, 0 (puis -1 provoque la sortie)
+- Elements MANQUES : 0, -18, 2, 0
 
-**Corrected version using a separate counter:**
+**Version corrigee utilisant un compteur separe :**
 ```arm
     mov r5, #N           @ Total elements
     mov r6, #0           @ Processed count
@@ -329,29 +329,29 @@ Done:
     sub r5, r5, r4      @ r5 = N - negative - zero = positive count
 ```
 
-**How it works:**
+**Fonctionnement :**
 - **Post-increment addressing:** `ldr r0, [r1], #4` loads the word at r1, THEN adds 4 to r1. Standard array-walking pattern.
 - **Conditional execution:** ARM's signature feature. `addlt r3, r3, #1` only executes the ADD if the N!=V flag condition holds (signed less than). Avoids branches, more efficient on ARM pipeline.
 - **RSB (Reverse Subtract):** `rsb r3, r3, #N` computes `r3 = N - r3` (operands reversed from SUB).
 
 ---
 
-## Annale 2017: Vector Dot Product and Orthogonality
+## Annale 2017 : Produit scalaire de vecteurs et orthogonalite
 
-### Compute scalar product and test orthogonality
+### Calculer le produit scalaire et tester l'orthogonalite
 
-**Question:** Given vectors as structs with (letter, x, y), compute the dot product and determine if two vectors are orthogonal.
+**Question :** Etant donne des vecteurs sous forme de structures avec (lettre, x, y), calculer le produit scalaire et determiner si deux vecteurs sont orthogonaux.
 
-**Answer:**
+**Reponse :**
 
-**Data structure:**
+**Structure de donnees :**
 ```arm
 .set lettre, 0           @ Identifier character
 .set x, 4                @ x coordinate (after alignment)
 .set y, 8                @ y coordinate
 ```
 
-**Stack frame for ProduitScalaire:**
+**Cadre de pile pour ProduitScalaire :**
 ```arm
 .set valScalaire, -4     @ Local variable
 .set resScalaire, 8      @ Return value
@@ -359,7 +359,7 @@ Done:
 .set v_pile, 16          @ Second parameter (vector v pointer)
 ```
 
-**Dot product computation for B(4,0) and C(0,2):**
+**Calcul du produit scalaire pour B(4,0) et C(0,2) :**
 ```arm
 ldr r0, [fp, #u_pile]   @ r0 = address of B
 ldr r5, [r0, #x]        @ r5 = B.x = 4
@@ -374,9 +374,9 @@ mul r4, r6, r8           @ r4 = 0 * 2 = 0
 add r2, r3, r4           @ r2 = 0 + 0 = 0
 ```
 
-Result: dot product = 0, so B and C are orthogonal (estOrtho = 1).
+Resultat : produit scalaire = 0, donc B et C sont orthogonaux (estOrtho = 1).
 
-**Conditional store pattern (orthogonality test):**
+**Patron de stockage conditionnel (test d'orthogonalite) :**
 ```arm
 cmp r2, #0
 moveq r4, #1             @ If dot product == 0: orthogonal
@@ -387,15 +387,15 @@ strne r4, [r3]
 
 ---
 
-## Annale 2018: Direction Vectors and Collinearity
+## Annale 2018 : Vecteurs directeurs et colinearite
 
-### Generate direction vectors and test collinearity
+### Generer les vecteurs directeurs et tester la colinearite
 
-**Question:** Given lines ax + by + c = 0, compute direction vectors (-b, a) and test collinearity via cross product.
+**Question :** Etant donne des droites ax + by + c = 0, calculer les vecteurs directeurs (-b, a) et tester la colinearite via le produit vectoriel.
 
-**Answer:**
+**Reponse :**
 
-**Direction vector for D1 (a=3, b=2, c=12):**
+**Vecteur directeur pour D1 (a=3, b=2, c=12) :**
 ```arm
 ldr r6, [r5, #b]        @ r6 = D1.b = 2
 ldr r7, [r5, #a]        @ r7 = D1.a = 3
@@ -405,27 +405,27 @@ str r6, [r3, #x]        @ v1.x = -2
 str r7, [r3, #y]        @ v1.y = 3
 ```
 
-Results: v1 = (-2, 3), v2 = (-4, 6), v3 = (-2, -1)
+Resultats : v1 = (-2, 3), v2 = (-4, 6), v3 = (-2, -1)
 
-**Collinearity check (cross product = 0):**
+**Verification de colinearite (produit vectoriel = 0) :**
 
-For v1=(-2,3) and v2=(-4,6):
+Pour v1=(-2,3) et v2=(-4,6) :
 ```
 (-2)*6 - 3*(-4) = -12 - (-12) = -12 + 12 = 0
 ```
-Cross product is 0, so v1 and v2 are collinear (D1 and D2 are parallel).
+Le produit vectoriel est 0, donc v1 et v2 sont colineaires (D1 et D2 sont paralleles).
 
 ---
 
-## Annale 2019: Recipe Ingredients
+## Annale 2019 : Ingredients de recette
 
-### Count non-empty ingredients and extract numeric values
+### Compter les ingredients non vides et extraire les valeurs numeriques
 
-**Question:** Given ingredient structs with a 3-byte encoded quantity and a name string, implement CompterIngredients and TrouverNb.
+**Question :** Etant donne des structures d'ingredients avec une quantite codee sur 3 octets et une chaine de nom, implementer CompterIngredients et TrouverNb.
 
-**Answer:**
+**Reponse :**
 
-**CompterIngredients -- count non-empty entries:**
+**CompterIngredients -- compter les entrees non vides :**
 ```arm
 CompterIngredients:
     ldr r0, [fp, #ptRecette]   @ r0 = address of TabIngredients
@@ -443,7 +443,7 @@ finloop:
     str r1, [fp, #res]         @ Return count
 ```
 
-**TrouverNb -- extract 3-digit number (e.g., bytes 0,8,0 -> 80):**
+**TrouverNb -- extraire le nombre a 3 chiffres (par ex., octets 0,8,0 -> 80) :**
 ```arm
 TrouverNb:
     mov r0, #0                  @ j = 0 (byte index)
@@ -465,7 +465,7 @@ loop1:
     b loop1
 ```
 
-Trace for ingredient i4 (FARINE, bytes 0, 8, 0):
+Trace pour l'ingredient i4 (FARINE, octets 0, 8, 0) :
 ```
 j=0: nb = 0*10 + 0 = 0
 j=1: nb = 0*10 + 8 = 8

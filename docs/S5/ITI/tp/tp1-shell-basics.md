@@ -1,63 +1,63 @@
 ---
-title: "FUS1 - Shell Basics & Text Processing"
+title: "FUS1 - Bases du shell et traitement de texte"
 sidebar_position: 1
 ---
 
-# FUS1 - Shell Basics & Text Processing
+# FUS1 - Bases du shell et traitement de texte
 
-## Learning Objectives
+## Objectifs pedagogiques
 
-This TP introduces fundamental Unix shell concepts and text manipulation utilities. You learn to:
+Ce TP introduit les concepts fondamentaux du shell Unix et les utilitaires de manipulation de texte. Vous apprendrez a :
 
-- Navigate the Unix filesystem using the command line
-- Understand shell basics (bash vs tcsh syntax)
-- Work with standard I/O streams (stdin, stdout, stderr)
-- Use core text processing tools (cat, echo, wc, grep)
-- Write simple shell scripts with variables and control structures
+- Naviguer dans le systeme de fichiers Unix en ligne de commande
+- Comprendre les bases du shell (syntaxe bash vs tcsh)
+- Travailler avec les flux d'E/S standard (stdin, stdout, stderr)
+- Utiliser les outils de traitement de texte fondamentaux (cat, echo, wc, grep)
+- Ecrire des scripts shell simples avec des variables et des structures de controle
 
-## Core Concepts
+## Concepts fondamentaux
 
-### 1. Shell Types
+### 1. Types de shell
 
-Unix systems support multiple shell interpreters:
+Les systemes Unix supportent plusieurs interpreteurs de commandes :
 
-- **bash** (Bourne Again Shell) - Most common, default on Linux
-- **tcsh** (TENEX C Shell) - C-like syntax, common on older systems
-- **sh** (Bourne Shell) - Original Unix shell, minimal but portable
+- **bash** (Bourne Again Shell) - Le plus courant, par defaut sous Linux
+- **tcsh** (TENEX C Shell) - Syntaxe proche du C, courant sur les anciens systemes
+- **sh** (Bourne Shell) - Shell Unix original, minimal mais portable
 
-The shebang (`#!/bin/bash`) at the start of a script specifies which interpreter to use.
+Le shebang (`#!/bin/bash`) au debut d'un script indique quel interpreteur utiliser.
 
-### 2. Text Processing Commands
+### 2. Commandes de traitement de texte
 
-#### `cat` - Concatenate and display files
+#### `cat` - Concatener et afficher des fichiers
 ```bash
 cat file.txt           # Display file contents
 cat file1 file2        # Concatenate multiple files
 cat > newfile.txt      # Create file from stdin (Ctrl+D to end)
 ```
 
-#### `echo` - Print text to stdout
+#### `echo` - Afficher du texte sur stdout
 ```bash
 echo "Hello World"     # Print string
 echo $VAR              # Print variable value
 echo -n "No newline"   # Suppress newline
 ```
 
-#### `wc` - Word count
+#### `wc` - Comptage de mots
 ```bash
 wc file.txt            # Show lines, words, bytes
 wc -l file.txt         # Count lines only
 wc -w file.txt         # Count words only
 ```
 
-#### `grep` - Pattern matching
+#### `grep` - Recherche de motifs
 ```bash
 grep "pattern" file    # Find lines containing pattern
 grep -i "pattern" file # Case-insensitive search
 grep -v "pattern" file # Invert match (lines NOT containing pattern)
 ```
 
-### 3. File System Navigation
+### 3. Navigation dans le systeme de fichiers
 
 ```bash
 ls                     # List directory contents
@@ -67,9 +67,9 @@ pwd                    # Print working directory
 cd /path/to/dir        # Change directory
 ```
 
-### 4. File Type Testing
+### 4. Test de type de fichier
 
-In bash scripts, you can test file properties:
+Dans les scripts bash, vous pouvez tester les proprietes des fichiers :
 
 ```bash
 if [ -f filename ]; then    # Is it a regular file?
@@ -81,7 +81,7 @@ if [ -d dirname ]; then     # Is it a directory?
 fi
 ```
 
-Common test operators:
+Operateurs de test courants :
 - `-f` : Regular file
 - `-d` : Directory
 - `-e` : Exists (any type)
@@ -89,7 +89,7 @@ Common test operators:
 - `-w` : Writable
 - `-x` : Executable
 
-### 5. Pipes and Redirection
+### 5. Pipes et redirections
 
 ```bash
 command1 | command2    # Pipe: stdout of command1 → stdin of command2
@@ -99,26 +99,26 @@ command 2> file        # Redirect stderr to file
 command < file         # Redirect file to stdin
 ```
 
-## Exercises Overview
+## Apercu des exercices
 
-### Exercise 1: Simple Scripts
-Create basic shell scripts that print messages and manipulate variables.
+### Exercice 1 : Scripts simples
+Creer des scripts shell de base qui affichent des messages et manipulent des variables.
 
-**Key concepts**: Shebang, variables, echo
+**Concepts cles** : shebang, variables, echo
 
-### Exercise 2: File Counting Script
-Count the number of files and directories in the current location using `ls`, `grep`, and `wc`.
+### Exercice 2 : Script de comptage de fichiers
+Compter le nombre de fichiers et de repertoires dans le repertoire courant en utilisant `ls`, `grep` et `wc`.
 
-**Key concepts**: Piping, grep patterns (`^-` for files, `^d` for directories), wc -l
+**Concepts cles** : pipes, motifs grep (`^-` pour les fichiers, `^d` pour les repertoires), wc -l
 
-**Two approaches**:
-1. **tcsh version**: Uses pipes and text processing
+**Deux approches** :
+1. **Version tcsh** : utilise les pipes et le traitement de texte
    ```bash
    ls -l | grep "^-" | wc -l    # Count files
    ls -l | grep "^d" | wc -l    # Count directories
    ```
 
-2. **bash version**: Uses loops and file testing
+2. **Version bash** : utilise les boucles et les tests de fichiers
    ```bash
    for e in $(ls); do
        if [ -f $e ]; then nbfic=$((nbfic+1)); fi
@@ -126,36 +126,36 @@ Count the number of files and directories in the current location using `ls`, `g
    done
    ```
 
-### Exercise 3: Understanding man Pages
-Learn to read Unix manual pages (man cat, man echo, man wc) to understand command options and usage.
+### Exercice 3 : Comprendre les pages man
+Apprendre a lire les pages de manuel Unix (man cat, man echo, man wc) pour comprendre les options et l'utilisation des commandes.
 
 ## Solutions
 
-See `src/` directory for cleaned, commented implementations:
-- `bonjour.sh` - Basic greeting script
-- `cat_simulator.sh` - Demonstrates how cat works
-- `count_files_tcsh.sh` - File counter using pipes (tcsh)
-- `count_files_bash.sh` - File counter using loops (bash)
+Voir le repertoire `src/` pour les implementations commentees :
+- `bonjour.sh` - Script de salutation basique
+- `cat_simulator.sh` - Demontre le fonctionnement de cat
+- `count_files_tcsh.sh` - Compteur de fichiers avec pipes (tcsh)
+- `count_files_bash.sh` - Compteur de fichiers avec boucles (bash)
 
-## Key Takeaways
+## Points cles a retenir
 
-1. **Shell scripts are interpreted line-by-line** - No compilation needed
-2. **Different shells have different syntax** - Always specify shebang
-3. **Pipes are powerful** - Combine simple tools to solve complex problems
-4. **File system operations are fundamental** - Understanding ls, cd, pwd is essential
-5. **Testing file types matters** - Use appropriate test operators
+1. **Les scripts shell sont interpretes ligne par ligne** - Pas de compilation necessaire
+2. **Les differents shells ont des syntaxes differentes** - Toujours specifier le shebang
+3. **Les pipes sont puissants** - Combiner des outils simples pour resoudre des problemes complexes
+4. **Les operations sur le systeme de fichiers sont fondamentales** - Comprendre ls, cd, pwd est essentiel
+5. **Tester les types de fichiers est important** - Utiliser les operateurs de test appropries
 
-## Further Reading
+## Pour aller plus loin
 
-- Bash scripting guide: `man bash`
-- Text processing: Advanced grep, sed, awk
-- Shell scripting best practices: Quoting variables, error handling
-- POSIX compliance for portable scripts
+- Guide du scripting Bash : `man bash`
+- Traitement de texte : grep, sed, awk avances
+- Bonnes pratiques de scripting shell : protection des variables, gestion des erreurs
+- Conformite POSIX pour des scripts portables
 
-## Common Pitfalls
+## Erreurs courantes
 
-1. **Forgetting shebang** - Script may run in wrong shell
-2. **Not quoting variables** - `"$var"` vs `$var` matters with spaces
-3. **Using bash syntax in sh** - `[[ ]]` doesn't work in POSIX sh
-4. **Forgetting to make scripts executable** - `chmod +x script.sh`
-5. **Hardcoding paths** - Use `pwd`, `dirname`, or relative paths
+1. **Oublier le shebang** - Le script peut s'executer dans le mauvais shell
+2. **Ne pas proteger les variables** - `"$var"` vs `$var` fait une difference avec les espaces
+3. **Utiliser la syntaxe bash dans sh** - `[[ ]]` ne fonctionne pas en POSIX sh
+4. **Oublier de rendre les scripts executables** - `chmod +x script.sh`
+5. **Coder en dur les chemins** - Utiliser `pwd`, `dirname` ou des chemins relatifs

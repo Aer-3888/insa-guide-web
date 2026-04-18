@@ -1,44 +1,44 @@
 ---
-title: "Iterators & Design Patterns"
+title: "Iterateurs et Patrons de Conception"
 sidebar_position: 2
 ---
 
-# Iterators & Design Patterns
+# Iterateurs et Patrons de Conception
 
-## Theory
+## Theorie
 
-### The Iterator Pattern
+### Le Patron Iterateur
 
-The **Iterator pattern** separates traversal logic from the data structure itself. This allows:
-- Multiple simultaneous traversals (multiple iterators on one list)
-- Different traversal strategies (forward, backward, filtered)
-- Clean interface: the list creates iterators, iterators navigate
+Le **patron Iterateur** separe la logique de parcours de la structure de donnees elle-meme. Cela permet :
+- Des parcours simultanes multiples (plusieurs iterateurs sur une seule liste)
+- Differentes strategies de parcours (avant, arriere, filtre)
+- Une interface propre : la liste cree des iterateurs, les iterateurs naviguent
 
 ```
-  Liste<T>  ----------creates----------> Iterateur<T>
+  Liste<T>  ----------cree----------> Iterateur<T>
      |                                       |
-     | implements                            | implements
+     | implemente                           | implemente
      v                                       v
   ListeDoubleChainee<T>              ListeDoubleChaineeIterateur<T>
   ListeTabulee<T>                    ListeTabuleeIterateur<T>
 ```
 
-### Why Separate List and Iterator?
+### Pourquoi Separer Liste et Iterateur ?
 
-With the TP1 approach (`MyList` has cursor built in):
-- Only one cursor per list
-- Cannot iterate and modify simultaneously
-- Cannot have two independent traversals
+Avec l'approche du TP1 (`MyList` avec curseur integre) :
+- Un seul curseur par liste
+- Impossible d'iterer et modifier simultanement
+- Impossible d'avoir deux parcours independants
 
-With the TP2 approach (separate `Iterateur`):
-- Create multiple iterators: `Iterateur<T> it1 = list.iterateur(); Iterateur<T> it2 = list.iterateur();`
-- Each has its own cursor
-- The list itself has no cursor
+Avec l'approche du TP2 (`Iterateur` separe) :
+- Creer plusieurs iterateurs : `Iterateur<T> it1 = list.iterateur(); Iterateur<T> it2 = list.iterateur();`
+- Chacun a son propre curseur
+- La liste elle-meme n'a pas de curseur
 
 
-## Java Interfaces (from TP2-3)
+## Interfaces Java (des TP2-3)
 
-### Liste<T> -- The List Interface
+### Liste<T> -- L'Interface de Liste
 
 ```java
 public interface Liste<T> {
@@ -48,7 +48,7 @@ public interface Liste<T> {
 }
 ```
 
-### Iterateur<T> -- The Iterator Interface
+### Iterateur<T> -- L'Interface Iterateur
 
 ```java
 public interface Iterateur<T> {
@@ -66,9 +66,9 @@ public interface Iterateur<T> {
 ```
 
 
-## Implementation: ListeDoubleChainee with Separate Iterator (TP2)
+## Implementation : ListeDoubleChainee avec Iterateur Separe (TP2)
 
-### The List Class (no cursor)
+### La Classe Liste (sans curseur)
 
 ```java
 public class ListeDoubleChainee<T> implements Liste<T> {
@@ -101,7 +101,7 @@ public class ListeDoubleChainee<T> implements Liste<T> {
 }
 ```
 
-### The Iterator Class (has cursor)
+### La Classe Iterateur (possede un curseur)
 
 ```java
 public class ListeDoubleChaineeIterateur<T> implements Iterateur<T> {
@@ -138,18 +138,18 @@ public class ListeDoubleChaineeIterateur<T> implements Iterateur<T> {
         this.cursor.succ = nlink;
         this.cursor = nlink;
     }
-    // ... (oterec, modifec, valec similar to TP1)
+    // ... (oterec, modifec, valec similaires au TP1)
 }
 ```
 
 
-## Adapter Pattern: Bridging to java.util (TP3)
+## Patron Adaptateur : Pont vers java.util (TP3)
 
-### Problem
+### Probleme
 
-The course uses custom `Liste<T>` / `Iterateur<T>` interfaces, but Java's standard library uses `java.util.List<T>` / `java.util.Iterator<T>`. To use for-each loops and standard APIs, we need adapters.
+Le cours utilise des interfaces personnalisees `Liste<T>` / `Iterateur<T>`, mais la bibliotheque standard Java utilise `java.util.List<T>` / `java.util.Iterator<T>`. Pour utiliser les boucles for-each et les API standard, nous avons besoin d'adaptateurs.
 
-### IterateurEngine -- Adapts Iterateur to java.util.Iterator
+### IterateurEngine -- Adapte Iterateur vers java.util.Iterator
 
 ```java
 public class IterateurEngine<T> implements java.util.Iterator<T> {
@@ -172,7 +172,7 @@ public class IterateurEngine<T> implements java.util.Iterator<T> {
 }
 ```
 
-### ListeEngine -- Adapts Liste to java.util.List
+### ListeEngine -- Adapte Liste vers java.util.List
 
 ```java
 public class ListeEngine<T> implements java.util.List<T> {
@@ -200,19 +200,19 @@ public class ListeEngine<T> implements java.util.List<T> {
 }
 ```
 
-### Usage -- Geographic Database (TP3)
+### Utilisation -- Base de Donnees Geographique (TP3)
 
 ```java
 public class BdGeographique {
     private final List<Enregistrement> data;
 
     public BdGeographique() {
-        // Custom list wrapped in adapter -- usable with for-each!
+        // Liste personnalisee encapsulee dans l'adaptateur -- utilisable avec for-each !
         this.data = new ListeEngine<>(new ListeDoubleChainee<>());
     }
 
     public boolean estPresent(Enregistrement e) {
-        for (Enregistrement k : this.data) {  // for-each works!
+        for (Enregistrement k : this.data) {  // for-each fonctionne !
             if (k.equals(e)) return true;
         }
         return false;
@@ -221,20 +221,20 @@ public class BdGeographique {
 ```
 
 
-## Comparison: Custom vs. Java Standard Iterators
+## Comparaison : Iterateurs Personnalises vs. Standard Java
 
-| Feature | Iterateur<T> (custom) | java.util.Iterator<T> |
+| Fonctionnalite | Iterateur<T> (personnalise) | java.util.Iterator<T> |
 |---------|----------------------|----------------------|
-| Forward | succ() | next() (returns value too) |
-| Backward | pred() | Not supported |
-| Value | valec() | Built into next() |
-| Insert | ajouterD(), ajouterG() | Not supported |
-| Remove | oterec() | remove() (optional) |
-| Check end | estSorti() | hasNext() |
-| Start | entete() / enqueue() | Created fresh |
-| Multiple passes | Yes (entete() resets) | No (one pass only) |
+| Avancer | succ() | next() (retourne aussi la valeur) |
+| Reculer | pred() | Non supporte |
+| Valeur | valec() | Integre dans next() |
+| Inserer | ajouterD(), ajouterG() | Non supporte |
+| Supprimer | oterec() | remove() (optionnel) |
+| Tester la fin | estSorti() | hasNext() |
+| Debut | entete() / enqueue() | Cree a neuf |
+| Passes multiples | Oui (entete() reinitialise) | Non (une seule passe) |
 
-### Java Iterable/Iterator Protocol
+### Protocole Iterable/Iterator Java
 
 ```java
 // To use for-each, a class must implement Iterable<T>
@@ -254,9 +254,9 @@ while (it.hasNext()) {
 ```
 
 
-## Complexity
+## Complexite
 
-All iterator operations on a doubly-linked list remain O(1):
+Toutes les operations de l'iterateur sur une liste doublement chainee restent O(1) :
 
 | Operation | ListeDoubleChaineeIterateur | ListeTabuleeIterateur |
 |-----------|---------------------------|----------------------|
@@ -264,37 +264,37 @@ All iterator operations on a doubly-linked list remain O(1):
 | enqueue() | O(1) | O(1) |
 | succ() | O(1) | O(1) |
 | pred() | O(1) | O(1) |
-| ajouterD() | O(1) | **O(n)** -- shift |
-| ajouterG() | O(1) | **O(n)** -- shift |
-| oterec() | O(1) | **O(n)** -- shift |
+| ajouterD() | O(1) | **O(n)** -- decalage |
+| ajouterG() | O(1) | **O(n)** -- decalage |
+| oterec() | O(1) | **O(n)** -- decalage |
 | valec() | O(1) | O(1) |
 
-The adapter methods (ListeEngine) add overhead for index-based access: `get(i)` is O(i) on a linked list.
+Les methodes de l'adaptateur (ListeEngine) ajoutent un surcout pour l'acces par index : `get(i)` est O(i) sur une liste chainee.
 
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
 ```
-ITERATOR PATTERN
+PATRON ITERATEUR
 =================
-Liste<T>  --creates-->  Iterateur<T>   (factory method: iterateur())
+Liste<T>  --cree-->  Iterateur<T>   (methode fabrique : iterateur())
   |                        |
-  +-- no cursor            +-- has cursor
+  +-- pas de curseur       +-- possede un curseur
   +-- vider(), estVide()   +-- entete(), succ(), pred(), enqueue()
                            +-- ajouterD(), ajouterG(), oterec()
                            +-- valec(), modifec(), estSorti()
 
-ADAPTER PATTERN
-===============
-Custom                Java Standard
-------                -------------
+PATRON ADAPTATEUR
+=================
+Personnalise          Standard Java
+----------            -------------
 Liste<T>        -->   java.util.List<T>      via ListeEngine<T>
 Iterateur<T>    -->   java.util.Iterator<T>  via IterateurEngine<T>
 
 IterateurEngine.hasNext()  =  !it.estSorti()
 IterateurEngine.next()     =  val = it.valec(); it.succ(); return val;
 
-FOR-EACH LOOP:
+BOUCLE FOR-EACH :
   for (T item : listeEngine) { ... }
   == Iterator<T> it = listeEngine.iterator();
      while (it.hasNext()) { T item = it.next(); ... }

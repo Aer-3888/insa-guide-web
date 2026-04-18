@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # TP6 - MPI : Propagation de chaleur distribuee
 
-> Following teacher instructions from: `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP6_mpi.pdf`
+> D'apres les consignes de l'enseignant : `S6/Parallelisme/data/moodle/tp/Sujets_TP/TP6_mpi.pdf`
 
 ---
 
@@ -45,7 +45,7 @@ sidebar_position: 6
 
 > Ecrire le programme sequentiel en C et le tester. On fera afficher le contenu de la matrice toutes les K iterations.
 
-**Answer:**
+**Reponse :**
 
 ```c noexec
 #include <stdio.h>
@@ -133,14 +133,14 @@ int main(void)
 
 La fonction `eqChaleurIter` recoit des pointeurs vers la premiere cellule interieure (offset M+3 = (M+2)+1 = premiere ligne interieure, premiere colonne interieure). Le parametre `lda` (leading dimension = M+2) permet de naviguer entre les lignes.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 gcc sequentiel.c -o sequentiel -Wall -Wextra -lm
 ./sequentiel
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 La matrice initiale a les bords a 200.00 et l'interieur a 0.00. Toutes les K=10 iterations, la matrice est affichee avec le delta. Les valeurs interieures augmentent progressivement (diffusion de la chaleur depuis les bords). Le programme s'arrete quand delta < SEUIL=10.
 
@@ -156,11 +156,11 @@ La matrice initiale a les bords a 200.00 et l'interieur a 0.00. Toutes les K=10 
 >
 > **Recouvrement :** du fait que l'on a besoin des 2 voisins pour realiser un calcul, chaque processeur calculera une tranche de la matrice mais possedera 2 lignes de plus qui seront mises a jour a chaque iteration par ses voisins. On recopiera donc a chaque iteration une ligne de la matrice de Pi-1 vers Pi et de Pi+1 vers Pi.
 
-**Answer:**
+**Reponse :**
 
-### Architecture SPMD avec ghost zones
+### Architecture SPMD avec zones fantomes
 
-Chaque processus stocke N/P lignes utiles + 2 lignes fantomes (ghost zones) :
+Chaque processus stocke N/P lignes utiles + 2 lignes fantomes (zones fantomes) :
 
 ```
 Fragment du processus k :
@@ -176,7 +176,7 @@ Fragment du processus k :
 +-----------------------------+
 ```
 
-A chaque iteration, l'echange de halos (halo exchange) met a jour les ghost zones :
+A chaque iteration, l'echange de halos met a jour les zones fantomes :
 - Pk envoie sa premiere ligne utile a P(k-1) et sa derniere a P(k+1)
 - Pk recoit la ghost zone haute de P(k-1) et la ghost zone basse de P(k+1)
 
@@ -379,9 +379,9 @@ int main(int argc, char *argv[])
 }
 ```
 
-### Explication du halo exchange
+### Explication de l'echange de halos
 
-Le halo exchange est la partie critique du code. Apres chaque iteration de calcul et swap, les ghost zones doivent etre mises a jour avec les nouvelles valeurs des processus voisins.
+L'echange de halos est la partie critique du code. Apres chaque iteration de calcul et swap, les zones fantomes doivent etre mises a jour avec les nouvelles valeurs des processus voisins.
 
 ```
 Processus k :
@@ -399,7 +399,7 @@ Si tous les processus font `MPI_Send` (bloquant) simultanement, deadlock : tout 
 
 On utilise `MPI_Allreduce` (et non `MPI_Reduce`) car **tous** les processus doivent connaitre `deltaTotal` pour evaluer la condition `while (deltaTotal >= SEUIL)`. `MPI_Allreduce` = `MPI_Reduce` + `MPI_Bcast` en une seule operation.
 
-**Compilation & Run:**
+**Compilation et execution :**
 
 ```bash
 mpicc parallel.c -o parallel -Wall -Wextra -lm
@@ -416,7 +416,7 @@ mpiexec -n 5 ./parallel      # N=20 divisible par 5 : OK
 # mpiexec -n 3 ./parallel    # CRASH : 20 % 3 != 0 --> assert echoue
 ```
 
-**Expected behavior/output:**
+**Comportement et sortie attendus :**
 
 ```
 $ mpiexec -n 4 ./parallel
@@ -464,7 +464,7 @@ Pour N=20, on passe presque autant de temps a communiquer qu'a calculer. Pour N=
 |--------|--------------|-----------|
 | Lignes de code | ~70 | ~236 |
 | Distribution des donnees | Implicite (memoire partagee) | Explicite (Send/Recv) |
-| Synchronisation des bords | Barriere implicite | Halo exchange (Isend/Recv) |
+| Synchronisation des bords | Barriere implicite | Echange de halos (Isend/Recv) |
 | Convergence | Variable locale delta | MPI_Allreduce |
 | Scalabilite | 1 machine (8-64 coeurs) | Cluster (100+ coeurs) |
 

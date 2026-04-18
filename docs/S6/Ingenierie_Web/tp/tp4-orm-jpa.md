@@ -1,12 +1,12 @@
 ---
-title: "TP 4 — ORM with JPA"
+title: "TP 4 — ORM avec JPA"
 sidebar_position: 4
 ---
 
-# TP 4 — ORM with JPA
+# TP 4 — ORM avec JPA
 
-Object-Relational Mapping using Java Persistence API.
+Mapping objet-relationnel avec l'API Java Persistence.
 
-## Directories
+## Repertoires
 
-- `jpa/` — JPA implementation exercises
+- `jpa/` -- Exercices d'implementation JPA

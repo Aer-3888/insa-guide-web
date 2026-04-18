@@ -5,8 +5,8 @@ sidebar_position: 3
 
 # TP 3 — Neo4j
 
-Graph database with Neo4j.
+Introduction a la base de donnees orientee graphe Neo4j.
 
-## Files
+## Fichiers
 
-- `sujet.pdf` — Lab instructions for Neo4j TP
+- `sujet.pdf` — Enonce du TP Neo4j

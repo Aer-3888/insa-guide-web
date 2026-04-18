@@ -1,201 +1,201 @@
 ---
-title: "TP2: Building a Complete ML Pipeline"
+title: "TP2 : Construction d'un pipeline ML complet"
 sidebar_position: 2
 ---
 
-# TP2: Building a Complete ML Pipeline
+# TP2 : Construction d'un pipeline ML complet
 
-## Overview
-This practical demonstrates building an end-to-end machine learning pipeline for a real-world classification problem: predicting medical appointment no-shows. The lab covers data preprocessing, feature engineering, model selection, and hyperparameter tuning.
+## Presentation
+Ce TP montre comment construire un pipeline d'apprentissage automatique de bout en bout pour un probleme de classification reel : predire les absences aux rendez-vous medicaux. Le TP couvre le preprocessing des donnees, l'ingenierie de features, la selection de modeles et le reglage d'hyperparametres.
 
-## Problem Statement
-Predict whether a patient will miss a medical appointment based on demographic information, health conditions, and appointment details.
+## Enonce du probleme
+Predire si un patient manquera son rendez-vous medical a partir d'informations demographiques, de conditions de sante et de details sur le rendez-vous.
 
-## Dataset: No-Show Appointments
-- **Source**: Kaggle dataset with 110,527 medical appointments
-- **Target**: Binary classification (show/no-show)
-- **Features**: 14 attributes including patient demographics, health conditions, scheduling information
+## Jeu de donnees : absences aux rendez-vous medicaux (No-Show Appointments)
+- **Source** : Jeu de donnees Kaggle contenant 110 527 rendez-vous medicaux
+- **Cible** : Classification binaire (present / absent)
+- **Features** : 14 attributs incluant la demographie du patient, les conditions de sante et les informations de planification
 
-### Attributes
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| PatientId | Numeric | Unique patient identifier |
-| AppointmentID | Numeric | Unique appointment identifier |
-| Gender | Binary | Patient gender (F/M) |
-| ScheduledDay | Datetime | When appointment was scheduled |
-| AppointmentDay | Datetime | Date of appointment |
-| Age | Numeric | Patient age |
-| Neighbourhood | Categorical | Patient neighborhood (81 unique values) |
-| Scholarship | Binary | Has scholarship (0/1) |
-| Hipertension | Binary | Has hypertension (0/1) |
-| Diabetes | Binary | Has diabetes (0/1) |
-| Alcoholism | Binary | Has alcoholism (0/1) |
-| Handcap | Binary | Has disability (0/1) |
-| SMS_received | Binary | Received SMS reminder (0/1) |
-| No-show | Binary | Target variable (Yes/No) |
+### Attributs
+| Attribut | Type | Description |
+|----------|------|-------------|
+| PatientId | Numerique | Identifiant unique du patient |
+| AppointmentID | Numerique | Identifiant unique du rendez-vous |
+| Gender | Binaire | Genre du patient (F/M) |
+| ScheduledDay | Date/heure | Date et heure de la prise de rendez-vous |
+| AppointmentDay | Date/heure | Date du rendez-vous |
+| Age | Numerique | Age du patient |
+| Neighbourhood | Categoriel | Quartier du patient (81 valeurs uniques) |
+| Scholarship | Binaire | Beneficie d'une bourse (0/1) |
+| Hipertension | Binaire | Souffre d'hypertension (0/1) |
+| Diabetes | Binaire | Souffre de diabete (0/1) |
+| Alcoholism | Binaire | Souffre d'alcoolisme (0/1) |
+| Handcap | Binaire | Presente un handicap (0/1) |
+| SMS_received | Binaire | A recu un rappel par SMS (0/1) |
+| No-show | Binaire | Variable cible (Oui/Non) |
 
-## Data Preprocessing
+## Preprocessing des donnees
 
-### Feature Engineering
-**Created Feature**: `AppointmentDelay` (days between scheduling and appointment)
-- Computed as: `(AppointmentDay - ScheduledDay) / 86400`
-- Handles same-day appointments (negative values set to 0)
-- Most important feature (26.32% importance in Random Forest)
+### Ingenierie de features
+**Feature creee** : `AppointmentDelay` (nombre de jours entre la prise de rendez-vous et le rendez-vous)
+- Calcule comme : `(AppointmentDay - ScheduledDay) / 86400`
+- Gere les rendez-vous le jour meme (valeurs negatives mises a 0)
+- Feature la plus importante (26.32% d'importance dans le Random Forest)
 
-### Data Transformations
-1. **Encoding**: Convert categorical variables (Gender, Neighbourhood) to numeric labels
-2. **Date Processing**: Convert datetime strings to Unix timestamps
-3. **Feature Extraction**: Extract day-of-year from AppointmentDay
-4. **Target Encoding**: Convert "Yes"/"No" to 1/0
+### Transformations des donnees
+1. **Encodage** : Convertir les variables categorielles (Gender, Neighbourhood) en labels numeriques
+2. **Traitement des dates** : Convertir les chaines de date/heure en timestamps Unix
+3. **Extraction de features** : Extraire le jour de l'annee depuis AppointmentDay
+4. **Encodage de la cible** : Convertir "Yes"/"No" en 1/0
 
-### Train/Test Split
-- Training: 82,895 samples (75%)
-- Testing: 27,632 samples (25%)
-- Random state based on current timestamp for reproducibility
+### Separation train/test
+- Entrainement : 82 895 echantillons (75%)
+- Test : 27 632 echantillons (25%)
+- Random state base sur le timestamp courant pour la reproductibilite
 
-## Models Implemented
+## Modeles implementes
 
-### 1. Random Forest (Baseline)
-**Purpose**: Benchmark classifier with feature importance analysis
+### 1. Random Forest (reference)
+**Objectif** : Classifieur de reference avec analyse d'importance des features
 
-**Configuration**:
-- 100 trees (default)
-- 4-fold cross-validation
+**Configuration** :
+- 100 arbres (defaut)
+- Validation croisee 4-fold
 
-**Results**:
-- Accuracy: 78.06% (CV), 79.8% (test)
-- Training time: ~45 seconds
+**Resultats** :
+- Precision : 78.06% (CV), 79.8% (test)
+- Temps d'entrainement : ~45 secondes
 
-**Feature Importance** (top 5):
-1. AppointmentDelay: 26.32%
-2. ScheduledDay: 24.66%
-3. Age: 17.22%
-4. Neighbourhood: 15.82%
-5. AppointmentDay: 9.37%
+**Importance des features** (top 5) :
+1. AppointmentDelay : 26.32%
+2. ScheduledDay : 24.66%
+3. Age : 17.22%
+4. Neighbourhood : 15.82%
+5. AppointmentDay : 9.37%
 
-### 2. k-Nearest Neighbors (kNN)
-**Hyperparameter Tuning**: Grid search over k values
+### 2. k plus proches voisins (kNN)
+**Reglage d'hyperparametres** : Recherche sur grille (grid search) des valeurs de k
 
-**Search Range**:
-- [1, 2, 3, 5, 10, 15, 20-190 (step 10), 200-295 (step 5), 300, 400, 500, 1000]
+**Plage de recherche** :
+- [1, 2, 3, 5, 10, 15, 20-190 (pas de 10), 200-295 (pas de 5), 300, 400, 500, 1000]
 
-**Methodology**:
-- Split training into fit/validation (75/25)
-- Evaluate each k on validation set
-- Select k with best validation score
+**Methodologie** :
+- Separer l'entrainement en fit/validation (75/25)
+- Evaluer chaque k sur le jeu de validation
+- Selectionner le k avec le meilleur score de validation
 
-**Results**:
-- Best k: 60-70 (performance plateau)
-- Accuracy: 79.77% (test)
-- Slightly better than Random Forest
+**Resultats** :
+- Meilleur k : 60-70 (plateau de performance)
+- Precision : 79.77% (test)
+- Legerement meilleur que le Random Forest
 
-**Observations**:
-- Performance plateaus after k ≈ 60
-- Smooth, well-defined validation curve
-- Consistent results with fixed train/val/test splits
+**Observations** :
+- La performance atteint un plateau apres k = 60
+- Courbe de validation lisse et bien definie
+- Resultats coherents avec des separations train/val/test fixes
 
 ### 3. Naive Bayes
-**Challenge**: sklearn naive Bayes requires uniform feature types
+**Difficulte** : sklearn Naive Bayes necessite des types de features uniformes
 
-**Approach 1: Remove Numeric Features**
-- Keep only categorical: Gender, Neighbourhood, Scholarship, Hipertension, Diabetes, Alcoholism, Handcap, SMS_received
-- Use `CategoricalNB`
-- **Accuracy**: 79.76% (test)
+**Approche 1 : Supprimer les features numeriques**
+- Garder uniquement les features categorielles : Gender, Neighbourhood, Scholarship, Hipertension, Diabetes, Alcoholism, Handcap, SMS_received
+- Utiliser `CategoricalNB`
+- **Precision** : 79.76% (test)
 
-**Approach 2: Scale Continuous Features**
-Age categories:
-- 0-12: child
-- 13-19: teen
-- 20-30: youth
-- 31-50: adult
-- 51-65: middle-aged
-- 66-80: old-aged
-- 81+: elderly
+**Approche 2 : Discretiser les features continues**
+Categories d'age :
+- 0-12 : enfant
+- 13-19 : adolescent
+- 20-30 : jeune
+- 31-50 : adulte
+- 51-65 : senior
+- 66-80 : age
+- 81+ : tres age
 
-AppointmentDelay categories:
-- 0: today
-- 1-6: week
-- 7-14: two_weeks
-- 15-31: month
-- 32-62: two_months
-- 63+: later
+Categories de delai de rendez-vous (AppointmentDelay) :
+- 0 : aujourd'hui
+- 1-6 : semaine
+- 7-14 : deux semaines
+- 15-31 : mois
+- 32-62 : deux mois
+- 63+ : plus tard
 
-Datetime features:
-- Extract day of week (0-6) from ScheduledDay and AppointmentDay
+Features temporelles :
+- Extraire le jour de la semaine (0-6) depuis ScheduledDay et AppointmentDay
 
-**Results**:
-- Accuracy: 79.08% (4-fold CV average)
-- Slightly worse than kNN but comparable to Random Forest
+**Resultats** :
+- Precision : 79.08% (moyenne CV 4-fold)
+- Legerement inferieur au kNN mais comparable au Random Forest
 
-### 4. AdaBoost (Stump Boosting)
-**Configuration**: Boosting with decision tree stumps
+### 4. AdaBoost (Boosting de stumps)
+**Configuration** : Boosting avec des stumps (arbres de decision a un noeud)
 
-**Hyperparameter Search**: Number of estimators
-- Range: [1, 2-48 (step 2), 50-450 (step 50)]
+**Recherche d'hyperparametres** : Nombre d'estimateurs
+- Plage : [1, 2-48 (pas de 2), 50-450 (pas de 50)]
 
-**Results**:
-- Best n_estimators: Variable (1-100, chaotic validation curve)
-- Accuracy: ~79-80% (never consistently exceeds 80%)
-- Performance similar to other models
+**Resultats** :
+- Meilleur n_estimators : Variable (1-100, courbe de validation chaotique)
+- Precision : ~79-80% (ne depasse jamais 80% de maniere consistante)
+- Performance similaire aux autres modeles
 
-**Observations**:
-- Validation curve more erratic than kNN
-- No significant performance gain over simpler models
-- Computational overhead not justified
+**Observations** :
+- Courbe de validation plus erratique que celle du kNN
+- Pas de gain significatif par rapport aux modeles plus simples
+- Le surcouit de calcul n'est pas justifie
 
-## Key Findings
+## Resultats cles
 
-### Model Comparison
-| Model | Accuracy | Notes |
-|-------|----------|-------|
-| Random Forest | 79.8% | Good baseline, interpretable feature importance |
-| kNN (k=60) | 79.77% | Best performing, simple, efficient |
-| Naive Bayes | 79.08-79.76% | Fast, requires feature engineering |
-| AdaBoost | ~79-80% | No improvement over simpler models |
+### Comparaison des modeles
+| Modele | Precision | Remarques |
+|--------|-----------|-----------|
+| Random Forest | 79.8% | Bonne reference, importance des features interpretable |
+| kNN (k=60) | 79.77% | Meilleure performance, simple, efficace |
+| Naive Bayes | 79.08-79.76% | Rapide, necessite de l'ingenierie de features |
+| AdaBoost | ~79-80% | Pas d'amelioration par rapport aux modeles plus simples |
 
-### Best Model: kNN
-- Highest test accuracy
-- Simple and interpretable
-- Efficient prediction time
-- Robust with proper k selection
+### Meilleur modele : kNN
+- Meilleure precision sur le test
+- Simple et interpretable
+- Temps de prediction efficace
+- Robuste avec un bon choix de k
 
-### Important Insights
-1. **Feature Engineering Critical**: AppointmentDelay (engineered feature) is most important
-2. **Diminishing Returns**: Complex models don't significantly outperform simple ones
-3. **Data Quality**: All models struggle to exceed 80% accuracy, suggesting:
-   - Missing important features
-   - Inherent unpredictability in human behavior
-   - Class imbalance issues
+### Enseignements importants
+1. **L'ingenierie de features est cruciale** : AppointmentDelay (feature creee) est la plus importante
+2. **Rendements decroissants** : Les modeles complexes ne surpassent pas significativement les modeles simples
+3. **Qualite des donnees** : Tous les modeles peinent a depasser 80% de precision, ce qui suggere :
+   - Des features importantes manquantes
+   - Une imprevisibilite inherente au comportement humain
+   - Des problemes de desequilibre de classes
 
-## Visualizations
+## Visualisations
 
-### Pairplot Analysis
-Examined feature correlations on 5% sample:
+### Analyse Pairplot
+Examen des correlations entre features sur un echantillon de 5% :
 - Gender, SMS_received, Age, ScheduledDay, AppointmentDay, AppointmentDelay
-- Notable clustering in AppointmentDay/AppointmentDelay and AppointmentDelay/Age
+- Regroupements notables dans AppointmentDay/AppointmentDelay et AppointmentDelay/Age
 
-### Hyperparameter Curves
-- kNN: Smooth validation curve, clear plateau
-- AdaBoost: Erratic, no clear optimal value
+### Courbes d'hyperparametres
+- kNN : Courbe de validation lisse, plateau clair
+- AdaBoost : Erratique, pas de valeur optimale claire
 
-## Files
-- `TP2_no_show_complete.ipynb`: Complete pipeline implementation
-- `no_show.csv`: Medical appointments dataset (110,527 records)
-- `music_genre.csv`: Alternative dataset (Hugo's work)
+## Fichiers
+- `TP2_no_show_complete.ipynb` : Implementation complete du pipeline
+- `no_show.csv` : Jeu de donnees des rendez-vous medicaux (110 527 enregistrements)
+- `music_genre.csv` : Jeu de donnees alternatif (travail de Hugo)
 
-## Running the Code
+## Lancer le code
 ```bash noexec
-# Install dependencies
+# Installer les dependances
 pip install scikit-learn pandas numpy matplotlib seaborn
 
-# Launch Jupyter notebook
+# Lancer le notebook Jupyter
 jupyter notebook TP2_no_show_complete.ipynb
 ```
 
-## Lessons Learned
-1. **Always engineer features**: Domain knowledge improves models
-2. **Baseline first**: Random Forest provides quick feature importance insights
-3. **Hyperparameter tuning matters**: kNN with k=1 vs k=60 shows significant difference
-4. **Visualize validation curves**: Helps identify optimal parameters and overfitting
-5. **Simple can be best**: kNN outperforms complex ensemble methods here
-6. **Use consistent splits**: Fixed train/val/test splits enable fair comparisons
+## Lecons apprises
+1. **Toujours creer des features** : La connaissance du domaine ameliore les modeles
+2. **Commencer par une reference** : Le Random Forest fournit rapidement des informations sur l'importance des features
+3. **Le reglage des hyperparametres compte** : kNN avec k=1 vs k=60 montre une difference significative
+4. **Visualiser les courbes de validation** : Aide a identifier les parametres optimaux et le sur-apprentissage
+5. **Le simple peut etre le meilleur** : Le kNN surpasse les methodes d'ensemble complexes ici
+6. **Utiliser des separations coherentes** : Des separations train/val/test fixes permettent des comparaisons equitables

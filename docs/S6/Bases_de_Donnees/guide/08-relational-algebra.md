@@ -23,7 +23,7 @@ flowchart TD
     A3["Renommage rho\n(renommer attributs)"]
 
     B1["Produit cartesien ×\n(toutes les combinaisons)"]
-    B2["Jointure |x|\n(combinaisons filtrées)"]
+    B2["Jointure |x|\n(combinaisons filtrees)"]
     B3["Union U\n(lignes de A ou B)"]
     B4["Difference -\n(lignes de A pas dans B)"]
     B5["Intersection ∩\n(lignes de A et B)"]

@@ -14,7 +14,7 @@ sidebar_position: 4
 
 ### Q : Qu'est-ce que l'IDF et a quoi sert-il ?
 
-**R** : IDF = Inverse Document Frequency = log(|D| / df(w)). Il donne un poids eleve aux termes rares dans la collection et faible aux termes frequents partout (mots vides). Un mot present dans tous les documents a un IDF de 0 (non discriminant). Utilise dans TF-IDF pour ponderer les termes d'indexation.
+**R** : IDF = frequence inverse de document = log(|D| / df(w)). Il donne un poids eleve aux termes rares dans la collection et faible aux termes frequents partout (mots vides). Un mot present dans tous les documents a un IDF de 0 (non discriminant). Utilise dans TF-IDF pour ponderer les termes d'indexation.
 
 ### Q : Particularite du nDCG ?
 

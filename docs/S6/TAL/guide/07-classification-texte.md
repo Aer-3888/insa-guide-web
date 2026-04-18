@@ -29,12 +29,12 @@ p(d|c) = PRODUIT_{i=1}^{n} p(w_i | c)
 
 ### Estimation des probabilites
 
-**Prior** (probabilite a priori de la classe) :
+**A priori** (probabilite a priori de la classe) :
 ```
 p(c) = nombre de docs de classe c / nombre total de docs
 ```
 
-**Likelihood** (vraisemblance d'un mot dans une classe) :
+**Vraisemblance** (probabilite d'un mot dans une classe) :
 ```
 p(w|c) = SUM_d n(w,d) / SUM_v SUM_d n(v,d)
 ```
@@ -118,7 +118,7 @@ score(positif) = 0.01333 > score(negatif) = 0.00347
 
 ### Principe
 
-Les SVM (Support Vector Machines) trouvent l'hyperplan de separation optimale entre les classes dans l'espace des features.
+Les SVM (Machines a Vecteurs de Support) trouvent l'hyperplan de separation optimale entre les classes dans l'espace des caracteristiques.
 
 ### Application au texte
 
@@ -151,7 +151,7 @@ P[C = k | d] = exp(lambda_0^(k) + SUM_i lambda_i^(k) * x_i)
 
 C'est une **regression logistique multinomiale** (softmax).
 
-Avantage : pas d'hypothese d'independance entre les features.
+Avantage : pas d'hypothese d'independance entre les caracteristiques.
 
 ## 7.7 Loi de Zipf
 

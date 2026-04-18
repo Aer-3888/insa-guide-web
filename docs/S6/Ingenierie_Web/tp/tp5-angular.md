@@ -5,15 +5,15 @@ sidebar_position: 5
 
 # TP 5 — Angular
 
-Front-end development with Angular framework.
+Developpement front-end avec le framework Angular.
 
-## Directories
+## Repertoires
 
-- `tp-angular/` — Angular project and exercises
+- `tp-angular/` -- Projet et exercices Angular
 
-## Files
+## Fichiers
 
-- `tpAngular.pdf` — Angular lab instructions
-- `web.rest.example-1.2.jar` — REST API backend example
-- `create.ddl` — Database creation script
-- `drop.ddl` — Database drop script
+- `tpAngular.pdf` -- Enonce du TP Angular
+- `web.rest.example-1.2.jar` -- Exemple de back-end API REST
+- `create.ddl` -- Script de creation de la base de donnees
+- `drop.ddl` -- Script de suppression de la base de donnees

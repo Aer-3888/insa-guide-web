@@ -1,117 +1,117 @@
 ---
-title: "Debugging -- GDB, Valgrind, and Profiling"
+title: "Debogage -- GDB, Valgrind et profilage"
 sidebar_position: 3
 ---
 
-# Debugging -- GDB, Valgrind, and Profiling
+# Debogage -- GDB, Valgrind et profilage
 
-## Overview
+## Apercu
 
-Debugging is the process of finding and fixing errors in programs. The ITI course covers three essential tools:
-- **gdb** -- Interactive debugger for logic bugs and crashes
-- **valgrind** -- Memory error detector (leaks, invalid access)
-- **gprof** -- Performance profiler (find bottlenecks)
+Le debogage est le processus de recherche et de correction des erreurs dans les programmes. Le cours ITI couvre trois outils essentiels :
+- **gdb** -- Debogueur interactif pour les bugs logiques et les plantages
+- **valgrind** -- Detecteur d'erreurs memoire (fuites, acces invalides)
+- **gprof** -- Profileur de performance (trouver les goulots d'etranglement)
 
 ## GDB (GNU Debugger)
 
-### Setup
+### Preparation
 
-Always compile with the `-g` flag to include debugging symbols:
+Toujours compiler avec l'option `-g` pour inclure les symboles de debogage :
 ```bash
 gcc -g -Wall -o program program.c
 ```
 
-### Starting GDB
+### Lancer GDB
 
 ```bash
-gdb ./program                      # Start debugging
-gdb --args ./program arg1 arg2     # Start with arguments
-gdb -x commands.gdb ./program      # Run command script
+gdb ./program                      # Demarrer le debogage
+gdb --args ./program arg1 arg2     # Demarrer avec des arguments
+gdb -x commands.gdb ./program      # Executer un script de commandes
 ```
 
-### Essential Commands
+### Commandes essentielles
 
-#### Execution Control
+#### Controle de l'execution
 ```gdb
-run (r)                            # Start program
-run arg1 arg2                      # Start with arguments
-continue (c)                       # Continue to next breakpoint
-next (n)                           # Step over (skip function calls)
-step (s)                           # Step into (enter function calls)
-finish                             # Run until current function returns
-until 50                           # Run until line 50
-quit (q)                           # Exit gdb
+run (r)                            # Demarrer le programme
+run arg1 arg2                      # Demarrer avec des arguments
+continue (c)                       # Continuer jusqu'au prochain point d'arret
+next (n)                           # Pas a pas (sans entrer dans les fonctions)
+step (s)                           # Pas a pas (en entrant dans les fonctions)
+finish                             # Executer jusqu'au retour de la fonction courante
+until 50                           # Executer jusqu'a la ligne 50
+quit (q)                           # Quitter gdb
 ```
 
-#### Breakpoints
+#### Points d'arret
 ```gdb
-break main (b main)                # Break at function entry
-break file.c:42                    # Break at specific line
-break main if argc > 2             # Conditional breakpoint
-info breakpoints                   # List all breakpoints
-delete 1                           # Delete breakpoint #1
-disable 1                          # Temporarily disable
-enable 1                           # Re-enable
-clear file.c:42                    # Remove breakpoint at location
+break main (b main)                # Point d'arret a l'entree d'une fonction
+break file.c:42                    # Point d'arret a une ligne specifique
+break main if argc > 2             # Point d'arret conditionnel
+info breakpoints                   # Lister tous les points d'arret
+delete 1                           # Supprimer le point d'arret #1
+disable 1                          # Desactiver temporairement
+enable 1                           # Reactiver
+clear file.c:42                    # Supprimer le point d'arret a cet emplacement
 ```
 
-#### Watchpoints
+#### Points de surveillance
 ```gdb
-watch variable                     # Break when variable changes
-watch *0x12345678                  # Watch memory address
-rwatch variable                    # Break when variable is read
-awatch variable                    # Break on read or write
+watch variable                     # S'arreter quand la variable change
+watch *0x12345678                  # Surveiller une adresse memoire
+rwatch variable                    # S'arreter quand la variable est lue
+awatch variable                    # S'arreter en lecture ou ecriture
 ```
 
 #### Inspection
 ```gdb
-print variable (p variable)        # Print value
-print *pointer                     # Dereference pointer
-print array[0]@10                  # Print 10 elements from array
-print/x variable                   # Print in hex
-print/d variable                   # Print as decimal
-print/t variable                   # Print in binary
-display variable                   # Auto-print after each step
-undisplay 1                        # Stop auto-printing
-info locals                        # Show all local variables
-info args                          # Show function arguments
-whatis variable                    # Show type
-ptype struct_name                  # Show struct definition
+print variable (p variable)        # Afficher la valeur
+print *pointer                     # Dereferencement de pointeur
+print array[0]@10                  # Afficher 10 elements du tableau
+print/x variable                   # Afficher en hexadecimal
+print/d variable                   # Afficher en decimal
+print/t variable                   # Afficher en binaire
+display variable                   # Affichage automatique a chaque pas
+undisplay 1                        # Arreter l'affichage automatique
+info locals                        # Afficher toutes les variables locales
+info args                          # Afficher les arguments de la fonction
+whatis variable                    # Afficher le type
+ptype struct_name                  # Afficher la definition de la structure
 ```
 
-#### Call Stack
+#### Pile d'appels
 ```gdb
-backtrace (bt)                     # Show full call stack
-frame 0                            # Switch to stack frame 0
-up                                 # Move up one frame
-down                               # Move down one frame
-info frame                         # Details about current frame
+backtrace (bt)                     # Afficher la pile d'appels complete
+frame 0                            # Basculer vers le cadre de pile 0
+up                                 # Remonter d'un cadre
+down                               # Descendre d'un cadre
+info frame                         # Details du cadre courant
 ```
 
-#### Source Code
+#### Code source
 ```gdb
-list (l)                           # Show source around current line
-list main                          # Show source of function
-list 40,50                         # Show lines 40-50
-list file.c:30                     # Show around line 30 of file.c
+list (l)                           # Afficher le source autour de la ligne courante
+list main                          # Afficher le source d'une fonction
+list 40,50                         # Afficher les lignes 40 a 50
+list file.c:30                     # Afficher autour de la ligne 30 de file.c
 ```
 
-### GDB Debugging Workflow
+### Methode de debogage avec GDB
 
 ```
-1. Compile with -g:          gcc -g -Wall -o prog prog.c
-2. Start gdb:                gdb ./prog
-3. Set breakpoint:           break main
-4. Run:                      run
-5. Step through code:        next / step
-6. Inspect variables:        print var / info locals
-7. Find the bug:             backtrace / print suspicious_var
-8. Fix and recompile:        (exit gdb, edit, recompile)
+1. Compiler avec -g :          gcc -g -Wall -o prog prog.c
+2. Demarrer gdb :              gdb ./prog
+3. Placer un point d'arret :   break main
+4. Executer :                  run
+5. Avancer pas a pas :         next / step
+6. Inspecter les variables :   print var / info locals
+7. Trouver le bug :            backtrace / print suspicious_var
+8. Corriger et recompiler :    (quitter gdb, editer, recompiler)
 ```
 
-### GDB Command Scripts
+### Scripts de commandes GDB
 
-Save repetitive commands in a file:
+Sauvegarder des commandes repetitives dans un fichier :
 
 ```
 # commands.gdb
@@ -122,9 +122,9 @@ print argv[0]
 continue
 ```
 
-Run with: `gdb -x commands.gdb ./program`
+Executer avec : `gdb -x commands.gdb ./program`
 
-### Custom Commands
+### Commandes personnalisees
 
 ```gdb
 define print_array
@@ -136,54 +136,54 @@ define print_array
 end
 ```
 
-### TUI Mode
+### Mode TUI
 
-GDB has a text user interface showing source code:
+GDB dispose d'une interface texte affichant le code source :
 ```
-Ctrl+X A                           # Toggle TUI mode
-Ctrl+X 2                           # Show assembly alongside
+Ctrl+X A                           # Basculer le mode TUI
+Ctrl+X 2                           # Afficher l'assembleur en parallele
 ```
 
-### Core Dump Analysis
+### Analyse de core dump
 
 ```bash
-# Enable core dumps
+# Activer les core dumps
 ulimit -c unlimited
 
-# After crash, analyze
+# Apres un plantage, analyser
 gdb ./program core
-backtrace                          # See where it crashed
-print variable                     # Inspect state at crash
+backtrace                          # Voir ou le programme a plante
+print variable                     # Inspecter l'etat au moment du plantage
 ```
 
 ## Valgrind
 
-Valgrind detects memory errors that are invisible to the compiler.
+Valgrind detecte les erreurs memoire invisibles pour le compilateur.
 
-### Basic Usage
+### Utilisation de base
 
 ```bash
-# Compile with -g (no optimization)
+# Compiler avec -g (sans optimisation)
 gcc -g -O0 -o program program.c
 
-# Run with valgrind
+# Executer avec valgrind
 valgrind ./program
 valgrind --leak-check=full ./program
 valgrind --leak-check=full --show-leak-kinds=all ./program
 valgrind --track-origins=yes ./program
 ```
 
-### What Valgrind Detects
+### Ce que Valgrind detecte
 
-| Error Type | Description | Example |
-|-----------|-------------|---------|
-| Invalid read/write | Accessing freed or out-of-bounds memory | `array[100]` on size-10 array |
-| Use of uninitialized | Reading variable before assigning | `int x; if (x > 0)` |
-| Memory leak | malloc without free | `malloc(100)` never freed |
-| Double free | Freeing memory twice | `free(p); free(p);` |
-| Mismatched free | Using wrong dealloc function | `malloc` + `delete` |
+| Type d'erreur | Description | Exemple |
+|---------------|-------------|---------|
+| Lecture/ecriture invalide | Acces a de la memoire liberee ou hors limites | `array[100]` sur un tableau de taille 10 |
+| Utilisation non initialisee | Lecture d'une variable avant affectation | `int x; if (x > 0)` |
+| Fuite memoire | malloc sans free | `malloc(100)` jamais libere |
+| Double liberation | Liberer la memoire deux fois | `free(p); free(p);` |
+| Liberation incompatible | Mauvaise fonction de desallocation | `malloc` + `delete` |
 
-### Reading Valgrind Output
+### Lire la sortie de Valgrind
 
 ```
 ==12345== Invalid read of size 4
@@ -193,12 +193,12 @@ valgrind --track-origins=yes ./program
 ==12345==    by 0x4005C1: main (program.c:5)
 ```
 
-Key information:
-- **Error type**: "Invalid read of size 4"
-- **Location**: `program.c:10`
-- **Context**: "0 bytes after a block of size 40" = reading just past end of array
+Informations cles :
+- **Type d'erreur** : "Invalid read of size 4"
+- **Emplacement** : `program.c:10`
+- **Contexte** : "0 bytes after a block of size 40" = lecture juste apres la fin du tableau
 
-### Memory Leak Summary
+### Resume des fuites memoire
 
 ```
 ==12345== HEAP SUMMARY:
@@ -214,23 +214,23 @@ Key information:
 
 ## Gprof (GNU Profiler)
 
-Gprof identifies performance bottlenecks -- which functions consume the most time.
+Gprof identifie les goulots d'etranglement de performance -- quelles fonctions consomment le plus de temps.
 
-### Workflow
+### Methode de travail
 
 ```bash
-# 1. Compile with profiling enabled
+# 1. Compiler avec le profilage active
 gcc -pg -o program program.c
 
-# 2. Run program (generates gmon.out automatically)
+# 2. Executer le programme (genere gmon.out automatiquement)
 ./program
 
-# 3. Analyze
+# 3. Analyser
 gprof program gmon.out > analysis.txt
 less analysis.txt
 ```
 
-### Reading the Flat Profile
+### Lire le profil plat
 
 ```
   %   cumulative   self              self     total
@@ -239,105 +239,105 @@ less analysis.txt
  24.2      0.68     0.24        1   0.24     0.68  inverseValeurs
 ```
 
-| Column | Meaning |
-|--------|---------|
-| % time | Percentage of total execution time |
-| cumulative seconds | Running total of time |
-| self seconds | Time in this function only (not callees) |
-| calls | Number of invocations |
-| self s/call | Average time per call (this function) |
-| total s/call | Average time per call (including callees) |
+| Colonne | Signification |
+|---------|---------------|
+| % time | Pourcentage du temps total d'execution |
+| cumulative seconds | Total cumule du temps |
+| self seconds | Temps dans cette fonction uniquement (hors sous-fonctions) |
+| calls | Nombre d'invocations |
+| self s/call | Temps moyen par appel (cette fonction) |
+| total s/call | Temps moyen par appel (sous-fonctions incluses) |
 
-### Reading the Call Graph
+### Lire le graphe d'appels
 
-Shows caller-callee relationships:
-- Which functions call which
-- How much time is attributed to each caller
-- How deeply nested the call chain is
+Montre les relations appelant-appele :
+- Quelles fonctions appellent lesquelles
+- Combien de temps est attribue a chaque appelant
+- La profondeur de la chaine d'appels
 
-### Optimization Strategy
+### Strategie d'optimisation
 
-1. **Profile first** -- Never guess where the bottleneck is
-2. **Focus on hotspots** -- Top 3-5 functions by % time
-3. **Algorithm over micro-optimization** -- Better algorithm beats faster code
-4. **Measure again** -- Verify improvements with new profile
-5. **Compare optimization levels** -- Build with `-O0` and `-O3`, profile both
+1. **Profiler d'abord** -- Ne jamais deviner ou se trouve le goulot d'etranglement
+2. **Se concentrer sur les points chauds** -- Les 3 a 5 premieres fonctions par % de temps
+3. **L'algorithme avant la micro-optimisation** -- Un meilleur algorithme bat un code plus rapide
+4. **Mesurer a nouveau** -- Verifier les ameliorations avec un nouveau profil
+5. **Comparer les niveaux d'optimisation** -- Construire avec `-O0` et `-O3`, profiler les deux
 
-### Comparing Optimization Levels
+### Comparer les niveaux d'optimisation
 
 ```bash
-# Non-optimized
+# Non optimise
 gcc -pg -O0 -o prog_O0 program.c
 ./prog_O0
 gprof prog_O0 gmon.out > profile_O0.txt
 
-# Optimized
+# Optimise
 gcc -pg -O3 -o prog_O3 program.c
 ./prog_O3
 gprof prog_O3 gmon.out > profile_O3.txt
 
-# Compare
+# Comparer
 diff profile_O0.txt profile_O3.txt
 ```
 
-## Debugging Strategies
+## Strategies de debogage
 
-### Common Bug Categories
+### Categories de bugs courants
 
-| Category | Symptoms | Tool |
-|----------|----------|------|
-| Logic error | Wrong output, no crash | gdb (breakpoints, print) |
-| Segfault | Program crashes | gdb (backtrace), valgrind |
-| Memory leak | Increasing memory use | valgrind --leak-check=full |
-| Buffer overflow | Corrupted data, crashes | valgrind, -fsanitize=address |
-| Infinite loop | Program hangs | gdb (Ctrl+C, backtrace) |
-| Off-by-one | Wrong boundary | gdb (print loop variables) |
+| Categorie | Symptomes | Outil |
+|-----------|-----------|-------|
+| Erreur logique | Sortie incorrecte, pas de plantage | gdb (points d'arret, print) |
+| Segfault | Le programme plante | gdb (backtrace), valgrind |
+| Fuite memoire | Utilisation memoire croissante | valgrind --leak-check=full |
+| Depassement de tampon | Donnees corrompues, plantages | valgrind, -fsanitize=address |
+| Boucle infinie | Le programme ne repond plus | gdb (Ctrl+C, backtrace) |
+| Erreur de bornes | Mauvaise limite | gdb (print des variables de boucle) |
 
-### Systematic Debugging Process
+### Processus de debogage systematique
 
-1. **Reproduce** -- Make the bug happen consistently
-2. **Isolate** -- Find the smallest input that triggers it
-3. **Locate** -- Use gdb breakpoints to narrow down the line
-4. **Understand** -- Why does the code do the wrong thing?
-5. **Fix** -- Make the minimal change to correct behavior
-6. **Verify** -- Confirm the fix works and nothing else broke
+1. **Reproduire** -- Faire apparaitre le bug de maniere consistante
+2. **Isoler** -- Trouver la plus petite entree qui le declenche
+3. **Localiser** -- Utiliser les points d'arret gdb pour cerner la ligne
+4. **Comprendre** -- Pourquoi le code fait-il la mauvaise chose ?
+5. **Corriger** -- Faire le changement minimal pour corriger le comportement
+6. **Verifier** -- Confirmer que la correction fonctionne et que rien d'autre n'est casse
 
 ---
 
-## CHEAT SHEET
+## AIDE-MEMOIRE
 
-### GDB Commands
+### Commandes GDB
 ```
-run / r                  Start program
-break func / b func      Set breakpoint
-continue / c             Continue execution
-next / n                 Step over
-step / s                 Step into
-finish                   Run to return
-print var / p var        Print variable
-backtrace / bt           Show call stack
-info locals              Local variables
-info breakpoints         List breakpoints
-quit / q                 Exit
+run / r                  Demarrer le programme
+break func / b func      Placer un point d'arret
+continue / c             Continuer l'execution
+next / n                 Pas a pas (sans entrer)
+step / s                 Pas a pas (en entrant)
+finish                   Executer jusqu'au retour
+print var / p var        Afficher une variable
+backtrace / bt           Afficher la pile d'appels
+info locals              Variables locales
+info breakpoints         Lister les points d'arret
+quit / q                 Quitter
 ```
 
 ### Valgrind
 ```
-valgrind ./program                    Basic check
-valgrind --leak-check=full ./prog     Full leak check
-valgrind --track-origins=yes ./prog   Trace uninit values
+valgrind ./program                    Verification de base
+valgrind --leak-check=full ./prog     Verification complete des fuites
+valgrind --track-origins=yes ./prog   Tracer les valeurs non initialisees
 ```
 
 ### Gprof
 ```
-gcc -pg -o prog prog.c    Compile with profiling
-./prog                     Run (generates gmon.out)
-gprof prog gmon.out        Analyze profile
+gcc -pg -o prog prog.c    Compiler avec profilage
+./prog                     Executer (genere gmon.out)
+gprof prog gmon.out        Analyser le profil
 ```
 
-### Compilation for Debugging
+### Compilation pour le debogage
 ```
-gcc -g -Wall -O0 prog.c        Debug build
-gcc -g -Wall -pg prog.c        Profile build
-gcc -g -Wall -fsanitize=address  Address sanitizer
+gcc -g -Wall -O0 prog.c        Construction debogage
+gcc -g -Wall -pg prog.c        Construction profilage
+gcc -g -Wall -fsanitize=address  Sanitizer d'adresses
 ```

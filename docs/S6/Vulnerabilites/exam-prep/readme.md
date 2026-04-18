@@ -1,9 +1,9 @@
 ---
-title: "Exam Prep -- Vulnerabilites et Securite informatique"
+title: "Preparation examen -- Vulnerabilites et Securite informatique"
 sidebar_position: 0
 ---
 
-# Exam Prep -- Vulnerabilites et Securite informatique
+# Preparation examen -- Vulnerabilites et Securite informatique
 
 > Preparation au DS : 2h, documents autorises (slides, notes TP, notes perso)
 

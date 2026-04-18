@@ -107,7 +107,7 @@ XSS           --> injecte dans la SORTIE WEB (HTML/JS)
 
 ### Principe fondamental
 
-> **Never trust an output!** Ne jamais faire confiance aux donnees envoyees au navigateur.
+> **Ne jamais faire confiance a une sortie !** Ne jamais faire confiance aux donnees envoyees au navigateur.
 
 ### Echapper les caracteres sensibles
 
@@ -171,7 +171,7 @@ Empeche JavaScript d'acceder au cookie via `document.cookie`.
 | **Cible** | Le navigateur de la victime | Le serveur via le navigateur |
 | **Mecanisme** | Injection de code dans la page | Forge une requete authentifiee |
 | **Code execute** | Oui (JavaScript) | Non (juste une requete HTTP) |
-| **Principe** | "Never trust an output" | "Verifier l'origine de la requete" |
+| **Principe** | "Ne jamais faire confiance a une sortie" | "Verifier l'origine de la requete" |
 | **Protection** | Echapper sorties + CSP | Token anti-CSRF + SameSite |
 
 ---
@@ -204,7 +204,7 @@ CSRF :
   POST : formulaire cache + auto-submit
   Protection : SameSite=Strict + token anti-CSRF
 
-  Phrase : "Never trust an output!" (XSS)
+  Phrase : "Ne jamais faire confiance a une sortie !" (XSS)
 
 PIEGES DS :
   - XSS = injection de code / CSRF = forge de requete
